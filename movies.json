@@ -25,6 +25,7 @@
       "rt_critic": 94,
       "metacritic": 77,
       "award": null,
+      "award_text": "7 wins & 11 nominations total",
       "offers": [
         {
           "service": "AppleTV",
@@ -126,6 +127,7 @@
       "rt_critic": 93,
       "metacritic": 73,
       "award": null,
+      "award_text": "4 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -151,6 +153,7 @@
       "imdb_votes": 77197,
       "metacritic": 74,
       "award": null,
+      "award_text": "2 wins & 6 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -176,6 +179,7 @@
       "imdb_votes": 30613,
       "metacritic": 38,
       "award": null,
+      "award_text": "2 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -202,6 +206,7 @@
       "imdb_votes": 100148,
       "metacritic": 77,
       "award": null,
+      "award_text": "11 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -227,6 +232,7 @@
       "imdb_votes": 53400,
       "metacritic": 63,
       "award": null,
+      "award_text": "1 win & 4 nominations total",
       "offers": [
         {
           "service": "Amazon",
@@ -337,6 +343,7 @@
       "imdb_votes": 7481,
       "metacritic": 52,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Amazon",
@@ -436,6 +443,7 @@
       "imdb_rating": null,
       "imdb_votes": null,
       "award": null,
+      "award_text": "",
       "offers": [],
       "status": [
         "in_cinema"
@@ -462,6 +470,7 @@
       "rt_critic": 38,
       "metacritic": 39,
       "award": null,
+      "award_text": "7 wins & 5 nominations total",
       "offers": [
         {
           "service": "Amazon",
@@ -561,6 +570,7 @@
       "rt_critic": 94,
       "metacritic": 77,
       "award": null,
+      "award_text": "1 win & 5 nominations total",
       "offers": [
         {
           "service": "Prime Video",
@@ -680,6 +690,7 @@
       "rt_critic": 64,
       "metacritic": 46,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Amazon",
@@ -781,6 +792,7 @@
       "imdb_votes": 6852,
       "metacritic": 69,
       "award": null,
+      "award_text": "",
       "offers": [],
       "status": [
         "in_cinema"
@@ -809,6 +821,7 @@
       "imdb_votes": 55972,
       "metacritic": 37,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Amazon",
@@ -907,6 +920,7 @@
       "imdb_votes": 33540,
       "metacritic": 47,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "HBO Max",
@@ -1001,6 +1015,7 @@
       "rt_critic": 66,
       "metacritic": 61,
       "award": "won",
+      "award_text": "Won 1 Oscar. 40 wins & 58 nominations total",
       "offers": [
         {
           "service": "Disney+",
@@ -1068,6 +1083,7 @@
       "imdb_rating": null,
       "imdb_votes": null,
       "award": null,
+      "award_text": "",
       "offers": [],
       "status": [
         "in_cinema"
@@ -1095,6 +1111,7 @@
       "rt_critic": 95,
       "metacritic": 72,
       "award": null,
+      "award_text": "1 win total",
       "offers": [
         {
           "service": "Prime Video",
@@ -1129,6 +1146,7 @@
       "rt_critic": 62,
       "metacritic": 55,
       "award": null,
+      "award_text": "3 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -1156,6 +1174,7 @@
       "rt_critic": 98,
       "metacritic": 67,
       "award": null,
+      "award_text": "2 wins & 7 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -1182,6 +1201,7 @@
       "imdb_votes": 43390,
       "metacritic": 49,
       "award": null,
+      "award_text": "2 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -1211,6 +1231,7 @@
       "rt_critic": 94,
       "metacritic": 73,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Disney+",
@@ -1286,6 +1307,7 @@
       "rt_critic": 49,
       "metacritic": 53,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Amazon",
@@ -1374,6 +1396,7 @@
       "imdb_votes": 8806,
       "rt_critic": 82,
       "award": null,
+      "award_text": "20 wins & 14 nominations total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -1403,6 +1426,7 @@
       "rt_critic": 92,
       "metacritic": 73,
       "award": "nominated",
+      "award_text": "Nominated for 1 Oscar. 20 wins & 90 nominations total",
       "offers": [
         {
           "service": "Disney+",
@@ -1476,6 +1500,7 @@
       "imdb_rating": null,
       "imdb_votes": null,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Fetch TV",
@@ -1564,6 +1589,7 @@
       "rt_critic": 83,
       "metacritic": 60,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Amazon",
@@ -1663,6 +1689,7 @@
       "rt_critic": 74,
       "metacritic": 65,
       "award": null,
+      "award_text": "1 win & 9 nominations total",
       "offers": [
         {
           "service": "Amazon",
@@ -1775,6 +1802,7 @@
       "imdb_votes": 25305,
       "metacritic": 50,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Prime Video",
@@ -1882,6 +1910,7 @@
       "rt_critic": 86,
       "metacritic": 71,
       "award": null,
+      "award_text": "3 wins & 22 nominations total",
       "offers": [
         {
           "service": "Disney+",
@@ -1957,6 +1986,7 @@
       "imdb_votes": 37893,
       "metacritic": 52,
       "award": null,
+      "award_text": "1 nomination total",
       "offers": [],
       "status": [
         "in_cinema"
@@ -1983,6 +2013,7 @@
       "imdb_votes": 26853,
       "metacritic": 49,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Prime Video",
@@ -2014,6 +2045,7 @@
       "imdb_votes": 16522,
       "metacritic": 76,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Amazon",
@@ -2103,6 +2135,7 @@
       "rt_critic": 97,
       "metacritic": 85,
       "award": "nominated",
+      "award_text": "Nominated for 3 Oscars. 94 wins & 109 nominations total",
       "offers": [
         {
           "service": "Paramount Plus",
@@ -2217,6 +2250,7 @@
       "rt_critic": 91,
       "metacritic": 68,
       "award": null,
+      "award_text": "20 wins & 8 nominations total",
       "offers": [
         {
           "service": "Amazon",
@@ -2327,6 +2361,7 @@
       "imdb_rating": 6.2,
       "imdb_votes": 246,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Stan",
@@ -2359,6 +2394,7 @@
       "imdb_votes": 56311,
       "metacritic": 68,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Prime Video",
@@ -2437,6 +2473,7 @@
       "rt_critic": 61,
       "metacritic": 58,
       "award": null,
+      "award_text": "6 wins & 30 nominations total",
       "offers": [
         {
           "service": "Disney+",
@@ -2514,6 +2551,7 @@
       "rt_critic": 50,
       "metacritic": 50,
       "award": "nominated",
+      "award_text": "Nominated for 1 Oscar. 3 wins & 14 nominations total",
       "offers": [
         {
           "service": "Foxtel Now",
@@ -2633,6 +2671,7 @@
       "rt_critic": 92,
       "metacritic": 75,
       "award": null,
+      "award_text": "",
       "offers": [
         {
           "service": "Disney+",
@@ -2709,6 +2748,7 @@
       "rt_critic": 83,
       "metacritic": 68,
       "award": null,
+      "award_text": "5 wins & 73 nominations total",
       "offers": [
         {
           "service": "HBO Max",
