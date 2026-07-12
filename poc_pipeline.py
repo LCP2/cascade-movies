@@ -29,6 +29,10 @@ import os, sys, json, time, datetime, urllib.parse, urllib.request
 REGION = "AU"                      # the country this instance tracks
 CURRENCY = "AUD"
 
+# --- catalogue scope: work BACKWARDS from cinema, not just "now playing" ---
+LOOKBACK_DAYS = 365               # include films with an AU theatrical release in this trailing window
+MAX_TITLES    = 40               # cap tracked titles to fit Watchmode free-tier daily budget (~2 calls/title/day)
+
 # --- window heuristics (this is YOUR business logic, not something an API gives you) ---
 PVOD_MIN_PRICE   = 19.99          # a buy/rent at or above this, with no subscription yet, = premium early window
 RENTAL_MAX_PRICE = 9.99           # a rent at or below this = standard rental window
@@ -60,33 +64,54 @@ def get_json(url: str) -> dict:
 # 1. INGEST — which films are/were recently in AU cinemas
 # ---------------------------------------------------------------------------
 def ingest_tmdb() -> list[dict]:
-    """Return skeleton records: tmdb_id, imdb_id, title, year, genres, cinema_date, gross."""
+    """Work BACKWARDS from cinema: every film that had an AU theatrical release
+    in the last LOOKBACK_DAYS, most-popular first — so the catalogue spans the
+    whole cascade (still in cinemas -> PVOD -> rental -> included streaming),
+    not just this week's new releases. Capped to MAX_TITLES for the Watchmode
+    free-tier daily budget.
+    Returns skeleton records: tmdb_id, imdb_id, title, year, genres, cinema_date, gross."""
     base = "https://api.themoviedb.org/3"
-    movies = []
-    now_playing = get_json(
-        f"{base}/movie/now_playing?api_key={TMDB_KEY}&region={REGION}&page=1"
-    )
-    for m in now_playing.get("results", []):
-        detail = get_json(
-            f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates"
+    today = datetime.date.today()
+    start = (today - datetime.timedelta(days=LOOKBACK_DAYS)).isoformat()
+    end   = today.isoformat()
+    movies, seen, page = [], set(), 1
+
+    while len(movies) < MAX_TITLES and page <= 10:
+        disc = get_json(
+            f"{base}/discover/movie?api_key={TMDB_KEY}&region={REGION}"
+            f"&with_release_type=2|3"                         # AU theatrical (3) or limited (2)
+            f"&release_date.gte={start}&release_date.lte={end}"
+            f"&sort_by=popularity.desc&page={page}"
         )
-        # AU theatrical (type 3) or limited (type 2)
-        cinema_date = None
-        for entry in detail.get("release_dates", {}).get("results", []):
-            if entry["iso_3166_1"] == REGION:
-                for rd in entry["release_dates"]:
-                    if rd["type"] in (2, 3):
-                        cinema_date = rd["release_date"][:10]
-        movies.append({
-            "tmdb_id": detail["id"],
-            "imdb_id": detail.get("imdb_id"),
-            "title": detail["title"],
-            "year": (detail.get("release_date") or "----")[:4],
-            "genres": [g["name"] for g in detail.get("genres", [])],
-            "cinema_date": cinema_date,
-            "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
-            "poster": detail.get("poster_path"),
-        })
+        results = disc.get("results", [])
+        if not results:
+            break
+        for m in results:
+            if m["id"] in seen:
+                continue
+            seen.add(m["id"])
+            detail = get_json(
+                f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates"
+            )
+            cinema_date = None
+            for entry in detail.get("release_dates", {}).get("results", []):
+                if entry["iso_3166_1"] == REGION:
+                    for rd in entry["release_dates"]:
+                        if rd["type"] in (2, 3):
+                            cinema_date = rd["release_date"][:10]
+            movies.append({
+                "tmdb_id": detail["id"],
+                "imdb_id": detail.get("imdb_id"),
+                "title": detail["title"],
+                "year": (detail.get("release_date") or "----")[:4],
+                "genres": [g["name"] for g in detail.get("genres", [])],
+                "cinema_date": cinema_date,
+                "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
+                "poster": detail.get("poster_path"),
+            })
+            if len(movies) >= MAX_TITLES:
+                break
+        page += 1
     return movies
 
 
@@ -270,6 +295,8 @@ def run(simulate_day: bool = False):
         "movies": records,
     }
     json.dump(payload, open(OUTPUT_FILE, "w"), indent=2)
+    os.makedirs(STATE_DIR, exist_ok=True)     # this run's changes, for the email step / CI
+    json.dump(events, open(os.path.join(STATE_DIR, "last_run_events.json"), "w"), indent=2)
     build_html(records)                       # regenerate the double-clickable app
 
     print(f"\n{len(records)} titles written to movies.json  ({'LIVE' if LIVE else 'sample'} data)")
