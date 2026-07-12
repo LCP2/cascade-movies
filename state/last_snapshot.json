@@ -1,5 +1,99 @@
 [
   {
+    "tmdb_id": 1339713,
+    "imdb_id": "tt37287335",
+    "title": "Obsession",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "cinema_date": "2026-05-14",
+    "worldwide_gross": 408957400,
+    "poster": "/bRwnj8WEKBCvmfeUNOukJPwB43K.jpg",
+    "imdb_rating": 8.0,
+    "imdb_votes": 176988,
+    "rt_critic": 94,
+    "metacritic": 77,
+    "offers": [
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 29.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "pvod"
+    ]
+  },
+  {
     "tmdb_id": 1084244,
     "imdb_id": "tt29355505",
     "title": "Toy Story 5",
@@ -63,6 +157,225 @@
     ]
   },
   {
+    "tmdb_id": 1083381,
+    "imdb_id": "tt26657236",
+    "title": "Backrooms",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Mystery",
+      "Science Fiction"
+    ],
+    "cinema_date": "2026-05-28",
+    "worldwide_gross": 366922537,
+    "poster": "/rhGx6E3qRNMgj3i5su2oukNHwIQ.jpg",
+    "imdb_rating": 7.0,
+    "imdb_votes": 100148,
+    "metacritic": 77,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1314481,
+    "imdb_id": "tt33612209",
+    "title": "The Devil Wears Prada 2",
+    "year": "2026",
+    "genres": [
+      "Comedy",
+      "Drama"
+    ],
+    "cinema_date": "2026-04-30",
+    "worldwide_gross": 678373258,
+    "poster": "/fCAURTUx3YfsJ8k9I0UamjSILiR.jpg",
+    "imdb_rating": 6.6,
+    "imdb_votes": 53400,
+    "metacritic": 63,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "pvod"
+    ]
+  },
+  {
+    "tmdb_id": 1368314,
+    "imdb_id": "tt33763941",
+    "title": "Passenger",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "cinema_date": "2026-05-21",
+    "worldwide_gross": 31558866,
+    "poster": "/2sOEJzhPzjTkZSlPbGxOJ7xgIyS.jpg",
+    "imdb_rating": 5.6,
+    "imdb_votes": 7481,
+    "metacritic": 52,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
     "tmdb_id": 1108427,
     "imdb_id": "tt27419466",
     "title": "Moana",
@@ -81,6 +394,308 @@
     "offers": [],
     "status": [
       "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 936075,
+    "imdb_id": "tt11378946",
+    "title": "Michael",
+    "year": "2026",
+    "genres": [
+      "Music",
+      "Drama"
+    ],
+    "cinema_date": "2026-04-22",
+    "worldwide_gross": 993500000,
+    "poster": "/zm0KAbOjlt9eR5y7vDiL2dEOwMl.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 144205,
+    "rt_critic": 38,
+    "metacritic": 39,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 34.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 34.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 34.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "pvod"
+    ]
+  },
+  {
+    "tmdb_id": 687163,
+    "imdb_id": "tt12042730",
+    "title": "Project Hail Mary",
+    "year": "2026",
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "cinema_date": "2026-03-19",
+    "worldwide_gross": 683349773,
+    "poster": "/yihdXomYb5kTeSivtFndMy5iDmf.jpg",
+    "imdb_rating": 8.3,
+    "imdb_votes": 333549,
+    "rt_critic": 94,
+    "metacritic": 77,
+    "offers": [
+      {
+        "service": "Prime Video",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 3.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 931285,
+    "imdb_id": "tt17490712",
+    "title": "Mortal Kombat II",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Fantasy",
+      "Adventure"
+    ],
+    "cinema_date": "2026-05-07",
+    "worldwide_gross": 129455207,
+    "poster": "/hwRdDFIhaEmpRgoki805YvyyjZf.jpg",
+    "imdb_rating": 6.7,
+    "imdb_votes": 36627,
+    "rt_critic": 64,
+    "metacritic": 46,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 34.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 34.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 34.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "pvod"
     ]
   },
   {
@@ -107,6 +722,254 @@
     ]
   },
   {
+    "tmdb_id": 1226863,
+    "imdb_id": "tt28650488",
+    "title": "The Super Mario Galaxy Movie",
+    "year": "2026",
+    "genres": [
+      "Family",
+      "Comedy",
+      "Adventure",
+      "Fantasy",
+      "Animation"
+    ],
+    "cinema_date": "2026-04-01",
+    "worldwide_gross": 1009214136,
+    "poster": "/eJGWx219ZcEMVQJhAgMiqo8tYY.jpg",
+    "imdb_rating": 6.3,
+    "imdb_votes": 55972,
+    "metacritic": 37,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 29.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 34.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "pvod"
+    ]
+  },
+  {
+    "tmdb_id": 1304313,
+    "imdb_id": "tt32612507",
+    "title": "Lee Cronin's The Mummy",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Mystery"
+    ],
+    "cinema_date": "2026-04-16",
+    "worldwide_gross": 90552113,
+    "poster": "/1q308iixueCU4pFtSYugNOevtNx.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 33540,
+    "metacritic": 47,
+    "offers": [
+      {
+        "service": "HBO Max",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "MAX (Via Amazon Prime)",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 29.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 83533,
+    "imdb_id": "tt1757678",
+    "title": "Avatar: Fire and Ash",
+    "year": "2025",
+    "genres": [
+      "Science Fiction",
+      "Adventure",
+      "Fantasy"
+    ],
+    "cinema_date": "2025-12-18",
+    "worldwide_gross": 1490477656,
+    "poster": "/bRBeSHfGHwkEpImlhxPmOcUsaeg.jpg",
+    "imdb_rating": 7.3,
+    "imdb_votes": 168453,
+    "rt_critic": 66,
+    "metacritic": 61,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
     "tmdb_id": 1212763,
     "imdb_id": "tt31170389",
     "title": "Evil Dead Burn",
@@ -120,6 +983,79 @@
     "poster": "/ztadKzIIR0ERYqpHteaPFtk7inP.jpg",
     "imdb_rating": null,
     "imdb_votes": null,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1301421,
+    "imdb_id": "tt32565993",
+    "title": "The Sheep Detectives",
+    "year": "2026",
+    "genres": [
+      "Comedy",
+      "Family",
+      "Mystery"
+    ],
+    "cinema_date": "2026-05-07",
+    "worldwide_gross": 128680145,
+    "poster": "/TEaSqmI6TZQVimULYbingDIdXT.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 34966,
+    "rt_critic": 95,
+    "metacritic": 72,
+    "offers": [
+      {
+        "service": "Prime Video",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1228710,
+    "imdb_id": "tt30825738",
+    "title": "The Mandalorian and Grogu",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Science Fiction"
+    ],
+    "cinema_date": "2026-05-21",
+    "worldwide_gross": 336000909,
+    "poster": "/5Vi8dSauVwH1HOsiZceDMbRr1Ca.jpg",
+    "imdb_rating": null,
+    "imdb_votes": null,
+    "rt_critic": 62,
+    "metacritic": 55,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1311031,
+    "imdb_id": "tt32820897",
+    "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+    "year": "2025",
+    "genres": [
+      "Animation",
+      "Action",
+      "Fantasy"
+    ],
+    "cinema_date": "2025-09-11",
+    "worldwide_gross": 733030221,
+    "poster": "/fWVSwgjpT2D78VUh6X8UBd2rorW.jpg",
+    "imdb_rating": 8.4,
+    "imdb_votes": 64082,
+    "rt_critic": 98,
+    "metacritic": 67,
     "offers": [],
     "status": [
       "in_cinema"
@@ -147,6 +1083,710 @@
     ]
   },
   {
+    "tmdb_id": 1327819,
+    "imdb_id": "tt26443616",
+    "title": "Hoppers",
+    "year": "2026",
+    "genres": [
+      "Adventure",
+      "Animation",
+      "Comedy",
+      "Family",
+      "Science Fiction"
+    ],
+    "cinema_date": "2026-03-26",
+    "worldwide_gross": 372038602,
+    "poster": "/xjtWQ2CL1mpmMNwuU5HeS4Iuwuu.jpg",
+    "imdb_rating": 7.4,
+    "imdb_votes": 37622,
+    "rt_critic": 94,
+    "metacritic": 73,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1122573,
+    "imdb_id": "tt27681354",
+    "title": "In the Grey",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Thriller"
+    ],
+    "cinema_date": "2026-05-14",
+    "worldwide_gross": 24310849,
+    "poster": "/dQgIcW6Th08kMRf2HBoYWoFE6OD.jpg",
+    "imdb_rating": 6.6,
+    "imdb_votes": 6178,
+    "rt_critic": 49,
+    "metacritic": 53,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "pvod"
+    ]
+  },
+  {
+    "tmdb_id": 1419406,
+    "imdb_id": "tt34610311",
+    "title": "The Shadow's Edge",
+    "year": "2025",
+    "genres": [
+      "Action",
+      "Crime",
+      "Drama",
+      "Thriller"
+    ],
+    "cinema_date": "2025-08-21",
+    "worldwide_gross": 174400000,
+    "poster": "/cHKo3m8N1fwvEy2ZEr0xGmmMODV.jpg",
+    "imdb_rating": 7.1,
+    "imdb_votes": 8806,
+    "rt_critic": 82,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1084242,
+    "imdb_id": "tt26443597",
+    "title": "Zootopia 2",
+    "year": "2025",
+    "genres": [
+      "Animation",
+      "Adventure",
+      "Comedy",
+      "Mystery",
+      "Family"
+    ],
+    "cinema_date": "2025-11-27",
+    "worldwide_gross": 1868208796,
+    "poster": "/oJ7g2CifqpStmoYQyaLQgEU32qO.jpg",
+    "imdb_rating": 7.3,
+    "imdb_votes": 141989,
+    "rt_critic": 92,
+    "metacritic": 73,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1288341,
+    "imdb_id": "tt36926359",
+    "title": "Seven Snipers",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Thriller"
+    ],
+    "cinema_date": "2026-04-30",
+    "worldwide_gross": null,
+    "poster": "/pK6tGCG6UAgUT5FTq3ylGErHxQQ.jpg",
+    "imdb_rating": null,
+    "imdb_votes": null,
+    "offers": [
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 5.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 17.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 18.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      }
+    ],
+    "status": [
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1297842,
+    "imdb_id": "tt27613895",
+    "title": "GOAT",
+    "year": "2026",
+    "genres": [
+      "Animation",
+      "Comedy",
+      "Family"
+    ],
+    "cinema_date": "2026-03-12",
+    "worldwide_gross": 193566330,
+    "poster": "/wfuqMlaExcoYiUEvKfVpUTt1v4u.jpg",
+    "imdb_rating": 6.7,
+    "imdb_votes": 15166,
+    "rt_critic": 83,
+    "metacritic": 60,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 5.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1368166,
+    "imdb_id": "tt27543632",
+    "title": "The Housemaid",
+    "year": "2025",
+    "genres": [
+      "Mystery",
+      "Thriller"
+    ],
+    "cinema_date": "2025-12-26",
+    "worldwide_gross": 399644671,
+    "poster": "/cWsBscZzwu5brg9YjNkGewRUvJX.jpg",
+    "imdb_rating": 6.8,
+    "imdb_votes": 133074,
+    "rt_critic": 74,
+    "metacritic": 65,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 12.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 12.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 12.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 12.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 12.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 12.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "pvod",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1290821,
+    "imdb_id": "tt32357218",
+    "title": "Shelter",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Crime",
+      "Thriller"
+    ],
+    "cinema_date": "2026-02-05",
+    "worldwide_gross": 53933639,
+    "poster": "/buPFnHZ3xQy6vZEHxbHgL1Pc6CR.jpg",
+    "imdb_rating": 6.1,
+    "imdb_votes": 25305,
+    "metacritic": 50,
+    "offers": [
+      {
+        "service": "Prime Video",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1242898,
+    "imdb_id": "tt31227572",
+    "title": "Predator: Badlands",
+    "year": "2025",
+    "genres": [
+      "Action",
+      "Science Fiction",
+      "Adventure"
+    ],
+    "cinema_date": "2025-11-06",
+    "worldwide_gross": 184500000,
+    "poster": "/pHpq9yNUIo6aDoCXEBzjSolywgz.jpg",
+    "imdb_rating": 7.2,
+    "imdb_votes": 143246,
+    "rt_critic": 86,
+    "metacritic": 71,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
     "tmdb_id": 454639,
     "imdb_id": "tt0427340",
     "title": "Masters of the Universe",
@@ -168,289 +1808,630 @@
     ]
   },
   {
-    "tmdb_id": 950028,
-    "imdb_id": "tt14173636",
-    "title": "The Invite",
-    "year": "2026",
-    "genres": [
-      "Drama",
-      "Comedy"
-    ],
-    "cinema_date": "2026-07-09",
-    "worldwide_gross": 1376068,
-    "poster": "/b7Dr8Chzse8VagexAporUu2RtLx.jpg",
-    "imdb_rating": 7.8,
-    "imdb_votes": 3560,
-    "metacritic": 82,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1340206,
-    "imdb_id": "tt33296751",
-    "title": "Tuner",
-    "year": "2026",
-    "genres": [
-      "Crime",
-      "Drama",
-      "Thriller"
-    ],
-    "cinema_date": "2026-06-11",
-    "worldwide_gross": 10866039,
-    "poster": "/5OvA3i9wZs5jHu0DCrfmXlzAM67.jpg",
-    "imdb_rating": 7.5,
-    "imdb_votes": 5712,
-    "rt_critic": 94,
-    "metacritic": 75,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1284465,
-    "imdb_id": "tt32273171",
-    "title": "The Death of Robin Hood",
+    "tmdb_id": 840464,
+    "imdb_id": "tt14850054",
+    "title": "Greenland 2: Migration",
     "year": "2026",
     "genres": [
       "Adventure",
-      "Drama",
       "Thriller",
-      "Action"
+      "Science Fiction"
     ],
-    "cinema_date": "2026-06-18",
-    "worldwide_gross": 3200000,
-    "poster": "/13MmRwmG5NmaMfU8qNrtgGXisiD.jpg",
-    "imdb_rating": 7.4,
-    "imdb_votes": 143,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1375646,
-    "imdb_id": "tt34385135",
-    "title": "Colony",
-    "year": "2026",
-    "genres": [
-      "Action",
-      "Thriller",
-      "Horror"
-    ],
-    "cinema_date": "2026-06-11",
-    "worldwide_gross": null,
-    "poster": "/tN799oUR0f1gUKDYdMNrDaY7I51.jpg",
-    "imdb_rating": 7.3,
-    "imdb_votes": 357,
-    "metacritic": 52,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1671548,
-    "imdb_id": "tt41791573",
-    "title": "Dear You",
-    "year": "2026",
-    "genres": [
-      "Drama",
-      "Family",
-      "Comedy"
-    ],
-    "cinema_date": "2026-06-25",
-    "worldwide_gross": null,
-    "poster": "/rjmhzdVS3Ia535pFawju857e2Na.jpg",
-    "imdb_rating": 8.6,
-    "imdb_votes": 351,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1564614,
-    "imdb_id": "tt39143902",
-    "title": "Leviticus",
-    "year": "2026",
-    "genres": [
-      "Horror",
-      "Romance"
-    ],
-    "cinema_date": "2026-06-18",
-    "worldwide_gross": 7599675,
-    "poster": "/cu0XnXLzJGPeI0msCoJKgnEecKz.jpg",
-    "imdb_rating": 5.3,
-    "imdb_votes": 896,
-    "metacritic": 83,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1612018,
-    "imdb_id": "tt39316472",
-    "title": "Jackass: Best and Last",
-    "year": "2026",
-    "genres": [
-      "Action",
-      "Comedy",
-      "Documentary"
-    ],
-    "cinema_date": "2026-07-02",
-    "worldwide_gross": 20221210,
-    "poster": "/tfgccePxnswMqhmtxafliLlcCVR.jpg",
-    "imdb_rating": 6.7,
-    "imdb_votes": 4253,
-    "metacritic": 63,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1381027,
-    "imdb_id": "tt34381258",
-    "title": "Good Boy",
-    "year": "2026",
-    "genres": [
-      "Thriller",
-      "Drama",
-      "Mystery"
-    ],
-    "cinema_date": "2026-07-02",
-    "worldwide_gross": null,
-    "poster": "/eWb841fMkSNly5gfL9J1N0xzVYI.jpg",
-    "imdb_rating": 6.8,
-    "imdb_votes": 7563,
-    "rt_critic": 90,
-    "metacritic": 63,
+    "cinema_date": "2026-01-08",
+    "worldwide_gross": 44856736,
+    "poster": "/z2tqCJLsw6uEJ8nJV8BsQXGa3dr.jpg",
+    "imdb_rating": 5.2,
+    "imdb_votes": 26853,
+    "metacritic": 49,
     "offers": [
       {
-        "service": "Amazon",
-        "type": "rent",
-        "price": 6.99,
+        "service": "Prime Video",
+        "type": "sub",
+        "price": null,
         "format": "HD"
-      },
-      {
-        "service": "Amazon",
-        "type": "rent",
-        "price": 6.99,
-        "format": "SD"
-      },
-      {
-        "service": "Amazon",
-        "type": "buy",
-        "price": 19.99,
-        "format": "HD"
-      },
-      {
-        "service": "Amazon",
-        "type": "buy",
-        "price": 19.99,
-        "format": "SD"
       }
     ],
     "status": [
-      "pvod",
-      "rental"
+      "included_streaming"
     ]
   },
   {
-    "tmdb_id": 1363387,
-    "imdb_id": "tt35050712",
-    "title": "Saccharine",
+    "tmdb_id": 1430077,
+    "imdb_id": "tt35672862",
+    "title": "Hokum",
     "year": "2026",
     "genres": [
       "Horror"
     ],
-    "cinema_date": "2026-07-09",
-    "worldwide_gross": null,
-    "poster": "/wTlqMc4Jt8ZBtHh8CREblU3ajAB.jpg",
-    "imdb_rating": 6.5,
-    "imdb_votes": 186,
-    "metacritic": 65,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1316427,
-    "imdb_id": "tt35512499",
-    "title": "7 Dogs",
-    "year": "2026",
-    "genres": [
-      "Action",
-      "Comedy"
-    ],
-    "cinema_date": "2026-06-25",
-    "worldwide_gross": null,
-    "poster": "/66n5bB6iYTWsWMz0mh3Qv7qmzIJ.jpg",
-    "imdb_rating": null,
-    "imdb_votes": null,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1335666,
-    "imdb_id": "tt16112292",
-    "title": "Glenrothan",
-    "year": "2026",
-    "genres": [
-      "Drama",
-      "Comedy"
-    ],
-    "cinema_date": "2026-06-25",
-    "worldwide_gross": 44671,
-    "poster": "/2GFSou9g6euYcgJiRnWe608aqg9.jpg",
-    "imdb_rating": 5.9,
-    "imdb_votes": 382,
-    "rt_critic": 17,
-    "metacritic": 34,
-    "offers": [],
-    "status": [
-      "in_cinema"
-    ]
-  },
-  {
-    "tmdb_id": 1400357,
-    "imdb_id": "tt34966562",
-    "title": "The Christophers",
-    "year": "2025",
-    "genres": [
-      "Crime",
-      "Comedy"
-    ],
-    "cinema_date": "2026-06-04",
-    "worldwide_gross": null,
-    "poster": "/s6oUrGMNl8hVh7fn0O8oF2rHwrM.jpg",
-    "imdb_rating": 6.8,
-    "imdb_votes": 321,
-    "rt_critic": 95,
-    "metacritic": 78,
+    "cinema_date": "2026-04-30",
+    "worldwide_gross": 24063412,
+    "poster": "/x6rHcQFiYcczLQPrmxXPAicm54E.jpg",
+    "imdb_rating": 7.3,
+    "imdb_votes": 16522,
+    "metacritic": 76,
     "offers": [
       {
         "service": "Amazon",
         "type": "rent",
-        "price": 19.98,
+        "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 14.99,
         "format": "HD"
       },
       {
         "service": "AppleTV",
         "type": "rent",
         "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "pvod"
+    ]
+  },
+  {
+    "tmdb_id": 1292415,
+    "imdb_id": "tt7708226",
+    "title": "Beast",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Drama"
+    ],
+    "cinema_date": "2026-04-23",
+    "worldwide_gross": null,
+    "poster": "/7NrvUI3vnW8H3rD7ExKcTL7KRcQ.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 246,
+    "offers": [
+      {
+        "service": "Stan",
+        "type": "sub",
+        "price": null,
         "format": "HD"
       }
     ],
     "status": [
-      "in_cinema"
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1171145,
+    "imdb_id": "tt32430579",
+    "title": "Crime 101",
+    "year": "2026",
+    "genres": [
+      "Crime",
+      "Thriller"
+    ],
+    "cinema_date": "2026-02-12",
+    "worldwide_gross": 72900246,
+    "poster": "/tVvpFIoteRHNnoZMhdnwIVwJpCA.jpg",
+    "imdb_rating": 6.8,
+    "imdb_votes": 56311,
+    "metacritic": 68,
+    "offers": [
+      {
+        "service": "Prime Video",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1198994,
+    "imdb_id": "tt8036976",
+    "title": "Send Help",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Thriller",
+      "Comedy"
+    ],
+    "cinema_date": "2026-01-29",
+    "worldwide_gross": 94041481,
+    "poster": "/zbJWVHOtj3ljBzWgL1P8pxP03Up.jpg",
+    "imdb_rating": 6.9,
+    "imdb_votes": 71618,
+    "rt_critic": 92,
+    "metacritic": 75,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1265609,
+    "imdb_id": "tt15940132",
+    "title": "War Machine",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Science Fiction",
+      "Thriller"
+    ],
+    "cinema_date": "2026-02-12",
+    "worldwide_gross": null,
+    "poster": "/rFhKkXhk7ClU03jQ5rHIApJDwev.jpg",
+    "imdb_rating": 6.3,
+    "imdb_votes": 86956,
+    "metacritic": 54,
+    "offers": [
+      {
+        "service": "Netflix",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1266127,
+    "imdb_id": "tt33978029",
+    "title": "Ready or Not: Here I Come",
+    "year": "2026",
+    "genres": [
+      "Thriller",
+      "Horror",
+      "Comedy"
+    ],
+    "cinema_date": "2026-03-19",
+    "worldwide_gross": 42212563,
+    "poster": "/jRf89HVEtBZiSnOXXWDhZOfuTwW.jpg",
+    "imdb_rating": 6.5,
+    "imdb_votes": 52114,
+    "metacritic": 58,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1325734,
+    "imdb_id": "tt33071426",
+    "title": "The Drama",
+    "year": "2026",
+    "genres": [
+      "Romance",
+      "Comedy",
+      "Drama"
+    ],
+    "cinema_date": "2026-04-02",
+    "worldwide_gross": 131893162,
+    "poster": "/qhGCY6DIemLoCi7x1GuEt98m4JF.jpg",
+    "imdb_rating": 7.2,
+    "imdb_votes": 81611,
+    "metacritic": 59,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1125257,
+    "imdb_id": "tt31956415",
+    "title": "Freakier Friday",
+    "year": "2025",
+    "genres": [
+      "Comedy",
+      "Fantasy",
+      "Family"
+    ],
+    "cinema_date": "2025-08-07",
+    "worldwide_gross": 153176952,
+    "poster": "/9wV65OmsjLAqBfDnYTkMPutXH8j.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 38258,
+    "rt_critic": 73,
+    "metacritic": 60,
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1246049,
+    "imdb_id": "tt31434030",
+    "title": "Dracula",
+    "year": "2025",
+    "genres": [
+      "Horror",
+      "Fantasy",
+      "Romance"
+    ],
+    "cinema_date": "2025-11-06",
+    "worldwide_gross": 42404858,
+    "poster": "/dYRqA50yd0nB3qBR7AtWEJJQ8q.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 34913,
+    "rt_critic": 54,
+    "metacritic": 44,
+    "offers": [
+      {
+        "service": "Netflix",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 2.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 2.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 2.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 2.99,
+        "format": "HD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 7.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 7.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 7.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 7.99,
+        "format": "HD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
     ]
   }
 ]
