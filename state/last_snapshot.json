@@ -2846,5 +2846,1808 @@
       "included_streaming",
       "rental"
     ]
+  },
+  {
+    "tmdb_id": 533535,
+    "imdb_id": "tt6263850",
+    "title": "Deadpool & Wolverine",
+    "year": "2024",
+    "genres": [
+      "Action",
+      "Comedy",
+      "Science Fiction"
+    ],
+    "cinema_date": "2024-07-25",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 1338073645,
+    "synopsis": "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 565006,
+    "rt_critic": 77,
+    "metacritic": 56,
+    "award": null,
+    "award_text": "31 wins & 71 nominations total",
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1265609,
+    "imdb_id": "tt15940132",
+    "title": "War Machine",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Science Fiction",
+      "Thriller"
+    ],
+    "cinema_date": "2026-02-12",
+    "age_rating": "MA 15+",
+    "worldwide_gross": null,
+    "synopsis": "On one last grueling mission during Army Ranger training, a combat engineer must lead his unit in a fight against a giant otherworldly killing machine.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/rFhKkXhk7ClU03jQ5rHIApJDwev.jpg",
+    "imdb_rating": 6.3,
+    "imdb_votes": 86956,
+    "metacritic": 54,
+    "award": null,
+    "award_text": "1 nomination total",
+    "offers": [
+      {
+        "service": "Netflix",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1266127,
+    "imdb_id": "tt33978029",
+    "title": "Ready or Not: Here I Come",
+    "year": "2026",
+    "genres": [
+      "Thriller",
+      "Horror",
+      "Comedy"
+    ],
+    "cinema_date": "2026-03-19",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 42212563,
+    "synopsis": "Moments after surviving an all-out attack from the Le Domas family, Grace discovers she\u2019s reached the next level of the nightmarish game \u2014 and this time with her estranged sister Faith at her side. Grace has one chance to survive, keep her sister alive, and claim the High Seat of the Council that controls the world. Four rival families are hunting her for the throne, and whoever wins rules it all.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/jRf89HVEtBZiSnOXXWDhZOfuTwW.jpg",
+    "imdb_rating": 6.5,
+    "imdb_votes": 52114,
+    "metacritic": 58,
+    "award": null,
+    "award_text": "2 nominations total",
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1325734,
+    "imdb_id": "tt33071426",
+    "title": "The Drama",
+    "year": "2026",
+    "genres": [
+      "Romance",
+      "Comedy",
+      "Drama"
+    ],
+    "cinema_date": "2026-04-02",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 131893162,
+    "synopsis": "A happily engaged couple is put to the test when an unexpected turn sends their wedding week off the rails.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/qhGCY6DIemLoCi7x1GuEt98m4JF.jpg",
+    "imdb_rating": 7.2,
+    "imdb_votes": 81611,
+    "metacritic": 59,
+    "award": null,
+    "award_text": "7 nominations total",
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 14836,
+    "imdb_id": "tt0327597",
+    "title": "Coraline",
+    "year": "2009",
+    "genres": [
+      "Animation",
+      "Family",
+      "Fantasy"
+    ],
+    "cinema_date": "2024-08-15",
+    "age_rating": "PG",
+    "worldwide_gross": 185860104,
+    "synopsis": "Wandering her rambling old house in her boring new town, 11-year-old Coraline discovers a hidden door to a strangely idealized version of her life. In order to stay in the fantasy, she must make a frighteningly real sacrifice.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/4jeFXQYytChdZYE9JYO7Un87IlW.jpg",
+    "imdb_rating": 7.8,
+    "imdb_votes": 297596,
+    "rt_critic": 91,
+    "metacritic": 80,
+    "award": "nominated",
+    "award_text": "Nominated for 1 Oscar. 8 wins & 46 nominations total",
+    "offers": [
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 22.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 22.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 22.99,
+        "format": "HD"
+      }
+    ],
+    "status": [
+      "pvod",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 950387,
+    "imdb_id": "tt3566834",
+    "title": "A Minecraft Movie",
+    "year": "2025",
+    "genres": [
+      "Family",
+      "Fantasy",
+      "Comedy",
+      "Adventure"
+    ],
+    "cinema_date": "2025-04-03",
+    "age_rating": "PG",
+    "worldwide_gross": 960387780,
+    "synopsis": "Four misfits find themselves struggling with ordinary problems when they are suddenly pulled through a mysterious portal into the Overworld: a bizarre, cubic wonderland that thrives on imagination. To get back home, they'll have to master this world while embarking on a magical quest with an unexpected, expert crafter, Steve.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/yFHHfHcUgGAxziP1C3lLt0q2T4s.jpg",
+    "imdb_rating": 5.6,
+    "imdb_votes": 153774,
+    "metacritic": 45,
+    "award": null,
+    "award_text": "2 wins & 15 nominations total",
+    "offers": [
+      {
+        "service": "Netflix",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1022789,
+    "imdb_id": "tt22022452",
+    "title": "Inside Out 2",
+    "year": "2024",
+    "genres": [
+      "Animation",
+      "Adventure",
+      "Comedy",
+      "Family"
+    ],
+    "cinema_date": "2024-06-13",
+    "age_rating": "PG",
+    "worldwide_gross": 1698863816,
+    "synopsis": "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected: new Emotions! Joy, Sadness, Anger, Fear and Disgust, who\u2019ve long been running a successful operation by all accounts, aren\u2019t sure how to feel when Anxiety shows up. And it looks like she\u2019s not alone.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 245290,
+    "rt_critic": 91,
+    "metacritic": 73,
+    "award": "nominated",
+    "award_text": "Nominated for 1 Oscar. 7 wins & 107 nominations total",
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1125257,
+    "imdb_id": "tt31956415",
+    "title": "Freakier Friday",
+    "year": "2025",
+    "genres": [
+      "Comedy",
+      "Fantasy",
+      "Family"
+    ],
+    "cinema_date": "2025-08-07",
+    "age_rating": "PG",
+    "worldwide_gross": 153176952,
+    "synopsis": "Years after Tess and Anna endured an identity crisis, Anna now has a daughter of her own and a soon-to-be stepdaughter. As they navigate the myriad challenges that come when two families merge, Tess and Anna discover lightning might indeed strike twice.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/9wV65OmsjLAqBfDnYTkMPutXH8j.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 38258,
+    "rt_critic": 73,
+    "metacritic": 60,
+    "award": null,
+    "award_text": "4 nominations total",
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 519182,
+    "imdb_id": "tt7510222",
+    "title": "Despicable Me 4",
+    "year": "2024",
+    "genres": [
+      "Animation",
+      "Comedy",
+      "Action",
+      "Science Fiction",
+      "Family"
+    ],
+    "cinema_date": "2024-06-20",
+    "age_rating": "PG",
+    "worldwide_gross": 972021410,
+    "synopsis": "Gru and Lucy and their girls\u2014Margo, Edith and Agnes\u2014welcome a new member to the Gru family, Gru Jr., who is intent on tormenting his dad. Gru also faces a new nemesis in Maxime Le Mal and his femme fatale girlfriend Valentina, forcing the family to go on the run.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/wWba3TaojhK7NdycRhoQpsG0FaH.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 76384,
+    "rt_critic": 56,
+    "metacritic": 52,
+    "award": null,
+    "award_text": "2 wins & 6 nominations total",
+    "offers": [
+      {
+        "service": "Paramount Plus",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Paramount+ (Via Amazon Prime)",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 9.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 9.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1246049,
+    "imdb_id": "tt31434030",
+    "title": "Dracula",
+    "year": "2025",
+    "genres": [
+      "Horror",
+      "Fantasy",
+      "Romance"
+    ],
+    "cinema_date": "2025-11-06",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 42404858,
+    "synopsis": "In late 15th-century Eastern Europe, Prince Vlad II\u2019s bride is brutally murdered. As a result, he renounces God and damns Heaven itself. Cursed with eternal life, Vlad is reborn as Dracula, an immortal warlord who defies fate in a blood-soaked crusade to wrench his lost love back from death.",
+    "language": "fr",
+    "culture": "European",
+    "poster": "/dYRqA50yd0nB3qBR7AtWEJJQ8q.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 34913,
+    "rt_critic": 54,
+    "metacritic": 44,
+    "award": null,
+    "award_text": "4 nominations total",
+    "offers": [
+      {
+        "service": "Netflix",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 2.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 2.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 2.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 2.99,
+        "format": "HD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 7.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 7.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 7.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 7.99,
+        "format": "HD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1233413,
+    "imdb_id": "tt31193180",
+    "title": "Sinners",
+    "year": "2025",
+    "genres": [
+      "Horror",
+      "Action",
+      "Thriller"
+    ],
+    "cinema_date": "2025-04-17",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 370000000,
+    "synopsis": "Trying to leave their troubled lives behind, twin brothers return to their hometown to start again, only to discover that an even greater evil is waiting to welcome them back.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/fWPgbnt2LSqkQ6cdQc0SZN9CpLm.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 472042,
+    "rt_critic": 97,
+    "metacritic": 84,
+    "award": "won",
+    "award_text": "Won 4 Oscars. 327 wins & 489 nominations total",
+    "offers": [
+      {
+        "service": "Netflix",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 693134,
+    "imdb_id": "tt15239678",
+    "title": "Dune: Part Two",
+    "year": "2024",
+    "genres": [
+      "Science Fiction",
+      "Adventure"
+    ],
+    "cinema_date": "2024-02-29",
+    "age_rating": "M",
+    "worldwide_gross": 714844358,
+    "synopsis": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/1pdfLvkbY9ohJlCjQH2CZjjYVvJ.jpg",
+    "imdb_rating": 8.4,
+    "imdb_votes": 734902,
+    "rt_critic": 92,
+    "metacritic": 79,
+    "award": "won",
+    "award_text": "Won 2 Oscars. 125 wins & 376 nominations total",
+    "offers": [
+      {
+        "service": "HBO Max",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "MAX (Via Amazon Prime)",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 950028,
+    "imdb_id": "tt14173636",
+    "title": "The Invite",
+    "year": "2026",
+    "genres": [
+      "Drama",
+      "Comedy"
+    ],
+    "cinema_date": "2026-07-09",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 1376068,
+    "synopsis": "Joe and Angela's marriage is on thin ice. When they invite their enigmatic upstairs neighbors for a dinner party, the night spirals into unexpected places.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/b7Dr8Chzse8VagexAporUu2RtLx.jpg",
+    "imdb_rating": 7.8,
+    "imdb_votes": 3560,
+    "metacritic": 82,
+    "award": null,
+    "award_text": "2 wins & 5 nominations total",
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1272837,
+    "imdb_id": "tt32141377",
+    "title": "28 Years Later: The Bone Temple",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Thriller",
+      "Science Fiction"
+    ],
+    "cinema_date": "2026-01-15",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 58522222,
+    "synopsis": "Dr. Kelson finds himself in a shocking new relationship - with consequences that could change the world as they know it - and Spike's encounter with Jimmy Crystal becomes a nightmare he can't escape.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/kK1BGkG3KAvWB0WMV1DfOx9yTMZ.jpg",
+    "imdb_rating": 7.3,
+    "imdb_votes": 84391,
+    "rt_critic": 91,
+    "metacritic": 81,
+    "award": null,
+    "award_text": "3 nominations total",
+    "offers": [
+      {
+        "service": "Prime Video",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 5.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1038392,
+    "imdb_id": "tt22898462",
+    "title": "The Conjuring: Last Rites",
+    "year": "2025",
+    "genres": [
+      "Horror"
+    ],
+    "cinema_date": "2025-09-04",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 499256445,
+    "synopsis": "Paranormal investigators Ed and Lorraine Warren take on one last terrifying case involving mysterious entities they must confront.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/byWgphT74ClOVa8EOGzYDkl8DVL.jpg",
+    "imdb_rating": 6.2,
+    "imdb_votes": 98159,
+    "metacritic": 54,
+    "award": null,
+    "award_text": "1 nomination total",
+    "offers": [
+      {
+        "service": "HBO Max",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "MAX (Via Amazon Prime)",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 240,
+    "imdb_id": "tt0071562",
+    "title": "The Godfather Part II",
+    "year": "1974",
+    "genres": [
+      "Drama",
+      "Crime"
+    ],
+    "cinema_date": "1975-02-20",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 102600000,
+    "synopsis": "In the continuing saga of the Corleone crime family, a young Vito Corleone grows up in Sicily and in 1910s New York. In the 1950s, Michael Corleone attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
+    "imdb_rating": 9.0,
+    "imdb_votes": 1492120,
+    "rt_critic": 96,
+    "metacritic": 90,
+    "award": "won",
+    "award_text": "Won 6 Oscars. 17 wins & 21 nominations total",
+    "offers": [
+      {
+        "service": "ABC iview",
+        "type": "free",
+        "price": null,
+        "format": "SD"
+      },
+      {
+        "service": "Stan",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Paramount Plus",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Foxtel Now",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "BINGE",
+        "type": "sub",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 14.99,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 14.99,
+        "format": "4K"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 976893,
+    "imdb_id": "tt27503384",
+    "title": "Perfect Days",
+    "year": "2023",
+    "genres": [
+      "Drama"
+    ],
+    "cinema_date": "2024-03-28",
+    "age_rating": "PG",
+    "worldwide_gross": 24094016,
+    "synopsis": "Hirayama is content with his life as a toilet cleaner in Tokyo. Outside of his structured routine, he cherishes music on cassette tapes, books, and taking photos of trees. Through unexpected encounters, he reflects on finding beauty in the world.",
+    "language": "ja",
+    "culture": "Japanese",
+    "poster": "/mjEk5Wwx6TYVqw29zSaUHclMIgp.jpg",
+    "imdb_rating": 7.9,
+    "imdb_votes": 103770,
+    "rt_critic": 96,
+    "metacritic": 80,
+    "award": "nominated",
+    "award_text": "Nominated for 1 Oscar. 14 wins & 51 nominations total",
+    "offers": [
+      {
+        "service": "SBS On Demand",
+        "type": "free",
+        "price": null,
+        "format": "HD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 4.99,
+        "format": "HD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 17.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 17.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      }
+    ],
+    "status": [
+      "included_streaming",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 911430,
+    "imdb_id": "tt16311594",
+    "title": "F1",
+    "year": "2025",
+    "genres": [
+      "Action",
+      "Drama"
+    ],
+    "cinema_date": "2025-06-26",
+    "age_rating": "M",
+    "worldwide_gross": 634142436,
+    "synopsis": "Racing legend Sonny Hayes is coaxed out of retirement to lead a struggling Formula 1 team\u2014and mentor a young hotshot driver\u2014while chasing one more chance at glory.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/9PXZIUsSDh4alB80jheWX4fhZmy.jpg",
+    "imdb_rating": 7.6,
+    "imdb_votes": 353753,
+    "rt_critic": 82,
+    "metacritic": 68,
+    "award": "won",
+    "award_text": "Won 1 Oscar. 31 wins & 129 nominations total",
+    "offers": [
+      {
+        "service": "AppleTV+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 24.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 8587,
+    "imdb_id": "tt0110357",
+    "title": "The Lion King",
+    "year": "1994",
+    "genres": [
+      "Animation",
+      "Family",
+      "Drama"
+    ],
+    "cinema_date": "2024-08-29",
+    "age_rating": "G",
+    "worldwide_gross": 763455561,
+    "synopsis": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+    "imdb_rating": 8.5,
+    "imdb_votes": 1248136,
+    "rt_critic": 92,
+    "metacritic": 88,
+    "award": "won",
+    "award_text": "Won 2 Oscars. 43 wins & 35 nominations total",
+    "offers": [
+      {
+        "service": "Disney+",
+        "type": "sub",
+        "price": null,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "included_streaming"
+    ]
+  },
+  {
+    "tmdb_id": 1159559,
+    "imdb_id": "tt27047903",
+    "title": "Scream 7",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Mystery",
+      "Crime"
+    ],
+    "cinema_date": "2026-02-26",
+    "age_rating": "MA 15+",
+    "worldwide_gross": 213835967,
+    "synopsis": "When a new Ghostface killer emerges in the quiet town where Sidney Prescott has built a new life, her darkest fears are realized as her daughter becomes the next target. Determined to protect her family, Sidney must face the horrors of her past to put an end to the bloodshed once and for all.",
+    "language": "en",
+    "culture": "Western",
+    "poster": "/jjyuk0edLiW8vOSnlfwWCCLpbh5.jpg",
+    "imdb_rating": 5.5,
+    "imdb_votes": 50291,
+    "rt_critic": 30,
+    "metacritic": 35,
+    "award": null,
+    "award_text": "",
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 6.99,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "rent",
+        "price": 5.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "4K"
+      },
+      {
+        "service": "Fetch TV",
+        "type": "buy",
+        "price": 19.98,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "rental"
+    ]
   }
 ]
