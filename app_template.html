@@ -29,9 +29,15 @@
   .iconbtn.on{border-color:var(--green);background:rgba(72,199,142,.14)}
   .iconbtn .badge{position:absolute;top:-6px;right:-6px;background:var(--rt);color:#fff;font-size:10px;
     font-weight:800;min-width:18px;height:18px;border-radius:10px;display:grid;place-items:center;padding:0 4px}
-  .search{width:100%;margin-top:10px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
-    border-radius:10px;padding:9px 12px;font-size:14px}
+  .searchwrap{position:relative;margin-top:10px}
+  .search{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:11px 40px 11px 12px;font-size:16px}
   .search::placeholder{color:var(--faint)}
+  .search::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+  .searchclear{position:absolute;top:50%;right:7px;transform:translateY(-50%);width:27px;height:27px;
+    border-radius:50%;border:none;background:var(--line);color:var(--ink);font-size:16px;line-height:1;
+    cursor:pointer;display:none;place-items:center;padding:0}
+  .searchclear.show{display:grid}
   .filtoggle{margin-top:9px;display:flex;gap:8px;align-items:center}
   .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:10px;
     padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
@@ -69,27 +75,27 @@
   .slider input{flex:1;accent-color:var(--accent)}
   .slider .val{font-size:13px;font-weight:700;min-width:44px;text-align:right}
   .reset{margin-top:16px;font-size:12px;color:var(--dim);background:none;border:none;cursor:pointer;text-decoration:underline}
-  .count{font-size:12px;color:var(--dim);margin:12px 16px 0}
+  .count{font-size:12px;color:var(--dim);margin:12px 12px 0}
   .group{margin-top:6px}
-  .grouphead{display:flex;align-items:center;gap:8px;padding:12px 16px 8px;font-size:13px;font-weight:800;letter-spacing:.2px}
+  .grouphead{display:flex;align-items:center;gap:8px;padding:12px 12px 8px;font-size:13px;font-weight:800;letter-spacing:.2px}
   .gdot{width:9px;height:9px;border-radius:50%}
   .gdot.opening_week{background:var(--open)} .gdot.in_cinema{background:var(--amber)}
   .gdot.pvod{background:var(--purple)} .gdot.rental{background:var(--blue)}
   .gdot.included_streaming{background:var(--green)} .gdot.upcoming{background:var(--grey)}
   .gcount{color:var(--faint);font-weight:700}
-  .list{padding:0 16px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;
-    transition:opacity .15s;display:flex;gap:10px}
+  .list{padding:0 10px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:13px 12px;margin-bottom:11px;
+    transition:opacity .15s;display:flex;gap:9px}
   .card.watched{opacity:.5}
   .cardmain{flex:1;min-width:0}
-  .title{font-size:16px;font-weight:750;line-height:1.2}
+  .title{font-size:16px;font-weight:750;line-height:1.25}
   .cert{display:inline-block;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;
-    border:1px solid #5b6472;color:#d6dce6;background:#232a35;margin-right:7px;vertical-align:middle;letter-spacing:.3px}
+    border:1px solid #5b6472;color:#d6dce6;background:#232a35;margin-left:6px;vertical-align:middle;letter-spacing:.3px;white-space:nowrap}
   .cert.mature{border-color:#c0563f;color:#ffb9a6;background:rgba(192,86,63,.16)}
-  .meta{font-size:12px;color:var(--dim);margin-top:5px}
+  .meta{font-size:12px;color:var(--dim);margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .culttag{color:var(--faint)}
   .synopsis{font-size:12.5px;color:#c4ccd6;line-height:1.5;margin:9px 0 0;cursor:pointer;
-    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden}
   .synopsis.expanded{-webkit-line-clamp:unset;display:block}
   .actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
   .actbtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
@@ -97,9 +103,10 @@
   .actbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent)}
   .actbtn.onw{background:rgba(72,199,142,.2);border-color:var(--green)}
   .actbtn.onb{background:rgba(250,108,60,.2);border-color:var(--rt)}
-  .ratings{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;align-items:center}
-  .rb{font-size:11px;font-weight:700;padding:4px 8px;border-radius:7px;display:flex;gap:5px;align-items:center;
-    background:var(--panel2);border:1px solid var(--line)}
+  .ratings{display:flex;gap:5px;margin-top:11px;flex-wrap:nowrap;align-items:center;overflow-x:auto;scrollbar-width:none}
+  .ratings::-webkit-scrollbar{display:none}
+  .rb{font-size:11px;font-weight:700;padding:4px 7px;border-radius:7px;display:flex;gap:4px;align-items:center;
+    background:var(--panel2);border:1px solid var(--line);flex-shrink:0;white-space:nowrap}
   .rb b{font-size:12px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.gross b{color:#9fe6c4}
   .award{font-size:15px;line-height:1;cursor:pointer}
@@ -165,7 +172,10 @@
         <div class="iconbtn" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
       </div>
     </div>
-    <input id="search" class="search" type="search" placeholder="🔍  Search titles…" autocomplete="off">
+    <div class="searchwrap">
+      <input id="search" class="search" type="text" inputmode="search" placeholder="🔍  Search titles…" autocomplete="off">
+      <button class="searchclear" id="searchClear" aria-label="Clear search" type="button">×</button>
+    </div>
     <div class="filtoggle">
       <button class="btn" id="filterBtn">≡ Filters</button>
       <button class="btn" id="trackedBtn">☆ Tracked</button>
@@ -377,7 +387,8 @@ updatePrefSwitch(); updatePrefBtn();
 // ---- controls ----
 $("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
-$("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();render();};
+$("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();$("searchClear").classList.toggle("show", e.target.value.length>0);render();};
+$("searchClear").onclick=()=>{$("search").value="";filt.search="";$("searchClear").classList.remove("show");$("search").focus();render();};
 $("imdbMin").oninput=e=>{filt.imdb=+e.target.value;$("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";render();};
 $("rtMin").oninput=e=>{filt.rt=+e.target.value;$("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";render();};
 $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
@@ -386,7 +397,7 @@ $("resetBtn").onclick=()=>{
   filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;filt.search="";
   document.querySelectorAll("#filters .chip.on").forEach(c=>c.classList.remove("on"));
   $("imdbMin").value=0;$("rtMin").value=0;$("grossMin").value=0;$("imdbVal").textContent="Any";$("rtVal").textContent="Any";
-  $("search").value="";$("trackedBtn").classList.remove("active");render();
+  $("search").value="";$("searchClear").classList.remove("show");$("trackedBtn").classList.remove("active");render();
 };
 
 $("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);renderAlerts();};
@@ -455,8 +466,8 @@ function cardHTML(m){
   const isW=watched.has(id), isB=blocked.has(id);
   return `<div class="card ${isW?'watched':''}">
     <div class="cardmain">
-      <div class="title">${m.title}</div>
-      <div class="meta">${cert}${m.cinema_date?fmtDate(m.cinema_date)+" · ":""}${(m.genres||[]).join(", ")}${cult}</div>
+      <div class="title">${m.title}${cert}</div>
+      <div class="meta">${m.cinema_date?fmtDate(m.cinema_date):""}${(m.genres||[]).length?(m.cinema_date?" · ":"")+(m.genres||[]).join(", "):""}${cult}</div>
       ${syn}
       <div class="ratings">${rb.join("")}</div>
       <div class="pills">${pills}</div>
