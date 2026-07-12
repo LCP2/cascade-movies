@@ -140,6 +140,9 @@ def enrich_omdb(movie: dict) -> dict:
         elif r["Source"] == "Metacritic":
             movie["metacritic"] = _int(r["Value"].split("/")[0])
     movie["award"] = _oscar_status(data.get("Awards", ""))   # None | "nominated" | "won"
+    aw = (data.get("Awards") or "").strip()
+    movie["award_text"] = "" if aw == "N/A" else aw          # full text, shown when the icon is tapped
+    # OMDb BoxOffice is US-domestic only; we keep TMDB worldwide as the headline gross
     return movie
 
 
