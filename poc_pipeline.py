@@ -31,7 +31,7 @@ CURRENCY = "AUD"
 
 # --- catalogue scope: work BACKWARDS from cinema, not just "now playing" ---
 LOOKBACK_DAYS = 1095             # include films with an AU theatrical release in this trailing window (~3 years)
-MAX_TITLES    = 40               # cap tracked titles to fit Watchmode free-tier daily budget (~2 calls/title/day)
+MAX_TITLES    = 60               # cap tracked titles; Watchmode-id caching (below) keeps this within the free tier
 OPENING_WEEK_DAYS = 7            # a cinema release this recent counts as "opening week"
 
 # --- window heuristics (this is YOUR business logic, not something an API gives you) ---
@@ -41,6 +41,7 @@ RENTAL_MAX_PRICE = 9.99           # a rent at or below this = standard rental wi
 STATE_DIR = os.path.join(os.path.dirname(__file__), "state")
 SNAPSHOT_FILE = os.path.join(STATE_DIR, "last_snapshot.json")
 ALERTS_FILE   = os.path.join(STATE_DIR, "alerts.json")
+WM_CACHE_FILE = os.path.join(STATE_DIR, "watchmode_ids.json")   # imdb_id -> watchmode_id (never changes)
 OUTPUT_FILE   = os.path.join(os.path.dirname(__file__), "movies.json")
 SAMPLE_FILE   = os.path.join(os.path.dirname(__file__), "sample_data.json")
 TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "app_template.html")
@@ -158,7 +159,7 @@ _LANG_CULTURE = {
 }
 _WESTERN_COUNTRIES = {"US","GB","AU","NZ","CA","IE"}
 
-def _culture(lang, countries) -> str:
+def _culture(lang, countries):
     if lang in _LANG_CULTURE:
         return _LANG_CULTURE[lang]
     if lang == "en":
@@ -183,16 +184,22 @@ def _oscar_status(awards: str):
 # ---------------------------------------------------------------------------
 # 3. POLL — current AU offers (service / type / price / format) via Watchmode
 # ---------------------------------------------------------------------------
-def poll_watchmode(movie: dict) -> list[dict]:
-    """Return normalised offers: [{service, type, price, format}]."""
-    lookup = get_json(
-        "https://api.watchmode.com/v1/search/"
-        f"?apiKey={WATCHMODE_KEY}&search_field=imdb_id&search_value={movie['imdb_id']}"
-    )
-    results = lookup.get("title_results", [])
-    if not results:
-        return []
-    wm_id = results[0]["id"]
+def poll_watchmode(movie: dict, wm_cache: dict) -> list[dict]:
+    """Return normalised offers: [{service, type, price, format}].
+    The IMDb->Watchmode id mapping never changes, so cache it: after the first
+    sighting each title costs only ONE call/day (sources), ~halving API usage."""
+    imdb = movie["imdb_id"]
+    wm_id = wm_cache.get(imdb)
+    if wm_id is None:                                    # first time we've seen this title
+        lookup = get_json(
+            "https://api.watchmode.com/v1/search/"
+            f"?apiKey={WATCHMODE_KEY}&search_field=imdb_id&search_value={imdb}"
+        )
+        results = lookup.get("title_results", [])
+        if not results:
+            return []
+        wm_id = results[0]["id"]
+        wm_cache[imdb] = wm_id
     sources = get_json(
         f"https://api.watchmode.com/v1/title/{wm_id}/sources/"
         f"?apiKey={WATCHMODE_KEY}&regions={REGION}"
@@ -222,18 +229,22 @@ def derive_status(movie: dict, offers: list[dict], today: datetime.date) -> list
     cheapest_rent = min((o["price"] for o in rents), default=None)
     dearest_buy   = max((o["price"] for o in buys),  default=None)
 
+    # In cinema: theatrical date has passed and it hasn't hit any home offer yet
     cd = movie.get("cinema_date")
     in_cinema_window = cd and cd <= today.isoformat() and not offers
     if in_cinema_window:
         status.add("in_cinema")
 
+    # Premium (PVOD): a dear buy/rent exists and it's not yet on subscription
     if not has_sub and ((dearest_buy and dearest_buy >= PVOD_MIN_PRICE) or
                         (cheapest_rent and cheapest_rent >= PVOD_MIN_PRICE)):
         status.add("pvod")
 
+    # Standard rental: a rent at/under the everyday-rental price
     if cheapest_rent is not None and cheapest_rent <= RENTAL_MAX_PRICE:
         status.add("rental")
 
+    # Included streaming: on a subscription or free/ad-supported service
     if has_sub:
         status.add("included_streaming")
 
@@ -264,7 +275,7 @@ def diff_and_alert(today_records: list[dict]) -> list[dict]:
         after  = set(m["status"])
         opened = after - before
         for w in opened:
-            if before:
+            if before:  # only alert on genuine transitions, not first sighting
                 events.append({
                     "tmdb_id": m["tmdb_id"],
                     "title": m["title"],
@@ -274,6 +285,7 @@ def diff_and_alert(today_records: list[dict]) -> list[dict]:
                                  if _window_of(o) == w][:3],
                     "detected": today_records_date(),
                 })
+    # persist
     os.makedirs(STATE_DIR, exist_ok=True)
     json.dump(today_records, open(SNAPSHOT_FILE, "w"), indent=2)
     existing = json.load(open(ALERTS_FILE)) if os.path.exists(ALERTS_FILE) else []
@@ -312,12 +324,15 @@ def run(simulate_day: bool = False):
 
     if LIVE:
         print(f"[live] ingesting AU cinema releases from TMDB ...")
+        wm_cache = json.load(open(WM_CACHE_FILE)) if os.path.exists(WM_CACHE_FILE) else {}
         records = ingest_tmdb()
         for m in records:
             enrich_omdb(m)
-            m["offers"] = poll_watchmode(m)
+            m["offers"] = poll_watchmode(m, wm_cache)
             m["status"] = derive_status(m, m["offers"], today)
-            time.sleep(0.3)  # be polite to free tiers
+            time.sleep(0.25)  # be polite to free tiers
+        os.makedirs(STATE_DIR, exist_ok=True)
+        json.dump(wm_cache, open(WM_CACHE_FILE, "w"), indent=2)
     else:
         print("[sample] no API keys set — using bundled illustrative data.")
         records = json.load(open(SAMPLE_FILE))["movies"]
@@ -336,9 +351,9 @@ def run(simulate_day: bool = False):
         "movies": records,
     }
     json.dump(payload, open(OUTPUT_FILE, "w"), indent=2)
-    os.makedirs(STATE_DIR, exist_ok=True)
+    os.makedirs(STATE_DIR, exist_ok=True)     # this run's changes, for the email step / CI
     json.dump(events, open(os.path.join(STATE_DIR, "last_run_events.json"), "w"), indent=2)
-    build_html(records)
+    build_html(records)                       # regenerate the double-clickable app
 
     print(f"\n{len(records)} titles written to movies.json  ({'LIVE' if LIVE else 'sample'} data)")
     print(f"index.html rebuilt — open it in any browser.")
@@ -350,9 +365,10 @@ def run(simulate_day: bool = False):
         print("   (none — run again with --simulate-day to see the alert path fire)")
 
 
-def build_html(records: list[dict] | None = None):
-    """Inject the latest movies + date into app_template.html -> index.html."""
-    if records is None:
+def build_html(records=None):
+    """Inject the latest movies + date into app_template.html -> index.html.
+    Keeps the app a single double-clickable file (no server, no CORS)."""
+    if records is None:  # --build-html on its own: rebuild from the last movies.json
         records = json.load(open(OUTPUT_FILE))["movies"]
     if not os.path.exists(TEMPLATE_FILE):
         print("! app_template.html not found — cannot build index.html"); return
@@ -374,7 +390,7 @@ def _apply_scripted_change(records: list[dict]):
 
 if __name__ == "__main__":
     if "--build-html" in sys.argv:
-        build_html()
+        build_html()                          # rebuild index.html from existing movies.json only
         print("index.html rebuilt from movies.json — open it in any browser.")
     else:
         run(simulate_day="--simulate-day" in sys.argv)
