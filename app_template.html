@@ -107,29 +107,28 @@
   .actbtn.wtwbtn{font-size:13px;color:var(--dim)}
   .actbtn.wtwbtn.open{background:rgba(124,92,255,.2);border-color:var(--accent);color:#fff}
   .actbtn.wtwbtn.off{opacity:.35}
-  .ratings{display:grid;grid-template-columns:54px 56px 58px 84px 1fr;gap:5px;margin-top:11px;align-items:center}
+  .ratings{display:grid;grid-template-columns:54px 56px 58px 84px 1fr;gap:5px;margin-top:11px;align-items:center;grid-auto-rows:23px}
   .rb{height:23px;font-size:10.5px;font-weight:700;padding:0 6px;border-radius:7px;display:flex;gap:3px;align-items:center;justify-content:center;
     background:var(--panel2);border:1px solid var(--line);white-space:nowrap;overflow:hidden}
-  .rb.empty{background:transparent;border-color:transparent}
+  .rb.muted{color:var(--faint)}
   .rb b{font-size:11.5px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.gross b{color:#9fe6c4}
   .award-slot{display:flex;align-items:center;justify-content:flex-end;height:23px}
   .award{font-size:16px;line-height:1;cursor:pointer}
-  /* cascade stepper */
-  .cascade{display:grid;grid-template-columns:repeat(5,1fr);margin-top:13px}
-  .cstage{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:2px}
-  .cstage::before{content:"";position:absolute;top:11px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0}
-  .cstage:first-child::before{display:none}
-  .cstage.reached::before{background:var(--dim)}
-  .cnode{position:relative;z-index:1;width:calc(100% - 4px);font-size:9px;font-weight:800;letter-spacing:.2px;padding:4px 1px;border-radius:6px;
+  /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Standard · Streaming */
+  .cascade{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:13px}
+  .cascade::before{content:"";position:absolute;top:11px;left:12.5%;right:12.5%;height:2px;background:var(--line);z-index:0}
+  .cstage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:2px}
+  .cnode{width:calc(100% - 8px);font-size:9px;font-weight:800;letter-spacing:.2px;padding:4px 1px;border-radius:6px;
     border:1px solid var(--line);background:var(--panel2);color:var(--faint);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .cstage.past .cnode{color:var(--dim)}
   .cstage.future .cnode{opacity:.4}
-  .cstage.current.st-opening_week .cnode{background:rgba(255,107,107,.2);border-color:var(--open);color:#ffc2c2}
-  .cstage.current.st-in_cinema .cnode{background:rgba(240,163,54,.2);border-color:var(--amber);color:#ffce8f}
-  .cstage.current.st-pvod .cnode{background:rgba(164,134,240,.2);border-color:var(--purple);color:#d3c2ff}
-  .cstage.current.st-rental .cnode{background:rgba(90,169,240,.2);border-color:var(--blue);color:#bcdcff}
-  .cstage.current.st-included_streaming .cnode{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
+  .cstage.current.st-cin-upcoming .cnode{background:linear-gradient(0deg,rgba(107,114,128,.25),rgba(107,114,128,.25)),var(--panel2);border-color:var(--grey);color:#c8cfd9}
+  .cstage.current.st-cin-opening .cnode{background:linear-gradient(0deg,rgba(255,107,107,.2),rgba(255,107,107,.2)),var(--panel2);border-color:var(--open);color:#ffc2c2}
+  .cstage.current.st-cin-cinema .cnode{background:linear-gradient(0deg,rgba(240,163,54,.2),rgba(240,163,54,.2)),var(--panel2);border-color:var(--amber);color:#ffce8f}
+  .cstage.current.st-pvod .cnode{background:linear-gradient(0deg,rgba(164,134,240,.2),rgba(164,134,240,.2)),var(--panel2);border-color:var(--purple);color:#d3c2ff}
+  .cstage.current.st-rental .cnode{background:linear-gradient(0deg,rgba(90,169,240,.2),rgba(90,169,240,.2)),var(--panel2);border-color:var(--blue);color:#bcdcff}
+  .cstage.current.st-included_streaming .cnode{background:linear-gradient(0deg,rgba(72,199,142,.2),rgba(72,199,142,.2)),var(--panel2);border-color:var(--green);color:#a7eccb}
   .cdate{font-size:8px;color:var(--faint);margin-top:3px;white-space:nowrap;line-height:1}
   .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
   .pill{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid}
@@ -465,36 +464,48 @@ function sortMovies(a,b){
     default: return (b.imdb_rating||0)-(a.imdb_rating||0);
   }
 }
-const CASCADE_SHORT = {opening_week:"Opening", in_cinema:"Cinema", pvod:"Premium", rental:"Standard", included_streaming:"Streaming"};
+const CSTAGE_LABEL = {pvod:"Premium", rental:"Standard", included_streaming:"Streaming"};
 const EST_OFFSET = {pvod:90, rental:120, included_streaming:180};   // days after cinema (rough AU windows)
-function stageDate(m, stage){
-  const cd=m.cinema_date;
-  if(stage==="opening_week") return cd?{d:cd,est:false}:null;
-  if(stage==="in_cinema")   return cd?{d:addDays(cd,OPENING_WEEK_DAYS),est:false}:null;
-  if(m.window_dates && m.window_dates[stage]) return {d:m.window_dates[stage],est:false};  // real, once tracked
-  if(!cd) return null;
-  return {d:addDays(cd, EST_OFFSET[stage]), est:true};                                     // estimated
+// The first cascade slot is the CINEMA slot, tri-state: Upcoming -> Opening -> Cinema.
+function cinemaState(m){
+  const p=primaryStatus(m);
+  if(p==="upcoming")     return {label:"Upcoming", key:"upcoming"};
+  if(p==="opening_week") return {label:"Opening",  key:"opening"};
+  return {label:"Cinema", key:"cinema"};   // in_cinema, or already past cinema
+}
+function curSlot(m){   // which of the 4 slots is the film's current stage
+  const p=primaryStatus(m);
+  if(p==="upcoming"||p==="opening_week"||p==="in_cinema") return 0;
+  return ({pvod:1, rental:2, included_streaming:3})[p] ?? 0;
+}
+function stageDate(m, key){
+  if(key==="cinema") return m.cinema_date ? {d:m.cinema_date, est:false} : null;   // real (may be future for Upcoming)
+  if(m.window_dates && m.window_dates[key]) return {d:m.window_dates[key], est:false};  // real, once tracked
+  if(!m.cinema_date) return null;
+  return {d:addDays(m.cinema_date, EST_OFFSET[key]), est:true};                    // estimated
 }
 function ratingsHTML(m){
-  const cell=(cond,cls,html)=> cond?`<div class="rb ${cls}">${html}</div>`:`<div class="rb empty"></div>`;
-  const imdb=cell(m.imdb_rating!=null,"imdb",`IMDb <b>${m.imdb_rating!=null?m.imdb_rating.toFixed(1):""}</b>`);
-  const rt  =cell(m.rt_critic!=null,"rt",`🍅 <b>${m.rt_critic}%</b>`);
-  const meta=cell(m.metacritic!=null,"meta",`Meta <b>${m.metacritic}</b>`);
-  const gross=`<div class="rb gross">Gross <b>${money(m.worldwide_gross)}</b></div>`;
+  // every metric keeps its slot; a missing one shows a greyed label with no value (award only if present)
+  const cell=(ok,cls,html,label)=> ok?`<div class="rb ${cls}">${html}</div>`:`<div class="rb muted">${label}</div>`;
+  const imdb =cell(m.imdb_rating!=null,"imdb",`IMDb <b>${m.imdb_rating!=null?m.imdb_rating.toFixed(1):""}</b>`,"IMDb");
+  const rt   =cell(m.rt_critic!=null,"rt",`🍅 <b>${m.rt_critic}%</b>`,"RT");
+  const meta =cell(m.metacritic!=null,"meta",`Meta <b>${m.metacritic}</b>`,"Meta");
+  const gross=cell(m.worldwide_gross!=null,"gross",`Gross <b>${money(m.worldwide_gross)}</b>`,"Gross");
   return `<div class="ratings">${imdb}${rt}${meta}${gross}<div class="award-slot">${awardIcon(m)}</div></div>`;
 }
 function cascadeHTML(m){
-  const stages=CASCADE.filter(s=>s!=="upcoming");
-  const cur=primaryStatus(m);
-  const curIdx=stages.indexOf(cur);
-  const nodes=stages.map((s,i)=>{
-    const state=curIdx<0?"future":(i<curIdx?"past":(i===curIdx?"current":"future"));
-    const reached=curIdx>=0 && i<=curIdx;
+  const slots=["cinema","pvod","rental","included_streaming"];
+  const cur=curSlot(m);
+  const cin=cinemaState(m);
+  const nodes=slots.map((key,i)=>{
+    const state=i<cur?"past":(i===cur?"current":"future");
+    const reached=i<=cur;
+    const label=i===0 ? cin.label : CSTAGE_LABEL[key];
+    const cls  =i===0 ? "st-cin-"+cin.key : "st-"+key;
     let dateStr="";
-    const showDate=(curIdx<0&&i===0)||(curIdx>=0&&i<=curIdx+1);   // reached stages + the next one
-    if(showDate){ const sd=stageDate(m,s); if(sd) dateStr=(sd.est?"~":"")+fmtDate(sd.d); }
-    return `<div class="cstage ${state} ${reached?'reached':''} st-${s}">
-      <div class="cnode">${CASCADE_SHORT[s]}</div>
+    if(i<=cur+1){ const sd=stageDate(m,key); if(sd) dateStr=(sd.est?"~":"")+fmtDate(sd.d); }   // reached + next
+    return `<div class="cstage ${state} ${reached?'reached':''} ${cls}">
+      <div class="cnode">${label}</div>
       <div class="cdate">${dateStr||"&nbsp;"}</div></div>`;
   }).join("");
   return `<div class="cascade">${nodes}</div>`;
