@@ -23,9 +23,11 @@
   .brand span{color:var(--accent)}
   .region{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:8px}
   .updated{font-size:10.5px;color:var(--faint);margin-top:3px}
-  .bell{position:relative;cursor:pointer;font-size:20px;background:var(--panel2);border:1px solid var(--line);
+  .hdr-actions{display:flex;gap:8px}
+  .iconbtn{position:relative;cursor:pointer;font-size:19px;background:var(--panel2);border:1px solid var(--line);
     border-radius:12px;width:40px;height:40px;display:grid;place-items:center}
-  .bell .badge{position:absolute;top:-6px;right:-6px;background:var(--rt);color:#fff;font-size:10px;
+  .iconbtn.on{border-color:var(--green);background:rgba(72,199,142,.14)}
+  .iconbtn .badge{position:absolute;top:-6px;right:-6px;background:var(--rt);color:#fff;font-size:10px;
     font-weight:800;min-width:18px;height:18px;border-radius:10px;display:grid;place-items:center;padding:0 4px}
   .search{width:100%;margin-top:10px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:10px;padding:9px 12px;font-size:14px}
@@ -35,10 +37,22 @@
     padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
   .btn.active{border-color:var(--accent);color:#fff;background:rgba(124,92,255,.15)}
   select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 10px;font-size:13px}
-  .filters{margin:10px 16px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
-    padding:14px;display:none;max-height:62vh;overflow:auto}
-  .filters.open{display:block}
-  .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin:14px 0 8px}
+  /* full-screen modals (filters, preferences) */
+  .modal{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;
+    background:var(--bg);z-index:50;display:none;overflow-y:auto;padding:0 16px 60px}
+  .modal.open{display:block}
+  .modalhead{position:sticky;top:0;background:var(--bg);display:flex;justify-content:space-between;align-items:center;
+    padding:14px 0 12px;border-bottom:1px solid var(--line);margin-bottom:6px;z-index:2}
+  .modalhead h3{margin:0;font-size:17px;font-weight:800}
+  .donebtn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-weight:700;font-size:14px;cursor:pointer}
+  .pnote{font-size:12px;color:var(--dim);line-height:1.5;margin:2px 0 6px}
+  .switch{display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);
+    border-radius:10px;padding:11px 13px;margin:2px 0 6px;cursor:pointer;font-size:13.5px;font-weight:600}
+  .switch .knob{width:42px;height:24px;border-radius:14px;background:#39414f;position:relative;transition:.15s;flex-shrink:0}
+  .switch .knob::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:.15s}
+  .switch.on .knob{background:var(--green)}
+  .switch.on .knob::after{left:21px}
+  .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin:16px 0 8px}
   .flabel:first-child{margin-top:0}
   .chips{display:flex;flex-wrap:wrap;gap:7px}
   .chip{font-size:12px;padding:6px 11px;border-radius:20px;border:1px solid var(--line);
@@ -50,10 +64,11 @@
   .chip.on.st-rental{background:rgba(90,169,240,.2);border-color:var(--blue);color:#bcdcff}
   .chip.on.st-included_streaming{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
   .chip.on.gen,.chip.on.yr{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  .chip.on.svc{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
   .slider{display:flex;align-items:center;gap:10px}
   .slider input{flex:1;accent-color:var(--accent)}
   .slider .val{font-size:13px;font-weight:700;min-width:44px;text-align:right}
-  .reset{margin-top:14px;font-size:12px;color:var(--dim);background:none;border:none;cursor:pointer;text-decoration:underline}
+  .reset{margin-top:16px;font-size:12px;color:var(--dim);background:none;border:none;cursor:pointer;text-decoration:underline}
   .count{font-size:12px;color:var(--dim);margin:12px 16px 0}
   .group{margin-top:6px}
   .grouphead{display:flex;align-items:center;gap:8px;padding:12px 16px 8px;font-size:13px;font-weight:800;letter-spacing:.2px}
@@ -63,9 +78,10 @@
   .gdot.included_streaming{background:var(--green)} .gdot.upcoming{background:var(--grey)}
   .gcount{color:var(--faint);font-weight:700}
   .list{padding:0 16px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;transition:opacity .15s}
-  .card.watched{opacity:.55}
-  .top{display:flex;justify-content:space-between;gap:10px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;
+    transition:opacity .15s;display:flex;gap:10px}
+  .card.watched{opacity:.5}
+  .cardmain{flex:1;min-width:0}
   .title{font-size:16px;font-weight:750;line-height:1.2}
   .cert{display:inline-block;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;
     border:1px solid #5b6472;color:#d6dce6;background:#232a35;margin-right:7px;vertical-align:middle;letter-spacing:.3px}
@@ -75,7 +91,7 @@
   .synopsis{font-size:12.5px;color:#c4ccd6;line-height:1.5;margin:9px 0 0;cursor:pointer;
     display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .synopsis.expanded{-webkit-line-clamp:unset;display:block}
-  .actions{display:flex;flex-direction:column;gap:6px}
+  .actions{display:flex;flex-direction:column;gap:6px;flex-shrink:0}
   .actbtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
     cursor:pointer;font-size:16px;display:grid;place-items:center;line-height:1}
   .actbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent)}
@@ -144,11 +160,14 @@
         <span class="region">📍 AU</span>
         <div class="updated" id="updated"></div>
       </div>
-      <div class="bell" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
+      <div class="hdr-actions">
+        <div class="iconbtn" id="prefBtn" title="My streaming services">⚙️</div>
+        <div class="iconbtn" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
+      </div>
     </div>
     <input id="search" class="search" type="search" placeholder="🔍  Search titles…" autocomplete="off">
     <div class="filtoggle">
-      <button class="btn" id="filterBtn">⚙︎ Filters</button>
+      <button class="btn" id="filterBtn">≡ Filters</button>
       <button class="btn" id="trackedBtn">☆ Tracked</button>
       <div style="flex:1"></div>
       <select id="sort">
@@ -161,37 +180,52 @@
     </div>
   </header>
 
-  <div class="filters" id="filters">
-    <div class="flabel">Availability status</div>
-    <div class="chips" id="statusChips"></div>
-    <div class="flabel">Release year</div>
-    <div class="chips" id="yearChips"></div>
-    <div class="flabel">Age rating</div>
-    <div class="chips" id="ageChips"></div>
-    <div class="flabel">Culture</div>
-    <div class="chips" id="cultureChips"></div>
-    <div class="flabel">Language</div>
-    <div class="chips" id="langChips"></div>
-    <div class="flabel">Genre</div>
-    <div class="chips" id="genreChips"></div>
-    <div class="flabel">View</div>
-    <div class="chips" id="viewChips"></div>
-    <div class="flabel">Minimum IMDb rating</div>
-    <div class="slider"><input type="range" id="imdbMin" min="0" max="10" step="0.1" value="0"><div class="val" id="imdbVal">Any</div></div>
-    <div class="flabel">Minimum Rotten Tomatoes (critic)</div>
-    <div class="slider"><input type="range" id="rtMin" min="0" max="100" step="1" value="0"><div class="val" id="rtVal">Any</div></div>
-    <div class="flabel">Minimum worldwide box office</div>
-    <select id="grossMin" style="width:100%">
-      <option value="0">Any</option><option value="10000000">$10M+</option>
-      <option value="50000000">$50M+</option><option value="100000000">$100M+</option><option value="250000000">$250M+</option>
-    </select>
-    <br><button class="reset" id="resetBtn">Reset all filters</button>
-  </div>
-
   <div class="count" id="count"></div>
   <div id="groups"></div>
 </div>
 
+<!-- FILTERS modal -->
+<div class="modal" id="filters">
+  <div class="modalhead"><h3>Filters</h3><button class="donebtn" id="filtersDone">Done</button></div>
+  <div class="flabel">Availability status</div>
+  <div class="chips" id="statusChips"></div>
+  <div class="flabel">Release year</div>
+  <div class="chips" id="yearChips"></div>
+  <div class="flabel">Age rating</div>
+  <div class="chips" id="ageChips"></div>
+  <div class="flabel">Culture</div>
+  <div class="chips" id="cultureChips"></div>
+  <div class="flabel">Language</div>
+  <div class="chips" id="langChips"></div>
+  <div class="flabel">Genre</div>
+  <div class="chips" id="genreChips"></div>
+  <div class="flabel">View</div>
+  <div class="chips" id="viewChips"></div>
+  <div class="flabel">Minimum IMDb rating</div>
+  <div class="slider"><input type="range" id="imdbMin" min="0" max="10" step="0.1" value="0"><div class="val" id="imdbVal">Any</div></div>
+  <div class="flabel">Minimum Rotten Tomatoes (critic)</div>
+  <div class="slider"><input type="range" id="rtMin" min="0" max="100" step="1" value="0"><div class="val" id="rtVal">Any</div></div>
+  <div class="flabel">Minimum worldwide box office</div>
+  <select id="grossMin" style="width:100%">
+    <option value="0">Any</option><option value="10000000">$10M+</option>
+    <option value="50000000">$50M+</option><option value="100000000">$100M+</option><option value="250000000">$250M+</option>
+  </select>
+  <br><button class="reset" id="resetBtn">Reset all filters</button>
+</div>
+
+<!-- PREFERENCES modal -->
+<div class="modal" id="prefs">
+  <div class="modalhead"><h3>My streaming services</h3><button class="donebtn" id="prefsDone">Done</button></div>
+  <div class="switch" id="prefSwitch"><span>Filter results to my services</span><span class="knob"></span></div>
+  <div class="pnote">Pick the services you actually have. When the switch is on, the main list only shows films you
+    can watch on them, and each card's “Where to watch” shows just your services.</div>
+  <div class="flabel">Paid streaming — I subscribe to</div>
+  <div class="chips" id="prefSubChips"></div>
+  <div class="flabel">Rent / Buy — stores I use</div>
+  <div class="chips" id="prefStoreChips"></div>
+</div>
+
+<!-- ALERTS drawer -->
 <div class="overlay" id="overlay">
   <div class="drawer" id="drawer">
     <div class="dhead"><h3>🔔 Alerts</h3><button class="close" id="closeDrawer">×</button></div>
@@ -268,6 +302,10 @@ function saveSet(k,set){ try{ localStorage.setItem(k, JSON.stringify([...set]));
 const tracked = loadSet("cascade_tracked");
 const watched = loadSet("cascade_watched");
 const blocked = loadSet("cascade_blocked");
+function loadPrefs(){ try{ const p=JSON.parse(localStorage.getItem("cascade_prefs")||"{}");
+  return {on:!!p.on, sub:new Set(p.sub||[]), store:new Set(p.store||[])}; }catch(e){ return {on:false,sub:new Set(),store:new Set()}; } }
+function savePrefs(){ try{ localStorage.setItem("cascade_prefs", JSON.stringify({on:prefs.on,sub:[...prefs.sub],store:[...prefs.store]})); }catch(e){} }
+const prefs = loadPrefs();
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
   imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, sort:"imdb"};
@@ -275,14 +313,31 @@ const $=id=>document.getElementById(id);
 
 $("updated").textContent = "Live AU data · updated " + fmtDate(TODAY);
 
+// service lists derived from the data
+const SUB_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="sub"||o.type==="free").map(o=>o.service)))].sort();
+const STORE_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="rent"||o.type==="buy").map(o=>o.service)))].sort();
+const prefsActive = () => prefs.on && (prefs.sub.size>0 || prefs.store.size>0);
+function myService(o){
+  if(o.type==="sub"||o.type==="free") return prefs.sub.has(o.service);
+  if(o.type==="rent"||o.type==="buy") return prefs.store.has(o.service);
+  return false;
+}
+function matchesServices(m){
+  const o=m.offers||[];
+  if(!o.length) return true;                 // in cinema / upcoming — always visible
+  return o.some(myService);
+}
+
 // ---- filter chips ----
 function addChips(el, values, set, cls, label){
   values.forEach(v=>{
-    const c=document.createElement("div"); c.className="chip "+cls; c.textContent=label?label(v):v;
-    c.onclick=()=>{c.classList.toggle("on"); set.has(v)?set.delete(v):set.add(v); render();};
+    const c=document.createElement("div"); c.className="chip "+cls; if(set.has(v)) c.classList.add("on");
+    c.textContent=label?label(v):v;
+    c.onclick=()=>{c.classList.toggle("on"); set.has(v)?set.delete(v):set.add(v); onChipToggle(cls); render();};
     $(el).appendChild(c);
   });
 }
+function onChipToggle(cls){ if(cls==="svc"){ savePrefs(); updatePrefBtn(); } }
 CASCADE.filter(s=>s!=="upcoming").forEach(s=>{
   const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s];
   c.onclick=()=>{c.classList.toggle("on"); filt.status.has(s)?filt.status.delete(s):filt.status.add(s); render();};
@@ -298,15 +353,28 @@ addChips("cultureChips", [...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].
 addChips("langChips", [...new Set(MOVIES.map(m=>m.language).filter(Boolean))].sort((a,b)=>langName(a).localeCompare(langName(b))),
   filt.lang, "yr", langName);
 addChips("genreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), filt.genre, "gen");
-// view toggles
 [["Hide watched","hideWatched"],["Show hidden","showHidden"]].forEach(([lbl,key])=>{
   const c=document.createElement("div"); c.className="chip"; c.textContent=lbl;
   c.onclick=()=>{c.classList.toggle("on"); filt[key]=!filt[key]; render();};
   $("viewChips").appendChild(c);
 });
+// preferences service chips
+addChips("prefSubChips", SUB_SERVICES, prefs.sub, "svc");
+addChips("prefStoreChips", STORE_SERVICES, prefs.store, "svc");
+
+// ---- modals ----
+function openModal(el){ el.classList.add("open"); document.body.style.overflow="hidden"; }
+function closeModal(el){ el.classList.remove("open"); document.body.style.overflow=""; }
+$("filterBtn").onclick=()=>openModal($("filters"));
+$("filtersDone").onclick=()=>closeModal($("filters"));
+$("prefBtn").onclick=()=>openModal($("prefs"));
+$("prefsDone").onclick=()=>closeModal($("prefs"));
+function updatePrefSwitch(){ $("prefSwitch").classList.toggle("on", prefs.on); }
+function updatePrefBtn(){ $("prefBtn").classList.toggle("on", prefsActive()); }
+$("prefSwitch").onclick=()=>{ prefs.on=!prefs.on; savePrefs(); updatePrefSwitch(); updatePrefBtn(); render(); };
+updatePrefSwitch(); updatePrefBtn();
 
 // ---- controls ----
-$("filterBtn").onclick=()=>{$("filters").classList.toggle("open");$("filterBtn").classList.toggle("active");};
 $("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
 $("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();render();};
@@ -316,7 +384,7 @@ $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
 $("resetBtn").onclick=()=>{
   ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
   filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;filt.search="";
-  document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
+  document.querySelectorAll("#filters .chip.on").forEach(c=>c.classList.remove("on"));
   $("imdbMin").value=0;$("rtMin").value=0;$("grossMin").value=0;$("imdbVal").textContent="Any";$("rtVal").textContent="Any";
   $("search").value="";$("trackedBtn").classList.remove("active");render();
 };
@@ -341,6 +409,7 @@ window.showAward=id=>{ const m=MOVIES.find(x=>x.tmdb_id===id);
 function passes(m){
   const id=m.tmdb_id;
   if(blocked.has(id) && !filt.showHidden) return false;
+  if(prefsActive() && !matchesServices(m)) return false;
   if(filt.trackedOnly && !tracked.has(id)) return false;
   if(filt.hideWatched && watched.has(id)) return false;
   if(filt.search && !m.title.toLowerCase().includes(filt.search)) return false;
@@ -372,7 +441,8 @@ function cardHTML(m){
   if(m.metacritic!=null) rb.push(`<div class="rb meta">Meta <b>${m.metacritic}</b></div>`);
   rb.push(`<div class="rb gross">Gross <b>${money(m.worldwide_gross)}</b></div>`);
   const pills=m.status.map(s=>`<span class="pill ${s}">${STATUS_LABEL[s]}</span>`).join("");
-  const offers=dedupOffers(m.offers);
+  let offers=dedupOffers(m.offers);
+  if(prefsActive()) offers=offers.filter(myService);
   const wtw = offers.length ? `
     <button class="wtw-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
       <span>Where to watch (${offers.length})</span><span class="chev">▾</span></button>
@@ -384,19 +454,19 @@ function cardHTML(m){
   const cult = m.culture ? ` · <span class="culttag">${m.culture}</span>` : "";
   const isW=watched.has(id), isB=blocked.has(id);
   return `<div class="card ${isW?'watched':''}">
-    <div class="top">
-      <div><div class="title">${m.title}</div>
-        <div class="meta">${cert}${m.cinema_date?fmtDate(m.cinema_date)+" · ":""}${(m.genres||[]).join(", ")}${cult}</div></div>
-      <div class="actions">
-        <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
-        <button class="actbtn ${isW?'onw':''}" onclick="toggleWatched(${id})" title="Mark as watched">${isW?'✅':'👁'}</button>
-        <button class="actbtn ${isB?'onb':''}" onclick="toggleBlocked(${id})" title="Not interested — hide this">🚫</button>
-      </div>
+    <div class="cardmain">
+      <div class="title">${m.title}</div>
+      <div class="meta">${cert}${m.cinema_date?fmtDate(m.cinema_date)+" · ":""}${(m.genres||[]).join(", ")}${cult}</div>
+      ${syn}
+      <div class="ratings">${rb.join("")}</div>
+      <div class="pills">${pills}</div>
+      ${wtw}
     </div>
-    ${syn}
-    <div class="ratings">${rb.join("")}</div>
-    <div class="pills">${pills}</div>
-    ${wtw}
+    <div class="actions">
+      <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
+      <button class="actbtn ${isW?'onw':''}" onclick="toggleWatched(${id})" title="Mark as watched">${isW?'✅':'👁'}</button>
+      <button class="actbtn ${isB?'onb':''}" onclick="toggleBlocked(${id})" title="Not interested — hide this">${isB?'🙈':'👎'}</button>
+    </div>
   </div>`;
 }
 function activeCount(){
@@ -408,9 +478,9 @@ function activeCount(){
 function render(){
   const rows=MOVIES.filter(passes);
   const n=activeCount();
-  $("filterBtn").textContent = "⚙︎ Filters" + (n?` (${n})`:"");
-  $("filterBtn").classList.toggle("active", n>0 || $("filters").classList.contains("open"));
-  $("count").textContent=`${rows.length} of ${MOVIES.length} titles`;
+  $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
+  $("filterBtn").classList.toggle("active", n>0);
+  $("count").textContent=`${rows.length} of ${MOVIES.length} titles`+(prefsActive()?" · my services":"");
   const wrap=$("groups");
   if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
   let html="";
@@ -437,7 +507,7 @@ window.toggleWatched=id=>{
 window.toggleBlocked=id=>{
   blocked.has(id)?blocked.delete(id):blocked.add(id); saveSet("cascade_blocked",blocked);
   const m=MOVIES.find(x=>x.tmdb_id===id);
-  toast(blocked.has(id)?`🚫 Hidden “${m.title}” — see it again via Filters → Show hidden`:`Restored “${m.title}”`);
+  toast(blocked.has(id)?`🙈 Hidden “${m.title}” — see it again via Filters → Show hidden`:`Restored “${m.title}”`);
   render();
 };
 
