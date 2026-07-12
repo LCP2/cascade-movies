@@ -94,12 +94,17 @@ def ingest_tmdb() -> list[dict]:
             detail = get_json(
                 f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates"
             )
-            cinema_date = None
+            cinema_date, age_rating = None, None
             for entry in detail.get("release_dates", {}).get("results", []):
                 if entry["iso_3166_1"] == REGION:
                     for rd in entry["release_dates"]:
                         if rd["type"] in (2, 3):
                             cinema_date = rd["release_date"][:10]
+                        cert = (rd.get("certification") or "").strip()
+                        if cert and not age_rating:      # AU classification (G/PG/M/MA15+/R18+)
+                            age_rating = cert
+            lang = detail.get("original_language")
+            countries = [c["iso_3166_1"] for c in detail.get("production_countries", [])]
             movies.append({
                 "tmdb_id": detail["id"],
                 "imdb_id": detail.get("imdb_id"),
@@ -107,8 +112,11 @@ def ingest_tmdb() -> list[dict]:
                 "year": (detail.get("release_date") or "----")[:4],
                 "genres": [g["name"] for g in detail.get("genres", [])],
                 "cinema_date": cinema_date,
+                "age_rating": age_rating,
                 "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
                 "synopsis": (detail.get("overview") or "").strip(),
+                "language": lang,
+                "culture": _culture(lang, countries),
                 "poster": detail.get("poster_path"),
             })
             if len(movies) >= MAX_TITLES:
@@ -132,11 +140,32 @@ def enrich_omdb(movie: dict) -> dict:
         elif r["Source"] == "Metacritic":
             movie["metacritic"] = _int(r["Value"].split("/")[0])
     movie["award"] = _oscar_status(data.get("Awards", ""))   # None | "nominated" | "won"
-    # OMDb BoxOffice is US-domestic only; we keep TMDB worldwide as the headline gross
     return movie
 
 
-def _oscar_status(awards: str) -> str | None:
+# Map a film's original language (with production country as a tiebreak) to a
+# broad "culture" bucket — an approximation of the audience it was made for.
+_LANG_CULTURE = {
+    "ko":"Korean", "ja":"Japanese", "zh":"Chinese", "cn":"Chinese", "yue":"Chinese",
+    "hi":"Indian", "ta":"Indian", "te":"Indian", "ml":"Indian", "kn":"Indian",
+    "bn":"Indian", "pa":"Indian", "mr":"Indian",
+    "th":"Southeast Asian", "id":"Southeast Asian", "vi":"Southeast Asian", "tl":"Southeast Asian",
+    "fr":"European", "de":"European", "it":"European", "ru":"European", "sv":"European",
+    "es":"Spanish/Latin", "pt":"Spanish/Latin",
+}
+_WESTERN_COUNTRIES = {"US","GB","AU","NZ","CA","IE"}
+
+def _culture(lang, countries) -> str:
+    if lang in _LANG_CULTURE:
+        return _LANG_CULTURE[lang]
+    if lang == "en":
+        return "Western"
+    if any(c in _WESTERN_COUNTRIES for c in countries):
+        return "Western"
+    return "Other"
+
+
+def _oscar_status(awards: str):
     """Read OMDb's free-text Awards field for top-award (Oscar) status.
     OMDb phrases it as 'Won N Oscars. ...' or 'Nominated for N Oscars. ...'."""
     aw = (awards or "").strip()
