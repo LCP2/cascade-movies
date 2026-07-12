@@ -42,6 +42,7 @@ STATE_DIR = os.path.join(os.path.dirname(__file__), "state")
 SNAPSHOT_FILE = os.path.join(STATE_DIR, "last_snapshot.json")
 ALERTS_FILE   = os.path.join(STATE_DIR, "alerts.json")
 WM_CACHE_FILE = os.path.join(STATE_DIR, "watchmode_ids.json")   # imdb_id -> watchmode_id (never changes)
+WINDOW_DATES_FILE = os.path.join(STATE_DIR, "window_dates.json")  # tmdb_id -> {window: first_seen_date}
 OUTPUT_FILE   = os.path.join(os.path.dirname(__file__), "movies.json")
 SAMPLE_FILE   = os.path.join(os.path.dirname(__file__), "sample_data.json")
 TEMPLATE_FILE = os.path.join(os.path.dirname(__file__), "app_template.html")
@@ -115,6 +116,7 @@ def ingest_tmdb() -> list[dict]:
                 "cinema_date": cinema_date,
                 "age_rating": age_rating,
                 "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
+                "budget": detail.get("budget") or None,             # production budget (USD) from TMDB
                 "synopsis": (detail.get("overview") or "").strip(),
                 "language": lang,
                 "culture": _culture(lang, countries),
@@ -340,6 +342,20 @@ def run(simulate_day: bool = False):
             _apply_scripted_change(records)
         for m in records:
             m["status"] = derive_status(m, m.get("offers", []), today)
+
+    # Record the first date each title was seen in each window, so transition
+    # dates become EXACT over time (no backfill — accrues from the first run).
+    # The app uses these when present and falls back to estimates otherwise.
+    wd = json.load(open(WINDOW_DATES_FILE)) if os.path.exists(WINDOW_DATES_FILE) else {}
+    tstamp = today.isoformat()
+    for m in records:
+        key = str(m["tmdb_id"]); rec = wd.get(key, {})
+        for w in m.get("status", []):
+            rec.setdefault(w, tstamp)
+        wd[key] = rec
+        m["window_dates"] = rec
+    os.makedirs(STATE_DIR, exist_ok=True)
+    json.dump(wd, open(WINDOW_DATES_FILE, "w"), indent=2)
 
     events = diff_and_alert(records)
 
