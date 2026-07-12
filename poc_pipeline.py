@@ -30,8 +30,9 @@ REGION = "AU"                      # the country this instance tracks
 CURRENCY = "AUD"
 
 # --- catalogue scope: work BACKWARDS from cinema, not just "now playing" ---
-LOOKBACK_DAYS = 365               # include films with an AU theatrical release in this trailing window
+LOOKBACK_DAYS = 1095             # include films with an AU theatrical release in this trailing window (~3 years)
 MAX_TITLES    = 40               # cap tracked titles to fit Watchmode free-tier daily budget (~2 calls/title/day)
+OPENING_WEEK_DAYS = 7            # a cinema release this recent counts as "opening week"
 
 # --- window heuristics (this is YOUR business logic, not something an API gives you) ---
 PVOD_MIN_PRICE   = 19.99          # a buy/rent at or above this, with no subscription yet, = premium early window
@@ -107,6 +108,7 @@ def ingest_tmdb() -> list[dict]:
                 "genres": [g["name"] for g in detail.get("genres", [])],
                 "cinema_date": cinema_date,
                 "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
+                "synopsis": (detail.get("overview") or "").strip(),
                 "poster": detail.get("poster_path"),
             })
             if len(movies) >= MAX_TITLES:
@@ -129,8 +131,21 @@ def enrich_omdb(movie: dict) -> dict:
             movie["rt_critic"] = _int(r["Value"].replace("%", ""))
         elif r["Source"] == "Metacritic":
             movie["metacritic"] = _int(r["Value"].split("/")[0])
+    movie["award"] = _oscar_status(data.get("Awards", ""))   # None | "nominated" | "won"
     # OMDb BoxOffice is US-domestic only; we keep TMDB worldwide as the headline gross
     return movie
+
+
+def _oscar_status(awards: str) -> str | None:
+    """Read OMDb's free-text Awards field for top-award (Oscar) status.
+    OMDb phrases it as 'Won N Oscars. ...' or 'Nominated for N Oscars. ...'."""
+    aw = (awards or "").strip()
+    if not aw or aw == "N/A":
+        return None
+    head = aw.split(".")[0]                     # first clause carries the headline award
+    if "Oscar" in head or "Academy Award" in head:
+        return "won" if head.lstrip().lower().startswith("won") else "nominated"
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -138,7 +153,6 @@ def enrich_omdb(movie: dict) -> dict:
 # ---------------------------------------------------------------------------
 def poll_watchmode(movie: dict) -> list[dict]:
     """Return normalised offers: [{service, type, price, format}]."""
-    # map to a Watchmode id via IMDb id
     lookup = get_json(
         "https://api.watchmode.com/v1/search/"
         f"?apiKey={WATCHMODE_KEY}&search_field=imdb_id&search_value={movie['imdb_id']}"
@@ -176,22 +190,18 @@ def derive_status(movie: dict, offers: list[dict], today: datetime.date) -> list
     cheapest_rent = min((o["price"] for o in rents), default=None)
     dearest_buy   = max((o["price"] for o in buys),  default=None)
 
-    # In cinema: theatrical date has passed and it hasn't hit any home offer yet
     cd = movie.get("cinema_date")
     in_cinema_window = cd and cd <= today.isoformat() and not offers
     if in_cinema_window:
         status.add("in_cinema")
 
-    # Premium (PVOD): a dear buy/rent exists and it's not yet on subscription
     if not has_sub and ((dearest_buy and dearest_buy >= PVOD_MIN_PRICE) or
                         (cheapest_rent and cheapest_rent >= PVOD_MIN_PRICE)):
         status.add("pvod")
 
-    # Standard rental: a rent at/under the everyday-rental price
     if cheapest_rent is not None and cheapest_rent <= RENTAL_MAX_PRICE:
         status.add("rental")
 
-    # Included streaming: on a subscription or free/ad-supported service
     if has_sub:
         status.add("included_streaming")
 
@@ -222,7 +232,7 @@ def diff_and_alert(today_records: list[dict]) -> list[dict]:
         after  = set(m["status"])
         opened = after - before
         for w in opened:
-            if before:  # only alert on genuine transitions, not first sighting
+            if before:
                 events.append({
                     "tmdb_id": m["tmdb_id"],
                     "title": m["title"],
@@ -232,7 +242,6 @@ def diff_and_alert(today_records: list[dict]) -> list[dict]:
                                  if _window_of(o) == w][:3],
                     "detected": today_records_date(),
                 })
-    # persist
     os.makedirs(STATE_DIR, exist_ok=True)
     json.dump(today_records, open(SNAPSHOT_FILE, "w"), indent=2)
     existing = json.load(open(ALERTS_FILE)) if os.path.exists(ALERTS_FILE) else []
@@ -295,9 +304,9 @@ def run(simulate_day: bool = False):
         "movies": records,
     }
     json.dump(payload, open(OUTPUT_FILE, "w"), indent=2)
-    os.makedirs(STATE_DIR, exist_ok=True)     # this run's changes, for the email step / CI
+    os.makedirs(STATE_DIR, exist_ok=True)
     json.dump(events, open(os.path.join(STATE_DIR, "last_run_events.json"), "w"), indent=2)
-    build_html(records)                       # regenerate the double-clickable app
+    build_html(records)
 
     print(f"\n{len(records)} titles written to movies.json  ({'LIVE' if LIVE else 'sample'} data)")
     print(f"index.html rebuilt — open it in any browser.")
@@ -310,9 +319,8 @@ def run(simulate_day: bool = False):
 
 
 def build_html(records: list[dict] | None = None):
-    """Inject the latest movies + date into app_template.html -> index.html.
-    Keeps the app a single double-clickable file (no server, no CORS)."""
-    if records is None:  # --build-html on its own: rebuild from the last movies.json
+    """Inject the latest movies + date into app_template.html -> index.html."""
+    if records is None:
         records = json.load(open(OUTPUT_FILE))["movies"]
     if not os.path.exists(TEMPLATE_FILE):
         print("! app_template.html not found — cannot build index.html"); return
@@ -334,7 +342,7 @@ def _apply_scripted_change(records: list[dict]):
 
 if __name__ == "__main__":
     if "--build-html" in sys.argv:
-        build_html()                          # rebuild index.html from existing movies.json only
+        build_html()
         print("index.html rebuilt from movies.json — open it in any browser.")
     else:
         run(simulate_day="--simulate-day" in sys.argv)
