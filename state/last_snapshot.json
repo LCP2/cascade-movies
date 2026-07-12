@@ -1,0 +1,456 @@
+[
+  {
+    "tmdb_id": 1084244,
+    "imdb_id": "tt29355505",
+    "title": "Toy Story 5",
+    "year": "2026",
+    "genres": [
+      "Animation",
+      "Family",
+      "Comedy",
+      "Adventure"
+    ],
+    "cinema_date": "2026-06-18",
+    "worldwide_gross": 764348690,
+    "poster": "/sfQtVlIHljToOwYjhe21KPGzZWK.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 40356,
+    "rt_critic": 93,
+    "metacritic": 73,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1275779,
+    "imdb_id": "tt15047880",
+    "title": "Disclosure Day",
+    "year": "2026",
+    "genres": [
+      "Science Fiction",
+      "Thriller"
+    ],
+    "cinema_date": "2026-06-11",
+    "worldwide_gross": 216600000,
+    "poster": "/259wnijEJoJLPuZuscxDTqwnypw.jpg",
+    "imdb_rating": 6.7,
+    "imdb_votes": 77197,
+    "metacritic": 74,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1273221,
+    "imdb_id": "tt32093575",
+    "title": "Scary Movie",
+    "year": "2026",
+    "genres": [
+      "Comedy",
+      "Horror"
+    ],
+    "cinema_date": "2026-06-04",
+    "worldwide_gross": 224070376,
+    "poster": "/1KlYdWoOrbL5ux357rW9LC155qw.jpg",
+    "imdb_rating": 5.2,
+    "imdb_votes": 30613,
+    "metacritic": 38,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1108427,
+    "imdb_id": "tt27419466",
+    "title": "Moana",
+    "year": "2026",
+    "genres": [
+      "Family",
+      "Fantasy",
+      "Comedy",
+      "Adventure"
+    ],
+    "cinema_date": "2026-07-08",
+    "worldwide_gross": 4500000,
+    "poster": "/zKVgiv5qHCvCLT4A2ymJi5QeXDH.jpg",
+    "imdb_rating": null,
+    "imdb_votes": null,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1315772,
+    "imdb_id": "tt32890033",
+    "title": "Minions & Monsters",
+    "year": "2026",
+    "genres": [
+      "Adventure",
+      "Animation",
+      "Comedy",
+      "Family",
+      "Fantasy"
+    ],
+    "cinema_date": "2026-06-25",
+    "worldwide_gross": 160600000,
+    "poster": "/nz7i42yhLIJ4ve9JKgM6NthoLHO.jpg",
+    "imdb_rating": 6.6,
+    "imdb_votes": 6852,
+    "metacritic": 69,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1212763,
+    "imdb_id": "tt31170389",
+    "title": "Evil Dead Burn",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Thriller"
+    ],
+    "cinema_date": "2026-07-09",
+    "worldwide_gross": 2300000,
+    "poster": "/ztadKzIIR0ERYqpHteaPFtk7inP.jpg",
+    "imdb_rating": null,
+    "imdb_votes": null,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1081003,
+    "imdb_id": "tt8814476",
+    "title": "Supergirl",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Adventure",
+      "Science Fiction"
+    ],
+    "cinema_date": "2026-06-25",
+    "worldwide_gross": 104972231,
+    "poster": "/moejGxR2haap29d9NQ7qe8x4eGj.jpg",
+    "imdb_rating": 6.1,
+    "imdb_votes": 43390,
+    "metacritic": 49,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 454639,
+    "imdb_id": "tt0427340",
+    "title": "Masters of the Universe",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Fantasy",
+      "Science Fiction"
+    ],
+    "cinema_date": "2026-06-04",
+    "worldwide_gross": 110540345,
+    "poster": "/3YMd9Ogae4rDKLWuAZFuse9xhc5.jpg",
+    "imdb_rating": 6.9,
+    "imdb_votes": 37893,
+    "metacritic": 52,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 950028,
+    "imdb_id": "tt14173636",
+    "title": "The Invite",
+    "year": "2026",
+    "genres": [
+      "Drama",
+      "Comedy"
+    ],
+    "cinema_date": "2026-07-09",
+    "worldwide_gross": 1376068,
+    "poster": "/b7Dr8Chzse8VagexAporUu2RtLx.jpg",
+    "imdb_rating": 7.8,
+    "imdb_votes": 3560,
+    "metacritic": 82,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1340206,
+    "imdb_id": "tt33296751",
+    "title": "Tuner",
+    "year": "2026",
+    "genres": [
+      "Crime",
+      "Drama",
+      "Thriller"
+    ],
+    "cinema_date": "2026-06-11",
+    "worldwide_gross": 10866039,
+    "poster": "/5OvA3i9wZs5jHu0DCrfmXlzAM67.jpg",
+    "imdb_rating": 7.5,
+    "imdb_votes": 5712,
+    "rt_critic": 94,
+    "metacritic": 75,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1284465,
+    "imdb_id": "tt32273171",
+    "title": "The Death of Robin Hood",
+    "year": "2026",
+    "genres": [
+      "Adventure",
+      "Drama",
+      "Thriller",
+      "Action"
+    ],
+    "cinema_date": "2026-06-18",
+    "worldwide_gross": 3200000,
+    "poster": "/13MmRwmG5NmaMfU8qNrtgGXisiD.jpg",
+    "imdb_rating": 7.4,
+    "imdb_votes": 143,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1375646,
+    "imdb_id": "tt34385135",
+    "title": "Colony",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Thriller",
+      "Horror"
+    ],
+    "cinema_date": "2026-06-11",
+    "worldwide_gross": null,
+    "poster": "/tN799oUR0f1gUKDYdMNrDaY7I51.jpg",
+    "imdb_rating": 7.3,
+    "imdb_votes": 357,
+    "metacritic": 52,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1671548,
+    "imdb_id": "tt41791573",
+    "title": "Dear You",
+    "year": "2026",
+    "genres": [
+      "Drama",
+      "Family",
+      "Comedy"
+    ],
+    "cinema_date": "2026-06-25",
+    "worldwide_gross": null,
+    "poster": "/rjmhzdVS3Ia535pFawju857e2Na.jpg",
+    "imdb_rating": 8.6,
+    "imdb_votes": 351,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1564614,
+    "imdb_id": "tt39143902",
+    "title": "Leviticus",
+    "year": "2026",
+    "genres": [
+      "Horror",
+      "Romance"
+    ],
+    "cinema_date": "2026-06-18",
+    "worldwide_gross": 7599675,
+    "poster": "/cu0XnXLzJGPeI0msCoJKgnEecKz.jpg",
+    "imdb_rating": 5.3,
+    "imdb_votes": 896,
+    "metacritic": 83,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1612018,
+    "imdb_id": "tt39316472",
+    "title": "Jackass: Best and Last",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Comedy",
+      "Documentary"
+    ],
+    "cinema_date": "2026-07-02",
+    "worldwide_gross": 20221210,
+    "poster": "/tfgccePxnswMqhmtxafliLlcCVR.jpg",
+    "imdb_rating": 6.7,
+    "imdb_votes": 4253,
+    "metacritic": 63,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1381027,
+    "imdb_id": "tt34381258",
+    "title": "Good Boy",
+    "year": "2026",
+    "genres": [
+      "Thriller",
+      "Drama",
+      "Mystery"
+    ],
+    "cinema_date": "2026-07-02",
+    "worldwide_gross": null,
+    "poster": "/eWb841fMkSNly5gfL9J1N0xzVYI.jpg",
+    "imdb_rating": 6.8,
+    "imdb_votes": 7563,
+    "rt_critic": 90,
+    "metacritic": 63,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 6.99,
+        "format": "SD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.99,
+        "format": "HD"
+      },
+      {
+        "service": "Amazon",
+        "type": "buy",
+        "price": 19.99,
+        "format": "SD"
+      }
+    ],
+    "status": [
+      "pvod",
+      "rental"
+    ]
+  },
+  {
+    "tmdb_id": 1363387,
+    "imdb_id": "tt35050712",
+    "title": "Saccharine",
+    "year": "2026",
+    "genres": [
+      "Horror"
+    ],
+    "cinema_date": "2026-07-09",
+    "worldwide_gross": null,
+    "poster": "/wTlqMc4Jt8ZBtHh8CREblU3ajAB.jpg",
+    "imdb_rating": 6.5,
+    "imdb_votes": 186,
+    "metacritic": 65,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1316427,
+    "imdb_id": "tt35512499",
+    "title": "7 Dogs",
+    "year": "2026",
+    "genres": [
+      "Action",
+      "Comedy"
+    ],
+    "cinema_date": "2026-06-25",
+    "worldwide_gross": null,
+    "poster": "/66n5bB6iYTWsWMz0mh3Qv7qmzIJ.jpg",
+    "imdb_rating": null,
+    "imdb_votes": null,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1335666,
+    "imdb_id": "tt16112292",
+    "title": "Glenrothan",
+    "year": "2026",
+    "genres": [
+      "Drama",
+      "Comedy"
+    ],
+    "cinema_date": "2026-06-25",
+    "worldwide_gross": 44671,
+    "poster": "/2GFSou9g6euYcgJiRnWe608aqg9.jpg",
+    "imdb_rating": 5.9,
+    "imdb_votes": 382,
+    "rt_critic": 17,
+    "metacritic": 34,
+    "offers": [],
+    "status": [
+      "in_cinema"
+    ]
+  },
+  {
+    "tmdb_id": 1400357,
+    "imdb_id": "tt34966562",
+    "title": "The Christophers",
+    "year": "2025",
+    "genres": [
+      "Crime",
+      "Comedy"
+    ],
+    "cinema_date": "2026-06-04",
+    "worldwide_gross": null,
+    "poster": "/s6oUrGMNl8hVh7fn0O8oF2rHwrM.jpg",
+    "imdb_rating": 6.8,
+    "imdb_votes": 321,
+    "rt_critic": 95,
+    "metacritic": 78,
+    "offers": [
+      {
+        "service": "Amazon",
+        "type": "rent",
+        "price": 19.98,
+        "format": "HD"
+      },
+      {
+        "service": "AppleTV",
+        "type": "rent",
+        "price": 14.99,
+        "format": "HD"
+      }
+    ],
+    "status": [
+      "in_cinema"
+    ]
+  }
+]
