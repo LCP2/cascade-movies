@@ -13,32 +13,32 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased}
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
   .phone{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
     border-left:1px solid var(--line);border-right:1px solid var(--line);position:relative;padding-bottom:40px}
-  header{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.94);backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--line);padding:14px 16px 10px}
+  header{position:sticky;top:0;z-index:30;background:rgba(14,17,22,.96);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:12px 16px 10px}
   .brandrow{display:flex;align-items:center;justify-content:space-between}
   .brand{font-size:20px;font-weight:800;letter-spacing:-.3px}
   .brand span{color:var(--accent)}
   .region{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:8px}
-  .updated{font-size:10.5px;color:var(--faint);margin-top:4px}
+  .updated{font-size:10.5px;color:var(--faint);margin-top:3px}
   .bell{position:relative;cursor:pointer;font-size:20px;background:var(--panel2);border:1px solid var(--line);
     border-radius:12px;width:40px;height:40px;display:grid;place-items:center}
   .bell .badge{position:absolute;top:-6px;right:-6px;background:var(--rt);color:#fff;font-size:10px;
     font-weight:800;min-width:18px;height:18px;border-radius:10px;display:grid;place-items:center;padding:0 4px}
-  .filtoggle{margin:12px 16px 0;display:flex;gap:8px;align-items:center}
+  .search{width:100%;margin-top:10px;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:9px 12px;font-size:14px}
+  .search::placeholder{color:var(--faint)}
+  .filtoggle{margin-top:9px;display:flex;gap:8px;align-items:center}
   .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:10px;
-    padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
+    padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;white-space:nowrap}
   .btn.active{border-color:var(--accent);color:#fff;background:rgba(124,92,255,.15)}
-  select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;
-    padding:8px 10px;font-size:13px}
-  .filters{margin:12px 16px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
-    padding:14px;display:none}
+  select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;padding:8px 10px;font-size:13px}
+  .filters{margin:10px 16px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:14px;display:none;max-height:62vh;overflow:auto}
   .filters.open{display:block}
-  .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);
-    font-weight:700;margin:14px 0 8px}
+  .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin:14px 0 8px}
   .flabel:first-child{margin-top:0}
   .chips{display:flex;flex-wrap:wrap;gap:7px}
   .chip{font-size:12px;padding:6px 11px;border-radius:20px;border:1px solid var(--line);
@@ -56,34 +56,37 @@
   .reset{margin-top:14px;font-size:12px;color:var(--dim);background:none;border:none;cursor:pointer;text-decoration:underline}
   .count{font-size:12px;color:var(--dim);margin:12px 16px 0}
   .group{margin-top:6px}
-  .grouphead{position:sticky;top:74px;z-index:10;display:flex;align-items:center;gap:8px;
-    padding:12px 16px 8px;background:rgba(14,17,22,.94);backdrop-filter:blur(8px);
-    font-size:13px;font-weight:800;letter-spacing:.2px}
+  .grouphead{display:flex;align-items:center;gap:8px;padding:12px 16px 8px;font-size:13px;font-weight:800;letter-spacing:.2px}
   .gdot{width:9px;height:9px;border-radius:50%}
   .gdot.opening_week{background:var(--open)} .gdot.in_cinema{background:var(--amber)}
   .gdot.pvod{background:var(--purple)} .gdot.rental{background:var(--blue)}
   .gdot.included_streaming{background:var(--green)} .gdot.upcoming{background:var(--grey)}
   .gcount{color:var(--faint);font-weight:700}
   .list{padding:0 16px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px;transition:opacity .15s}
+  .card.watched{opacity:.55}
   .top{display:flex;justify-content:space-between;gap:10px}
   .title{font-size:16px;font-weight:750;line-height:1.2}
   .cert{display:inline-block;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;
     border:1px solid #5b6472;color:#d6dce6;background:#232a35;margin-right:7px;vertical-align:middle;letter-spacing:.3px}
-  .cert.MA15\+,.cert.R18\+,.cert.X18\+{border-color:#c0563f;color:#ffb9a6;background:rgba(192,86,63,.16)}
+  .cert.mature{border-color:#c0563f;color:#ffb9a6;background:rgba(192,86,63,.16)}
   .meta{font-size:12px;color:var(--dim);margin-top:5px}
   .culttag{color:var(--faint)}
-  .synopsis{font-size:12.5px;color:#c4ccd6;line-height:1.5;margin:9px 0 0;
+  .synopsis{font-size:12.5px;color:#c4ccd6;line-height:1.5;margin:9px 0 0;cursor:pointer;
     display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
-  .tagbtn{flex-shrink:0;width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
-    background:var(--panel2);cursor:pointer;font-size:18px;display:grid;place-items:center}
-  .tagbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent)}
+  .synopsis.expanded{-webkit-line-clamp:unset;display:block}
+  .actions{display:flex;flex-direction:column;gap:6px}
+  .actbtn{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
+    cursor:pointer;font-size:16px;display:grid;place-items:center;line-height:1}
+  .actbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent)}
+  .actbtn.onw{background:rgba(72,199,142,.2);border-color:var(--green)}
+  .actbtn.onb{background:rgba(250,108,60,.2);border-color:var(--rt)}
   .ratings{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;align-items:center}
   .rb{font-size:11px;font-weight:700;padding:4px 8px;border-radius:7px;display:flex;gap:5px;align-items:center;
     background:var(--panel2);border:1px solid var(--line)}
   .rb b{font-size:12px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.gross b{color:#9fe6c4}
-  .award{font-size:15px;line-height:1;cursor:default}
+  .award{font-size:15px;line-height:1;cursor:pointer}
   .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
   .pill{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid}
   .pill.opening_week{background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.55);color:#ffc2c2}
@@ -128,7 +131,7 @@
   .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:60;
     background:#111722;border:1px solid var(--accent);color:#fff;padding:12px 16px;border-radius:12px;
     font-size:13px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;
-    transition:all .25s ease;max-width:400px}
+    transition:all .25s ease;max-width:420px;text-align:center;line-height:1.4}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 </style>
 </head>
@@ -143,20 +146,20 @@
       </div>
       <div class="bell" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
     </div>
+    <input id="search" class="search" type="search" placeholder="🔍  Search titles…" autocomplete="off">
+    <div class="filtoggle">
+      <button class="btn" id="filterBtn">⚙︎ Filters</button>
+      <button class="btn" id="trackedBtn">☆ Tracked</button>
+      <div style="flex:1"></div>
+      <select id="sort">
+        <option value="imdb">IMDb ▾</option>
+        <option value="rt">RT critic</option>
+        <option value="gross">Box office</option>
+        <option value="cinema">Newest cinema</option>
+        <option value="title">Title A–Z</option>
+      </select>
+    </div>
   </header>
-
-  <div class="filtoggle">
-    <button class="btn" id="filterBtn">⚙︎ Filters</button>
-    <button class="btn" id="trackedBtn">☆ Tracked</button>
-    <div style="flex:1"></div>
-    <select id="sort">
-      <option value="imdb">Within group: IMDb ▾</option>
-      <option value="rt">Within group: RT critic</option>
-      <option value="gross">Within group: Box office</option>
-      <option value="cinema">Within group: Newest cinema</option>
-      <option value="title">Within group: Title A–Z</option>
-    </select>
-  </div>
 
   <div class="filters" id="filters">
     <div class="flabel">Availability status</div>
@@ -167,8 +170,12 @@
     <div class="chips" id="ageChips"></div>
     <div class="flabel">Culture</div>
     <div class="chips" id="cultureChips"></div>
+    <div class="flabel">Language</div>
+    <div class="chips" id="langChips"></div>
     <div class="flabel">Genre</div>
     <div class="chips" id="genreChips"></div>
+    <div class="flabel">View</div>
+    <div class="chips" id="viewChips"></div>
     <div class="flabel">Minimum IMDb rating</div>
     <div class="slider"><input type="range" id="imdbMin" min="0" max="10" step="0.1" value="0"><div class="val" id="imdbVal">Any</div></div>
     <div class="flabel">Minimum Rotten Tomatoes (critic)</div>
@@ -211,10 +218,17 @@ const STATUS_LABEL = {
 };
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const FMT_RANK = {SD:1, HD:2, "4K":3};
+const MATURE = new Set(["MA15+","MA 15+","R18+","R 18+","X18+","X 18+"]);
+const LANG_NAMES = {en:"English",ja:"Japanese",ko:"Korean",zh:"Chinese",cn:"Chinese",yue:"Cantonese",
+  hi:"Hindi",ta:"Tamil",te:"Telugu",ml:"Malayalam",kn:"Kannada",bn:"Bengali",mr:"Marathi",pa:"Punjabi",
+  fr:"French",de:"German",it:"Italian",es:"Spanish",pt:"Portuguese",ru:"Russian",sv:"Swedish",
+  th:"Thai",id:"Indonesian",vi:"Vietnamese",tl:"Tagalog",nl:"Dutch",da:"Danish",no:"Norwegian",fi:"Finnish",pl:"Polish",tr:"Turkish"};
+const langName = c => LANG_NAMES[c] || (c ? c.toUpperCase() : "Unknown");
 
 function addDays(iso, n){ const d=new Date(iso+"T00:00:00Z"); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10); }
 function fmtDate(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${MONTHS[+m-1]} ${d} ${y.slice(2)}`; }
 function yearOf(m){ return (m.cinema_date||m.year||"").slice(0,4); }
+function esc(s){ return (s||"").replace(/</g,"&lt;"); }
 
 function deriveStatus(m){
   const o = m.offers||[]; const s = new Set();
@@ -248,53 +262,63 @@ function dedupOffers(offers){
 }
 const TYPE_LABEL={sub:"Stream",free:"Free",rent:"Rent",buy:"Buy"};
 
-const tracked=new Set(), alerts=[];
-const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), genre:new Set(), imdb:0, rt:0, gross:0, trackedOnly:false, sort:"imdb"};
+// ---- persisted user state (localStorage, with graceful fallback) ----
+function loadSet(k){ try{ return new Set(JSON.parse(localStorage.getItem(k)||"[]")); }catch(e){ return new Set(); } }
+function saveSet(k,set){ try{ localStorage.setItem(k, JSON.stringify([...set])); }catch(e){} }
+const tracked = loadSet("cascade_tracked");
+const watched = loadSet("cascade_watched");
+const blocked = loadSet("cascade_blocked");
+const alerts=[];
+const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
+  imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, sort:"imdb"};
 const $=id=>document.getElementById(id);
 
 $("updated").textContent = "Live AU data · updated " + fmtDate(TODAY);
 
+// ---- filter chips ----
+function addChips(el, values, set, cls, label){
+  values.forEach(v=>{
+    const c=document.createElement("div"); c.className="chip "+cls; c.textContent=label?label(v):v;
+    c.onclick=()=>{c.classList.toggle("on"); set.has(v)?set.delete(v):set.add(v); render();};
+    $(el).appendChild(c);
+  });
+}
 CASCADE.filter(s=>s!=="upcoming").forEach(s=>{
   const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s];
-  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.status,s); render();};
+  c.onclick=()=>{c.classList.toggle("on"); filt.status.has(s)?filt.status.delete(s):filt.status.add(s); render();};
   $("statusChips").appendChild(c);
 });
-[...new Set(MOVIES.map(yearOf).filter(Boolean))].sort().reverse().forEach(y=>{
-  const c=document.createElement("div"); c.className="chip yr"; c.textContent=y;
-  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.year,y); render();};
-  $("yearChips").appendChild(c);
+addChips("yearChips", [...new Set(MOVIES.map(yearOf).filter(Boolean))].sort().reverse(), filt.year, "yr");
+const AGE_ORDER=["G","PG","M","MA15+","MA 15+","R18+","R 18+","X18+","X 18+"];
+addChips("ageChips",
+  [...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))].sort((a,b)=>{
+    const ia=AGE_ORDER.indexOf(a),ib=AGE_ORDER.indexOf(b); return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}),
+  filt.age, "yr");
+addChips("cultureChips", [...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].sort(), filt.culture, "yr");
+addChips("langChips", [...new Set(MOVIES.map(m=>m.language).filter(Boolean))].sort((a,b)=>langName(a).localeCompare(langName(b))),
+  filt.lang, "yr", langName);
+addChips("genreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), filt.genre, "gen");
+// view toggles
+[["Hide watched","hideWatched"],["Show hidden","showHidden"]].forEach(([lbl,key])=>{
+  const c=document.createElement("div"); c.className="chip"; c.textContent=lbl;
+  c.onclick=()=>{c.classList.toggle("on"); filt[key]=!filt[key]; render();};
+  $("viewChips").appendChild(c);
 });
-const AGE_ORDER=["G","PG","M","MA15+","R18+","X18+"];
-const ages=[...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))]
-  .sort((a,b)=>{const ia=AGE_ORDER.indexOf(a),ib=AGE_ORDER.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);});
-ages.forEach(a=>{
-  const c=document.createElement("div"); c.className="chip yr"; c.textContent=a;
-  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.age,a); render();};
-  $("ageChips").appendChild(c);
-});
-[...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].sort().forEach(cu=>{
-  const c=document.createElement("div"); c.className="chip yr"; c.textContent=cu;
-  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.culture,cu); render();};
-  $("cultureChips").appendChild(c);
-});
-[...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort().forEach(g=>{
-  const c=document.createElement("div"); c.className="chip gen"; c.textContent=g;
-  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.genre,g); render();};
-  $("genreChips").appendChild(c);
-});
-function toggle(set,v){ set.has(v)?set.delete(v):set.add(v); }
 
+// ---- controls ----
 $("filterBtn").onclick=()=>{$("filters").classList.toggle("open");$("filterBtn").classList.toggle("active");};
 $("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
+$("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();render();};
 $("imdbMin").oninput=e=>{filt.imdb=+e.target.value;$("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";render();};
 $("rtMin").oninput=e=>{filt.rt=+e.target.value;$("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";render();};
 $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
 $("resetBtn").onclick=()=>{
-  filt.status.clear();filt.year.clear();filt.age.clear();filt.culture.clear();filt.genre.clear();filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;
+  ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
+  filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;filt.search="";
   document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
   $("imdbMin").value=0;$("rtMin").value=0;$("grossMin").value=0;$("imdbVal").textContent="Any";$("rtVal").textContent="Any";
-  $("trackedBtn").classList.remove("active");render();
+  $("search").value="";$("trackedBtn").classList.remove("active");render();
 };
 
 $("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);renderAlerts();};
@@ -307,17 +331,24 @@ function money(n){ if(n==null)return "—";
   if(n>=1e9)return "$"+(n/1e9).toFixed(1)+"B"; if(n>=1e6)return "$"+(n/1e6).toFixed(0)+"M";
   if(n>=1e3)return "$"+(n/1e3).toFixed(0)+"K"; return "$"+n; }
 function awardIcon(m){
-  if(m.award==="won") return `<span class="award" title="Won an Academy Award">🏆</span>`;
-  if(m.award==="nominated") return `<span class="award" title="Oscar-nominated">🎖️</span>`;
-  return "";
+  if(!m.award) return "";
+  const ico = m.award==="won" ? "🏆" : "🎖️";
+  return `<span class="award" onclick="showAward(${m.tmdb_id})" title="Tap for award details">${ico}</span>`;
 }
+window.showAward=id=>{ const m=MOVIES.find(x=>x.tmdb_id===id);
+  toast(m && m.award_text ? m.award_text : (m&&m.award==="won"?"Academy Award winner":"Oscar-nominated")); };
 
 function passes(m){
-  if(filt.trackedOnly && !tracked.has(m.tmdb_id)) return false;
+  const id=m.tmdb_id;
+  if(blocked.has(id) && !filt.showHidden) return false;
+  if(filt.trackedOnly && !tracked.has(id)) return false;
+  if(filt.hideWatched && watched.has(id)) return false;
+  if(filt.search && !m.title.toLowerCase().includes(filt.search)) return false;
   if(filt.status.size && !filt.status.has(primaryStatus(m))) return false;
   if(filt.year.size && !filt.year.has(yearOf(m))) return false;
   if(filt.age.size && !filt.age.has(m.age_rating)) return false;
   if(filt.culture.size && !filt.culture.has(m.culture)) return false;
+  if(filt.lang.size && !filt.lang.has(m.language)) return false;
   if(filt.genre.size && !(m.genres||[]).some(g=>filt.genre.has(g))) return false;
   if((m.imdb_rating||0) < filt.imdb) return false;
   if((m.rt_critic||0) < filt.rt) return false;
@@ -334,7 +365,7 @@ function sortMovies(a,b){
   }
 }
 function cardHTML(m){
-  const on=tracked.has(m.tmdb_id);
+  const id=m.tmdb_id;
   const rb=[`<div class="rb imdb">IMDb <b>${m.imdb_rating!=null?m.imdb_rating.toFixed(1):"—"}</b></div>`];
   const ai=awardIcon(m); if(ai) rb.push(ai);
   if(m.rt_critic!=null) rb.push(`<div class="rb rt">🍅 <b>${m.rt_critic}%</b></div>`);
@@ -348,14 +379,19 @@ function cardHTML(m){
     <div class="wtw">${offers.map(o=>`<div class="wtwrow">
       <span class="svc"><span class="tt ${o.type}">${TYPE_LABEL[o.type]||o.type}</span>${o.service}</span>
       <span class="off">${o.price!=null?"$"+o.price.toFixed(2):""}${o.fmt?" · "+o.fmt:""}</span></div>`).join("")}</div>` : "";
-  const syn = m.synopsis ? `<p class="synopsis">${m.synopsis.replace(/</g,"&lt;")}</p>` : "";
-  const cert = m.age_rating ? `<span class="cert ${m.age_rating}">${m.age_rating}</span>` : "";
+  const syn = m.synopsis ? `<p class="synopsis" onclick="this.classList.toggle('expanded')" title="Tap to expand">${esc(m.synopsis)}</p>` : "";
+  const cert = m.age_rating ? `<span class="cert ${MATURE.has(m.age_rating)?'mature':''}">${m.age_rating}</span>` : "";
   const cult = m.culture ? ` · <span class="culttag">${m.culture}</span>` : "";
-  return `<div class="card">
+  const isW=watched.has(id), isB=blocked.has(id);
+  return `<div class="card ${isW?'watched':''}">
     <div class="top">
       <div><div class="title">${m.title}</div>
         <div class="meta">${cert}${m.cinema_date?fmtDate(m.cinema_date)+" · ":""}${(m.genres||[]).join(", ")}${cult}</div></div>
-      <button class="tagbtn ${on?'on':''}" onclick="toggleTag(${m.tmdb_id})" title="Tag for alerts">${on?'🔔':'☆'}</button>
+      <div class="actions">
+        <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
+        <button class="actbtn ${isW?'onw':''}" onclick="toggleWatched(${id})" title="Mark as watched">${isW?'✅':'👁'}</button>
+        <button class="actbtn ${isB?'onb':''}" onclick="toggleBlocked(${id})" title="Not interested — hide this">🚫</button>
+      </div>
     </div>
     ${syn}
     <div class="ratings">${rb.join("")}</div>
@@ -363,8 +399,17 @@ function cardHTML(m){
     ${wtw}
   </div>`;
 }
+function activeCount(){
+  let n=filt.status.size+filt.year.size+filt.age.size+filt.culture.size+filt.lang.size+filt.genre.size;
+  if(filt.imdb)n++; if(filt.rt)n++; if(filt.gross)n++; if(filt.trackedOnly)n++;
+  if(filt.hideWatched)n++; if(filt.showHidden)n++; if(filt.search)n++;
+  return n;
+}
 function render(){
   const rows=MOVIES.filter(passes);
+  const n=activeCount();
+  $("filterBtn").textContent = "⚙︎ Filters" + (n?` (${n})`:"");
+  $("filterBtn").classList.toggle("active", n>0 || $("filters").classList.contains("open"));
   $("count").textContent=`${rows.length} of ${MOVIES.length} titles`;
   const wrap=$("groups");
   if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
@@ -378,9 +423,21 @@ function render(){
   wrap.innerHTML=html;
 }
 window.toggleTag=id=>{
-  tracked.has(id)?tracked.delete(id):tracked.add(id);
+  tracked.has(id)?tracked.delete(id):tracked.add(id); saveSet("cascade_tracked",tracked);
   const m=MOVIES.find(x=>x.tmdb_id===id);
   toast(tracked.has(id)?`🔔 Tracking “${m.title}” — you'll be alerted on changes`:`☆ Stopped tracking “${m.title}”`);
+  render();
+};
+window.toggleWatched=id=>{
+  watched.has(id)?watched.delete(id):watched.add(id); saveSet("cascade_watched",watched);
+  const m=MOVIES.find(x=>x.tmdb_id===id);
+  toast(watched.has(id)?`✅ Marked “${m.title}” watched`:`Unmarked “${m.title}”`);
+  render();
+};
+window.toggleBlocked=id=>{
+  blocked.has(id)?blocked.delete(id):blocked.add(id); saveSet("cascade_blocked",blocked);
+  const m=MOVIES.find(x=>x.tmdb_id===id);
+  toast(blocked.has(id)?`🚫 Hidden “${m.title}” — see it again via Filters → Show hidden`:`Restored “${m.title}”`);
   render();
 };
 
@@ -424,7 +481,7 @@ function renderAlerts(){
     <div class="d">Now in a new window${a.services.length?" on "+a.services.join(", "):""} · day ${a.day}</div>
     <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">→ ${a.label}</span></div>`).join("");
 }
-let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2600);}
+let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200);}
 
 render();
 </script>
