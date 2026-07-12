@@ -94,7 +94,7 @@ def ingest_tmdb() -> list[dict]:
                 continue
             seen.add(m["id"])
             detail = get_json(
-                f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates"
+                f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates,videos"
             )
             cinema_date, age_rating = None, None
             for entry in detail.get("release_dates", {}).get("results", []):
@@ -107,6 +107,9 @@ def ingest_tmdb() -> list[dict]:
                             age_rating = cert
             lang = detail.get("original_language")
             countries = [c["iso_3166_1"] for c in detail.get("production_countries", [])]
+            vids = (detail.get("videos") or {}).get("results", [])
+            trailers = [v["key"] for v in vids
+                        if v.get("site") == "YouTube" and v.get("type") in ("Trailer", "Teaser") and v.get("key")][:4]
             movies.append({
                 "tmdb_id": detail["id"],
                 "imdb_id": detail.get("imdb_id"),
@@ -121,6 +124,7 @@ def ingest_tmdb() -> list[dict]:
                 "language": lang,
                 "culture": _culture(lang, countries),
                 "poster": detail.get("poster_path"),
+                "trailers": trailers,
             })
             if len(movies) >= MAX_TITLES:
                 break
