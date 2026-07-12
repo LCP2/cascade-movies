@@ -3,38 +3,37 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cascade — AU Movie Release Tracker (POC)</title>
+<title>Cascade — AU Movie Release Tracker</title>
 <style>
   :root{
     --bg:#0e1116; --panel:#171b22; --panel2:#1e232c; --line:#2a303b;
     --ink:#e8ecf2; --dim:#9aa4b2; --faint:#6b7280;
-    --amber:#f0a336; --purple:#a486f0; --blue:#5aa9f0; --green:#48c78e; --grey:#6b7280;
+    --open:#ff6b6b; --amber:#f0a336; --purple:#a486f0; --blue:#5aa9f0; --green:#48c78e; --grey:#6b7280;
     --imdb:#f5c518; --rt:#fa6c3c; --meta:#66cc33; --accent:#7c5cff;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     -webkit-font-smoothing:antialiased}
-  .phone{max-width:460px;margin:0 auto;min-height:100vh;background:var(--bg);
+  .phone{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
     border-left:1px solid var(--line);border-right:1px solid var(--line);position:relative;padding-bottom:40px}
-  header{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.92);backdrop-filter:blur(8px);
+  header{position:sticky;top:0;z-index:20;background:rgba(14,17,22,.94);backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);padding:14px 16px 10px}
   .brandrow{display:flex;align-items:center;justify-content:space-between}
   .brand{font-size:20px;font-weight:800;letter-spacing:-.3px}
   .brand span{color:var(--accent)}
   .region{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:8px}
+  .updated{font-size:10.5px;color:var(--faint);margin-top:4px}
   .bell{position:relative;cursor:pointer;font-size:20px;background:var(--panel2);border:1px solid var(--line);
     border-radius:12px;width:40px;height:40px;display:grid;place-items:center}
   .bell .badge{position:absolute;top:-6px;right:-6px;background:var(--rt);color:#fff;font-size:10px;
     font-weight:800;min-width:18px;height:18px;border-radius:10px;display:grid;place-items:center;padding:0 4px}
-  .sample{margin-top:10px;font-size:11px;color:#ffcf8a;background:rgba(240,163,54,.1);
-    border:1px solid rgba(240,163,54,.35);border-radius:8px;padding:6px 10px;line-height:1.4}
-  .count{font-size:12px;color:var(--dim);margin:12px 16px 0}
-  /* filters */
-  .filtoggle{margin:12px 16px 0;display:flex;gap:8px}
+  .filtoggle{margin:12px 16px 0;display:flex;gap:8px;align-items:center}
   .btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:10px;
     padding:8px 12px;font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px}
   .btn.active{border-color:var(--accent);color:#fff;background:rgba(124,92,255,.15)}
+  select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;
+    padding:8px 10px;font-size:13px}
   .filters{margin:12px 16px 0;background:var(--panel);border:1px solid var(--line);border-radius:14px;
     padding:14px;display:none}
   .filters.open{display:block}
@@ -45,47 +44,69 @@
   .chip{font-size:12px;padding:6px 11px;border-radius:20px;border:1px solid var(--line);
     background:var(--panel2);color:var(--dim);cursor:pointer;user-select:none;font-weight:600}
   .chip.on{color:#fff}
+  .chip.on.st-opening_week{background:rgba(255,107,107,.22);border-color:var(--open);color:#ffc2c2}
   .chip.on.st-in_cinema{background:rgba(240,163,54,.22);border-color:var(--amber);color:#ffce8f}
   .chip.on.st-pvod{background:rgba(164,134,240,.22);border-color:var(--purple);color:#d3c2ff}
   .chip.on.st-rental{background:rgba(90,169,240,.2);border-color:var(--blue);color:#bcdcff}
   .chip.on.st-included_streaming{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
-  .chip.on.gen{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  .chip.on.gen,.chip.on.yr{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
   .slider{display:flex;align-items:center;gap:10px}
   .slider input{flex:1;accent-color:var(--accent)}
   .slider .val{font-size:13px;font-weight:700;min-width:44px;text-align:right}
-  select{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:9px;
-    padding:8px 10px;font-size:13px;width:100%}
   .reset{margin-top:14px;font-size:12px;color:var(--dim);background:none;border:none;cursor:pointer;text-decoration:underline}
-  /* cards */
-  .list{padding:8px 16px 0}
+  .count{font-size:12px;color:var(--dim);margin:12px 16px 0}
+  .group{margin-top:6px}
+  .grouphead{position:sticky;top:74px;z-index:10;display:flex;align-items:center;gap:8px;
+    padding:12px 16px 8px;background:rgba(14,17,22,.94);backdrop-filter:blur(8px);
+    font-size:13px;font-weight:800;letter-spacing:.2px}
+  .gdot{width:9px;height:9px;border-radius:50%}
+  .gdot.opening_week{background:var(--open)} .gdot.in_cinema{background:var(--amber)}
+  .gdot.pvod{background:var(--purple)} .gdot.rental{background:var(--blue)}
+  .gdot.included_streaming{background:var(--green)} .gdot.upcoming{background:var(--grey)}
+  .gcount{color:var(--faint);font-weight:700}
+  .list{padding:0 16px}
   .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:12px}
   .top{display:flex;justify-content:space-between;gap:10px}
   .title{font-size:16px;font-weight:750;line-height:1.2}
   .meta{font-size:12px;color:var(--dim);margin-top:3px}
+  .synopsis{font-size:12.5px;color:#c4ccd6;line-height:1.5;margin:9px 0 0;
+    display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .tagbtn{flex-shrink:0;width:38px;height:38px;border-radius:11px;border:1px solid var(--line);
     background:var(--panel2);cursor:pointer;font-size:18px;display:grid;place-items:center}
   .tagbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent)}
-  .ratings{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap}
+  .ratings{display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;align-items:center}
   .rb{font-size:11px;font-weight:700;padding:4px 8px;border-radius:7px;display:flex;gap:5px;align-items:center;
     background:var(--panel2);border:1px solid var(--line)}
   .rb b{font-size:12px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.gross b{color:#9fe6c4}
+  .award{font-size:15px;line-height:1;cursor:default}
   .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
   .pill{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid}
+  .pill.opening_week{background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.55);color:#ffc2c2}
   .pill.in_cinema{background:rgba(240,163,54,.14);border-color:rgba(240,163,54,.5);color:#ffce8f}
   .pill.pvod{background:rgba(164,134,240,.14);border-color:rgba(164,134,240,.5);color:#d3c2ff}
   .pill.rental{background:rgba(90,169,240,.13);border-color:rgba(90,169,240,.5);color:#bcdcff}
   .pill.included_streaming{background:rgba(72,199,142,.13);border-color:rgba(72,199,142,.5);color:#a7eccb}
   .pill.upcoming{background:rgba(107,114,128,.15);border-color:rgba(107,114,128,.5);color:#c2c9d4}
-  .svc{font-size:11px;color:var(--dim);margin-top:9px;line-height:1.5}
-  .svc b{color:var(--ink);font-weight:600}
+  .wtw-toggle{margin-top:11px;width:100%;text-align:left;background:var(--panel2);border:1px solid var(--line);
+    color:var(--dim);border-radius:9px;padding:8px 11px;font-size:12px;font-weight:600;cursor:pointer;
+    display:flex;justify-content:space-between;align-items:center}
+  .wtw-toggle .chev{transition:transform .18s}
+  .wtw-toggle.open .chev{transform:rotate(180deg)}
+  .wtw{display:none;margin-top:8px;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+  .wtw.open{display:block}
+  .wtwrow{display:flex;justify-content:space-between;gap:8px;padding:8px 11px;font-size:12px;border-top:1px solid var(--line)}
+  .wtwrow:first-child{border-top:none}
+  .wtwrow .svc{font-weight:600;color:var(--ink)}
+  .wtwrow .off{color:var(--dim);white-space:nowrap}
+  .tt{font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;margin-right:6px}
+  .tt.sub{background:rgba(72,199,142,.16);color:#a7eccb} .tt.free{background:rgba(72,199,142,.16);color:#a7eccb}
+  .tt.rent{background:rgba(90,169,240,.16);color:#bcdcff} .tt.buy{background:rgba(164,134,240,.16);color:#d3c2ff}
   .empty{color:var(--dim);text-align:center;padding:40px 20px;font-size:14px}
-  /* alerts drawer */
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:none}
   .overlay.open{display:block}
   .drawer{position:absolute;top:0;right:0;height:100%;width:88%;max-width:400px;background:var(--panel);
-    border-left:1px solid var(--line);transform:translateX(100%);transition:transform .22s ease;
-    display:flex;flex-direction:column}
+    border-left:1px solid var(--line);transform:translateX(100%);transition:transform .22s ease;display:flex;flex-direction:column}
   .drawer.open{transform:translateX(0)}
   .dhead{padding:16px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center}
   .dhead h3{margin:0;font-size:16px}
@@ -93,15 +114,13 @@
   .sim{margin:14px 16px;padding:12px;background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(72,199,142,.12));
     border:1px solid var(--accent);border-radius:12px}
   .sim p{margin:0 0 10px;font-size:12.5px;color:var(--dim);line-height:1.5}
-  .sim button{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px;
-    font-size:14px;font-weight:700;cursor:pointer}
+  .sim button{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer}
   .alerts{overflow-y:auto;padding:4px 16px 20px}
   .alert{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:10px}
   .alert .t{font-size:14px;font-weight:700}
   .alert .d{font-size:12px;color:var(--dim);margin-top:4px}
   .alert .w{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:7px}
   .noalert{color:var(--faint);font-size:13px;text-align:center;padding:30px 10px}
-  /* toast */
   .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:60;
     background:#111722;border:1px solid var(--accent);color:#fff;padding:12px 16px;border-radius:12px;
     font-size:13px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;
@@ -113,60 +132,57 @@
 <div class="phone">
   <header>
     <div class="brandrow">
-      <div><span style="font-size:20px">🎬</span> <span class="brand">Cas<span>cade</span></span>
-        <span class="region">📍 AU</span></div>
+      <div>
+        <span style="font-size:20px">🎬</span> <span class="brand">Cas<span>cade</span></span>
+        <span class="region">📍 AU</span>
+        <div class="updated" id="updated"></div>
+      </div>
       <div class="bell" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
     </div>
-    <div class="sample">⚠️ <b>Illustrative sample data</b> — invented titles &amp; placeholder figures.
-      Add TMDB/OMDb/Watchmode keys to the pipeline for live AU data.</div>
   </header>
 
   <div class="filtoggle">
     <button class="btn" id="filterBtn">⚙︎ Filters</button>
-    <button class="btn" id="trackedBtn">☆ Tracked only</button>
+    <button class="btn" id="trackedBtn">☆ Tracked</button>
     <div style="flex:1"></div>
-    <select id="sort" style="width:auto">
-      <option value="imdb">Sort: IMDb ▾</option>
-      <option value="rt">Sort: RT critic</option>
-      <option value="gross">Sort: Box office</option>
-      <option value="title">Sort: Title A–Z</option>
-      <option value="cinema">Sort: Newest cinema</option>
+    <select id="sort">
+      <option value="imdb">Within group: IMDb ▾</option>
+      <option value="rt">Within group: RT critic</option>
+      <option value="gross">Within group: Box office</option>
+      <option value="cinema">Within group: Newest cinema</option>
+      <option value="title">Within group: Title A–Z</option>
     </select>
   </div>
 
   <div class="filters" id="filters">
     <div class="flabel">Availability status</div>
     <div class="chips" id="statusChips"></div>
+    <div class="flabel">Release year</div>
+    <div class="chips" id="yearChips"></div>
     <div class="flabel">Genre</div>
     <div class="chips" id="genreChips"></div>
     <div class="flabel">Minimum IMDb rating</div>
-    <div class="slider"><input type="range" id="imdbMin" min="0" max="10" step="0.1" value="0">
-      <div class="val" id="imdbVal">Any</div></div>
+    <div class="slider"><input type="range" id="imdbMin" min="0" max="10" step="0.1" value="0"><div class="val" id="imdbVal">Any</div></div>
     <div class="flabel">Minimum Rotten Tomatoes (critic)</div>
-    <div class="slider"><input type="range" id="rtMin" min="0" max="100" step="1" value="0">
-      <div class="val" id="rtVal">Any</div></div>
+    <div class="slider"><input type="range" id="rtMin" min="0" max="100" step="1" value="0"><div class="val" id="rtVal">Any</div></div>
     <div class="flabel">Minimum worldwide box office</div>
-    <select id="grossMin">
-      <option value="0">Any</option>
-      <option value="10000000">$10M+</option>
-      <option value="50000000">$50M+</option>
-      <option value="100000000">$100M+</option>
-      <option value="250000000">$250M+</option>
+    <select id="grossMin" style="width:100%">
+      <option value="0">Any</option><option value="10000000">$10M+</option>
+      <option value="50000000">$50M+</option><option value="100000000">$100M+</option><option value="250000000">$250M+</option>
     </select>
     <br><button class="reset" id="resetBtn">Reset all filters</button>
   </div>
 
   <div class="count" id="count"></div>
-  <div class="list" id="list"></div>
+  <div id="groups"></div>
 </div>
 
-<!-- alerts drawer -->
 <div class="overlay" id="overlay">
   <div class="drawer" id="drawer">
     <div class="dhead"><h3>🔔 Alerts</h3><button class="close" id="closeDrawer">×</button></div>
     <div class="sim">
-      <p>Tag movies with the ☆ button, then run a daily poll. When a tagged title's
-         availability changes, you get an alert — exactly what the backend's diff engine does each night.</p>
+      <p>Tag titles with ☆, then run a daily poll. When a tagged film moves to a new
+         availability window you get an alert — exactly what the backend's diff engine does each night.</p>
       <button id="simBtn">▶ Simulate next daily poll</button>
     </div>
     <div class="alerts" id="alertsList"></div>
@@ -176,13 +192,21 @@
 
 <script>
 const MOVIES = __MOVIES_JSON__;
+const TODAY  = "__TODAY__";
 
-// ---- window model (mirrors poc_pipeline.py derive_status / _window_of) ----
-const PVOD_MIN = 19.99, RENTAL_MAX = 9.99;
-const TODAY = "__TODAY__";
-const STATUS_LABEL = {upcoming:"Upcoming", in_cinema:"In Cinema",
-  pvod:"Premium Buy/Rent (~$30)", rental:"Standard Rental (~$7)", included_streaming:"Included Streaming"};
-const STATUS_ORDER = ["in_cinema","pvod","rental","included_streaming","upcoming"];
+const PVOD_MIN = 19.99, RENTAL_MAX = 9.99, OPENING_WEEK_DAYS = 7;
+const CASCADE = ["opening_week","in_cinema","pvod","rental","included_streaming","upcoming"];
+const STATUS_LABEL = {
+  opening_week:"In Cinema · Opening week", in_cinema:"In Cinema",
+  pvod:"Premium Buy/Rent (~$30)", rental:"Standard Rental (~$7)",
+  included_streaming:"Included Streaming", upcoming:"Upcoming"
+};
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const FMT_RANK = {SD:1, HD:2, "4K":3};
+
+function addDays(iso, n){ const d=new Date(iso+"T00:00:00Z"); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10); }
+function fmtDate(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${MONTHS[+m-1]} ${d} ${y.slice(2)}`; }
+function yearOf(m){ return (m.cinema_date||m.year||"").slice(0,4); }
 
 function deriveStatus(m){
   const o = m.offers||[]; const s = new Set();
@@ -191,43 +215,54 @@ function deriveStatus(m){
   const buys  = o.filter(x=>x.type==="buy"&&x.price!=null).map(x=>x.price);
   const cheapestRent = rents.length?Math.min(...rents):null;
   const dearestBuy   = buys.length?Math.max(...buys):null;
-  if(m.cinema_date && m.cinema_date<=TODAY && o.length===0) s.add("in_cinema");
+  const cd = m.cinema_date, released = cd && cd<=TODAY;
+  if(!o.length && released){
+    if(cd >= addDays(TODAY,-OPENING_WEEK_DAYS)) s.add("opening_week"); else s.add("in_cinema");
+  }
   if(!hasSub && ((dearestBuy!=null&&dearestBuy>=PVOD_MIN)||(cheapestRent!=null&&cheapestRent>=PVOD_MIN))) s.add("pvod");
   if(cheapestRent!=null && cheapestRent<=RENTAL_MAX) s.add("rental");
   if(hasSub) s.add("included_streaming");
-  if(s.size===0) s.add(m.cinema_date && m.cinema_date<=TODAY ? "in_cinema":"upcoming");
-  return STATUS_ORDER.filter(x=>s.has(x));
+  if(s.size===0) s.add(released?"in_cinema":"upcoming");
+  return CASCADE.filter(x=>s.has(x));
 }
-function windowOf(offer){
-  if(offer.type==="sub"||offer.type==="free") return "included_streaming";
-  if(offer.type==="buy") return "pvod";
-  if(offer.type==="rent") return (offer.price!=null&&offer.price<=RENTAL_MAX)?"rental":"pvod";
-  return "";
-}
+const primaryStatus = m => m.status[m.status.length-1];
 MOVIES.forEach(m=>m.status=deriveStatus(m));
 
-// ---- state ----
-const tracked = new Set();
-const alerts = [];
-const filt = {status:new Set(), genre:new Set(), imdb:0, rt:0, gross:0, trackedOnly:false, sort:"imdb"};
+function dedupOffers(offers){
+  const map=new Map();
+  (offers||[]).forEach(o=>{
+    const key=o.service+"|"+o.type+"|"+(o.price==null?"":o.price);
+    if(!map.has(key)) map.set(key,{service:o.service,type:o.type,price:o.price,fmt:o.format});
+    else { const e=map.get(key); if((FMT_RANK[o.format]||0)>(FMT_RANK[e.fmt]||0)) e.fmt=o.format; }
+  });
+  const tOrder={sub:0,free:1,rent:2,buy:3};
+  return [...map.values()].sort((a,b)=> (tOrder[a.type]-tOrder[b.type]) || ((a.price||0)-(b.price||0)) || a.service.localeCompare(b.service));
+}
+const TYPE_LABEL={sub:"Stream",free:"Free",rent:"Rent",buy:"Buy"};
 
-// ---- build filter chips ----
-const statusChips = document.getElementById("statusChips");
-STATUS_ORDER.filter(s=>s!=="upcoming").forEach(s=>{
-  const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s];
-  c.onclick=()=>{c.classList.toggle("on"); filt.status.has(s)?filt.status.delete(s):filt.status.add(s); render();};
-  statusChips.appendChild(c);
-});
-const allGenres=[...new Set(MOVIES.flatMap(m=>m.genres))].sort();
-const genreChips=document.getElementById("genreChips");
-allGenres.forEach(g=>{
-  const c=document.createElement("div"); c.className="chip gen"; c.textContent=g;
-  c.onclick=()=>{c.classList.toggle("on"); filt.genre.has(g)?filt.genre.delete(g):filt.genre.add(g); render();};
-  genreChips.appendChild(c);
-});
-
-// ---- controls ----
+const tracked=new Set(), alerts=[];
+const filt={status:new Set(), year:new Set(), genre:new Set(), imdb:0, rt:0, gross:0, trackedOnly:false, sort:"imdb"};
 const $=id=>document.getElementById(id);
+
+$("updated").textContent = "Live AU data · updated " + fmtDate(TODAY);
+
+CASCADE.filter(s=>s!=="upcoming").forEach(s=>{
+  const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s];
+  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.status,s); render();};
+  $("statusChips").appendChild(c);
+});
+[...new Set(MOVIES.map(yearOf).filter(Boolean))].sort().reverse().forEach(y=>{
+  const c=document.createElement("div"); c.className="chip yr"; c.textContent=y;
+  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.year,y); render();};
+  $("yearChips").appendChild(c);
+});
+[...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort().forEach(g=>{
+  const c=document.createElement("div"); c.className="chip gen"; c.textContent=g;
+  c.onclick=()=>{c.classList.toggle("on"); toggle(filt.genre,g); render();};
+  $("genreChips").appendChild(c);
+});
+function toggle(set,v){ set.has(v)?set.delete(v):set.add(v); }
+
 $("filterBtn").onclick=()=>{$("filters").classList.toggle("open");$("filterBtn").classList.toggle("active");};
 $("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
@@ -235,35 +270,32 @@ $("imdbMin").oninput=e=>{filt.imdb=+e.target.value;$("imdbVal").textContent=filt
 $("rtMin").oninput=e=>{filt.rt=+e.target.value;$("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";render();};
 $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
 $("resetBtn").onclick=()=>{
-  filt.status.clear();filt.genre.clear();filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;
+  filt.status.clear();filt.year.clear();filt.genre.clear();filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;
   document.querySelectorAll(".chip.on").forEach(c=>c.classList.remove("on"));
   $("imdbMin").value=0;$("rtMin").value=0;$("grossMin").value=0;$("imdbVal").textContent="Any";$("rtVal").textContent="Any";
   $("trackedBtn").classList.remove("active");render();
 };
 
-// ---- alerts drawer ----
 $("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);renderAlerts();};
 $("closeDrawer").onclick=closeDrawer;
 $("overlay").onclick=e=>{if(e.target.id==="overlay")closeDrawer();};
 function closeDrawer(){$("drawer").classList.remove("open");setTimeout(()=>$("overlay").classList.remove("open"),200);}
 $("simBtn").onclick=simulateDay;
 
-// ---- formatting ----
 function money(n){ if(n==null)return "—";
   if(n>=1e9)return "$"+(n/1e9).toFixed(1)+"B"; if(n>=1e6)return "$"+(n/1e6).toFixed(0)+"M";
   if(n>=1e3)return "$"+(n/1e3).toFixed(0)+"K"; return "$"+n; }
-function offerText(m,w){
-  const os=(m.offers||[]).filter(o=>windowOf(o)===w);
-  if(!os.length)return "";
-  return os.map(o=>{const p=o.price!=null?" $"+o.price.toFixed(2):""; const f=o.format?" · "+o.format:"";
-    return `<b>${o.service}</b>${p}${f}`;}).join(" &nbsp;•&nbsp; ");
+function awardIcon(m){
+  if(m.award==="won") return `<span class="award" title="Won an Academy Award">🏆</span>`;
+  if(m.award==="nominated") return `<span class="award" title="Oscar-nominated">🎖️</span>`;
+  return "";
 }
 
-// ---- render list ----
 function passes(m){
   if(filt.trackedOnly && !tracked.has(m.tmdb_id)) return false;
-  if(filt.status.size && !m.status.some(s=>filt.status.has(s))) return false;
-  if(filt.genre.size && !m.genres.some(g=>filt.genre.has(g))) return false;
+  if(filt.status.size && !filt.status.has(primaryStatus(m))) return false;
+  if(filt.year.size && !filt.year.has(yearOf(m))) return false;
+  if(filt.genre.size && !(m.genres||[]).some(g=>filt.genre.has(g))) return false;
   if((m.imdb_rating||0) < filt.imdb) return false;
   if((m.rt_critic||0) < filt.rt) return false;
   if((m.worldwide_gross||0) < filt.gross) return false;
@@ -273,38 +305,52 @@ function sortMovies(a,b){
   switch(filt.sort){
     case "rt": return (b.rt_critic||0)-(a.rt_critic||0);
     case "gross": return (b.worldwide_gross||0)-(a.worldwide_gross||0);
-    case "title": return a.title.localeCompare(b.title);
     case "cinema": return (b.cinema_date||"").localeCompare(a.cinema_date||"");
+    case "title": return a.title.localeCompare(b.title);
     default: return (b.imdb_rating||0)-(a.imdb_rating||0);
   }
 }
+function cardHTML(m){
+  const on=tracked.has(m.tmdb_id);
+  const rb=[`<div class="rb imdb">IMDb <b>${m.imdb_rating!=null?m.imdb_rating.toFixed(1):"—"}</b></div>`];
+  const ai=awardIcon(m); if(ai) rb.push(ai);
+  if(m.rt_critic!=null) rb.push(`<div class="rb rt">🍅 <b>${m.rt_critic}%</b></div>`);
+  if(m.metacritic!=null) rb.push(`<div class="rb meta">Meta <b>${m.metacritic}</b></div>`);
+  rb.push(`<div class="rb gross">Gross <b>${money(m.worldwide_gross)}</b></div>`);
+  const pills=m.status.map(s=>`<span class="pill ${s}">${STATUS_LABEL[s]}</span>`).join("");
+  const offers=dedupOffers(m.offers);
+  const wtw = offers.length ? `
+    <button class="wtw-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
+      <span>Where to watch (${offers.length})</span><span class="chev">▾</span></button>
+    <div class="wtw">${offers.map(o=>`<div class="wtwrow">
+      <span class="svc"><span class="tt ${o.type}">${TYPE_LABEL[o.type]||o.type}</span>${o.service}</span>
+      <span class="off">${o.price!=null?"$"+o.price.toFixed(2):""}${o.fmt?" · "+o.fmt:""}</span></div>`).join("")}</div>` : "";
+  const syn = m.synopsis ? `<p class="synopsis">${m.synopsis.replace(/</g,"&lt;")}</p>` : "";
+  return `<div class="card">
+    <div class="top">
+      <div><div class="title">${m.title}</div>
+        <div class="meta">${m.cinema_date?fmtDate(m.cinema_date)+" · ":""}${(m.genres||[]).join(", ")}</div></div>
+      <button class="tagbtn ${on?'on':''}" onclick="toggleTag(${m.tmdb_id})" title="Tag for alerts">${on?'🔔':'☆'}</button>
+    </div>
+    ${syn}
+    <div class="ratings">${rb.join("")}</div>
+    <div class="pills">${pills}</div>
+    ${wtw}
+  </div>`;
+}
 function render(){
-  const rows=MOVIES.filter(passes).sort(sortMovies);
+  const rows=MOVIES.filter(passes);
   $("count").textContent=`${rows.length} of ${MOVIES.length} titles`;
-  const list=$("list");
-  if(!rows.length){list.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
-  list.innerHTML=rows.map(m=>{
-    const on=tracked.has(m.tmdb_id);
-    const rb=[];
-    if(m.imdb_rating!=null)rb.push(`<div class="rb imdb">IMDb <b>${m.imdb_rating.toFixed(1)}</b></div>`);
-    if(m.rt_critic!=null)rb.push(`<div class="rb rt">🍅 <b>${m.rt_critic}%</b></div>`);
-    if(m.metacritic!=null)rb.push(`<div class="rb meta">Meta <b>${m.metacritic}</b></div>`);
-    rb.push(`<div class="rb gross">Gross <b>${money(m.worldwide_gross)}</b></div>`);
-    const pills=m.status.map(s=>{
-      const det=offerText(m,s);
-      return `<div style="flex-basis:100%"><span class="pill ${s}">${STATUS_LABEL[s]}</span>`+
-             (det?`<div class="svc">${det}</div>`:"")+`</div>`;
-    }).join("");
-    return `<div class="card">
-      <div class="top">
-        <div><div class="title">${m.title}</div>
-          <div class="meta">${m.year} · ${m.genres.join(", ")}${m.cinema_date?" · 🎬 "+m.cinema_date:""}</div></div>
-        <button class="tagbtn ${on?'on':''}" onclick="toggleTag(${m.tmdb_id})" title="Tag for alerts">${on?'🔔':'☆'}</button>
-      </div>
-      <div class="ratings">${rb.join("")}</div>
-      <div class="pills">${pills}</div>
-    </div>`;
-  }).join("");
+  const wrap=$("groups");
+  if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
+  let html="";
+  CASCADE.forEach(g=>{
+    const items=rows.filter(m=>primaryStatus(m)===g).sort(sortMovies);
+    if(!items.length) return;
+    html+=`<div class="group"><div class="grouphead"><span class="gdot ${g}"></span>${STATUS_LABEL[g]}
+      <span class="gcount">${items.length}</span></div><div class="list">${items.map(cardHTML).join("")}</div></div>`;
+  });
+  wrap.innerHTML=html;
 }
 window.toggleTag=id=>{
   tracked.has(id)?tracked.delete(id):tracked.add(id);
@@ -313,68 +359,47 @@ window.toggleTag=id=>{
   render();
 };
 
-// ---- daily poll simulation: scripted transitions ----
-const TRANSITIONS = {
-  1001:{drop:["buy","rent"],add:[{service:"Netflix",type:"sub",price:null,format:"4K"}]},        // pvod -> included
-  1010:{add:[{service:"Stan",type:"sub",price:null,format:"HD"}]},                                 // pvod/rental -> +included
-  1002:{add:[{service:"Binge",type:"sub",price:null,format:"HD"}]},                                // pvod/rental -> +included
-  1008:{add:[{service:"Apple TV",type:"rent",price:5.99,format:"HD"}]},                            // pvod -> +rental (price drop)
-  1013:{add:[{service:"Google Play",type:"rent",price:6.99,format:"HD"}]},                         // pvod -> +rental
-  1003:{add:[{service:"Apple TV",type:"buy",price:24.99,format:"4K"}]},                            // in_cinema -> pvod
-  1004:{add:[{service:"Apple TV",type:"buy",price:24.99,format:"4K"}]},                            // in_cinema -> pvod
-  1011:{add:[{service:"Prime Video Store",type:"buy",price:22.99,format:"HD"}]},                   // in_cinema -> pvod
-};
 let dayCounter=0;
+function advanceOneWindow(m){
+  const st=new Set(m.status);
+  if(st.has("included_streaming")) return false;
+  if(st.has("rental")||st.has("pvod")) m.offers=(m.offers||[]).concat([{service:"Netflix",type:"sub",price:null,format:"4K"}]);
+  else m.offers=(m.offers||[]).concat([{service:"Apple TV",type:"buy",price:24.99,format:"4K"}]);
+  return true;
+}
 function simulateDay(){
-  dayCounter++;
-  let fired=0;
+  dayCounter++; let fired=0;
   MOVIES.forEach(m=>{
-    const tr=TRANSITIONS[m.tmdb_id]; if(!tr)return;
+    if(!tracked.has(m.tmdb_id)) return;
     const before=new Set(m.status);
-    // apply the change to the world (data updates for everyone)...
-    if(tr.applied)return;
-    let changed=false;
-    if(tr.drop){const b=m.offers.length;m.offers=m.offers.filter(o=>!tr.drop.includes(o.type));if(m.offers.length!==b)changed=true;}
-    if(tr.add){m.offers=m.offers.concat(tr.add);changed=true;}
-    if(!changed)return;
-    tr.applied=true;
+    if(!advanceOneWindow(m)) return;
     m.status=deriveStatus(m);
-    const after=new Set(m.status);
-    const opened=[...after].filter(s=>!before.has(s));
-    // ...but you only get ALERTED for titles you've tagged (matches the backend design)
-    if(tracked.has(m.tmdb_id)){
-      opened.forEach(w=>{
-        const svc=(m.offers||[]).filter(o=>windowOf(o)===w).map(o=>o.service);
-        alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],
-          services:[...new Set(svc)].slice(0,3),day:dayCounter});
-        fired++;
-      });
-    }
+    m.status.filter(s=>!before.has(s)).forEach(w=>{
+      const svc=dedupOffers(m.offers).filter(o=>windowOf(o)===w).map(o=>o.service);
+      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:[...new Set(svc)].slice(0,3),day:dayCounter});
+      fired++;
+    });
   });
   render(); renderAlerts(); updateBadge();
-  if(fired) toast(`🔔 ${fired} alert${fired>1?'s':''} from today's poll`);
-  else toast(`Day ${dayCounter}: no changes on your tagged titles`+
-    (tracked.size?'':' — tag some titles first!'));
+  toast(fired?`🔔 ${fired} alert${fired>1?'s':''} from today's poll`
+             :`Day ${dayCounter}: no changes on tagged titles`+(tracked.size?"":" — tag some first!"));
 }
-function updateBadge(){
-  const b=$("badge");
-  if(alerts.length){b.style.display="grid";b.textContent=alerts.length;}else b.style.display="none";
+function windowOf(o){
+  if(o.type==="sub"||o.type==="free") return "included_streaming";
+  if(o.type==="buy") return "pvod";
+  if(o.type==="rent") return (o.price!=null&&o.price<=RENTAL_MAX)?"rental":"pvod";
+  return "";
 }
+function updateBadge(){ const b=$("badge"); if(alerts.length){b.style.display="grid";b.textContent=alerts.length;}else b.style.display="none"; }
 function renderAlerts(){
   const el=$("alertsList");
   if(!alerts.length){el.innerHTML='<div class="noalert">No alerts yet.<br>Tag a movie, then run a daily poll.</div>';return;}
-  const col={in_cinema:"#f0a336",pvod:"#a486f0",rental:"#5aa9f0",included_streaming:"#48c78e"};
-  el.innerHTML=alerts.map(a=>`<div class="alert">
-      <div class="t">${a.title}</div>
-      <div class="d">Now available in a new window${a.services.length?" on "+a.services.join(", "):""} · day ${a.day}</div>
-      <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">
-        → ${a.label}</span></div>`).join("");
+  const col={opening_week:"#ff6b6b",in_cinema:"#f0a336",pvod:"#a486f0",rental:"#5aa9f0",included_streaming:"#48c78e"};
+  el.innerHTML=alerts.map(a=>`<div class="alert"><div class="t">${a.title}</div>
+    <div class="d">Now in a new window${a.services.length?" on "+a.services.join(", "):""} · day ${a.day}</div>
+    <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">→ ${a.label}</span></div>`).join("");
 }
-
-// ---- toast ----
-let toastT;
-function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");
-  clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2600);}
+let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2600);}
 
 render();
 </script>
