@@ -103,13 +103,34 @@
   .actbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent)}
   .actbtn.onw{background:rgba(72,199,142,.2);border-color:var(--green)}
   .actbtn.onb{background:rgba(250,108,60,.2);border-color:var(--rt)}
-  .ratings{display:flex;gap:5px;margin-top:11px;flex-wrap:nowrap;align-items:center;overflow-x:auto;scrollbar-width:none}
-  .ratings::-webkit-scrollbar{display:none}
-  .rb{font-size:11px;font-weight:700;padding:4px 7px;border-radius:7px;display:flex;gap:4px;align-items:center;
-    background:var(--panel2);border:1px solid var(--line);flex-shrink:0;white-space:nowrap}
-  .rb b{font-size:12px}
+  .actbtn.dislike:not(.onb){filter:grayscale(1);opacity:.5}
+  .actbtn.wtwbtn{font-size:13px;color:var(--dim)}
+  .actbtn.wtwbtn.open{background:rgba(124,92,255,.2);border-color:var(--accent);color:#fff}
+  .actbtn.wtwbtn.off{opacity:.35}
+  .ratings{display:grid;grid-template-columns:54px 56px 58px 84px 1fr;gap:5px;margin-top:11px;align-items:center}
+  .rb{height:23px;font-size:10.5px;font-weight:700;padding:0 6px;border-radius:7px;display:flex;gap:3px;align-items:center;justify-content:center;
+    background:var(--panel2);border:1px solid var(--line);white-space:nowrap;overflow:hidden}
+  .rb.empty{background:transparent;border-color:transparent}
+  .rb b{font-size:11.5px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.gross b{color:#9fe6c4}
-  .award{font-size:15px;line-height:1;cursor:pointer}
+  .award-slot{display:flex;align-items:center;justify-content:flex-end;height:23px}
+  .award{font-size:16px;line-height:1;cursor:pointer}
+  /* cascade stepper */
+  .cascade{display:grid;grid-template-columns:repeat(5,1fr);margin-top:13px}
+  .cstage{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:2px}
+  .cstage::before{content:"";position:absolute;top:11px;left:-50%;width:100%;height:2px;background:var(--line);z-index:0}
+  .cstage:first-child::before{display:none}
+  .cstage.reached::before{background:var(--dim)}
+  .cnode{position:relative;z-index:1;width:calc(100% - 4px);font-size:9px;font-weight:800;letter-spacing:.2px;padding:4px 1px;border-radius:6px;
+    border:1px solid var(--line);background:var(--panel2);color:var(--faint);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cstage.past .cnode{color:var(--dim)}
+  .cstage.future .cnode{opacity:.4}
+  .cstage.current.st-opening_week .cnode{background:rgba(255,107,107,.2);border-color:var(--open);color:#ffc2c2}
+  .cstage.current.st-in_cinema .cnode{background:rgba(240,163,54,.2);border-color:var(--amber);color:#ffce8f}
+  .cstage.current.st-pvod .cnode{background:rgba(164,134,240,.2);border-color:var(--purple);color:#d3c2ff}
+  .cstage.current.st-rental .cnode{background:rgba(90,169,240,.2);border-color:var(--blue);color:#bcdcff}
+  .cstage.current.st-included_streaming .cnode{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
+  .cdate{font-size:8px;color:var(--faint);margin-top:3px;white-space:nowrap;line-height:1}
   .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
   .pill{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid}
   .pill.opening_week{background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.55);color:#ffc2c2}
@@ -270,7 +291,7 @@ const LANG_NAMES = {en:"English",ja:"Japanese",ko:"Korean",zh:"Chinese",cn:"Chin
 const langName = c => LANG_NAMES[c] || (c ? c.toUpperCase() : "Unknown");
 
 function addDays(iso, n){ const d=new Date(iso+"T00:00:00Z"); d.setUTCDate(d.getUTCDate()+n); return d.toISOString().slice(0,10); }
-function fmtDate(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${MONTHS[+m-1]} ${d} ${y.slice(2)}`; }
+function fmtDate(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${MONTHS[+m-1]} ${y.slice(2)}`; }
 function yearOf(m){ return (m.cinema_date||m.year||"").slice(0,4); }
 function esc(s){ return (s||"").replace(/</g,"&lt;"); }
 
@@ -444,39 +465,68 @@ function sortMovies(a,b){
     default: return (b.imdb_rating||0)-(a.imdb_rating||0);
   }
 }
+const CASCADE_SHORT = {opening_week:"Opening", in_cinema:"Cinema", pvod:"Premium", rental:"Standard", included_streaming:"Streaming"};
+const EST_OFFSET = {pvod:90, rental:120, included_streaming:180};   // days after cinema (rough AU windows)
+function stageDate(m, stage){
+  const cd=m.cinema_date;
+  if(stage==="opening_week") return cd?{d:cd,est:false}:null;
+  if(stage==="in_cinema")   return cd?{d:addDays(cd,OPENING_WEEK_DAYS),est:false}:null;
+  if(m.window_dates && m.window_dates[stage]) return {d:m.window_dates[stage],est:false};  // real, once tracked
+  if(!cd) return null;
+  return {d:addDays(cd, EST_OFFSET[stage]), est:true};                                     // estimated
+}
+function ratingsHTML(m){
+  const cell=(cond,cls,html)=> cond?`<div class="rb ${cls}">${html}</div>`:`<div class="rb empty"></div>`;
+  const imdb=cell(m.imdb_rating!=null,"imdb",`IMDb <b>${m.imdb_rating!=null?m.imdb_rating.toFixed(1):""}</b>`);
+  const rt  =cell(m.rt_critic!=null,"rt",`🍅 <b>${m.rt_critic}%</b>`);
+  const meta=cell(m.metacritic!=null,"meta",`Meta <b>${m.metacritic}</b>`);
+  const gross=`<div class="rb gross">Gross <b>${money(m.worldwide_gross)}</b></div>`;
+  return `<div class="ratings">${imdb}${rt}${meta}${gross}<div class="award-slot">${awardIcon(m)}</div></div>`;
+}
+function cascadeHTML(m){
+  const stages=CASCADE.filter(s=>s!=="upcoming");
+  const cur=primaryStatus(m);
+  const curIdx=stages.indexOf(cur);
+  const nodes=stages.map((s,i)=>{
+    const state=curIdx<0?"future":(i<curIdx?"past":(i===curIdx?"current":"future"));
+    const reached=curIdx>=0 && i<=curIdx;
+    let dateStr="";
+    const showDate=(curIdx<0&&i===0)||(curIdx>=0&&i<=curIdx+1);   // reached stages + the next one
+    if(showDate){ const sd=stageDate(m,s); if(sd) dateStr=(sd.est?"~":"")+fmtDate(sd.d); }
+    return `<div class="cstage ${state} ${reached?'reached':''} st-${s}">
+      <div class="cnode">${CASCADE_SHORT[s]}</div>
+      <div class="cdate">${dateStr||"&nbsp;"}</div></div>`;
+  }).join("");
+  return `<div class="cascade">${nodes}</div>`;
+}
 function cardHTML(m){
   const id=m.tmdb_id;
-  const rb=[`<div class="rb imdb">IMDb <b>${m.imdb_rating!=null?m.imdb_rating.toFixed(1):"—"}</b></div>`];
-  const ai=awardIcon(m); if(ai) rb.push(ai);
-  if(m.rt_critic!=null) rb.push(`<div class="rb rt">🍅 <b>${m.rt_critic}%</b></div>`);
-  if(m.metacritic!=null) rb.push(`<div class="rb meta">Meta <b>${m.metacritic}</b></div>`);
-  rb.push(`<div class="rb gross">Gross <b>${money(m.worldwide_gross)}</b></div>`);
-  const pills=m.status.map(s=>`<span class="pill ${s}">${STATUS_LABEL[s]}</span>`).join("");
   let offers=dedupOffers(m.offers);
   if(prefsActive()) offers=offers.filter(myService);
-  const wtw = offers.length ? `
-    <button class="wtw-toggle" onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('open')">
-      <span>Where to watch (${offers.length})</span><span class="chev">▾</span></button>
-    <div class="wtw">${offers.map(o=>`<div class="wtwrow">
+  const wtw = offers.length ? `<div class="wtw">${offers.map(o=>`<div class="wtwrow">
       <span class="svc"><span class="tt ${o.type}">${TYPE_LABEL[o.type]||o.type}</span>${o.service}</span>
       <span class="off">${o.price!=null?"$"+o.price.toFixed(2):""}${o.fmt?" · "+o.fmt:""}</span></div>`).join("")}</div>` : "";
   const syn = m.synopsis ? `<p class="synopsis" onclick="this.classList.toggle('expanded')" title="Tap to expand">${esc(m.synopsis)}</p>` : "";
   const cert = m.age_rating ? `<span class="cert ${MATURE.has(m.age_rating)?'mature':''}">${m.age_rating}</span>` : "";
   const cult = m.culture ? ` · <span class="culttag">${m.culture}</span>` : "";
   const isW=watched.has(id), isB=blocked.has(id);
+  const wtwBtn = offers.length
+    ? `<button class="actbtn wtwbtn" onclick="this.closest('.card').querySelector('.wtw').classList.toggle('open');this.classList.toggle('open')" title="Where to watch (${offers.length})">▾</button>`
+    : `<button class="actbtn wtwbtn off" disabled title="No home offers yet">▾</button>`;
   return `<div class="card ${isW?'watched':''}">
     <div class="cardmain">
       <div class="title">${m.title}${cert}</div>
       <div class="meta">${m.cinema_date?fmtDate(m.cinema_date):""}${(m.genres||[]).length?(m.cinema_date?" · ":"")+(m.genres||[]).join(", "):""}${cult}</div>
       ${syn}
-      <div class="ratings">${rb.join("")}</div>
-      <div class="pills">${pills}</div>
+      ${ratingsHTML(m)}
+      ${cascadeHTML(m)}
       ${wtw}
     </div>
     <div class="actions">
       <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
       <button class="actbtn ${isW?'onw':''}" onclick="toggleWatched(${id})" title="Mark as watched">${isW?'✅':'👁'}</button>
-      <button class="actbtn ${isB?'onb':''}" onclick="toggleBlocked(${id})" title="Not interested — hide this">${isB?'🙈':'👎'}</button>
+      <button class="actbtn dislike ${isB?'onb':''}" onclick="toggleBlocked(${id})" title="Not interested — hide this">${isB?'🙈':'👎'}</button>
+      ${wtwBtn}
     </div>
   </div>`;
 }
