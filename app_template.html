@@ -103,8 +103,13 @@
     display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
   .card.expanded .synopsis{-webkit-line-clamp:unset;display:block}
   .expand{max-height:0;opacity:0;overflow:hidden;transition:max-height .4s ease,opacity .3s ease}
-  .card.expanded .expand{max-height:340px;opacity:1;margin-top:12px}
+  .card.expanded .expand{max-height:460px;opacity:1;margin-top:12px}
   .exhead{font-size:11px;text-transform:uppercase;letter-spacing:.5px;color:var(--faint);font-weight:700;margin-bottom:8px}
+  .credits{margin-bottom:12px}
+  .credit{font-size:12.5px;color:#c4ccd6;line-height:1.5}
+  .credit+.credit{margin-top:3px}
+  .credit .clbl{display:inline-block;box-sizing:border-box;min-width:70px;padding-right:8px;font-size:10.5px;
+    text-transform:uppercase;letter-spacing:.4px;color:var(--faint);font-weight:700;vertical-align:baseline}
   .trailers{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
   .trailers::-webkit-scrollbar{display:none}
   .trailer{position:relative;flex-shrink:0;width:132px;height:76px;border-radius:9px;border:1px solid var(--line);
@@ -113,25 +118,26 @@
   .notrailer{font-size:12px;color:var(--faint)}
   .actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
   .actbtn{width:38px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
-    cursor:pointer;font-size:16px;display:grid;place-items:center;line-height:1;filter:grayscale(1);opacity:.55;transition:.15s}
+    cursor:pointer;font-size:16px;display:grid;place-items:center;line-height:1;color:#8b93a1;filter:grayscale(1);opacity:.75;transition:.15s}
   .actbtn.on{filter:none;opacity:1;background:rgba(124,92,255,.2);border-color:var(--accent)}
   .actbtn.onw{filter:none;opacity:1;background:rgba(72,199,142,.2);border-color:var(--green)}
   .actbtn.onb{filter:none;opacity:1;background:rgba(250,108,60,.2);border-color:var(--rt)}
-  .actbtn.wtwbtn{font-size:14px}
+  .actbtn.wtwbtn{font-size:22px;font-weight:700}
   .actbtn.wtwbtn.open{filter:none;opacity:1;background:rgba(124,92,255,.2);border-color:var(--accent);color:#fff}
   .actbtn.wtwbtn.off{opacity:.3}
   .ratings{margin-top:12px}
-  .rrow{display:flex;gap:5px;align-items:center}
-  .rrow+.rrow{margin-top:5px}
-  .rb{height:23px;font-size:11px;font-weight:700;padding:0 7px;border-radius:7px;display:flex;gap:4px;align-items:center;justify-content:flex-start;
+  .rrow{display:flex;gap:3px;align-items:center;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
+  .rrow::-webkit-scrollbar{display:none}
+  .rb{flex-shrink:0;height:22px;font-size:10px;font-weight:700;padding:0 6px;border-radius:7px;display:flex;gap:3px;align-items:center;justify-content:flex-start;
     background:var(--panel2);border:1px solid var(--line);white-space:nowrap;overflow:hidden}
-  .rb.imdb{width:76px} .rb.rt{width:68px} .rb.meta{width:72px} .rb.budget{width:98px} .rb.gross{width:94px}
+  /* content-sized so text never clips; a small min-width keeps the score lozenges balanced */
+  .rb.imdb,.rb.rt,.rb.meta{min-width:52px}
   .rb.muted{color:var(--faint)}
   .rb.muted b{color:var(--faint)}
-  .rb b{font-size:12px}
+  .rb b{font-size:11px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.budget b{color:#c9a2ff} .rb.gross b{color:#9fe6c4}
-  .award-slot{display:flex;align-items:center;height:23px;margin-left:2px}
-  .award{font-size:16px;line-height:1;cursor:pointer}
+  .award-slot{display:flex;align-items:center;height:22px}
+  .award{font-size:15px;line-height:1;cursor:pointer;padding-left:1px}
   /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Standard · Streaming */
   .cascade{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:13px}
   .cascade::before{content:"";position:absolute;top:11px;left:12.5%;right:calc(100% - var(--cx, 87.5%));height:2px;background:var(--dim);z-index:0}
@@ -147,6 +153,7 @@
   .cstage.current.st-rental .cnode{background:linear-gradient(0deg,rgba(90,169,240,.2),rgba(90,169,240,.2)),var(--panel2);border-color:var(--blue);color:#bcdcff}
   .cstage.current.st-included_streaming .cnode{background:linear-gradient(0deg,rgba(72,199,142,.2),rgba(72,199,142,.2)),var(--panel2);border-color:var(--green);color:#a7eccb}
   .cdate{font-size:8px;color:var(--faint);margin-top:3px;white-space:nowrap;line-height:1}
+  .cdate.est{font-style:italic;opacity:.75}
   .pills{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}
   .pill{font-size:11.5px;font-weight:700;padding:5px 10px;border-radius:8px;border:1px solid}
   .pill.opening_week{background:rgba(255,107,107,.14);border-color:rgba(255,107,107,.55);color:#ffc2c2}
@@ -166,7 +173,7 @@
   .wtwrow:first-child{border-top:none}
   .wtwrow .svc{font-weight:600;color:var(--ink)}
   .wtwrow .off{color:var(--dim);white-space:nowrap}
-  .tt{font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;margin-right:6px}
+  .tt{display:inline-block;box-sizing:border-box;min-width:46px;text-align:center;font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;margin-right:8px;vertical-align:middle}
   .tt.sub{background:rgba(72,199,142,.16);color:#a7eccb} .tt.free{background:rgba(72,199,142,.16);color:#a7eccb}
   .tt.rent{background:rgba(90,169,240,.16);color:#bcdcff} .tt.buy{background:rgba(164,134,240,.16);color:#d3c2ff}
   .empty{color:var(--dim);text-align:center;padding:40px 20px;font-size:14px}
@@ -342,6 +349,8 @@ function dedupOffers(offers){
   return [...map.values()].sort((a,b)=> (tOrder[a.type]-tOrder[b.type]) || ((a.price||0)-(b.price||0)) || a.service.localeCompare(b.service));
 }
 const TYPE_LABEL={sub:"Stream",free:"Free",rent:"Rent",buy:"Buy"};
+const SVC_DISPLAY={"Amazon":"Amazon Prime"};
+const svcName=s=>SVC_DISPLAY[s]||s;
 
 // ---- persisted user state (localStorage, with graceful fallback) ----
 function loadSet(k){ try{ return new Set(JSON.parse(localStorage.getItem(k)||"[]")); }catch(e){ return new Set(); } }
@@ -407,8 +416,8 @@ addChips("genreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), fil
   $("viewChips").appendChild(c);
 });
 // preferences service chips
-addChips("prefSubChips", SUB_SERVICES, prefs.sub, "svc");
-addChips("prefStoreChips", STORE_SERVICES, prefs.store, "svc");
+addChips("prefSubChips", SUB_SERVICES, prefs.sub, "svc", svcName);
+addChips("prefStoreChips", STORE_SERVICES, prefs.store, "svc", svcName);
 
 // ---- modals ----
 function openModal(el){ el.classList.add("open"); document.body.style.overflow="hidden"; }
@@ -511,8 +520,7 @@ function ratingsHTML(m){
   const budget=cell("budget","Budget", m.budget>0?money(m.budget):"",               m.budget>0);
   const gross =cell("gross","Gross",   m.worldwide_gross>0?money(m.worldwide_gross):"", m.worldwide_gross>0);
   return `<div class="ratings">
-    <div class="rrow">${imdb}${rt}${meta}</div>
-    <div class="rrow">${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
+    <div class="rrow">${imdb}${rt}${meta}${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
   </div>`;
 }
 function cascadeHTML(m){
@@ -524,14 +532,20 @@ function cascadeHTML(m){
     const reached=i<=cur;
     const label=i===0 ? cin.label : CSTAGE_LABEL[key];
     const cls  =i===0 ? "st-cin-"+cin.key : "st-"+key;
-    let dateStr="";
-    if(i<=cur+1){ const sd=stageDate(m,key); if(sd) dateStr=(sd.est?"~":"")+fmtDate(sd.d); }   // reached + next
+    let dateStr="", estCls="";
+    if(i<=cur+1){ const sd=stageDate(m,key); if(sd){ dateStr=fmtDate(sd.d); if(sd.est) estCls=" est"; } }   // reached + next
     return `<div class="cstage ${state} ${reached?'reached':''} ${cls}">
       <div class="cnode">${label}</div>
-      <div class="cdate">${dateStr||"&nbsp;"}</div></div>`;
+      <div class="cdate${estCls}">${dateStr||"&nbsp;"}</div></div>`;
   }).join("");
   // --cx marks the current stage's centre so the connector line stops there (no line through un-reached stages)
   return `<div class="cascade" style="--cx:${cur*25+12.5}%">${nodes}</div>`;
+}
+function creditsHTML(m){
+  const rows=[];
+  if(m.director) rows.push(`<div class="credit"><span class="clbl">Director</span>${esc(m.director)}</div>`);
+  if((m.cast||[]).length) rows.push(`<div class="credit"><span class="clbl">Cast</span>${esc(m.cast.join(", "))}</div>`);
+  return rows.length ? `<div class="credits">${rows.join("")}</div>` : "";
 }
 function trailersHTML(m){
   const t=(m.trailers||[]).slice(0,4);
@@ -545,7 +559,7 @@ function cardHTML(m){
   let offers=dedupOffers(m.offers);
   if(prefsActive()) offers=offers.filter(myService);
   const wtw = offers.length ? `<div class="wtw">${offers.map(o=>`<div class="wtwrow">
-      <span class="svc"><span class="tt ${o.type}">${TYPE_LABEL[o.type]||o.type}</span>${o.service}</span>
+      <span class="svc"><span class="tt ${o.type}">${TYPE_LABEL[o.type]||o.type}</span>${svcName(o.service)}</span>
       <span class="off">${o.price!=null?"$"+o.price.toFixed(2):""}${o.fmt?" · "+o.fmt:""}</span></div>`).join("")}</div>` : "";
   const syn = m.synopsis ? `<p class="synopsis">${esc(m.synopsis)}</p>` : "";
   const cert = m.age_rating ? `<span class="cert ${MATURE.has(m.age_rating)?'mature':''}">${m.age_rating}</span>` : "";
@@ -566,7 +580,7 @@ function cardHTML(m){
     </div>
     ${ratingsHTML(m)}
     ${cascadeHTML(m)}
-    <div class="expand">${trailersHTML(m)}</div>
+    <div class="expand">${creditsHTML(m)}${trailersHTML(m)}</div>
     ${wtw}
     <div class="actions">
       <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
@@ -578,7 +592,12 @@ function cardHTML(m){
 }
 window.toggleExpand=id=>{
   expandedSet.has(id)?expandedSet.delete(id):expandedSet.add(id);
-  const c=document.getElementById("card-"+id); if(c) c.classList.toggle("expanded", expandedSet.has(id));
+  const on=expandedSet.has(id);
+  const c=document.getElementById("card-"+id); if(!c) return;
+  c.classList.toggle("expanded", on);
+  // opening the card also reveals its "where to watch" list (if it has offers)
+  const wtw=c.querySelector(".wtw"), wtwBtn=c.querySelector(".wtwbtn");
+  if(wtw){ wtw.classList.toggle("open", on); if(wtwBtn) wtwBtn.classList.toggle("open", on); }
 };
 function activeCount(){
   let n=filt.status.size+filt.year.size+filt.age.size+filt.culture.size+filt.lang.size+filt.genre.size;
