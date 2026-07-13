@@ -94,7 +94,7 @@ def ingest_tmdb() -> list[dict]:
                 continue
             seen.add(m["id"])
             detail = get_json(
-                f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates,videos"
+                f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates,videos,credits"
             )
             cinema_date, age_rating = None, None
             for entry in detail.get("release_dates", {}).get("results", []):
@@ -110,6 +110,10 @@ def ingest_tmdb() -> list[dict]:
             vids = (detail.get("videos") or {}).get("results", [])
             trailers = [v["key"] for v in vids
                         if v.get("site") == "YouTube" and v.get("type") in ("Trailer", "Teaser") and v.get("key")][:4]
+            credits = detail.get("credits") or {}
+            directors = [c["name"] for c in credits.get("crew", []) if c.get("job") == "Director"]
+            cast = [c["name"] for c in sorted(credits.get("cast", []),
+                                              key=lambda c: c.get("order", 999))][:4]
             movies.append({
                 "tmdb_id": detail["id"],
                 "imdb_id": detail.get("imdb_id"),
@@ -119,12 +123,13 @@ def ingest_tmdb() -> list[dict]:
                 "cinema_date": cinema_date,
                 "age_rating": age_rating,
                 "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
-                "budget": detail.get("budget") or None,             # production budget (USD) from TMDB
                 "synopsis": (detail.get("overview") or "").strip(),
                 "language": lang,
                 "culture": _culture(lang, countries),
                 "poster": detail.get("poster_path"),
                 "trailers": trailers,
+                "director": ", ".join(directors[:2]) or None,
+                "cast": cast,
             })
             if len(movies) >= MAX_TITLES:
                 break
@@ -165,7 +170,7 @@ _LANG_CULTURE = {
 }
 _WESTERN_COUNTRIES = {"US","GB","AU","NZ","CA","IE"}
 
-def _culture(lang, countries):
+def _culture(lang: str | None, countries: list[str]) -> str:
     if lang in _LANG_CULTURE:
         return _LANG_CULTURE[lang]
     if lang == "en":
@@ -175,7 +180,7 @@ def _culture(lang, countries):
     return "Other"
 
 
-def _oscar_status(awards: str):
+def _oscar_status(awards: str) -> str | None:
     """Read OMDb's free-text Awards field for top-award (Oscar) status.
     OMDb phrases it as 'Won N Oscars. ...' or 'Nominated for N Oscars. ...'."""
     aw = (awards or "").strip()
@@ -385,7 +390,7 @@ def run(simulate_day: bool = False):
         print("   (none — run again with --simulate-day to see the alert path fire)")
 
 
-def build_html(records=None):
+def build_html(records: list[dict] | None = None):
     """Inject the latest movies + date into app_template.html -> index.html.
     Keeps the app a single double-clickable file (no server, no CORS)."""
     if records is None:  # --build-html on its own: rebuild from the last movies.json
