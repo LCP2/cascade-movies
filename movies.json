@@ -16,7 +16,6 @@
       "cinema_date": "2026-05-14",
       "age_rating": "MA 15+",
       "worldwide_gross": 426745000,
-      "budget": 750000,
       "synopsis": "After breaking the mysterious \"One Wish Willow\" to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
       "language": "en",
       "culture": "Western",
@@ -26,6 +25,13 @@
         "aGZ_uALWvk8",
         "gMC8kkwbIQQ",
         "yybtztMB-Ww"
+      ],
+      "director": "Curry Barker",
+      "cast": [
+        "Michael Johnston",
+        "Inde Navarrette",
+        "Cooper Tomlinson",
+        "Megan Lawless"
       ],
       "imdb_rating": 8.0,
       "imdb_votes": 176988,
@@ -128,7 +134,6 @@
       "cinema_date": "2026-06-18",
       "age_rating": "G",
       "worldwide_gross": 879072720,
-      "budget": 250000000,
       "synopsis": "When Bonnie receives a Lilypad tablet as a gift and becomes obsessed, Buzz, Woody, Jessie and the rest of the gang's jobs become exponentially harder when they have to go head to head with the all-new threat to playtime.",
       "language": "en",
       "culture": "Western",
@@ -138,6 +143,13 @@
         "hsWejTM9Xc8",
         "-OXNVHFKVL8",
         "lSr5PDyURs8"
+      ],
+      "director": "Andrew Stanton",
+      "cast": [
+        "Tom Hanks",
+        "Tim Allen",
+        "Joan Cusack",
+        "Greta Lee"
       ],
       "imdb_rating": 7.5,
       "imdb_votes": 40356,
@@ -165,7 +177,6 @@
       "cinema_date": "2026-06-11",
       "age_rating": "M",
       "worldwide_gross": 228995000,
-      "budget": 115000000,
       "synopsis": "A cybersecurity expert becomes a whistleblower after uncovering secrets about aliens, putting him on the run from a corporation. Meanwhile, a meteorologist experiencing strange phenomena joins forces with him to prove there's life beyond our understanding.",
       "language": "en",
       "culture": "Western",
@@ -175,6 +186,13 @@
         "tQdAJzCPQpc",
         "NOnNDur5e9g",
         "icDuEHSxE-w"
+      ],
+      "director": "Steven Spielberg",
+      "cast": [
+        "Emily Blunt",
+        "Josh O'Connor",
+        "Colin Firth",
+        "Colman Domingo"
       ],
       "imdb_rating": 6.7,
       "imdb_votes": 77197,
@@ -201,7 +219,6 @@
       "cinema_date": "2026-06-04",
       "age_rating": "MA 15+",
       "worldwide_gross": 228193000,
-      "budget": 30000000,
       "synopsis": "Twenty-six years after outrunning a suspiciously familiar masked killer, the Core Four are back in the killer's crosshairs and no horror movie IP is safe.",
       "language": "en",
       "culture": "Western",
@@ -211,6 +228,13 @@
         "zcwRytLzo4o",
         "QNK1KXeYjEY",
         "iXlV5k3iJFU"
+      ],
+      "director": "Michael Tiddes",
+      "cast": [
+        "Marlon Wayans",
+        "Shawn Wayans",
+        "Anna Faris",
+        "Regina Hall"
       ],
       "imdb_rating": 5.2,
       "imdb_votes": 30613,
@@ -238,7 +262,6 @@
       "cinema_date": "2026-05-28",
       "age_rating": "M",
       "worldwide_gross": 367909547,
-      "budget": 10000000,
       "synopsis": "A strange doorway appears in the basement of a furniture showroom.",
       "language": "en",
       "culture": "Western",
@@ -248,6 +271,13 @@
         "2z6a6NUFlsU",
         "0HjdiohVOik",
         "tKGhxMi50y8"
+      ],
+      "director": "Kane Parsons",
+      "cast": [
+        "Chiwetel Ejiofor",
+        "Renate Reinsve",
+        "Mark Duplass",
+        "Finn Bennett"
       ],
       "imdb_rating": 7.0,
       "imdb_votes": 100148,
@@ -274,7 +304,6 @@
       "cinema_date": "2026-04-30",
       "age_rating": "M",
       "worldwide_gross": 678373258,
-      "budget": 100000000,
       "synopsis": "Andy Sachs returns to Runway as Miranda Priestly navigates a new media landscape and Runway's position within. The duo reconnect with former assistant Emily Charlton, now the head of a luxury brand that possesses funding which could ensure Runway's survival.",
       "language": "en",
       "culture": "Western",
@@ -284,6 +313,13 @@
         "muCkrkPrLKE",
         "mA-MzVZoAdA",
         "f1-AzNZrEUA"
+      ],
+      "director": "David Frankel",
+      "cast": [
+        "Meryl Streep",
+        "Anne Hathaway",
+        "Emily Blunt",
+        "Stanley Tucci"
       ],
       "imdb_rating": 6.6,
       "imdb_votes": 53400,
@@ -395,7 +431,6 @@
       "cinema_date": "2026-05-21",
       "age_rating": "M",
       "worldwide_gross": 31558866,
-      "budget": 15000000,
       "synopsis": "After a young couple witnesses a gruesome highway accident, they soon realize they did not leave the crash scene alone, as a demonic presence called the Passenger that won't stop until it claims them both turns their van life adventure into a nightmare.",
       "language": "en",
       "culture": "Western",
@@ -405,6 +440,13 @@
         "ytGYbHYGgec",
         "EcUTEEqFE0E",
         "vmSNUDU8skI"
+      ],
+      "director": "Andr\u00e9 \u00d8vredal",
+      "cast": [
+        "Lou Llobell",
+        "Jacob Scipio",
+        "Melissa Leo",
+        "Joseph Lopez"
       ],
       "imdb_rating": 5.6,
       "imdb_votes": 7481,
@@ -506,7 +548,6 @@
       "cinema_date": "2026-07-08",
       "age_rating": "PG",
       "worldwide_gross": 95000000,
-      "budget": 250000000,
       "synopsis": "Teenage Moana answers the Ocean's call and, for the first time, voyages beyond the reef of her island of Motunui with infamous demigod Maui on an unforgettable journey to restore prosperity to her people.",
       "language": "en",
       "culture": "Western",
@@ -516,6 +557,13 @@
         "pBe-5cXYwcE",
         "o0IktGl2kZs",
         "fW92eZw_nXw"
+      ],
+      "director": "Thomas Kail",
+      "cast": [
+        "Catherine Laga\u02bbaia",
+        "Dwayne Johnson",
+        "John Tui",
+        "Frankie Adams"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
@@ -541,7 +589,6 @@
       "cinema_date": "2026-04-22",
       "age_rating": "PG",
       "worldwide_gross": 1001691000,
-      "budget": 250000000,
       "synopsis": "The story of Michael Jackson, one of the most influential artists the world has ever known, and his life beyond the music. His journey from the discovery of his extraordinary talent as the lead of the Jackson Five, to the visionary artist whose creative ambition fueled a relentless pursuit to become the biggest entertainer in the world, highlighting both his life off-stage and some of the most iconic performances from his early solo career.",
       "language": "en",
       "culture": "Western",
@@ -551,6 +598,13 @@
         "Pp3CO00g7ro",
         "miLGuFiSAis",
         "KpP5pCUFil0"
+      ],
+      "director": "Antoine Fuqua",
+      "cast": [
+        "Jaafar Jackson",
+        "Colman Domingo",
+        "Nia Long",
+        "Juliano Krue Valdi"
       ],
       "imdb_rating": 7.5,
       "imdb_votes": 144205,
@@ -651,7 +705,6 @@
       "cinema_date": "2026-03-19",
       "age_rating": "M",
       "worldwide_gross": 683349773,
-      "budget": 200000000,
       "synopsis": "Science teacher Ryland Grace wakes up on a spaceship light years from home with no recollection of who he is or how he got there. As his memory returns, he begins to uncover his mission: solve the riddle of the mysterious substance causing the sun to die out. He must call on his scientific knowledge and unorthodox ideas to save everything on Earth from extinction.",
       "language": "en",
       "culture": "Western",
@@ -661,6 +714,13 @@
         "d6CvWul8YCc",
         "jnly2BcwCVA",
         "a9Kdjy_m4ck"
+      ],
+      "director": "Phil Lord, Christopher Miller",
+      "cast": [
+        "Ryan Gosling",
+        "Sandra H\u00fcller",
+        "James Ortiz",
+        "Lionel Boyce"
       ],
       "imdb_rating": 8.3,
       "imdb_votes": 333549,
@@ -782,7 +842,6 @@
       "cinema_date": "2026-05-07",
       "age_rating": "MA 15+",
       "worldwide_gross": 129455207,
-      "budget": 80000000,
       "synopsis": "The fan favorite champions\u2014now joined by Johnny Cage himself\u2014are pitted against one another in the ultimate, no-holds barred, gory battle to defeat the dark rule of Shao Kahn that threatens the very existence of the Earthrealm and its defenders.",
       "language": "en",
       "culture": "Western",
@@ -792,6 +851,13 @@
         "RXkyTUwIVG4",
         "Ht0SHqJ-ga0",
         "8_NRLRSSgHI"
+      ],
+      "director": "Simon McQuoid",
+      "cast": [
+        "Karl Urban",
+        "Adeline Rudolph",
+        "Ludi Lin",
+        "Jessica McNamee"
       ],
       "imdb_rating": 6.7,
       "imdb_votes": 36627,
@@ -895,7 +961,6 @@
       "cinema_date": "2026-04-01",
       "age_rating": "PG",
       "worldwide_gross": 1009214136,
-      "budget": 110000000,
       "synopsis": "Having thwarted Bowser's previous plot to marry Princess Peach, Mario and Luigi now face a fresh threat in Bowser Jr., who is determined to liberate his father from captivity and restore the family legacy. Alongside companions new and old, the brothers travel across the stars to stop the young heir's crusade.",
       "language": "en",
       "culture": "Western",
@@ -905,6 +970,13 @@
         "RjqUFNywK14",
         "2JuEmP6uHqs",
         "35kFpZ3Y10Q"
+      ],
+      "director": "Michael Jelenic, Aaron Horvath",
+      "cast": [
+        "Chris Pratt",
+        "Anya Taylor-Joy",
+        "Charlie Day",
+        "Jack Black"
       ],
       "imdb_rating": 6.3,
       "imdb_votes": 55972,
@@ -1007,7 +1079,6 @@
       "cinema_date": "2026-06-25",
       "age_rating": "PG",
       "worldwide_gross": 280034000,
-      "budget": 85000000,
       "synopsis": "This is the rambunctious, ridiculous and totally true story of how the Minions conquered Hollywood, became movie stars, lost everything, unleashed monsters onto the world and then banded together to try and save the planet from the mayhem they had just created.",
       "language": "en",
       "culture": "Western",
@@ -1017,6 +1088,13 @@
         "aSxYl3qbN8Y",
         "RO5x9EecfKQ",
         "ySjj_Y5jfHY"
+      ],
+      "director": "Pierre Coffin, James",
+      "cast": [
+        "Pierre Coffin",
+        "Trey Parker",
+        "Allison Janney",
+        "Christoph Waltz"
       ],
       "imdb_rating": 6.6,
       "imdb_votes": 6852,
@@ -1043,7 +1121,6 @@
       "cinema_date": "2026-07-09",
       "age_rating": "R 18+",
       "worldwide_gross": 27000000,
-      "budget": 20000000,
       "synopsis": "After her husband's abrupt death, a woman seeks solace with her in-laws. As they transform into Deadites one by one, she comes to discover that the vows she took in life survive even in death.",
       "language": "en",
       "culture": "Western",
@@ -1053,6 +1130,13 @@
         "gIxF-wYw6nM",
         "tYudxEj7MzY",
         "aFvXFisc2yw"
+      ],
+      "director": "S\u00e9bastien Vani\u010dek",
+      "cast": [
+        "Souheila Yacoub",
+        "Tandi Wright",
+        "Hunter Doohan",
+        "Luciane Buchanan"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
@@ -1078,7 +1162,6 @@
       "cinema_date": "2026-04-16",
       "age_rating": "MA 15+",
       "worldwide_gross": 90552113,
-      "budget": 22000000,
       "synopsis": "The young daughter of a journalist disappears into the desert without a trace\u2014eight years later, the broken family is shocked when she is returned to them, as what should be a joyful reunion turns into a living nightmare.",
       "language": "en",
       "culture": "Western",
@@ -1088,6 +1171,13 @@
         "PIv1-QUyxlo",
         "qRqnd4Ol1mw",
         "XEGyXRq48Yc"
+      ],
+      "director": "Lee Cronin",
+      "cast": [
+        "Jack Reynor",
+        "Laia Costa",
+        "May Calamawy",
+        "Natalie Grace"
       ],
       "imdb_rating": 6.2,
       "imdb_votes": 33540,
@@ -1182,7 +1272,6 @@
       "cinema_date": "2025-12-18",
       "age_rating": "M",
       "worldwide_gross": 1490477656,
-      "budget": 350000000,
       "synopsis": "In the wake of the devastating war against the RDA and the loss of their eldest son, Jake Sully and Neytiri face a new threat on Pandora: the Ash People, a violent and power-hungry Na'vi tribe led by the ruthless Varang. Jake's family must fight for their survival and the future of Pandora in a conflict that pushes them to their emotional and physical limits.",
       "language": "en",
       "culture": "Western",
@@ -1192,6 +1281,13 @@
         "uEUGMJpuF0Y",
         "ITmRYfeg4H0",
         "RlofL5WU28k"
+      ],
+      "director": "James Cameron",
+      "cast": [
+        "Sam Worthington",
+        "Zoe Salda\u00f1a",
+        "Sigourney Weaver",
+        "Stephen Lang"
       ],
       "imdb_rating": 7.3,
       "imdb_votes": 168453,
@@ -1257,7 +1353,6 @@
       "cinema_date": "2026-05-07",
       "age_rating": "PG",
       "worldwide_gross": 128680145,
-      "budget": 75000000,
       "synopsis": "George Hardy is a shepherd who reads detective novels to his beloved sheep every night, assuming they can't possibly understand. But when a mysterious incident disrupts life on the farm, the sheep realize they must become the detectives. As they follow the clues and investigate human suspects, they prove that even sheep can be brilliant crime-solvers.",
       "language": "en",
       "culture": "Western",
@@ -1267,6 +1362,13 @@
         "E0RYuyLNVQA",
         "sh9nSgpC-uc",
         "XzYKeYj9Kyw"
+      ],
+      "director": "Kyle Balda",
+      "cast": [
+        "Hugh Jackman",
+        "Nicholas Braun",
+        "Nicholas Galitzine",
+        "Molly Gordon"
       ],
       "imdb_rating": 7.5,
       "imdb_votes": 34966,
@@ -1302,7 +1404,6 @@
       "cinema_date": "2026-05-21",
       "age_rating": "M",
       "worldwide_gross": 336000909,
-      "budget": 165000000,
       "synopsis": "The evil Empire has fallen, and Imperial warlords remain scattered throughout the galaxy. As the fledgling New Republic works to protect everything the Rebellion fought for, they have enlisted the help of legendary Mandalorian bounty hunter Din Djarin and his young apprentice Grogu.",
       "language": "en",
       "culture": "Western",
@@ -1312,6 +1413,13 @@
         "4C14bOV4TCA",
         "DwB0x0Mbp5U",
         "n5WDS9ZNEj4"
+      ],
+      "director": "Jon Favreau",
+      "cast": [
+        "Pedro Pascal",
+        "Jeremy Allen White",
+        "Sigourney Weaver",
+        "Brendan Wayne"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
@@ -1340,7 +1448,6 @@
       "cinema_date": "2025-09-11",
       "age_rating": "MA 15+",
       "worldwide_gross": 733030221,
-      "budget": 20000000,
       "synopsis": "The Demon Slayer Corps are drawn into the Infinity Castle, where Tanjiro, Nezuko, and the Hashira face terrifying Upper Rank demons in a desperate fight as the final battle against Muzan Kibutsuji begins.",
       "language": "ja",
       "culture": "Japanese",
@@ -1350,6 +1457,13 @@
         "PdC1oC05V9s",
         "cpoNnc7mjCs",
         "pp2vyPNBOI4"
+      ],
+      "director": "Haruo Sotozaki",
+      "cast": [
+        "Natsuki Hanae",
+        "Takahiro Sakurai",
+        "Akira Ishida",
+        "Hiro Shimono"
       ],
       "imdb_rating": 8.4,
       "imdb_votes": 64082,
@@ -1380,7 +1494,6 @@
       "cinema_date": "2026-03-26",
       "age_rating": "PG",
       "worldwide_gross": 372038602,
-      "budget": 150000000,
       "synopsis": "Scientists have discovered how to 'hop' human consciousness into lifelike robotic animals, allowing people to communicate with animals as animals. Animal lover Mabel seizes an opportunity to use the technology, uncovering mysteries within the animal world beyond anything she could have imagined.",
       "language": "en",
       "culture": "Western",
@@ -1390,6 +1503,13 @@
         "H0jlcVZlAkI",
         "UH5MxhYJyxQ",
         "5hX24mrgqEg"
+      ],
+      "director": "Daniel Chong",
+      "cast": [
+        "Piper Curda",
+        "Bobby Moynihan",
+        "Jon Hamm",
+        "Kathy Najimy"
       ],
       "imdb_rating": 7.4,
       "imdb_votes": 37622,
@@ -1467,7 +1587,6 @@
       "cinema_date": "2026-06-25",
       "age_rating": "M",
       "worldwide_gross": 115401000,
-      "budget": 175000000,
       "synopsis": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
       "language": "en",
       "culture": "Western",
@@ -1477,6 +1596,13 @@
         "WYLhxgcZBDY",
         "0tnDB-qe7KY",
         "JRXx3Y8FmTw"
+      ],
+      "director": "Craig Gillespie",
+      "cast": [
+        "Milly Alcock",
+        "Eve Ridley",
+        "Matthias Schoenaerts",
+        "Jason Momoa"
       ],
       "imdb_rating": 6.1,
       "imdb_votes": 43390,
@@ -1503,7 +1629,6 @@
       "cinema_date": "2026-05-14",
       "age_rating": "MA 15+",
       "worldwide_gross": 24310849,
-      "budget": 70000000,
       "synopsis": "A covert team of elite operatives are living in the shadows. When a ruthless despot steals a billion-dollar fortune, they're sent to take it back\u2014an impossible heist that erupts into a deadly game of strategy, deception and survival.",
       "language": "en",
       "culture": "Western",
@@ -1513,6 +1638,13 @@
         "Ic119f0au0s",
         "OgZr3dgNHWk",
         "GOF2NM1P864"
+      ],
+      "director": "Guy Ritchie",
+      "cast": [
+        "Henry Cavill",
+        "Jake Gyllenhaal",
+        "Eiza Gonz\u00e1lez",
+        "Carlos Bardem"
       ],
       "imdb_rating": 6.6,
       "imdb_votes": 6178,
@@ -1603,7 +1735,6 @@
       "cinema_date": "2025-08-21",
       "age_rating": "MA 15+",
       "worldwide_gross": 174400000,
-      "budget": null,
       "synopsis": "Macau Police brings the tracking expert police officer out of retirement to help catch a dangerous group of professional thieves.",
       "language": "zh",
       "culture": "Chinese",
@@ -1613,6 +1744,13 @@
         "gREBnHgRRCs",
         "iHcwAoMwKn8",
         "-XiwDPiIoZQ"
+      ],
+      "director": "Larry Yang",
+      "cast": [
+        "Jackie Chan",
+        "Zhang Zifeng",
+        "Tony Leung Ka-fai",
+        "Ci Sha"
       ],
       "imdb_rating": 7.1,
       "imdb_votes": 8806,
@@ -1642,7 +1780,6 @@
       "cinema_date": "2025-11-27",
       "age_rating": "PG",
       "worldwide_gross": 1868208796,
-      "budget": 150000000,
       "synopsis": "After cracking the biggest case in Zootopia's history, rookie cops Judy Hopps and Nick Wilde find themselves on the twisting trail of a great mystery when Gary De'Snake arrives and turns the animal metropolis upside down. To crack the case, Judy and Nick must go undercover to unexpected new parts of town, where their growing partnership is tested like never before.",
       "language": "en",
       "culture": "Western",
@@ -1652,6 +1789,13 @@
         "htJiuw_swvQ",
         "WFclEuprDi0",
         "k8t8rvRO7Ug"
+      ],
+      "director": "Jared Bush, Byron Howard",
+      "cast": [
+        "Ginnifer Goodwin",
+        "Jason Bateman",
+        "Ke Huy Quan",
+        "Fortune Feimster"
       ],
       "imdb_rating": 7.3,
       "imdb_votes": 141989,
@@ -1728,7 +1872,6 @@
       "cinema_date": "2026-04-30",
       "age_rating": "MA 15+",
       "worldwide_gross": null,
-      "budget": null,
       "synopsis": "When a former elite sniper is hunted down by the ruthless warlord who once held her captive, she must fight to the death to protect the daughter she has raised in hiding, on a remote Australian farm.",
       "language": "en",
       "culture": "Western",
@@ -1738,6 +1881,13 @@
         "SWDxjPeAtVA",
         "t--EvV2e97k",
         "RX8c8wybhaM"
+      ],
+      "director": "Sandra Sciberras",
+      "cast": [
+        "Radha Mitchell",
+        "Tim Roth",
+        "Annabel Wolfe",
+        "Ioan Gruffudd"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
@@ -1825,7 +1975,6 @@
       "cinema_date": "2026-03-12",
       "age_rating": "PG",
       "worldwide_gross": 193566330,
-      "budget": 90000000,
       "synopsis": "A small goat with big dreams gets a once-in-a-lifetime shot to join the pros and play roarball, a high-intensity, co-ed, full-contact sport dominated by the fastest, fiercest animals in the world.",
       "language": "en",
       "culture": "Western",
@@ -1835,6 +1984,13 @@
         "WFTAGv9zTAc",
         "RKke1b1JTzc",
         "hai7nDaNI1Q"
+      ],
+      "director": "Tyree Dillihay",
+      "cast": [
+        "Caleb McLaughlin",
+        "Gabrielle Union",
+        "Stephen Curry",
+        "Aaron Pierre"
       ],
       "imdb_rating": 6.7,
       "imdb_votes": 15166,
@@ -1935,7 +2091,6 @@
       "cinema_date": "2025-12-26",
       "age_rating": "MA 15+",
       "worldwide_gross": 399644671,
-      "budget": 35000000,
       "synopsis": "Trying to escape her past, Millie Calloway accepts a job as a live-in housemaid for the wealthy Nina and Andrew Winchester. But what begins as a dream job quickly unravels into something far more dangerous\u2014a sexy, seductive game of secrets, scandal, and power.",
       "language": "en",
       "culture": "Western",
@@ -1945,6 +2100,13 @@
         "TGdKFCVn6G0",
         "w9P13gMJCCo",
         "e67WZM-Nkn4"
+      ],
+      "director": "Paul Feig",
+      "cast": [
+        "Sydney Sweeney",
+        "Amanda Seyfried",
+        "Brandon Sklenar",
+        "Michele Morrone"
       ],
       "imdb_rating": 6.8,
       "imdb_votes": 133074,
@@ -2030,7 +2192,6 @@
       "cinema_date": "2026-02-05",
       "age_rating": "M",
       "worldwide_gross": 53933639,
-      "budget": 50000000,
       "synopsis": "A man living in self-imposed exile on a remote island rescues a young girl from a violent storm, setting off a chain of events that forces him out of seclusion to protect her from enemies tied to his past.",
       "language": "en",
       "culture": "Western",
@@ -2040,6 +2201,13 @@
         "kCY4Y3Y8UpA",
         "Bvrbi8fZb7g",
         "3KcD7A9Pzgc"
+      ],
+      "director": "Ric Roman Waugh",
+      "cast": [
+        "Jason Statham",
+        "Bodhi Rae Breathnach",
+        "Naomi Ackie",
+        "Daniel Mays"
       ],
       "imdb_rating": 6.1,
       "imdb_votes": 25305,
@@ -2148,7 +2316,6 @@
       "cinema_date": "2025-11-06",
       "age_rating": "M",
       "worldwide_gross": 184500000,
-      "budget": 105000000,
       "synopsis": "Cast out from his clan, a young Predator finds an unlikely ally in a damaged android and embarks on a treacherous journey in search of the ultimate adversary.",
       "language": "en",
       "culture": "Western",
@@ -2158,6 +2325,13 @@
         "TmD4c4vVclo",
         "SscfOy1i2IU",
         "0PayKPq0Rsc"
+      ],
+      "director": "Dan Trachtenberg",
+      "cast": [
+        "Elle Fanning",
+        "Dimitrius Schuster-Koloamatangi",
+        "Ravi Narayan",
+        "Michael Homick"
       ],
       "imdb_rating": 7.2,
       "imdb_votes": 143246,
@@ -2235,7 +2409,6 @@
       "cinema_date": "2026-01-08",
       "age_rating": "M",
       "worldwide_gross": 44856736,
-      "budget": 90000000,
       "synopsis": "Having found the safety of the Greenland bunker after the comet Clarke decimated the Earth, the Garrity family must now risk everything to embark on a perilous journey across the wasteland of Europe to find a new home.",
       "language": "en",
       "culture": "Western",
@@ -2245,6 +2418,13 @@
         "zwfCPPttT4s",
         "t7_YshHJkTk",
         "x0rlW0ZTKTM"
+      ],
+      "director": "Ric Roman Waugh",
+      "cast": [
+        "Gerard Butler",
+        "Morena Baccarin",
+        "Roman Griffin Davis",
+        "Tommie Earl Jenkins"
       ],
       "imdb_rating": 5.2,
       "imdb_votes": 26853,
@@ -2279,7 +2459,6 @@
       "cinema_date": "2026-02-19",
       "age_rating": "R 18+",
       "worldwide_gross": 6644994,
-      "budget": 1000000,
       "synopsis": "Colin, a timid gay man, is swept off his feet when Ray, an enigmatic and impossibly handsome biker, takes him on as his submissive in a crazy and erotic BDSM-focused relationship.",
       "language": "en",
       "culture": "Western",
@@ -2289,6 +2468,13 @@
         "Gl8n5I-IIHU",
         "aTAacTUKK00",
         "iC9xlgRBOdI"
+      ],
+      "director": "Harry Lighton",
+      "cast": [
+        "Harry Melling",
+        "Alexander Skarsg\u00e5rd",
+        "Lesley Sharp",
+        "Douglas Hodge"
       ],
       "imdb_rating": 6.9,
       "imdb_votes": 15259,
@@ -2386,7 +2572,6 @@
       "cinema_date": "2026-06-04",
       "age_rating": "M",
       "worldwide_gross": 110540345,
-      "budget": 200000000,
       "synopsis": "After being separated for 15 years, the Sword of Power leads Prince Adam back to Eternia, where he discovers his home shattered under the fiendish rule of Skeletor. To save his family and his world, Adam must join forces with his closest allies, Teela and Duncan/Man-At-Arms, and embrace his true destiny as He-Man \u2014 the most powerful man in the universe.",
       "language": "en",
       "culture": "Western",
@@ -2396,6 +2581,13 @@
         "z81e-EiwGJw",
         "05BQdYOTvDQ",
         "vZuWXX6pDG0"
+      ],
+      "director": "Travis Knight",
+      "cast": [
+        "Nicholas Galitzine",
+        "Camila Mendes",
+        "Idris Elba",
+        "Jared Leto"
       ],
       "imdb_rating": 6.9,
       "imdb_votes": 37893,
@@ -2425,7 +2617,6 @@
       "cinema_date": "2024-11-28",
       "age_rating": "PG",
       "worldwide_gross": 1059242164,
-      "budget": 150000000,
       "synopsis": "After receiving an unexpected call from her wayfinding ancestors, Moana journeys alongside Maui and a new crew to the far seas of Oceania and into dangerous, long-lost waters for an adventure unlike anything she's ever faced.",
       "language": "en",
       "culture": "Western",
@@ -2435,6 +2626,13 @@
         "lr8mbHzVSk8",
         "Jr4RL-fpC7k",
         "9IisFuMUz44"
+      ],
+      "director": "David G. Derrick Jr., Jason Hand",
+      "cast": [
+        "Auli\u02bbi Cravalho",
+        "Dwayne Johnson",
+        "Hual\u0101lai Chung",
+        "Rose Matafeo"
       ],
       "imdb_rating": 6.3,
       "imdb_votes": 125961,
@@ -2515,7 +2713,6 @@
       "cinema_date": "2025-02-13",
       "age_rating": "M",
       "worldwide_gross": 2259822417,
-      "budget": 80000000,
       "synopsis": "After a catastrophic event leaves their bodies destroyed, Ne Zha and Ao Bing are granted a fragile second chance at life. As tensions rise between the dragon clans and celestial forces, the two must undergo a series of perilous trials that will test their bond, challenge their identities, and decide the fate of both mortals and immortals.",
       "language": "zh",
       "culture": "Chinese",
@@ -2524,6 +2721,13 @@
         "ETlOSBR92Fs",
         "SpSricKXpU4",
         "nsXQijb0F4I"
+      ],
+      "director": "Jiao Zi",
+      "cast": [
+        "Lu Yanting",
+        "Joseph",
+        "Han Mo",
+        "Chen Hao"
       ],
       "imdb_rating": 7.9,
       "imdb_votes": 23207,
@@ -2638,7 +2842,6 @@
       "cinema_date": "2026-04-23",
       "age_rating": "MA 15+",
       "worldwide_gross": null,
-      "budget": null,
       "synopsis": "MMA legend Patton James, now a commercial fisherman, is pulled back into the cage when his brother is in danger. Reuniting with his old coach Sammy, he commits to one final fight in one championship against the brutal champion Xavier Grau.",
       "language": "en",
       "culture": "Western",
@@ -2646,6 +2849,13 @@
       "trailers": [
         "yJN2mJ4uOas",
         "KuxbC8zdFCU"
+      ],
+      "director": "Tyler Atkins",
+      "cast": [
+        "Daniel MacPherson",
+        "Luke Hemsworth",
+        "Russell Crowe",
+        "Mojean Aria"
       ],
       "imdb_rating": 6.2,
       "imdb_votes": 246,
@@ -2677,7 +2887,6 @@
       "cinema_date": "2026-04-30",
       "age_rating": "M",
       "worldwide_gross": 24063412,
-      "budget": 5000000,
       "synopsis": "When novelist Ohm Bauman retreats to a remote inn to scatter his parents' ashes, he is consumed by tales of a witch haunting the honeymoon suite. Disturbing visions and a shocking disappearance forces him to confront dark corners of his past.",
       "language": "en",
       "culture": "Western",
@@ -2687,6 +2896,13 @@
         "xtZZcolHyy8",
         "mns3X9EUEsY",
         "UmIs2xkgX2g"
+      ],
+      "director": "Damian McCarthy",
+      "cast": [
+        "Adam Scott",
+        "Peter Coonan",
+        "David Wilmot",
+        "Florence Ordesh"
       ],
       "imdb_rating": 7.3,
       "imdb_votes": 16522,
@@ -2775,7 +2991,6 @@
       "cinema_date": "2026-04-02",
       "age_rating": "MA 15+",
       "worldwide_gross": 131893162,
-      "budget": 28000000,
       "synopsis": "A happily engaged couple is put to the test when an unexpected turn sends their wedding week off the rails.",
       "language": "en",
       "culture": "Western",
@@ -2785,6 +3000,13 @@
         "1gVr7eosXmo",
         "8aceVuVSJMY",
         "0ZDzsH3XGFA"
+      ],
+      "director": "Kristoffer Borgli",
+      "cast": [
+        "Zendaya",
+        "Robert Pattinson",
+        "Alana Haim",
+        "Mamoudou Athie"
       ],
       "imdb_rating": 7.2,
       "imdb_votes": 81611,
@@ -2885,7 +3107,6 @@
       "cinema_date": "2026-01-29",
       "age_rating": "MA 15+",
       "worldwide_gross": 94041481,
-      "budget": 40000000,
       "synopsis": "Two colleagues become stranded on a deserted island, the only survivors of a plane crash. On the island, they must overcome past grievances and work together to survive, but ultimately, it's a battle of wills and wits to make it out alive.",
       "language": "en",
       "culture": "Western",
@@ -2895,6 +3116,13 @@
         "s9Ue5MckUho",
         "ssctCBSANBA",
         "eGXAC71XOkU"
+      ],
+      "director": "Sam Raimi",
+      "cast": [
+        "Rachel McAdams",
+        "Dylan O'Brien",
+        "Edyll Ismail",
+        "Dennis Haysbert"
       ],
       "imdb_rating": 6.9,
       "imdb_votes": 71618,
@@ -2973,7 +3201,6 @@
       "cinema_date": "2024-09-19",
       "age_rating": "PG",
       "worldwide_gross": 331982078,
-      "budget": 78000000,
       "synopsis": "After a shipwreck, an intelligent robot called Roz is stranded on an uninhabited island. To survive the harsh environment, Roz bonds with the island's animals and cares for an orphaned baby goose.",
       "language": "en",
       "culture": "Western",
@@ -2983,6 +3210,13 @@
         "-Q3riC-J9DI",
         "FLgpxZp505w",
         "d6V61TtFdiw"
+      ],
+      "director": "Chris Sanders",
+      "cast": [
+        "Lupita Nyong'o",
+        "Pedro Pascal",
+        "Kit Connor",
+        "Bill Nighy"
       ],
       "imdb_rating": 8.2,
       "imdb_votes": 216281,
@@ -3098,13 +3332,19 @@
       "cinema_date": "2026-02-12",
       "age_rating": "MA 15+",
       "worldwide_gross": null,
-      "budget": 73000000,
       "synopsis": "On one last grueling mission during Army Ranger training, a combat engineer must lead his unit in a fight against a giant otherworldly killing machine.",
       "language": "en",
       "culture": "Western",
       "poster": "/rFhKkXhk7ClU03jQ5rHIApJDwev.jpg",
       "trailers": [
         "AFuE1LRxm80"
+      ],
+      "director": "Patrick Hughes",
+      "cast": [
+        "Alan Ritchson",
+        "Dennis Quaid",
+        "Stephan James",
+        "Jai Courtney"
       ],
       "imdb_rating": 6.3,
       "imdb_votes": 86956,
@@ -3138,7 +3378,6 @@
       "cinema_date": "2026-02-12",
       "age_rating": "M",
       "worldwide_gross": 72900246,
-      "budget": 90000000,
       "synopsis": "When an elusive thief whose high-stakes heists unfold along the iconic 101 freeway in Los Angeles eyes the score of a lifetime, with hopes of this being his final job, his path collides with a disillusioned insurance broker who is facing her own crossroads. Determined to crack the case, a relentless detective closes in on the operation, raising the stakes even higher.",
       "language": "en",
       "culture": "Western",
@@ -3148,6 +3387,13 @@
         "7Z4Dt3GQW0w",
         "WGSZjBKnYUQ",
         "zJib9VzLBKk"
+      ],
+      "director": "Bart Layton",
+      "cast": [
+        "Chris Hemsworth",
+        "Mark Ruffalo",
+        "Halle Berry",
+        "Barry Keoghan"
       ],
       "imdb_rating": 6.8,
       "imdb_votes": 56311,
@@ -3224,7 +3470,6 @@
       "cinema_date": "2025-07-03",
       "age_rating": "M",
       "worldwide_gross": 869146189,
-      "budget": 180000000,
       "synopsis": "Five years after the events of Jurassic World Dominion, covert operations expert Zora Bennett is contracted to lead a skilled team on a top-secret mission to secure genetic material from the world's three most massive dinosaurs. When Zora's operation intersects with a civilian family whose boating expedition was capsized, they all find themselves stranded on an island where they come face-to-face with a sinister, shocking discovery that's been hidden from the world for decades.",
       "language": "en",
       "culture": "Western",
@@ -3234,6 +3479,13 @@
         "7YaQy73eZSQ",
         "78Ok9CV88ZA",
         "eQHZeraFNFY"
+      ],
+      "director": "Gareth Edwards",
+      "cast": [
+        "Scarlett Johansson",
+        "Mahershala Ali",
+        "Jonathan Bailey",
+        "Rupert Friend"
       ],
       "imdb_rating": 5.8,
       "imdb_votes": 194010,
@@ -3355,7 +3607,6 @@
       "cinema_date": "2024-08-15",
       "age_rating": "PG",
       "worldwide_gross": 185860104,
-      "budget": 60000000,
       "synopsis": "Wandering her rambling old house in her boring new town, 11-year-old Coraline discovers a hidden door to a strangely idealized version of her life. In order to stay in the fantasy, she must make a frighteningly real sacrifice.",
       "language": "en",
       "culture": "Western",
@@ -3365,6 +3616,13 @@
         "BgKXN16_VBY",
         "T6iQnnHNF50",
         "biR7qs2tQKA"
+      ],
+      "director": "Henry Selick",
+      "cast": [
+        "Dakota Fanning",
+        "Teri Hatcher",
+        "Jennifer Saunders",
+        "Dawn French"
       ],
       "imdb_rating": 7.8,
       "imdb_votes": 297596,
@@ -3444,7 +3702,6 @@
       "cinema_date": "2025-07-10",
       "age_rating": "M",
       "worldwide_gross": 618723803,
-      "budget": 225000000,
       "synopsis": "Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.",
       "language": "en",
       "culture": "Western",
@@ -3454,6 +3711,13 @@
         "gA9Rkb0dC58",
         "55QuFyVALSo",
         "6IovndwuHa4"
+      ],
+      "director": "James Gunn",
+      "cast": [
+        "David Corenswet",
+        "Rachel Brosnahan",
+        "Nicholas Hoult",
+        "Edi Gathegi"
       ],
       "imdb_rating": 7.0,
       "imdb_votes": 406287,
@@ -3582,7 +3846,6 @@
       "cinema_date": "2025-04-03",
       "age_rating": "PG",
       "worldwide_gross": 960387780,
-      "budget": 150000000,
       "synopsis": "Four misfits find themselves struggling with ordinary problems when they are suddenly pulled through a mysterious portal into the Overworld: a bizarre, cubic wonderland that thrives on imagination. To get back home, they'll have to master this world while embarking on a magical quest with an unexpected, expert crafter, Steve.",
       "language": "en",
       "culture": "Western",
@@ -3592,6 +3855,13 @@
         "kiu5cufbwDY",
         "WHEYp5hEIpo",
         "9LE_8pKtIvE"
+      ],
+      "director": "Jared Hess",
+      "cast": [
+        "Jason Momoa",
+        "Jack Black",
+        "Sebastian Eugene Hansen",
+        "Emma Myers"
       ],
       "imdb_rating": 5.6,
       "imdb_votes": 153774,
@@ -3700,7 +3970,6 @@
       "cinema_date": "2024-07-25",
       "age_rating": "MA 15+",
       "worldwide_gross": 1338073645,
-      "budget": 200000000,
       "synopsis": "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.",
       "language": "en",
       "culture": "Western",
@@ -3710,6 +3979,13 @@
         "rl2fAfnNftw",
         "LYaJVfiwv0w",
         "k2q1haFRQaA"
+      ],
+      "director": "Shawn Levy",
+      "cast": [
+        "Ryan Reynolds",
+        "Hugh Jackman",
+        "Emma Corrin",
+        "Matthew Macfadyen"
       ],
       "imdb_rating": 7.5,
       "imdb_votes": 565006,
@@ -3781,7 +4057,6 @@
       "cinema_date": "2026-03-19",
       "age_rating": "MA 15+",
       "worldwide_gross": 42212563,
-      "budget": 14000000,
       "synopsis": "Moments after surviving an all-out attack from the Le Domas family, Grace discovers she\u2019s reached the next level of the nightmarish game \u2014 and this time with her estranged sister Faith at her side. Grace has one chance to survive, keep her sister alive, and claim the High Seat of the Council that controls the world. Four rival families are hunting her for the throne, and whoever wins rules it all.",
       "language": "en",
       "culture": "Western",
@@ -3791,6 +4066,13 @@
         "kedvptckpSA",
         "P5gj-BCgPuU",
         "HiSjUUlSJvc"
+      ],
+      "director": "Matt Bettinelli-Olpin, Tyler Gillett",
+      "cast": [
+        "Samara Weaving",
+        "Kathryn Newton",
+        "Sarah Michelle Gellar",
+        "Shawn Hatosy"
       ],
       "imdb_rating": 6.5,
       "imdb_votes": 52114,
@@ -3868,7 +4150,6 @@
       "cinema_date": "2024-06-13",
       "age_rating": "PG",
       "worldwide_gross": 1698863816,
-      "budget": 200000000,
       "synopsis": "Teenager Riley's mind headquarters is undergoing a sudden demolition to make room for something entirely unexpected: new Emotions! Joy, Sadness, Anger, Fear and Disgust, who\u2019ve long been running a successful operation by all accounts, aren\u2019t sure how to feel when Anxiety shows up. And it looks like she\u2019s not alone.",
       "language": "en",
       "culture": "Western",
@@ -3878,6 +4159,13 @@
         "u69y5Ie519M",
         "RY5aH21ohU4",
         "eioXDOSx6rQ"
+      ],
+      "director": "Kelsey Mann",
+      "cast": [
+        "Amy Poehler",
+        "Maya Hawke",
+        "Kensington Tallman",
+        "Liza Lapira"
       ],
       "imdb_rating": 7.5,
       "imdb_votes": 245290,
@@ -3951,7 +4239,6 @@
       "cinema_date": "2024-06-20",
       "age_rating": "PG",
       "worldwide_gross": 972021410,
-      "budget": 100000000,
       "synopsis": "Gru and Lucy and their girls\u2014Margo, Edith and Agnes\u2014welcome a new member to the Gru family, Gru Jr., who is intent on tormenting his dad. Gru also faces a new nemesis in Maxime Le Mal and his femme fatale girlfriend Valentina, forcing the family to go on the run.",
       "language": "en",
       "culture": "Western",
@@ -3961,6 +4248,13 @@
         "uAjOOnHUGFM",
         "AqLs31erzc8",
         "fWubmWZe-Aw"
+      ],
+      "director": "Chris Renaud",
+      "cast": [
+        "Steve Carell",
+        "Kristen Wiig",
+        "Will Ferrell",
+        "Sof\u00eda Vergara"
       ],
       "imdb_rating": 6.2,
       "imdb_votes": 76384,
@@ -4076,7 +4370,6 @@
       "cinema_date": "2025-11-06",
       "age_rating": "MA 15+",
       "worldwide_gross": 42404858,
-      "budget": 52000000,
       "synopsis": "In late 15th-century Eastern Europe, Prince Vlad II\u2019s bride is brutally murdered. As a result, he renounces God and damns Heaven itself. Cursed with eternal life, Vlad is reborn as Dracula, an immortal warlord who defies fate in a blood-soaked crusade to wrench his lost love back from death.",
       "language": "fr",
       "culture": "European",
@@ -4085,6 +4378,13 @@
         "hverb7siYJ8",
         "3OBLPpuOM10",
         "iBKJCME9yvk"
+      ],
+      "director": "Luc Besson",
+      "cast": [
+        "Caleb Landry Jones",
+        "Zo\u00eb Bleu Sidel",
+        "Christoph Waltz",
+        "Matilda De Angelis"
       ],
       "imdb_rating": 6.2,
       "imdb_votes": 34913,
@@ -4182,7 +4482,6 @@
       "cinema_date": "2026-01-15",
       "age_rating": "MA 15+",
       "worldwide_gross": 58522222,
-      "budget": 63000000,
       "synopsis": "Dr. Kelson finds himself in a shocking new relationship - with consequences that could change the world as they know it - and Spike's encounter with Jimmy Crystal becomes a nightmare he can't escape.",
       "language": "en",
       "culture": "Western",
@@ -4192,6 +4491,13 @@
         "lYfmi1GeCh0",
         "IZMxrdUXrjg",
         "5K4F3RGLVFs"
+      ],
+      "director": "Nia DaCosta",
+      "cast": [
+        "Ralph Fiennes",
+        "Jack O'Connell",
+        "Alfie Williams",
+        "Erin Kellyman"
       ],
       "imdb_rating": 7.3,
       "imdb_votes": 84391,
@@ -4300,7 +4606,6 @@
       "cinema_date": "2026-07-09",
       "age_rating": "MA 15+",
       "worldwide_gross": 8720872,
-      "budget": null,
       "synopsis": "Joe and Angela's marriage is on thin ice. When they invite their enigmatic upstairs neighbors for a dinner party, the night spirals into unexpected places.",
       "language": "en",
       "culture": "Western",
@@ -4310,6 +4615,13 @@
         "JPjVHwpixyY",
         "sF0EtJ2c1Pk",
         "WfaRjB8sg2k"
+      ],
+      "director": "Olivia Wilde",
+      "cast": [
+        "Seth Rogen",
+        "Olivia Wilde",
+        "Pen\u00e9lope Cruz",
+        "Edward Norton"
       ],
       "imdb_rating": 7.8,
       "imdb_votes": 3560,
@@ -4335,7 +4647,6 @@
       "cinema_date": "2025-09-04",
       "age_rating": "MA 15+",
       "worldwide_gross": 499256445,
-      "budget": 55000000,
       "synopsis": "Paranormal investigators Ed and Lorraine Warren take on one last terrifying case involving mysterious entities they must confront.",
       "language": "en",
       "culture": "Western",
@@ -4345,6 +4656,13 @@
         "YVbHSRleTmU",
         "cw8KajB4JeQ",
         "Dg63O5d15Wg"
+      ],
+      "director": "Michael Chaves",
+      "cast": [
+        "Patrick Wilson",
+        "Vera Farmiga",
+        "Mia Tomlinson",
+        "Ben Hardy"
       ],
       "imdb_rating": 6.2,
       "imdb_votes": 98159,
@@ -4471,7 +4789,6 @@
       "cinema_date": "2026-02-26",
       "age_rating": "MA 15+",
       "worldwide_gross": 213835967,
-      "budget": 45000000,
       "synopsis": "When a new Ghostface killer emerges in the quiet town where Sidney Prescott has built a new life, her darkest fears are realized as her daughter becomes the next target. Determined to protect her family, Sidney must face the horrors of her past to put an end to the bloodshed once and for all.",
       "language": "en",
       "culture": "Western",
@@ -4481,6 +4798,13 @@
         "Bl6WSbXjhFU",
         "hyb0MgTazJk",
         "QxSXIQkgq54"
+      ],
+      "director": "Kevin Williamson",
+      "cast": [
+        "Neve Campbell",
+        "Courteney Cox",
+        "Isabel May",
+        "Jasmin Savoy Brown"
       ],
       "imdb_rating": 5.5,
       "imdb_votes": 50291,
@@ -4594,7 +4918,6 @@
       "cinema_date": "2025-04-17",
       "age_rating": "MA 15+",
       "worldwide_gross": 370000000,
-      "budget": 100000000,
       "synopsis": "Trying to leave their troubled lives behind, twin brothers return to their hometown to start again, only to discover that an even greater evil is waiting to welcome them back.",
       "language": "en",
       "culture": "Western",
@@ -4604,6 +4927,13 @@
         "NPraUUZglEU",
         "OwBFp-6hs9U",
         "oMiCfbFb--g"
+      ],
+      "director": "Ryan Coogler",
+      "cast": [
+        "Michael B. Jordan",
+        "Hailee Steinfeld",
+        "Miles Caton",
+        "Jack O'Connell"
       ],
       "imdb_rating": 7.5,
       "imdb_votes": 472042,
@@ -4723,7 +5053,6 @@
       "cinema_date": "2024-03-28",
       "age_rating": "PG",
       "worldwide_gross": 24094016,
-      "budget": 14000000,
       "synopsis": "Hirayama is content with his life as a toilet cleaner in Tokyo. Outside of his structured routine, he cherishes music on cassette tapes, books, and taking photos of trees. Through unexpected encounters, he reflects on finding beauty in the world.",
       "language": "ja",
       "culture": "Japanese",
@@ -4732,6 +5061,13 @@
         "Iv8YO5BXCAQ",
         "QzZBbX5A1FA",
         "HTgWYojq-z8"
+      ],
+      "director": "Wim Wenders",
+      "cast": [
+        "Koji Yakusho",
+        "Tokio Emoto",
+        "Arisa Nakano",
+        "Aoi Yamada"
       ],
       "imdb_rating": 7.9,
       "imdb_votes": 103770,
@@ -4828,7 +5164,6 @@
       "cinema_date": "1975-02-20",
       "age_rating": "MA 15+",
       "worldwide_gross": 102600000,
-      "budget": 13000000,
       "synopsis": "In the continuing saga of the Corleone crime family, a young Vito Corleone grows up in Sicily and in 1910s New York. In the 1950s, Michael Corleone attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
       "language": "en",
       "culture": "Western",
@@ -4836,6 +5171,13 @@
       "trailers": [
         "7pfqivkYUlE",
         "9O1Iy9od7-A"
+      ],
+      "director": "Francis Ford Coppola",
+      "cast": [
+        "Al Pacino",
+        "Robert Duvall",
+        "Diane Keaton",
+        "Robert De Niro"
       ],
       "imdb_rating": 9.0,
       "imdb_votes": 1492120,
@@ -4968,7 +5310,6 @@
       "cinema_date": "2025-06-26",
       "age_rating": "M",
       "worldwide_gross": 634142436,
-      "budget": 300000000,
       "synopsis": "Racing legend Sonny Hayes is coaxed out of retirement to lead a struggling Formula 1 team\u2014and mentor a young hotshot driver\u2014while chasing one more chance at glory.",
       "language": "en",
       "culture": "Western",
@@ -4978,6 +5319,13 @@
         "9vE74AROgM8",
         "f7KR09_ZfKc",
         "3Q5WEFPr0NM"
+      ],
+      "director": "Joseph Kosinski",
+      "cast": [
+        "Brad Pitt",
+        "Damson Idris",
+        "Javier Bardem",
+        "Kerry Condon"
       ],
       "imdb_rating": 7.6,
       "imdb_votes": 353753,
@@ -5056,7 +5404,6 @@
       "cinema_date": "2025-06-12",
       "age_rating": "PG",
       "worldwide_gross": 636351148,
-      "budget": 150000000,
       "synopsis": "On the rugged isle of Berk, where Vikings and dragons have been bitter enemies for generations, Hiccup stands apart, defying centuries of tradition when he befriends Toothless, a feared Night Fury dragon. Their unlikely bond reveals the true nature of dragons, challenging the very foundations of Viking society.",
       "language": "en",
       "culture": "Western",
@@ -5066,6 +5413,13 @@
         "aApqoAOPJSY",
         "x8wvFv0ySuw",
         "4m1s2o-moW8"
+      ],
+      "director": "Dean DeBlois",
+      "cast": [
+        "Mason Thames",
+        "Nico Parker",
+        "Gerard Butler",
+        "Nick Frost"
       ],
       "imdb_rating": 7.7,
       "imdb_votes": 131570,
@@ -5175,7 +5529,6 @@
       "cinema_date": "2026-03-26",
       "age_rating": "MA 15+",
       "worldwide_gross": 19382152,
-      "budget": 20000000,
       "synopsis": "A woman answers a help wanted ad to be a housekeeper in a mysterious New York City high-rise, unaware that she is entering a community that has seen a number of disappearances over the years and may be under the grip of a Satanic cult.",
       "language": "en",
       "culture": "Western",
@@ -5185,6 +5538,13 @@
         "ywr7F5Sim-M",
         "raPoY952oIs",
         "SXE3Yl8I424"
+      ],
+      "director": "Kirill Sokolov",
+      "cast": [
+        "Zazie Beetz",
+        "Myha'la",
+        "Paterson Joseph",
+        "Tom Felton"
       ],
       "imdb_rating": 6.5,
       "imdb_votes": 8025,
