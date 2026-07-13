@@ -123,6 +123,7 @@ def ingest_tmdb() -> list[dict]:
                 "cinema_date": cinema_date,
                 "age_rating": age_rating,
                 "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
+                "budget": detail.get("budget") or None,             # TMDB budget (0 when unknown)
                 "synopsis": (detail.get("overview") or "").strip(),
                 "language": lang,
                 "culture": _culture(lang, countries),
