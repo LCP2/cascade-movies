@@ -34,6 +34,20 @@ movies.json without re-polling: `python3 poc_pipeline.py --build-html`.
 Just open `index.html`. Tap **⚙︎ Filters**, tap the **☆** on a couple of films to
 track them, open the **🔔** drawer, and hit **Simulate next daily poll**.
 
+### URL params (for reviewing and demoing)
+No incognito window, no DevTools — append one of these to the URL:
+
+| Param | What it does |
+| --- | --- |
+| `?setup` (or `?onboard`) | Replays the first-run onboarding. Your Cascades, services and tags are left **untouched** — this shows you the first run again, it doesn't pretend you're a new user. |
+| `?reset` | Clears **all** local Cascade state (Cascades, service prefs, tracked/watched/not-interested tags, the onboarded flag, the usage log) and boots a genuine clean first run. |
+| `?log` | Opens the local usage log. |
+
+Both `?setup` and `?reset` remove themselves from the address bar once they've run
+(`history.replaceState`), so a plain refresh won't fire them again — and neither one
+disturbs a `?c=` share link that arrived in the same URL. All state is `localStorage`
+on this device only; `?reset` cannot touch anything on a server, because there isn't one.
+
 ## Run the backend (sample mode)
 ```
 python3 poc_pipeline.py                 # establishes a baseline snapshot

@@ -839,6 +839,28 @@ const TYPE_LABEL={sub:"Stream",free:"Free",rent:"Rent",buy:"Buy"};
 const SVC_DISPLAY={"Amazon":"Amazon Prime"};
 const svcName=s=>SVC_DISPLAY[s]||s;
 
+// ---- Reviewer URL params: ?reset and ?setup ------------------------------------
+// Demo/review affordances, not product surface. This block runs BEFORE any state is read below, so ?reset
+// doesn't need a reload to take effect — the app simply boots having never seen the old state. (A reload
+// would have to strip the param first anyway, or it would reset again on every refresh, forever.)
+// Every key this app writes is prefixed "cascade_", so the prefix IS the list — a key added later is
+// cleared by this too, rather than surviving a "clean slate" that quietly wasn't one.
+const URLQ = new URLSearchParams(location.search);
+const forceSetup = URLQ.has("setup") || URLQ.has("onboard");   // read before the params are stripped
+const didReset = URLQ.has("reset");
+if(didReset){
+  try{
+    Object.keys(localStorage).filter(k=>k.startsWith("cascade_")).forEach(k=>localStorage.removeItem(k));
+  }catch(e){}
+}
+// Strip only what we consumed. `?c=` (a shared Cascade) and `?log` are read further down and clean up after
+// themselves — taking the whole query string here would swallow a share link that arrived alongside ?setup.
+if(didReset || forceSetup){
+  ["reset","setup","onboard"].forEach(k=>URLQ.delete(k));
+  const q=URLQ.toString();
+  history.replaceState(null, "", location.pathname + (q?"?"+q:"") + location.hash);
+}
+
 // ---- persisted user state (localStorage, with graceful fallback) ----
 function loadSet(k){ try{ return new Set(JSON.parse(localStorage.getItem(k)||"[]")); }catch(e){ return new Set(); } }
 function saveSet(k,set){ try{ localStorage.setItem(k, JSON.stringify([...set])); }catch(e){} }
@@ -3157,7 +3179,10 @@ render();
 // A shared link takes precedence over first-run onboarding — they arrived to look at a specific radar.
 const openedShared = openSharedFromURL();
 // First run only — the "seen" flag is set by finishing OR skipping, so returning visitors go straight to the app.
-if(!openedShared && !onboardingSeen()) startOnboarding();
+// ?setup replays it on demand: the flag stays set, and the rest of your state is untouched — this is a way to
+// SEE the first run again, not to fake being a new user (that's ?reset, which really does clear the slate).
+if(!openedShared && (forceSetup || !onboardingSeen())) startOnboarding();
+if(didReset) toast("🧹 Local state cleared — this is a clean first run.");
 </script>
 </body>
 </html>
