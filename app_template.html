@@ -200,6 +200,50 @@
     font-size:13px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;
     transition:all .25s ease;max-width:420px;text-align:center;line-height:1.4}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  /* ---- My Cascades (saved living searches) ---- */
+  .cascbar{padding:11px 12px 2px}
+  .casclbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin-bottom:7px}
+  .cascchips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .cascchips::-webkit-scrollbar{display:none}
+  .cascchip{flex-shrink:0;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:20px;cursor:pointer;
+    background:var(--panel2);border:1px solid var(--line);color:var(--dim);white-space:nowrap}
+  .cascchip.on{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  .cascchip.new{border-style:dashed;color:var(--accent);border-color:#4c4270}
+  .casccta{font-size:12px;color:var(--faint);line-height:1.5;margin-top:8px}
+  .cascactive{margin-top:9px;background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(72,199,142,.08));
+    border:1px solid var(--accent);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+  .ca-l{flex:1;min-width:0}
+  .ca-name{font-size:13.5px;font-weight:800}
+  .ca-sub{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
+  .ca-r{display:flex;gap:6px;flex-shrink:0}
+  .ca-btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;
+    padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .ca-btn.save{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
+  .ca-btn.x{padding:6px 9px;color:var(--dim)}
+  .dirty{font-style:italic;color:#ffce8f}
+  /* template picker */
+  .tplgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tpl{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px;cursor:pointer;
+    text-align:left;color:var(--ink);transition:.15s}
+  .tpl:hover{border-color:var(--accent)}
+  .tplicon{font-size:19px;line-height:1}
+  .tplname{font-size:13.5px;font-weight:800;margin-top:6px}
+  .tplblurb{font-size:11px;color:var(--dim);line-height:1.4;margin-top:3px}
+  .tplcount{font-size:11px;font-weight:800;color:#a7eccb;margin-top:7px}
+  .tpl.soon{cursor:not-allowed;opacity:.55;border-style:dashed}
+  .tpl.soon .tplcount{color:var(--faint);font-weight:600;font-style:italic}
+  /* builder editor */
+  .namein{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
+    border-radius:10px;padding:11px 12px;font-size:16px;font-weight:600}
+  .cascfoot{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);
+    padding:12px 0 10px;margin-top:18px;display:flex;gap:8px;align-items:center}
+  .applybtn{flex:1;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;
+    font-size:14.5px;font-weight:800;cursor:pointer}
+  .applybtn:disabled{background:var(--panel2);color:var(--faint);cursor:not-allowed}
+  .dangerbtn{background:var(--panel2);border:1px solid #5c3540;color:#ffb9a6;border-radius:11px;
+    padding:13px 14px;font-size:14px;font-weight:700;cursor:pointer}
+  .warnnote{font-size:11.5px;color:#ffce8f;background:rgba(240,163,54,.1);border:1px solid rgba(240,163,54,.4);
+    border-radius:9px;padding:8px 10px;margin-top:8px;line-height:1.45}
 </style>
 </head>
 <body>
@@ -234,8 +278,51 @@
     </div>
   </header>
 
+  <div class="cascbar" id="cascbar"></div>
   <div class="count" id="count"></div>
   <div id="groups"></div>
+</div>
+
+<!-- CASCADE BUILDER modal — pane 1: template picker, pane 2: editor -->
+<div class="modal" id="builder">
+  <div class="modalhead"><h3 id="builderTitle">New Cascade</h3><button class="donebtn" id="builderClose">Cancel</button></div>
+
+  <div id="tplPane">
+    <div class="pnote">A Cascade is a search you save once — it keeps watching the catalogue for you.
+      Start from a template (each comes pre-filled, never blank) and tune it however you like.</div>
+    <div class="flabel">Start from a template</div>
+    <div class="tplgrid" id="tplGrid"></div>
+  </div>
+
+  <div id="editPane" style="display:none">
+    <div class="flabel">Name</div>
+    <input id="cName" class="namein" type="text" maxlength="40" autocomplete="off">
+    <div class="flabel">Availability — which windows this Cascade watches</div>
+    <div class="chips" id="cStatusChips"></div>
+    <div class="pnote">Leave all off to watch every window.</div>
+    <div class="flabel">Genre</div>
+    <div class="chips" id="cGenreChips"></div>
+    <div class="flabel">Age rating</div>
+    <div class="chips" id="cAgeChips"></div>
+    <div class="flabel">Minimum IMDb rating</div>
+    <div class="slider"><input type="range" id="cImdb" min="0" max="10" step="0.1" value="0"><div class="val" id="cImdbVal">Any</div></div>
+    <div class="flabel">Minimum Rotten Tomatoes (critic)</div>
+    <div class="slider"><input type="range" id="cRt" min="0" max="100" step="1" value="0"><div class="val" id="cRtVal">Any</div></div>
+    <div class="flabel">Scope</div>
+    <div class="switch" id="cAwards"><span>🏆 Award winners &amp; nominees only</span><span class="knob"></span></div>
+    <div class="switch" id="cMine"><span>Only what I can watch (my services)</span><span class="knob"></span></div>
+    <div id="cMineWarn"></div>
+    <div class="flabel">Alert me when a tracked film reaches…</div>
+    <div class="switch" id="cAlertPvod"><span>Premium buy/rent (~$30)</span><span class="knob"></span></div>
+    <div class="switch" id="cAlertRental"><span>Standard rental (~$7)</span><span class="knob"></span></div>
+    <div class="switch" id="cAlertStream"><span>Included streaming</span><span class="knob"></span></div>
+    <div class="pnote">These prefs shape the simulated daily poll (🔔) while this Cascade is open.
+      Premium is off by default — most people don't want to be nudged to overpay.</div>
+    <div class="cascfoot">
+      <button class="dangerbtn" id="cDelete" style="display:none">Delete</button>
+      <button class="applybtn" id="cApply">Show 0 films</button>
+    </div>
+  </div>
 </div>
 
 <!-- FILTERS modal -->
@@ -273,6 +360,7 @@
   <div class="switch" id="prefSwitch"><span>Filter results to my services</span><span class="knob"></span></div>
   <div class="pnote">Pick the services you actually have. When the switch is on, the main list only shows films you
     can watch on them, and each card's “Where to watch” shows just your services.</div>
+  <div id="prefCascadeNote"></div>
   <div class="flabel">Paid streaming — I subscribe to</div>
   <div class="chips" id="prefSubChips"></div>
   <div class="flabel">Rent / Buy — stores I use</div>
@@ -365,15 +453,28 @@ function savePrefs(){ try{ localStorage.setItem("cascade_prefs", JSON.stringify(
 const prefs = loadPrefs();
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
-  imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, sort:"imdb"};
+  imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb"};
 const $=id=>document.getElementById(id);
+
+// ---- My Cascades: saved living searches (prototype state — localStorage, per device) ----
+function loadCascades(){ try{ const a=JSON.parse(localStorage.getItem("cascade_cascades")||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function saveCascades(){ try{ localStorage.setItem("cascade_cascades", JSON.stringify(cascades)); }catch(e){} }
+const cascades = loadCascades();
+let activeId = null;
+try{ activeId = localStorage.getItem("cascade_active") || null; }catch(e){}
+function setActive(id){ activeId=id; try{ id?localStorage.setItem("cascade_active",id):localStorage.removeItem("cascade_active"); }catch(e){} }
+const activeCascade = () => cascades.find(c=>c.id===activeId) || null;
+if(activeId && !activeCascade()) setActive(null);   // stale pointer from a deleted Cascade
 
 $("updated").textContent = "Live AU data · updated " + fmtDate(TODAY);
 
 // service lists derived from the data
 const SUB_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="sub"||o.type==="free").map(o=>o.service)))].sort();
 const STORE_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="rent"||o.type==="buy").map(o=>o.service)))].sort();
-const prefsActive = () => prefs.on && (prefs.sub.size>0 || prefs.store.size>0);
+const servicesPicked = () => prefs.sub.size>0 || prefs.store.size>0;
+// An open Cascade's "my services" scope wins while it's open; closing it restores the global switch.
+const servicesScoped = () => { const c=activeCascade(); return c ? !!c.myServices : prefs.on; };
+const prefsActive = () => servicesScoped() && servicesPicked();
 function myService(o){
   if(o.type==="sub"||o.type==="free") return prefs.sub.has(o.service);
   if(o.type==="rent"||o.type==="buy") return prefs.store.has(o.service);
@@ -389,6 +490,7 @@ function matchesServices(m){
 function addChips(el, values, set, cls, label){
   values.forEach(v=>{
     const c=document.createElement("div"); c.className="chip "+cls; if(set.has(v)) c.classList.add("on");
+    c.dataset.val=v;
     c.textContent=label?label(v):v;
     c.onclick=()=>{c.classList.toggle("on"); set.has(v)?set.delete(v):set.add(v); onChipToggle(cls); render();};
     $(el).appendChild(c);
@@ -396,7 +498,7 @@ function addChips(el, values, set, cls, label){
 }
 function onChipToggle(cls){ if(cls==="svc"){ savePrefs(); updatePrefBtn(); } }
 CASCADE.filter(s=>s!=="upcoming").forEach(s=>{
-  const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s];
+  const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s]; c.dataset.val=s;
   c.onclick=()=>{c.classList.toggle("on"); filt.status.has(s)?filt.status.delete(s):filt.status.add(s); render();};
   $("statusChips").appendChild(c);
 });
@@ -410,8 +512,8 @@ addChips("cultureChips", [...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].
 addChips("langChips", [...new Set(MOVIES.map(m=>m.language).filter(Boolean))].sort((a,b)=>langName(a).localeCompare(langName(b))),
   filt.lang, "yr", langName);
 addChips("genreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), filt.genre, "gen");
-[["Hide watched","hideWatched"],["Show hidden","showHidden"]].forEach(([lbl,key])=>{
-  const c=document.createElement("div"); c.className="chip"; c.textContent=lbl;
+[["Hide watched","hideWatched"],["Show hidden","showHidden"],["🏆 Award winners & nominees","awards"]].forEach(([lbl,key])=>{
+  const c=document.createElement("div"); c.className="chip"; c.textContent=lbl; c.dataset.val=key;
   c.onclick=()=>{c.classList.toggle("on"); filt[key]=!filt[key]; render();};
   $("viewChips").appendChild(c);
 });
@@ -426,7 +528,15 @@ $("filterBtn").onclick=()=>openModal($("filters"));
 $("filtersDone").onclick=()=>closeModal($("filters"));
 $("prefBtn").onclick=()=>openModal($("prefs"));
 $("prefsDone").onclick=()=>closeModal($("prefs"));
-function updatePrefSwitch(){ $("prefSwitch").classList.toggle("on", prefs.on); }
+function updatePrefSwitch(){
+  $("prefSwitch").classList.toggle("on", prefs.on);
+  // An open Cascade sets its own service scope, so the switch above may not be what's actually filtering.
+  const c=activeCascade();
+  $("prefCascadeNote").innerHTML = (c && c.myServices !== prefs.on)
+    ? `<div class="warnnote">While the Cascade “${esc(c.name)}” is open it sets this scope itself —
+         it is ${c.myServices?"only showing films on your services":"showing films from every service"}.
+         Close it (×) to go back to the switch above.</div>` : "";
+}
 function updatePrefBtn(){ $("prefBtn").classList.toggle("on", prefsActive()); }
 $("prefSwitch").onclick=()=>{ prefs.on=!prefs.on; savePrefs(); updatePrefSwitch(); updatePrefBtn(); render(); };
 updatePrefSwitch(); updatePrefBtn();
@@ -439,13 +549,26 @@ $("searchClear").onclick=()=>{$("search").value="";filt.search="";$("searchClear
 $("imdbMin").oninput=e=>{filt.imdb=+e.target.value;$("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";render();};
 $("rtMin").oninput=e=>{filt.rt=+e.target.value;$("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";render();};
 $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
-$("resetBtn").onclick=()=>{
+function clearFilters(){
   ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
-  filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;filt.search="";
-  document.querySelectorAll("#filters .chip.on").forEach(c=>c.classList.remove("on"));
-  $("imdbMin").value=0;$("rtMin").value=0;$("grossMin").value=0;$("imdbVal").textContent="Any";$("rtVal").textContent="Any";
-  $("search").value="";$("searchClear").classList.remove("show");$("trackedBtn").classList.remove("active");render();
-};
+  filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;
+  filt.awards=false;filt.search="";
+}
+// Push filt back onto the Filters modal's controls (a Cascade sets filters programmatically).
+function syncFilterUI(){
+  const sets={statusChips:filt.status, yearChips:filt.year, ageChips:filt.age,
+              cultureChips:filt.culture, langChips:filt.lang, genreChips:filt.genre};
+  Object.entries(sets).forEach(([el,set])=>{
+    [...$(el).children].forEach(c=>c.classList.toggle("on", set.has(c.dataset.val)));
+  });
+  [...$("viewChips").children].forEach(c=>c.classList.toggle("on", !!filt[c.dataset.val]));
+  $("imdbMin").value=filt.imdb; $("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";
+  $("rtMin").value=filt.rt;     $("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";
+  $("grossMin").value=filt.gross;
+  $("search").value=filt.search; $("searchClear").classList.toggle("show", !!filt.search);
+  $("trackedBtn").classList.toggle("active", filt.trackedOnly);
+}
+$("resetBtn").onclick=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
 
 $("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);renderAlerts();};
 $("closeDrawer").onclick=closeDrawer;
@@ -477,6 +600,7 @@ function passes(m){
   if(filt.culture.size && !filt.culture.has(m.culture)) return false;
   if(filt.lang.size && !filt.lang.has(m.language)) return false;
   if(filt.genre.size && !(m.genres||[]).some(g=>filt.genre.has(g))) return false;
+  if(filt.awards && !m.award) return false;
   if((m.imdb_rating||0) < filt.imdb) return false;
   if((m.rt_critic||0) < filt.rt) return false;
   if((m.worldwide_gross||0) < filt.gross) return false;
@@ -602,14 +726,225 @@ window.toggleExpand=id=>{
 function activeCount(){
   let n=filt.status.size+filt.year.size+filt.age.size+filt.culture.size+filt.lang.size+filt.genre.size;
   if(filt.imdb)n++; if(filt.rt)n++; if(filt.gross)n++; if(filt.trackedOnly)n++;
-  if(filt.hideWatched)n++; if(filt.showHidden)n++; if(filt.search)n++;
+  if(filt.hideWatched)n++; if(filt.showHidden)n++; if(filt.search)n++; if(filt.awards)n++;
   return n;
 }
+// ================= My Cascades =================
+// Smart defaults: every template lands pre-filled with a criteria set that already returns films —
+// the user scans and adjusts rather than filling a blank query.
+// Alert defaults follow the Cascades concept: standard-rental + included-streaming ON, premium-rent OFF.
+const ALERT_DEFAULTS = {pvod:false, rental:true, included_streaming:true};
+const CASCADE_TEMPLATES = [
+  {key:"my_taste", icon:"🎯", name:"My taste", blurb:"Great films that clear my rating bar",
+   crit:{status:[], genre:[], age:[], imdb:7.5, rt:0, awards:false, myServices:false}},
+  {key:"watch_tonight", icon:"🍿", name:"Watch tonight", blurb:"Included on services I already have",
+   crit:{status:["included_streaming"], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:true},
+   alerts:{pvod:false, rental:false, included_streaming:true}},
+  {key:"rent_radar", icon:"📼", name:"Rent radar", blurb:"Good films that reach standard rental (~$7)",
+   crit:{status:["rental"], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:false}},
+  {key:"bargain", icon:"🏷️", name:"Bargain hunter", blurb:"Never overpay — tell me when it drops below premium",
+   crit:{status:["rental","included_streaming"], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false}},
+  {key:"family", icon:"👨‍👩‍👧", name:"Family fun", blurb:"Cert-appropriate films for me and the kids",
+   crit:{status:[], genre:["Family","Animation","Adventure"], age:["G","PG"], imdb:6, rt:0, awards:false, myServices:false}},
+  {key:"prestige", icon:"🏆", name:"Awards & prestige", blurb:"Winners and nominees, as they become watchable",
+   crit:{status:[], genre:[], age:[], imdb:0, rt:0, awards:true, myServices:false}},
+  {key:"genre_fan", icon:"🎃", name:"Genre superfan", blurb:"A standing radar for one genre — horror to start",
+   crit:{status:[], genre:["Horror"], age:[], imdb:0, rt:0, awards:false, myServices:false}},
+  {key:"custom", icon:"⚙️", name:"Custom", blurb:"Start from a sensible baseline and tune it",
+   crit:{status:[], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:false}},
+];
+// Honesty guardrail: templates the current data can't actually serve are shown as unavailable,
+// with the real reason — never wired up to fake a result.
+const CASCADE_TEMPLATES_SOON = [
+  {icon:"💥", name:"Blockbuster radar", blurb:"Tentpoles as they hit cinemas", why:"Needs the upcoming-releases ingest"},
+  {icon:"⏳", name:"Leaving soon", blurb:"Last chance before it leaves", why:"No cinema-exit / removal dates in the data"},
+];
+
+// Mirrors passes() for exactly the fields a Cascade owns — so "Show N films" is the number you get.
+function matchesCriteria(m,c){
+  if(blocked.has(m.tmdb_id)) return false;
+  if(c.myServices && servicesPicked() && !matchesServices(m)) return false;
+  if(c.status.length && !c.status.includes(primaryStatus(m))) return false;
+  if(c.genre.length && !(m.genres||[]).some(g=>c.genre.includes(g))) return false;
+  if(c.age.length && !c.age.includes(m.age_rating)) return false;
+  if(c.awards && !m.award) return false;
+  if((m.imdb_rating||0) < (c.imdb||0)) return false;
+  if((m.rt_critic||0) < (c.rt||0)) return false;
+  return true;
+}
+const countCriteria = c => MOVIES.filter(m=>matchesCriteria(m,c)).length;
+const ALERT_SHORT = {pvod:"premium", rental:"standard rental", included_streaming:"streaming"};
+function alertSummary(c){
+  const on=Object.keys(ALERT_SHORT).filter(k=>(c.alerts||ALERT_DEFAULTS)[k]);
+  return on.length ? "alerts on "+on.map(k=>ALERT_SHORT[k]).join(" + ") : "alerts off";
+}
+
+// Mutate the existing Set in place — the Filters-panel chips hold a reference to it,
+// so reassigning would leave those chips wired to an orphaned Set.
+const setTo=(s,arr)=>{ s.clear(); (arr||[]).forEach(v=>s.add(v)); };
+function applyCascade(c){
+  clearFilters();
+  setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age);
+  filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via servicesScoped()
+  syncFilterUI();
+}
+window.openCascade=id=>{
+  const c=cascades.find(x=>x.id===id); if(!c) return;
+  if(activeId===id){ closeCascade(); return; }             // tapping the open Cascade's chip closes it
+  setActive(id); applyCascade(c); render();
+  toast(`${c.icon} “${c.name}” — ${countCriteria(c)} films · ${alertSummary(c)}`);
+};
+window.closeCascade=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
+// Filters touched by hand while a Cascade is open → offer to save them back into it.
+const sameSet=(s,a)=> s.size===a.length && a.every(v=>s.has(v));
+function cascadeDirty(){
+  const c=activeCascade(); if(!c) return false;
+  return !sameSet(filt.status,c.status) || !sameSet(filt.genre,c.genre) || !sameSet(filt.age,c.age)
+      || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards;
+}
+window.saveCascadeEdits=()=>{
+  const c=activeCascade(); if(!c) return;
+  c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age];
+  c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards;
+  saveCascades(); render(); toast(`✅ Saved changes to “${c.name}”`);
+};
+
+function renderCascadeBar(shown){
+  const c=activeCascade();
+  let html=`<div class="casclbl">My Cascades</div><div class="cascchips">`;
+  html+=cascades.map(x=>`<button class="cascchip ${x.id===activeId?"on":""}" onclick="openCascade('${x.id}')">${x.icon} ${esc(x.name)}</button>`).join("");
+  html+=`<button class="cascchip new" onclick="newCascade()">+ New Cascade</button></div>`;
+  if(!cascades.length)
+    html+=`<div class="casccta">Save a search once and Cascade keeps watching it for you — like a saved property alert, for films.</div>`;
+  if(c){
+    const dirty=cascadeDirty();
+    html+=`<div class="cascactive">
+      <div class="ca-l">
+        <div class="ca-name">${c.icon} ${esc(c.name)} ${dirty?'<span class="dirty">· edited</span>':""}</div>
+        <div class="ca-sub">${shown} film${shown===1?"":"s"} right now · ${alertSummary(c)}${c.myServices?" · my services":""}</div>
+      </div>
+      <div class="ca-r">
+        ${dirty?'<button class="ca-btn save" onclick="saveCascadeEdits()">Save</button>':""}
+        <button class="ca-btn" onclick="editCascade()">Edit</button>
+        <button class="ca-btn x" onclick="closeCascade()" title="Close this Cascade">×</button>
+      </div></div>`;
+  }
+  $("cascbar").innerHTML=html;
+}
+
+// ---- builder (template picker → editor) ----
+let draft=null;
+function newCascade(){
+  draft=null;
+  $("builderTitle").textContent="New Cascade";
+  $("tplPane").style.display=""; $("editPane").style.display="none";
+  const grid=$("tplGrid"); grid.innerHTML="";
+  CASCADE_TEMPLATES.forEach(t=>{
+    const n=countCriteria(t.crit);
+    const b=document.createElement("button"); b.className="tpl";
+    b.innerHTML=`<div class="tplicon">${t.icon}</div><div class="tplname">${t.name}</div>
+      <div class="tplblurb">${t.blurb}</div><div class="tplcount">${n} film${n===1?"":"s"} match now</div>`;
+    b.onclick=()=>startFromTemplate(t);
+    grid.appendChild(b);
+  });
+  CASCADE_TEMPLATES_SOON.forEach(t=>{
+    const b=document.createElement("div"); b.className="tpl soon";
+    b.innerHTML=`<div class="tplicon">${t.icon}</div><div class="tplname">${t.name}</div>
+      <div class="tplblurb">${t.blurb}</div><div class="tplcount">${t.why}</div>`;
+    grid.appendChild(b);
+  });
+  openModal($("builder"));
+}
+window.newCascade=newCascade;
+function startFromTemplate(t){
+  draft={id:null, template:t.key, icon:t.icon, name:t.name,
+         ...JSON.parse(JSON.stringify(t.crit)), alerts:{...ALERT_DEFAULTS, ...(t.alerts||{})}};
+  openEditor("New Cascade");
+}
+window.editCascade=()=>{
+  const c=activeCascade(); if(!c) return;
+  draft=JSON.parse(JSON.stringify(c));
+  draft.alerts={...ALERT_DEFAULTS, ...(draft.alerts||{})};
+  openEditor("Edit Cascade");
+  openModal($("builder"));
+};
+function openEditor(title){
+  $("builderTitle").textContent=title;
+  $("tplPane").style.display="none"; $("editPane").style.display="";
+  $("cName").value=draft.name;
+  $("cDelete").style.display = draft.id ? "" : "none";
+  buildEditorChips("cStatusChips", CASCADE.filter(s=>s!=="upcoming"), "status", s=>STATUS_LABEL[s], s=>"st-"+s);
+  buildEditorChips("cGenreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), "genre", null, ()=>"gen");
+  buildEditorChips("cAgeChips", [...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))]
+      .sort((a,b)=>{const ia=AGE_ORDER.indexOf(a),ib=AGE_ORDER.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}),
+      "age", null, ()=>"yr");
+  $("cImdb").value=draft.imdb; $("cImdbVal").textContent=draft.imdb?draft.imdb.toFixed(1)+"+":"Any";
+  $("cRt").value=draft.rt;     $("cRtVal").textContent=draft.rt?draft.rt+"%+":"Any";
+  $("cAwards").classList.toggle("on", !!draft.awards);
+  $("cMine").classList.toggle("on", !!draft.myServices);
+  $("cAlertPvod").classList.toggle("on", !!draft.alerts.pvod);
+  $("cAlertRental").classList.toggle("on", !!draft.alerts.rental);
+  $("cAlertStream").classList.toggle("on", !!draft.alerts.included_streaming);
+  refreshDraft();
+}
+function buildEditorChips(el, values, key, label, cls){
+  const box=$(el); box.innerHTML="";
+  values.forEach(v=>{
+    const c=document.createElement("div");
+    c.className="chip "+cls(v)+(draft[key].includes(v)?" on":"");
+    c.textContent=label?label(v):v;
+    c.onclick=()=>{
+      const i=draft[key].indexOf(v);
+      i<0 ? draft[key].push(v) : draft[key].splice(i,1);
+      c.classList.toggle("on"); refreshDraft();
+    };
+    box.appendChild(c);
+  });
+}
+function refreshDraft(){
+  const n=countCriteria(draft);
+  $("cApply").textContent = n ? `Show ${n} film${n===1?"":"s"}` : "No films match — loosen it";
+  $("cApply").disabled = n===0;
+  $("cMineWarn").innerHTML = (draft.myServices && !servicesPicked())
+    ? `<div class="warnnote">You haven't picked any services yet, so this scope does nothing.
+         Pick them under ⚙️ and this Cascade will narrow to what you can actually watch.</div>` : "";
+}
+$("cName").oninput=e=>{ draft.name=e.target.value; };
+$("cImdb").oninput=e=>{ draft.imdb=+e.target.value; $("cImdbVal").textContent=draft.imdb?draft.imdb.toFixed(1)+"+":"Any"; refreshDraft(); };
+$("cRt").oninput=e=>{ draft.rt=+e.target.value; $("cRtVal").textContent=draft.rt?draft.rt+"%+":"Any"; refreshDraft(); };
+[["cAwards","awards"],["cMine","myServices"]].forEach(([el,key])=>{
+  $(el).onclick=()=>{ draft[key]=!draft[key]; $(el).classList.toggle("on",draft[key]); refreshDraft(); };
+});
+[["cAlertPvod","pvod"],["cAlertRental","rental"],["cAlertStream","included_streaming"]].forEach(([el,key])=>{
+  $(el).onclick=()=>{ draft.alerts[key]=!draft.alerts[key]; $(el).classList.toggle("on",draft.alerts[key]); };
+});
+$("builderClose").onclick=()=>closeModal($("builder"));
+$("cApply").onclick=()=>{
+  const name=(draft.name||"").trim() || CASCADE_TEMPLATES.find(t=>t.key===draft.template)?.name || "My Cascade";
+  const isNew=!draft.id;
+  const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
+  Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
+    age:draft.age, imdb:draft.imdb, rt:draft.rt, awards:draft.awards, myServices:draft.myServices, alerts:draft.alerts});
+  if(isNew) cascades.push(c);
+  saveCascades(); setActive(c.id); applyCascade(c); closeModal($("builder")); render();
+  toast(isNew ? `${c.icon} Created “${c.name}” — ${countCriteria(c)} films · ${alertSummary(c)}`
+              : `✅ Updated “${c.name}” — ${countCriteria(c)} films`);
+};
+$("cDelete").onclick=()=>{
+  const c=cascades.find(x=>x.id===draft.id); if(!c) return;
+  if(!confirm(`Delete the Cascade “${c.name}”? Your tagged films and watched marks are not affected.`)) return;
+  cascades.splice(cascades.indexOf(c),1); saveCascades();
+  if(activeId===c.id){ setActive(null); clearFilters(); syncFilterUI(); }
+  closeModal($("builder")); render(); toast(`🗑️ Deleted “${c.name}”`);
+};
+
 function render(){
   const rows=MOVIES.filter(passes);
   const n=activeCount();
   $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
+  renderCascadeBar(rows.length);
+  updatePrefSwitch(); updatePrefBtn();
   $("count").textContent=`${rows.length} of ${MOVIES.length} titles`+(prefsActive()?" · my services":"");
   const wrap=$("groups");
   if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
@@ -649,22 +984,33 @@ function advanceOneWindow(m){
   else m.offers=(m.offers||[]).concat([{service:"Apple TV",type:"buy",price:24.99,format:"4K"}]);
   return true;
 }
+// While a Cascade is open, its per-status alert prefs decide which transitions are worth telling you about.
+// With no Cascade open, every transition alerts (unchanged behaviour).
+function alertAllowed(w){
+  const c=activeCascade();
+  if(!c || !c.alerts || !(w in c.alerts)) return true;
+  return !!c.alerts[w];
+}
 function simulateDay(){
-  dayCounter++; let fired=0;
+  dayCounter++; let fired=0, muted=0;
   MOVIES.forEach(m=>{
     if(!tracked.has(m.tmdb_id)) return;
     const before=new Set(m.status);
     if(!advanceOneWindow(m)) return;
     m.status=deriveStatus(m);
     m.status.filter(s=>!before.has(s)).forEach(w=>{
+      if(!alertAllowed(w)){ muted++; return; }
       const svc=dedupOffers(m.offers).filter(o=>windowOf(o)===w).map(o=>o.service);
       alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:[...new Set(svc)].slice(0,3),day:dayCounter});
       fired++;
     });
   });
   render(); renderAlerts(); updateBadge();
-  toast(fired?`🔔 ${fired} alert${fired>1?'s':''} from today's poll`
-             :`Day ${dayCounter}: no changes on tagged titles`+(tracked.size?"":" — tag some first!"));
+  const c=activeCascade();
+  const mutedNote = muted ? ` · ${muted} muted by “${c.name}” prefs` : "";
+  toast(fired ? `🔔 ${fired} alert${fired>1?'s':''} from today's poll${mutedNote}`
+      : muted ? `Day ${dayCounter}: ${muted} change${muted>1?'s':''} muted by “${c.name}” alert prefs`
+              : `Day ${dayCounter}: no changes on tagged titles`+(tracked.size?"":" — tag some first!"));
 }
 function windowOf(o){
   if(o.type==="sub"||o.type==="free") return "included_streaming";
@@ -683,6 +1029,9 @@ function renderAlerts(){
 }
 let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200);}
 
+// Boot: a Cascade left open on the last visit reopens with its filters applied.
+const booted=activeCascade();
+if(booted){ applyCascade(booted); }
 render();
 </script>
 </body>
