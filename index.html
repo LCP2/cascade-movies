@@ -1570,6 +1570,7 @@ function deckBuild(){
       <div class="dc-acts">
         <button class="ca-btn save" data-act="save" hidden>Save</button>
         <button class="ca-btn" data-act="edit">Edit</button>
+        <button class="ca-btn x" data-act="share" aria-label="Share this Cascade" title="Share this Cascade">🔗</button>
         <button class="ca-btn x" data-act="close" aria-label="Close this Cascade" title="Close this Cascade">×</button>
       </div>
     </div></div>`).join("")
@@ -1665,6 +1666,7 @@ deckStrip.addEventListener("click",e=>{
   const act=e.target.closest("button[data-act]")?.dataset.act;
   if(act==="new") return newCascade();
   if(act==="edit") return editCascade();
+  if(act==="share") return shareCascade();
   if(act==="close") return closeCascade();
   if(act==="save") return saveCascadeEdits();
   if(deckDragged) return;                            // that click was the end of a drag
@@ -2683,12 +2685,95 @@ function renderAlerts(){
 }
 let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200);}
 
+// ================= Share a Cascade (prototype link) =================
+// The whole radar travels in the URL — there's no backend, and a shared link must keep working when the
+// catalogue behind it has changed. So everything arriving from a URL is treated as hostile: whitelisted
+// keys only, every value checked against what the catalogue ACTUALLY has, and the result opened as a
+// DRAFT the recipient has to accept. A share link can never write to someone's saved Cascades by itself.
+const SHARE_KEYS = ["name","icon","status","genre","age","lang","culture","year","imdb","ratingStop",
+  "includeUnrated","budget","includeUnbudgeted","tentpole","awards","myServices","sort","alerts","rt"];
+const b64url = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)))
+  .replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
+const unb64url = s => new TextDecoder().decode(
+  Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")), c=>c.charCodeAt(0)));
+
+function shareLink(c){
+  const payload={};
+  SHARE_KEYS.forEach(k=>{ if(c[k]!==undefined) payload[k]=c[k]; });
+  const base=location.origin+location.pathname;
+  return `${base}?c=${b64url(JSON.stringify(payload))}`;
+}
+window.shareCascade=()=>{
+  const c=activeCascade(); if(!c) return;
+  const url=shareLink(c);
+  const done=ok=>toast(ok ? `🔗 Link to “${c.name}” copied — it opens as a draft they can review`
+                          : `🔗 Copy this: ${url}`);
+  if(navigator.clipboard?.writeText) navigator.clipboard.writeText(url).then(()=>done(true), ()=>done(false));
+  else done(false);
+};
+// Keep only values this catalogue can actually serve. A link made before a genre/year/service existed —
+// or hand-edited — degrades to a narrower-but-valid radar instead of a broken one or a silent lie.
+const keepKnown = (v, allowed) => Array.isArray(v) ? v.filter(x=>allowed.includes(x)) : [];
+function sanitiseShared(o){
+  // Out of range means we don't know what it meant — so ignore it. Clamping instead would silently impose
+  // the STRICTEST bar (imdb:47 → "Elite only") and hand the recipient an empty radar they never asked for.
+  const num=(v,lo,hi,dflt)=> (typeof v==="number" && isFinite(v) && v>=lo && v<=hi) ? v : dflt;
+  const c={
+    id:null, template:"shared",
+    name:String(o.name||"Shared Cascade").slice(0,40),
+    icon:typeof o.icon==="string" ? o.icon.slice(0,4) : "🔗",
+    status:keepKnown(o.status, ALL_WINDOWS),
+    genre:keepKnown(o.genre, ALL_GENRES),
+    age:keepKnown(o.age, AGE_LEVELS),
+    lang:keepKnown(o.lang, ALL_LANGS),
+    culture:keepKnown(o.culture, ALL_CULTURES),
+    year:keepKnown(o.year, ALL_YEARS),
+    imdb:num(o.imdb,0,10,0), rt:num(o.rt,0,100,0),
+    budget:num(o.budget,0,BUDGET_BANDS.length-1,0),
+    tentpole:TENTPOLE_STOPS.some(t=>t.key===o.tentpole) ? o.tentpole : "any",
+    sort:["imdb","rt","gross","popularity","cinema","title"].includes(o.sort) ? o.sort : "imdb",
+    includeUnrated:!!o.includeUnrated, includeUnbudgeted:!!o.includeUnbudgeted,
+    awards:!!o.awards, myServices:!!o.myServices,
+    alerts:{},
+  };
+  Object.keys(ALERT_DEFAULTS).forEach(k=>{
+    c.alerts[k] = typeof o.alerts?.[k]==="boolean" ? o.alerts[k] : ALERT_DEFAULTS[k];
+  });
+  c.ratingStop = num(o.ratingStop,0,RATING_STOPS.length-1, stopFor(c.imdb));
+  return normCascade(c);
+}
+function openSharedFromURL(){
+  const raw=new URLSearchParams(location.search).get("c");
+  if(!raw) return false;
+  history.replaceState(null,"",location.pathname);   // consumed once — a refresh must not re-offer it
+  let obj=null;
+  try{ obj=JSON.parse(unb64url(raw)); }catch(e){ obj=null; }
+  if(!obj || typeof obj!=="object" || Array.isArray(obj)){
+    toast("That shared link is damaged — nothing was changed.");
+    return false;
+  }
+  draft=sanitiseShared(obj);
+  const n=countCriteria(draft);
+  openEditor("Shared Cascade");
+  openModal($("builder"));
+  // Reciprocity, not a trap: they get the whole radar up front, and nothing is saved until they say so.
+  $("nlUnderstood").innerHTML=`<div class="nlread">
+    <div class="h">🔗 Someone shared this Cascade with you</div>
+    <div class="nlmiss">It's <b>${esc(draft.name)}</b> — ${n} film${n===1?"":"s"} match it right now.
+      Nothing has been saved: look it over, change anything you like, and it's yours only when you press the
+      button at the bottom. Or just close this and it's gone.</div>
+  </div>`;
+  return true;
+}
+
 // Boot: a Cascade left open on the last visit reopens with its filters applied.
 const booted=activeCascade();
 if(booted){ applyCascade(booted); }
 render();
+// A shared link takes precedence over first-run onboarding — they arrived to look at a specific radar.
+const openedShared = openSharedFromURL();
 // First run only — the "seen" flag is set by finishing OR skipping, so returning visitors go straight to the app.
-if(!onboardingSeen()) startOnboarding();
+if(!openedShared && !onboardingSeen()) startOnboarding();
 </script>
 </body>
 </html>
