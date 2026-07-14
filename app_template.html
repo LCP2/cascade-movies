@@ -137,8 +137,14 @@
   .actbtn{width:38px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
     cursor:pointer;font-size:16px;display:grid;place-items:center;line-height:1;color:#8b93a1;filter:grayscale(1);opacity:.75;transition:.15s}
   .actbtn.on{filter:none;opacity:1;background:rgba(124,92,255,.2);border-color:var(--accent)}
-  .actbtn.onw{filter:none;opacity:1;background:rgba(72,199,142,.2);border-color:var(--green)}
-  .actbtn.onb{filter:none;opacity:1;background:rgba(250,108,60,.2);border-color:var(--rt)}
+  /* Watched: a plain tick that's grey until it isn't. */
+  .actbtn.tick{filter:none;opacity:1;font-size:17px;font-weight:800;color:#6f7889}
+  .actbtn.tick.onw{background:rgba(72,199,142,.2);border-color:var(--green);color:var(--green)}
+  /* Not interested is the quietest thing on the card: no fill, no colour, and it stays that way when set.
+     It's a dismissal — it should never compete with the two actions that mean you WANT something. */
+  .actbtn.quiet{filter:none;opacity:.5;font-size:15px;color:#6f7889;border-color:transparent;background:none}
+  .actbtn.quiet:hover{opacity:.8}
+  .actbtn.quiet.onb{opacity:.9;background:var(--panel2);border-color:var(--line);color:var(--dim)}
   .actbtn.wtwbtn{font-size:22px;font-weight:700}
   .actbtn.wtwbtn.open{filter:none;opacity:1;background:rgba(124,92,255,.2);border-color:var(--accent);color:#fff}
   .actbtn.wtwbtn.off{opacity:.3}
@@ -148,12 +154,14 @@
   .rb{flex-shrink:0;height:22px;font-size:10px;font-weight:700;padding:0 6px;border-radius:7px;display:flex;gap:3px;align-items:center;justify-content:flex-start;
     background:var(--panel2);border:1px solid var(--line);white-space:nowrap;overflow:hidden}
   /* content-sized so text never clips; a small min-width keeps the score lozenges balanced */
-  .rb.imdb,.rb.rt,.rb.meta{min-width:52px}
+  .rb.imdb,.rb.rt,.rb.mc{min-width:52px}
   .rb.muted{color:var(--faint)}
   .rb.muted b{color:var(--faint)}
   .rb b{font-size:11px}
-  .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.budget b{color:#c9a2ff} .rb.gross b{color:#9fe6c4}
-  .rb.tent{border-color:rgba(240,163,54,.55);background:rgba(240,163,54,.12);color:#ffce8f} .rb.tent b{color:#ffce8f}
+  .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.mc b{color:var(--meta)} .rb.budget b{color:#c9a2ff} .rb.gross b{color:#9fe6c4}
+  /* the one place a film's scale is claimed — gold, and it names the tier the Cascade filter uses */
+  .rb.tent{border-color:rgba(245,197,24,.5);background:rgba(245,197,24,.12);color:#f5d675}
+  .rb.tent b{color:#f5d675;font-weight:800}
   .award-slot{display:flex;align-items:center;height:22px}
   .award{font-size:15px;line-height:1;cursor:pointer;padding-left:1px}
   /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Rent · Stream */
@@ -450,6 +458,9 @@
   /* ---- UX-psychology framings (contrast / loss) — flag-toggleable ---- */
   .saveline{margin-top:11px;font-size:11.5px;font-weight:700;line-height:1.45;padding:7px 10px;border-radius:9px;
     background:rgba(72,199,142,.12);border:1px solid rgba(72,199,142,.45);color:#a7eccb}
+  /* rent-only: a fact, not a win — the green is reserved for "you already have this" */
+  .saveline.plain{background:var(--panel2);border-color:var(--line);color:var(--dim)}
+  .saveline.plain b{color:#bcdcff}
   .saveline b{color:#d9ffec}
   .alert .frame{font-size:11.5px;font-weight:600;line-height:1.45;margin-top:8px;padding:7px 9px;border-radius:8px;
     background:rgba(240,163,54,.1);border:1px solid rgba(240,163,54,.35);color:#ffce8f}
@@ -727,7 +738,8 @@ const MOVIES = __MOVIES_JSON__;
 const TODAY  = "__TODAY__";
 
 const PVOD_MIN = 19.99, RENTAL_MAX = 9.99, OPENING_WEEK_DAYS = 7;
-const TENTPOLE_MIN = 100e6;   // a "$$$" badge has to mean something — studio-tentpole scale, in USD
+// (TENTPOLE_MIN is gone: a film's scale is claimed in exactly one place now — the tentpole badge — and it
+//  reads that from the same rule the Cascade filter uses, so the badge and the filter can't disagree.)
 // Journey order — Upcoming leads (a film reaches cinemas before any home window).
 // primaryStatus() takes the LAST window a film holds, so "upcoming" sitting first is safe:
 // an upcoming film holds only that one, and a released film never holds it.
@@ -1139,16 +1151,30 @@ function ratingsHTML(m){
   const cell=(cls,label,val,has)=>`<div class="rb ${cls}${has?"":" muted"}">${label} <b>${has?val:"-"}</b></div>`;
   const imdb  =cell("imdb","IMDb",  m.imdb_rating!=null?m.imdb_rating.toFixed(1):"", m.imdb_rating!=null);
   const rt    =cell("rt","🍅",       m.rt_critic!=null?m.rt_critic+"%":"",           m.rt_critic!=null);
-  const meta  =cell("meta","Meta",  m.metacritic!=null?m.metacritic:"",             m.metacritic!=null);
-  // Budget is a badge, not a ranker. "$$$" only where the figure really is tentpole-scale — and the
-  // figure sits right next to it, so the claim is always checkable. Unknown budget stays an honest "-".
-  const tent  = m.budget>=TENTPOLE_MIN;
-  const budget=cell("budget"+(tent?" tent":""), tent?"$$$":"Budget",
-                    m.budget>0?money(m.budget):"", m.budget>0);
+  // .mc, not .meta: the card's date/genre line is ALSO .meta and carries a 5px top margin, which was
+  // silently pushing this one lozenge 2.5px below the rest of the row. Same collision as .pill was.
+  const meta  =cell("mc","Meta",    m.metacritic!=null?m.metacritic:"",             m.metacritic!=null);
+  // Budget is just a figure now — one style, always. Scale is said ONCE, by the tentpole badge, using the
+  // same taxonomy the Cascade filter uses; recolouring the budget was a second, competing way to say it.
+  const budget=cell("budget","Budget", m.budget>0?money(m.budget):"", m.budget>0);
   const gross =cell("gross","Gross",   m.worldwide_gross>0?money(m.worldwide_gross):"", m.worldwide_gross>0);
+  // The badge leads the row. It's the headline claim about the film's scale, and the row scrolls
+  // horizontally when it's crowded — trailing it meant a gold badge that was half off the card.
   return `<div class="ratings">
-    <div class="rrow">${imdb}${rt}${meta}${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
+    <div class="rrow">${tentBadge(m)}${imdb}${rt}${meta}${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
   </div>`;
+}
+// The badge and the Cascade's Tentpole filter are the same taxonomy read by the same functions, so a film
+// badged "Blockbuster" is exactly a film the Blockbuster filter returns. "Big budget" is only said when the
+// budget really is the thing promoting it — otherwise the badge would be claiming a number we don't have.
+const TENT_BADGE = {anticipated:{ico:"🚀", label:"Anticipated"}, blockbuster:{ico:"💥", label:"Blockbuster"},
+                    landmark:{ico:"🏛️", label:"Landmark"}};
+function tentBadge(m){
+  const kind = isLandmark(m) ? "landmark" : tentpoleOf(m);
+  if(!kind) return "";
+  const b=TENT_BADGE[kind];
+  const big = (m.budget||0)>=BUDGET_BOOST ? ` · big budget` : "";
+  return `<div class="rb tent" title="Matches the ${b.label} tentpole filter">${b.ico} <b>${b.label}${big}</b></div>`;
 }
 function cascadeHTML(m){
   const slots=["cinema","pvod","rental","included_streaming"];
@@ -1173,8 +1199,14 @@ function cascadeHTML(m){
 // included on a service, or a standard rental (<= RENTAL_MAX). A premium rental at
 // $24.99 framed as "save $5 vs buying at $29.99" would dress an overpay up as a win,
 // so premium-only titles get no line at all. Every figure is read from the offers.
+// One line, one convention, every card:
+//   included + rentable  → "Included on Netflix, or pay $4.99 to rent"
+//   included only        → "Included on Netflix"
+//   rentable only        → "Rent for $6.99"
+// It's the factual where-to-watch line, so it shows regardless of the UX flag — a price and a service are
+// facts, not persuasion. The A/B flag still adds the psychology on top: the endowment nudge when it's a
+// service you already pay for, and the buy-vs-rent contrast where a genuinely cheaper path exists.
 function savingsHTML(m){
-  if(!ux.on) return "";
   const offers=dedupOffers(m.offers||[]);
   if(!offers.length) return "";
   const subs =offers.filter(o=>o.type==="sub"||o.type==="free");
@@ -1184,15 +1216,16 @@ function savingsHTML(m){
   if(subs.length){
     const mine=subs.filter(o=>prefs.sub.has(o.service));
     const svc=svcName((mine[0]||subs[0]).service);
-    const own=mine.length ? " — which you already pay for" : "";
-    const anchor=rent ? ` · you'd otherwise pay <b>$${rent.price.toFixed(2)}</b> to rent it` : "";
-    return `<div class="saveline">✓ Included on <b>${esc(svc)}</b>${own}${anchor}</div>`;
+    const own=(ux.on && mine.length) ? " — which you already pay for" : "";
+    const alt=rent ? `, or pay <b>$${rent.price.toFixed(2)}</b> to rent` : "";
+    return `<div class="saveline">✓ Included on <b>${esc(svc)}</b>${alt}${own}</div>`;
   }
-  if(rent && rent.price<=RENTAL_MAX && buy && buy.price>rent.price){
-    const d=buy.price-rent.price;
-    return `<div class="saveline">Rent it for <b>$${rent.price.toFixed(2)}</b> — <b>$${d.toFixed(2)}</b> less than buying at $${buy.price.toFixed(2)}</div>`;
+  if(rent){
+    const cheaper=(ux.on && buy && buy.price>rent.price)
+      ? ` — <b>$${(buy.price-rent.price).toFixed(2)}</b> less than buying at $${buy.price.toFixed(2)}` : "";
+    return `<div class="saveline plain">Rent for <b>$${rent.price.toFixed(2)}</b> on ${esc(svcName(rent.service))}${cheaper}</div>`;
   }
-  return "";   // premium-only: there is no saving here we could sell honestly
+  return "";   // buy-only / premium: no rental and no subscription — there's no honest one-liner to write
 }
 
 // ---- Loss framing on alerts ----------------------------------------------------
@@ -1268,9 +1301,12 @@ function cardHTML(m){
     ${savingsHTML(m)}
     ${wtw}
     <div class="actions">
-      <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
-      <button class="actbtn ${isW?'onw':''}" onclick="toggleWatched(${id})" title="Mark as watched">${isW?'✅':'👁'}</button>
-      <button class="actbtn ${isB?'onb':''}" onclick="toggleBlocked(${id})" title="Not interested — hide this">${isB?'🙈':'👎'}</button>
+      <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})"
+        aria-pressed="${tracked.has(id)}" title="${tracked.has(id)?'Alerting you when this moves':'Alert me when this moves'}">📣</button>
+      <button class="actbtn tick ${isW?'onw':''}" onclick="toggleWatched(${id})"
+        aria-pressed="${isW}" title="${isW?'Marked watched':'Mark as watched'}">✓</button>
+      <button class="actbtn quiet ${isB?'onb':''}" onclick="toggleBlocked(${id})"
+        aria-pressed="${isB}" title="${isB?'Hidden — not interested':'Not interested'}">⊘</button>
       ${wtwBtn}
     </div>
   </div>`;
