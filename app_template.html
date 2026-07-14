@@ -217,6 +217,20 @@
   .alert .d{font-size:12px;color:var(--dim);margin-top:4px}
   .alert .w{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:7px}
   .noalert{color:var(--faint);font-size:13px;text-align:center;padding:30px 10px}
+  /* ---- usage log (debug) ---- */
+  .updated{cursor:default;user-select:none}
+  .logfirst{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
+  .logstep{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 8px;
+    font-size:11px;color:var(--dim)}
+  .logstep b{color:var(--accent)}
+  .logarrow{color:var(--faint);font-size:11px}
+  .logrows{border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .logrow{display:flex;gap:8px;padding:6px 9px;font-size:11px;border-bottom:1px solid var(--line);align-items:baseline}
+  .logrow:last-child{border-bottom:none}
+  .logrow:nth-child(odd){background:var(--panel2)}
+  .logt{color:var(--faint);flex-shrink:0;font-variant-numeric:tabular-nums}
+  .logty{color:#cfc2ff;font-weight:700;flex-shrink:0}
+  .logd{color:var(--dim);min-width:0;overflow-wrap:anywhere}
   /* ---- My List ---- */
   .badge.grn{background:var(--green)}
   .mlgroup{margin-top:16px}
@@ -642,6 +656,18 @@
     Every figure is read from the real offer prices; we never show a saving or a countdown we can't back up.</div>
 </div>
 
+<!-- DEBUG LOG modal — local-only usage log. Opened with ?log=1, or 5 taps on the "updated" line. -->
+<div class="modal" id="logModal">
+  <div class="modalhead"><h3>🧪 Usage log (local)</h3><button class="donebtn" id="logDone">Done</button></div>
+  <div class="pnote">Recorded in this browser only. <b>No network calls, no personal data</b> — event names,
+    template keys and counts, never film titles, Cascade names or anything you typed. Clear it any time.</div>
+  <div id="logBody"></div>
+  <div class="cascfoot">
+    <button class="dangerbtn" id="logClear">Clear log</button>
+    <button class="applybtn" id="logCopy">Copy as JSON</button>
+  </div>
+</div>
+
 <!-- MY LIST modal — everything you've tagged, wherever you tagged it from -->
 <div class="modal" id="mylist">
   <div class="modalhead"><h3>📋 My List</h3><button class="donebtn" id="mylistDone">Done</button></div>
@@ -785,6 +811,67 @@ if(activeId && !activeCascade()) setActive(null);   // stale pointer from a dele
 
 $("updated").textContent = "Live AU data · updated " + fmtDate(TODAY);
 
+// ================= Usage log (local only) =================
+// The question this exists to answer: does anyone FIND "My Cascades", and which templates resonate?
+// So it records what happened, never what you typed. Event names, template keys, counts — no film titles,
+// no Cascade names, no search text, no free text of any kind. It never leaves this browser: there is no
+// fetch/XHR/beacon anywhere in this file, and nothing here adds one.
+const LOG_KEY="cascade_log", LOG_MAX=400;
+function loadLog(){ try{ const a=JSON.parse(localStorage.getItem(LOG_KEY)||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+let usageLog = loadLog();
+const SESSION = Date.now().toString(36).slice(-5);   // groups a session's events; not an identity
+function logEvent(type, data){
+  const e={t:Date.now(), s:SESSION, type, ...(data||{})};
+  usageLog.push(e);
+  if(usageLog.length>LOG_MAX) usageLog=usageLog.slice(-LOG_MAX);
+  try{ localStorage.setItem(LOG_KEY, JSON.stringify(usageLog)); }catch(err){}
+  console.debug("[cascade]", type, data||"");
+  if($("logModal").classList.contains("open")) renderLog();
+}
+const fmtT = t => new Date(t).toLocaleTimeString();
+function renderLog(){
+  const el=$("logBody");
+  if(!usageLog.length){
+    el.innerHTML=`<div class="mlempty">Nothing logged yet. Use the app and it fills up.</div>`;
+    return;
+  }
+  const counts={};
+  usageLog.forEach(e=>{ counts[e.type]=(counts[e.type]||0)+1; });
+  // The order of a session's first few actions is the whole discoverability signal — did they touch
+  // My Cascades before they touched the filters, or never at all?
+  const first=usageLog.filter(e=>e.s===SESSION).slice(0,6);
+  el.innerHTML=`
+    <div class="flabel">This session's first moves</div>
+    <div class="logfirst">${first.length
+      ? first.map((e,i)=>`<span class="logstep"><b>${i+1}</b> ${e.type}${e.key?` · ${esc(e.key)}`:""}</span>`).join("<span class=\"logarrow\">→</span>")
+      : "<span class='logstep'>nothing yet this session</span>"}</div>
+    <div class="flabel">Totals (${usageLog.length} events)</div>
+    <div class="chips">${Object.entries(counts).sort((a,b)=>b[1]-a[1])
+      .map(([k,v])=>`<span class="chip on gen">${k} · ${v}</span>`).join("")}</div>
+    <div class="flabel">Everything, newest first</div>
+    <div class="logrows">${[...usageLog].reverse().map(e=>`<div class="logrow">
+      <span class="logt">${fmtT(e.t)}</span>
+      <span class="logty">${e.type}</span>
+      <span class="logd">${esc(Object.entries(e).filter(([k])=>!["t","s","type"].includes(k))
+        .map(([k,v])=>`${k}=${v}`).join(" · "))}</span></div>`).join("")}</div>`;
+}
+function openLog(){ renderLog(); openModal($("logModal")); }
+$("logDone").onclick=()=>closeModal($("logModal"));
+$("logClear").onclick=()=>{ usageLog=[]; try{ localStorage.removeItem(LOG_KEY); }catch(e){} renderLog(); toast("Usage log cleared"); };
+$("logCopy").onclick=()=>{
+  const json=JSON.stringify(usageLog,null,1);
+  if(navigator.clipboard?.writeText) navigator.clipboard.writeText(json).then(()=>toast("Log copied as JSON"),()=>toast("Couldn't copy — it's in the console"));
+  else toast("Couldn't copy — it's in the console");
+  console.log(json);
+};
+// Two ways in, both deliberately un-findable by a test participant: ?log=1, or five taps on the date line.
+if(new URLSearchParams(location.search).has("log")) setTimeout(openLog, 300);
+let updTaps=0, updTapT=null;
+$("updated").onclick=()=>{
+  clearTimeout(updTapT); updTapT=setTimeout(()=>{ updTaps=0; }, 1200);
+  if(++updTaps>=5){ updTaps=0; openLog(); }
+};
+
 // service lists derived from the data
 const SUB_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="sub"||o.type==="free").map(o=>o.service)))].sort();
 const STORE_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="rent"||o.type==="buy").map(o=>o.service)))].sort();
@@ -858,9 +945,9 @@ addChips("prefStoreChips", STORE_SERVICES, prefs.store, "svc", svcName);
 // ---- modals ----
 function openModal(el){ el.classList.add("open"); document.body.style.overflow="hidden"; }
 function closeModal(el){ el.classList.remove("open"); document.body.style.overflow=""; }
-$("filterBtn").onclick=()=>openModal($("filters"));
-$("filtersDone").onclick=()=>closeModal($("filters"));
-$("prefBtn").onclick=()=>openModal($("prefs"));
+$("filterBtn").onclick=()=>{ logEvent("filters_opened",{active:activeCount()}); openModal($("filters")); };
+$("filtersDone").onclick=()=>{ logEvent("filters_applied",{active:activeCount(), shown:MOVIES.filter(passes).length}); closeModal($("filters")); };
+$("prefBtn").onclick=()=>{ logEvent("services_opened",{picked:prefs.sub.size+prefs.store.size}); openModal($("prefs")); };
 $("prefsDone").onclick=()=>closeModal($("prefs"));
 function updatePrefSwitch(){
   $("prefSwitch").classList.toggle("on", prefs.on);
@@ -889,7 +976,10 @@ updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
 // ---- controls ----
 $("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
-$("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();$("searchClear").classList.toggle("show", e.target.value.length>0);render();};
+let searchLogged=false;
+$("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();$("searchClear").classList.toggle("show", e.target.value.length>0);
+  if(!searchLogged && filt.search){ searchLogged=true; logEvent("search_used"); }   // that they searched, not what for
+  render();};
 $("searchClear").onclick=()=>{$("search").value="";filt.search="";$("searchClear").classList.remove("show");$("search").focus();render();};
 $("imdbMin").oninput=e=>{filt.imdb=+e.target.value;$("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";render();};
 $("rtMin").oninput=e=>{filt.rt=+e.target.value;$("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";render();};
@@ -921,6 +1011,7 @@ function syncFilterUI(){
 $("resetBtn").onclick=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
 
 $("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);
+  logEvent("alerts_opened",{unread:alerts.length});
   renderAlerts(); renderDigest();};   // the digest re-reads the poll each time: Cascade prefs may have changed since
 $("closeDrawer").onclick=closeDrawer;
 $("overlay").onclick=e=>{if(e.target.id==="overlay")closeDrawer();};
@@ -1218,7 +1309,8 @@ function renderMyList(){
       ${films.map(m=>mlRowHTML(m,g.key)).join("")}</div>`;
   }).join("");
 }
-$("listBtn").onclick=()=>{ renderMyList(); openModal($("mylist")); };
+$("listBtn").onclick=()=>{ logEvent("mylist_opened",{tagged:new Set([...tracked,...watched,...blocked]).size});
+  renderMyList(); openModal($("mylist")); };
 $("mylistDone").onclick=()=>closeModal($("mylist"));
 
 window.toggleExpand=id=>{
@@ -1477,6 +1569,7 @@ function applyCascade(c){
 window.openCascade=id=>{
   const c=cascades.find(x=>x.id===id); if(!c || activeId===id) return;
   setActive(id); applyCascade(c); render();
+  logEvent("cascade_opened", {key:c.template||"custom"});
   toast(`${c.icon} “${c.name}” — ${countCriteria(c)} films · ${alertSummary(c)}`);
 };
 window.closeCascade=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
@@ -1557,6 +1650,10 @@ function deckFocus(i,moveDom){
 }
 // Centring the "+ New" card selects nothing — browsing past your Cascades must not close the open one.
 const deckSelect=i=>{ if(i<cascades.length) openCascade(cascades[i].id); };
+// The hybrid-discoverability question in one line: did they ever touch My Cascades at all, and by what?
+// Logged once per session per method, so the log shows discovery rather than drowning in scroll events.
+const deckSeen=new Set();
+function deckUsed(how){ if(deckSeen.has(how)) return; deckSeen.add(how); logEvent("mycascades_used",{key:how}); }
 function deckGo(i,moveDom){
   const n=Math.max(0,Math.min(deckCount()-1,i));
   deckFocus(n,moveDom); deckCentre(n,true); deckSelect(n);
@@ -1626,7 +1723,7 @@ deckStrip.addEventListener("keydown",e=>{
   const to=e.key==="ArrowRight"?deckIdx+1 : e.key==="ArrowLeft"?deckIdx-1
          : e.key==="Home"?0 : e.key==="End"?last : null;
   if(to===null) return;
-  e.preventDefault(); deckGo(to,true);
+  e.preventDefault(); deckUsed("keyboard"); deckGo(to,true);
 });
 // Wheel steps card-by-card rather than nudging scrollLeft — a free-running wheel fights the mandatory snap.
 let wheelAcc=0, wheelLock=0;
@@ -1639,7 +1736,7 @@ deckStrip.addEventListener("wheel",e=>{
   if(now<wheelLock) return;
   wheelAcc=(wheelAcc>0)===(d>0) ? wheelAcc+d : d;    // direction flip restarts the accumulator
   if(Math.abs(wheelAcc)<26) return;
-  wheelAcc=0; wheelLock=now+200; deckGo(to,false);
+  wheelAcc=0; wheelLock=now+200; deckUsed("wheel"); deckGo(to,false);
 },{passive:false});
 // Mouse drag. Touch is left alone: native momentum + snap already do exactly what we want.
 deckStrip.addEventListener("pointerdown",e=>{
@@ -1671,6 +1768,7 @@ deckStrip.addEventListener("click",e=>{
   if(act==="save") return saveCascadeEdits();
   if(deckDragged) return;                            // that click was the end of a drag
   const i=deckCards().indexOf(card);
+  deckUsed(deckDragged?"drag":"tap");
   if(i>=cascades.length){ deckFocus(i,true); deckCentre(i,true); return newCascade(); }
   deckGo(i,true);
 });
@@ -1723,6 +1821,7 @@ const relaxOptions = () => RELAXERS.filter(r=>r.on())
   .filter(o=>o.n>0).sort((a,b)=>b.n-a.n).slice(0,3);
 window.relaxFilter=key=>{
   const r=RELAXERS.find(x=>x.key===key); if(!r) return;
+  logEvent("relax_used",{key});
   r.clear();
   if(key==="search"){ $("search").value=""; $("searchClear").classList.remove("show"); }
   syncFilterUI(); render();
@@ -1851,6 +1950,7 @@ window.nlDraft=()=>{
   const out=$("nlOut");
   if(!text){ out.innerHTML=""; return; }
   const {crit, read, unmet, confident}=parseNL(text);
+  logEvent("nl_used",{understood:read.length, confident:confident?1:0});   // never the words themselves
   // Low confidence: nothing usable recognised. Say so plainly and leave them on the picker — never guess.
   if(!confident){
     out.innerHTML=`<div class="warnnote">I didn't recognise anything I can filter on.${nlUnmetNote(unmet)}
@@ -1896,16 +1996,18 @@ function newCascade(){
     soon.appendChild(b);
   });
   $("tplSoonWrap").style.display = CASCADE_TEMPLATES_SOON.length ? "" : "none";
+  logEvent("picker_opened");
   openModal($("builder"));
 }
 window.newCascade=newCascade;
 const draftFromTemplate = t => ({id:null, template:t.key, icon:t.icon, name:t.name,
   ...JSON.parse(JSON.stringify(t.crit)), alerts:{...ALERT_DEFAULTS, ...(t.alerts||{})}});
-function startFromTemplate(t){ draft=draftFromTemplate(t); openEditor("New Cascade"); }
+function startFromTemplate(t){ logEvent("template_opened",{key:t.key}); draft=draftFromTemplate(t); openEditor("New Cascade"); }
 // First-run shortcuts on the empty deck. Straight into the editor, pre-filled — never a straight-to-save.
 const QUICK_STARTS = ["watch_tonight","bargain","my_taste"].map(k=>CASCADE_TEMPLATES.find(t=>t.key===k));
 window.quickStart=key=>{
   const t=CASCADE_TEMPLATES.find(x=>x.key===key); if(!t) return;
+  logEvent("quickstart",{key});
   startFromTemplate(t); openModal($("builder"));
 };
 // Save the current draft as a Cascade and open it. Shared by the builder's apply and onboarding's starter.
@@ -1922,6 +2024,10 @@ function commitDraft(){
   normCascade(c);
   if(isNew) cascades.push(c);
   saveCascades(); setActive(c.id); applyCascade(c);
+  // The template key and the shape of the radar — never its name, which is the one thing the user typed.
+  logEvent(isNew?"cascade_created":"cascade_edited",
+    {key:c.template||"custom", windows:c.status.length||"all", genres:c.genre.length, rating:c.ratingStop,
+     mine:c.myServices?1:0, matches:countCriteria(c)});
   return {c, isNew};
 }
 window.editCascade=()=>{
@@ -2530,6 +2636,7 @@ function render(){
 }
 window.toggleTag=id=>{
   tracked.has(id)?tracked.delete(id):tracked.add(id); saveSet("cascade_tracked",tracked);
+  logEvent("tag",{key:"track", on:tracked.has(id)?1:0});   // which film it was is not the signal we need
   const m=MOVIES.find(x=>x.tmdb_id===id);
   toast(tracked.has(id)?`🔔 Tracking “${m.title}” — you'll be alerted on changes`:`☆ Stopped tracking “${m.title}”`);
   render();
@@ -2593,6 +2700,7 @@ function simulateDay(){
     });
   });
   lastPoll={day:dayCounter, events};
+  logEvent("poll_run",{day:dayCounter, moved:events.length, fired, muted});
   render(); renderAlerts(); renderDigest(); updateBadge();
   const c=activeCascade();
   const mutedNote = muted ? ` · ${muted} muted by “${c.name}” prefs` : "";
@@ -2705,6 +2813,7 @@ function shareLink(c){
 }
 window.shareCascade=()=>{
   const c=activeCascade(); if(!c) return;
+  logEvent("share_copied",{key:c.template||"custom"});
   const url=shareLink(c);
   const done=ok=>toast(ok ? `🔗 Link to “${c.name}” copied — it opens as a draft they can review`
                           : `🔗 Copy this: ${url}`);
@@ -2754,6 +2863,7 @@ function openSharedFromURL(){
   }
   draft=sanitiseShared(obj);
   const n=countCriteria(draft);
+  logEvent("shared_link_opened",{matches:n});
   openEditor("Shared Cascade");
   openModal($("builder"));
   // Reciprocity, not a trap: they get the whole radar up front, and nothing is saved until they say so.
