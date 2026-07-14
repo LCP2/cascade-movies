@@ -72,7 +72,7 @@
   .flabel:first-child{margin-top:0}
   /* One visible focus ring for every interactive thing the new UI added. A control you can Tab to but
      can't SEE that you've Tabbed to is not keyboard-operable in any way that matters. */
-  .chip:focus-visible,.pill:focus-visible,.hatch:focus-visible,.ebtn:focus-visible,.cschip:focus-visible,
+  .chip:focus-visible,.qpill:focus-visible,.hatch:focus-visible,.ebtn:focus-visible,.cschip:focus-visible,
   .mlbtn:focus-visible,.ca-btn:focus-visible,.tpl:focus-visible,.actbtn:focus-visible,
   .iconbtn:focus-visible,.donebtn:focus-visible,.applybtn:focus-visible,.dangerbtn:focus-visible{
     outline:2px solid var(--accent);outline-offset:2px}
@@ -359,9 +359,11 @@
   .arow.on .adot::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;
     font-size:12px;font-weight:800;color:#fff}
   .alab{min-width:0}
-  .alab b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
-  .arow.on .alab b{color:#cfc2ff}
-  .alab small{display:block;font-size:10.5px;color:var(--faint);margin-top:1px;line-height:1.3}
+  .alab .pill{display:inline-block;cursor:pointer}   /* the card's window lozenge, reused verbatim */
+  .alab small{display:block;font-size:10.5px;color:var(--faint);margin-top:3px;line-height:1.3}
+  .switch.mini{padding:8px 10px;font-size:12px}
+  .switch.mini .knob{width:36px;height:20px} .switch.mini .knob::after{width:14px;height:14px}
+  .switch.mini.on .knob::after{left:19px}
   .abell{flex-shrink:0;display:flex;align-items:center;gap:5px;background:var(--panel);border:1px solid var(--line);
     border-radius:20px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--faint);cursor:pointer}
   .abell.on{background:rgba(240,163,54,.14);border-color:var(--amber);color:#ffce8f}
@@ -378,9 +380,11 @@
   .qhead .qt{font-size:12.5px;font-weight:700;color:var(--ink)}
   .qcap{font-size:11px;color:var(--dim);line-height:1.45;margin-top:9px}
   .qcap b{color:#cfc2ff}
-  .pill{background:var(--panel);border:1px solid var(--line);color:var(--faint);border-radius:20px;
+  /* NB: .pill is the movie card's window lozenge (see above). This is the editor's own toggle button —
+     it must NOT be called .pill, or it silently restyles every card in the app. */
+  .qpill{background:var(--panel);border:1px solid var(--line);color:var(--faint);border-radius:20px;
     padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
-  .pill.on{background:rgba(240,163,54,.16);border-color:var(--amber);color:#ffce8f}
+  .qpill.on{background:rgba(240,163,54,.16);border-color:var(--amber);color:#ffce8f}
   .hatch{margin-top:9px;background:none;border:1px dashed #4c4270;color:var(--accenttext);border-radius:9px;
     padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;width:100%;text-align:left}
   .hatch.on{background:rgba(124,92,255,.14);border-style:solid;color:#cfc2ff}
@@ -601,7 +605,7 @@
 
     <div class="zone">
       <div class="zhead">Where &amp; when</div>
-      <div class="zsub">Which windows this Cascade watches — and which ones are worth a 🔔 when a tagged
+      <div class="zsub">Which windows this Cascade watches — and which ones are worth a 📣 when a tagged
         film lands there.</div>
       <div class="spine" id="cSpine"></div>
     </div>
@@ -898,7 +902,13 @@ const ALL_GENRES=[...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort();
 const ALL_AGES=[...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))];
 const servicesPicked = () => prefs.sub.size>0 || prefs.store.size>0;
 // An open Cascade's "my services" scope wins while it's open; closing it restores the global switch.
-const servicesScoped = () => { const c=activeCascade(); return c ? !!c.myServices : prefs.on; };
+// "Only what I can watch" is now PER WINDOW: you can scope Stream to your subscriptions while still
+// hearing about anything that reaches the cinema. A film is judged by the window it's actually in.
+const HOME_KEYS = ["pvod","rental","included_streaming"];
+const scopeOf = c => (c && c.myServices && typeof c.myServices==="object") ? c.myServices : {};
+const anyScope = c => HOME_KEYS.some(k=>!!scopeOf(c)[k]);
+const scopedFor = w => { const c=activeCascade(); return c ? !!scopeOf(c)[w] : prefs.on; };
+const servicesScoped = () => { const c=activeCascade(); return c ? anyScope(c) : prefs.on; };
 // ignoreScope is flipped only by the no-results panel, to ask "how many would there be if the my-services
 // scope weren't applied?" — so it can price that way out honestly instead of guessing.
 let ignoreScope = false;
@@ -1069,7 +1079,8 @@ window.showAward=id=>{ const m=MOVIES.find(x=>x.tmdb_id===id);
 function passes(m){
   const id=m.tmdb_id;
   if(blocked.has(id) && !filt.showHidden) return false;
-  if(prefsActive() && !matchesServices(m)) return false;
+  // Scoped per window: a Rent-scoped Cascade filters rental films by your stores, and leaves cinema alone.
+  if(!ignoreScope && servicesPicked() && scopedFor(primaryStatus(m)) && !matchesServices(m)) return false;
   if(filt.trackedOnly && !tracked.has(id)) return false;
   if(filt.hideWatched && watched.has(id)) return false;
   if(filt.search && !m.title.toLowerCase().includes(filt.search)) return false;
@@ -1377,13 +1388,13 @@ const ALERT_DEFAULTS = {cinema:false, pvod:false, rental:true, included_streamin
 // One row per window a film can be in. "All" is not a window — it's the empty status set, i.e. any window.
 // Each row owns its alert toggle; the window→row map is what the poll sim consults.
 const AVAIL_ROWS = [
-  {key:"cinema", alert:"cinema", windows:["upcoming","opening_week","in_cinema"],
+  {key:"cinema", alert:"cinema", windows:["upcoming","opening_week","in_cinema"], pill:"in_cinema",
    title:"Upcoming / In cinema", sub:"Announced, and on the big screen"},
-  {key:"pvod", alert:"pvod", windows:["pvod"],
+  {key:"pvod", alert:"pvod", windows:["pvod"], pill:"pvod",
    title:"Premium", sub:"Buy or rent early, ~$30", home:true},
-  {key:"rental", alert:"rental", windows:["rental"],
+  {key:"rental", alert:"rental", windows:["rental"], pill:"rental",
    title:"Rent", sub:"Rental drops to ~$7", home:true},
-  {key:"included_streaming", alert:"included_streaming", windows:["included_streaming"],
+  {key:"included_streaming", alert:"included_streaming", windows:["included_streaming"], pill:"included_streaming",
    title:"Stream", sub:"Included on a subscription", home:true},
 ];
 const WINDOW_ROW = {};
@@ -1520,7 +1531,19 @@ function normCascade(c){
   c.budget = c.budget||0;                    // index into BUDGET_BANDS; 0 = Any
   c.includeUnbudgeted = !!c.includeUnbudgeted;
   c.tentpole = c.tentpole||"any";
-  c.awards = !!c.awards; c.myServices = !!c.myServices;
+  c.awards = !!c.awards;
+  // myServices was one boolean for the whole Cascade; it's now one flag per home window. A Cascade saved
+  // under the old shape meant "scope everywhere", so that's exactly what it keeps meaning.
+  if(typeof c.myServices!=="object" || c.myServices===null){
+    const was=!!c.myServices;
+    c.myServices={pvod:was, rental:was, included_streaming:was};
+  }
+  HOME_KEYS.forEach(k=>{ c.myServices[k]=!!c.myServices[k]; });
+  // Exclusions ride the filter fields that already exist (hideWatched / showHidden), so the Filters panel's
+  // View chips stay in sync with them. Default ON: a radar shouldn't keep showing you what you've seen or
+  // told it to drop. Pre-existing Cascades predate the toggles, so they adopt the same default.
+  c.excludeWatched = c.excludeWatched===undefined ? true : !!c.excludeWatched;
+  c.excludeBlocked = c.excludeBlocked===undefined ? true : !!c.excludeBlocked;
   c.alerts = {...ALERT_DEFAULTS, ...(c.alerts||{})};
   return c;
 }
@@ -1528,7 +1551,8 @@ const CASCADE_TEMPLATES = [
   {key:"my_taste", icon:"🎯", name:"My taste", blurb:"Great films that clear my rating bar",
    crit:{status:[], genre:[], age:[], lang:["en"], imdb:7.5, rt:0, awards:false, myServices:false}},
   {key:"watch_tonight", icon:"🍿", name:"Watch tonight", blurb:"Included on services I already have",
-   crit:{status:["included_streaming"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:true},
+   crit:{status:["included_streaming"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false,
+         myServices:{included_streaming:true}},
    alerts:{pvod:false, rental:false, included_streaming:true}},
   {key:"rent_radar", icon:"📼", name:"Rent radar", blurb:"Good films that reach Rent (~$7)",
    crit:{status:["rental"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:false}},
@@ -1546,7 +1570,7 @@ const CASCADE_TEMPLATES = [
   // and scoped to what you already pay for — nobody rents a $30 premium for a Tuesday.
   {key:"date_night", icon:"🍷", name:"Date night", blurb:"Crowd-pleasers you both agree on, on your services",
    crit:{status:["rental","included_streaming"], genre:["Romance","Comedy","Drama"], age:[], lang:["en"],
-         imdb:RATING_STOPS[2].imdb, rt:0, awards:false, myServices:true},
+         imdb:RATING_STOPS[2].imdb, rt:0, awards:false, myServices:{rental:true, included_streaming:true}},
    alerts:{cinema:false, pvod:false, rental:true, included_streaming:true}},
   // Rewatch: "older" is a real filter here, not a vibe — every year in the catalogue except the current one.
   {key:"rewatch", icon:"🛋️", name:"Rewatch & comfort", blurb:"Films you already love, now included or cheap",
@@ -1586,12 +1610,17 @@ function ratingOK(m, min, includeUnrated){          // declared, not const — p
 // Mirrors passes() for exactly the fields a Cascade owns — so the CTA's count is the number you get.
 // ignoreBlocked: My List asks "which Cascades would be watching this?" of films you've BLOCKED — and the
 // honest answer there is the one you'd get if you unblocked it, not a blank.
+// The age slider lost its "Any" stop: the most-inclusive level (every certificate) IS "any", so it must
+// behave like one — including for the 2 titles that carry no certificate at all. Otherwise the default
+// would quietly drop films nobody asked to drop.
+const ageOpen = c => !(c.age||[]).length || c.age.length===AGE_LEVELS.length;
 function matchesCriteria(m,c,ignoreBlocked){
-  if(!ignoreBlocked && blocked.has(m.tmdb_id)) return false;
-  if(c.myServices && servicesPicked() && !matchesServices(m)) return false;
+  if(c.excludeBlocked!==false && !ignoreBlocked && blocked.has(m.tmdb_id)) return false;
+  if(c.excludeWatched!==false && watched.has(m.tmdb_id)) return false;
+  if(servicesPicked() && scopeOf(c)[primaryStatus(m)] && !matchesServices(m)) return false;
   if(c.status.length && !c.status.includes(primaryStatus(m))) return false;
   if(c.genre.length && !(m.genres||[]).some(g=>c.genre.includes(g))) return false;
-  if(c.age.length && !c.age.includes(m.age_rating)) return false;
+  if(!ageOpen(c) && !c.age.includes(m.age_rating)) return false;
   if((c.year||[]).length && !c.year.includes(yearOf(m))) return false;
   if((c.lang||[]).length && !c.lang.includes(m.language)) return false;
   if((c.culture||[]).length && !c.culture.includes(m.culture)) return false;
@@ -1616,9 +1645,11 @@ function applyCascade(c){
   clearFilters();
   setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age); setTo(filt.lang,c.lang);
   setTo(filt.culture,c.culture||[]); setTo(filt.year,c.year||[]);   // year rides the Filters panel's own chips
-  filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via servicesScoped()
+  filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via scopedFor()
   filt.includeUnrated=!!c.includeUnrated;
   filt.budget=c.budget||0; filt.includeUnbudgeted=!!c.includeUnbudgeted; filt.tentpole=c.tentpole||"any";
+  // The two Exclude toggles ARE the View chips — one state, two places to reach it.
+  filt.hideWatched=c.excludeWatched!==false; filt.showHidden=c.excludeBlocked===false;
   filt.sort=c.sort||"imdb";                                      // Blockbuster radar leads with popularity
   syncFilterUI();
 }
@@ -1640,7 +1671,8 @@ function cascadeDirty(){
       || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards
       || filt.includeUnrated!==!!c.includeUnrated || filt.sort!==(c.sort||"imdb")
       || filt.budget!==(c.budget||0) || filt.includeUnbudgeted!==!!c.includeUnbudgeted
-      || filt.tentpole!==(c.tentpole||"any");
+      || filt.tentpole!==(c.tentpole||"any")
+      || filt.hideWatched!==(c.excludeWatched!==false) || filt.showHidden!==(c.excludeBlocked===false);
 }
 window.saveCascadeEdits=()=>{
   const c=activeCascade(); if(!c) return;
@@ -1649,6 +1681,7 @@ window.saveCascadeEdits=()=>{
   c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards; c.sort=filt.sort;
   c.includeUnrated=filt.includeUnrated; c.ratingStop=stopFor(c.imdb);
   c.budget=filt.budget; c.includeUnbudgeted=filt.includeUnbudgeted; c.tentpole=filt.tentpole;
+  c.excludeWatched=filt.hideWatched; c.excludeBlocked=!filt.showHidden;
   saveCascades(); render(); toast(`✅ Saved changes to “${c.name}”`);
 };
 
@@ -2078,7 +2111,8 @@ function commitDraft(){
     age:draft.age, lang:draft.lang, culture:draft.culture, year:draft.year, imdb:draft.imdb, rt:draft.rt,
     ratingStop:draft.ratingStop, includeUnrated:draft.includeUnrated,
     budget:draft.budget, includeUnbudgeted:draft.includeUnbudgeted, tentpole:draft.tentpole,
-    awards:draft.awards, myServices:draft.myServices,
+    awards:draft.awards, myServices:{...draft.myServices},
+    excludeWatched:draft.excludeWatched, excludeBlocked:draft.excludeBlocked,
     sort:draft.sort||"imdb", alerts:draft.alerts});
   normCascade(c);
   if(isNew) cascades.push(c);
@@ -2111,99 +2145,70 @@ function setRow(r, on){
   const set=new Set(draft.status);
   r.windows.forEach(w=> on ? set.add(w) : set.delete(w));
   draft.status = ALL_WINDOWS.filter(w=>set.has(w));
-  if(draft.status.length===ALL_WINDOWS.length) draft.status=[];    // every window on IS "All"
+  // NO collapse-to-empty here. That existed to feed the old "All windows" row; with the row gone it would
+  // mean switching the fourth window ON silently switches all four OFF. An explicit full set stays explicit.
 }
 function buildSpine(){
   const spine=$("cSpine"); spine.innerHTML="";
-  const mkRow=(cls,title,sub,onTog,onBell)=>{
+  AVAIL_ROWS.forEach(r=>{
     const el=document.createElement("div");
-    el.className="arow "+cls;
+    el.className="arow r-"+r.key;
+    // The window lozenge is the SAME component the movie cards use (.pill.<status>) — same colour, same
+    // shape — so the row and the card teach each other rather than being two vocabularies.
     el.innerHTML=`<div class="arow-main">
         <button class="atog" role="switch"><span class="adot"></span>
-          <span class="alab"><b>${title}</b><small>${sub}</small></span></button>
-        <button class="abell" role="switch"><span>🔔</span><span class="bl">OFF</span></button>
-      </div>`;
-    el.querySelector(".atog").onclick=onTog;
-    el.querySelector(".abell").onclick=onBell;
-    return el;
-  };
-  // "All" — the empty status set. Turning it OFF lights every specific row instead: same films, now
-  // narrowable. Turning the last specific row off empties the set and All lights back up. No dead state.
-  spine.appendChild(mkRow("r-all","All windows","Anywhere a film shows up — from the cinema to your subscriptions",
-    ()=>{ draft.status = allOn() ? [...ALL_WINDOWS] : []; syncSpine(); refreshDraft(); },
-    ()=>{ const to=!AVAIL_ROWS.every(r=>draft.alerts[r.alert]);
-          AVAIL_ROWS.forEach(r=>{ draft.alerts[r.alert]=to; }); syncSpine(); }));
-
-  const home=document.createElement("div");
-  home.className="spine"; home.style.marginTop="7px";
-  AVAIL_ROWS.forEach(r=>{
-    const el=mkRow("r-"+r.key, r.title, r.sub,
-      ()=>{ if(allOn()) return; setRow(r, rowState(r)==="off"); syncSpine(); refreshDraft(); },
-      ()=>{ draft.alerts[r.alert]=!draft.alerts[r.alert]; syncSpine(); });
-    (r.home ? home : spine).appendChild(el);
+          <span class="alab"><span class="pill ${r.pill}">${r.title}</span><small>${r.sub}</small></span></button>
+        <button class="abell" role="switch"><span>📣</span><span class="bl">Alert</span></button>
+      </div>
+      ${r.home ? `<div class="aopts" id="opt-${r.key}"><div><div class="inner" style="padding-top:6px">
+        <div class="switch mini" id="mine-${r.key}" role="switch">
+          <span>Only what I can watch <small style="color:var(--faint)">(my services)</small></span>
+          <span class="knob"></span></div></div></div></div>` : ""}`;
+    el.querySelector(".atog").onclick=()=>{ setRow(r, rowState(r)==="off"); syncSpine(); refreshDraft(); };
+    el.querySelector(".abell").onclick=()=>{ draft.alerts[r.alert]=!draft.alerts[r.alert]; syncSpine(); };
+    const mine=el.querySelector(".switch");
+    if(mine) mine.onclick=()=>{ draft.myServices[r.key]=!draft.myServices[r.key]; syncSpine(); refreshDraft(); };
+    spine.appendChild(el);
   });
-  // Scale (budget + tentpole) belongs to the two rows above it — All and Upcoming/In cinema — because
-  // that's where a film's size is the thing you're actually filtering on. It sits directly beneath them.
-  spine.appendChild(buildScale());
-  spine.appendChild(home);
-
-  // ONE "only what I can watch" governs all three home windows — three copies of it would be three ways to
-  // say the same thing. It lives in a persistent reveal so toggling a window animates it open.
-  const opts=document.createElement("div");
-  opts.className="aopts homeopts"; opts.id="cHomeOpts";
-  opts.innerHTML=`<div><div class="inner" style="padding-top:8px">
-      <div class="switch" id="cMine" role="switch">
-        <span>Only what I can watch <small style="color:var(--faint)">(my services)</small></span>
-        <span class="knob"></span></div>
-      <div id="cMineWarn"></div></div></div>`;
-  opts.querySelector("#cMine").onclick=()=>{ draft.myServices=!draft.myServices; syncSpine(); refreshDraft(); };
-  home.appendChild(opts);
+  // With the "All windows" row gone, an empty status set has no control of its own — so say what it means
+  // out loud rather than leaving the user to infer it from four switches that are all off.
+  const note=document.createElement("div");
+  note.className="pnote"; note.id="cSpineNote"; note.style.margin="8px 0 0";
+  spine.appendChild(note);
+  const warn=document.createElement("div");
+  warn.id="cMineWarn";
+  spine.appendChild(warn);
 }
 // State lives in `draft`; the DOM is only ever synced to it — so the reveal transition survives a toggle.
 function syncSpine(){
-  const all=allOn();
-  const paint=(el,on,part)=>{
-    el.classList.toggle("on", on||part);
-    el.querySelector(".atog").setAttribute("aria-checked", String(on||part));
-  };
-  const allRow=$("cSpine").querySelector(".r-all");
-  const allAlert=AVAIL_ROWS.every(r=>draft.alerts[r.alert]);
-  paint(allRow, all, false);
-  bellPaint(allRow, allAlert, "every window");
-
   AVAIL_ROWS.forEach(r=>{
     const el=$("cSpine").querySelector(".r-"+r.key);
-    const st=all ? "off" : rowState(r);
-    paint(el, st==="on", st==="part");
-    el.classList.toggle("subsumed", all);
-    const tog=el.querySelector(".atog");
-    tog.tabIndex = all ? -1 : 0;
-    tog.setAttribute("aria-disabled", String(all));
+    const st=rowState(r);
+    el.classList.toggle("on", st!=="off");
+    el.querySelector(".atog").setAttribute("aria-checked", String(st!=="off"));
     // A half-filled row says which windows it actually holds — the label must not overstate the radar.
     const part = st==="part" ? r.windows.filter(w=>draft.status.includes(w)).map(w=>STATUS_LABEL[w]).join(" + ") : "";
-    el.querySelector(".alab small").textContent = part ? `Currently: ${part} only — tap to watch the whole window` : r.sub;
+    el.querySelector(".alab small").textContent = part ? `Currently: ${part} only — tap for the whole window` : r.sub;
     bellPaint(el, !!draft.alerts[r.alert], r.title);
+    if(!r.home) return;
+    // Each home window owns its own scope now, and it only appears while that window is being watched.
+    $("opt-"+r.key).classList.toggle("open", st!=="off");
+    const mine=$("mine-"+r.key), on=!!draft.myServices[r.key];
+    mine.classList.toggle("on", on);
+    mine.setAttribute("aria-checked", String(on));
   });
-
-  // Scale opens for the rows it belongs to — but ALSO stays open whenever it's actually set, so a live
-  // criterion can never end up hidden behind a switched-off row.
-  const scaleLive = all || rowState(AVAIL_ROWS[0])!=="off" || draft.budget>0 || draft.tentpole!=="any";
-  $("cScaleOpts").classList.toggle("open", scaleLive);
-  syncScale();
-
-  const homeLive = all || AVAIL_ROWS.some(r=>r.home && rowState(r)!=="off");
-  $("cHomeOpts").classList.toggle("open", homeLive);
-  const mine=$("cMine");
-  mine.classList.toggle("on", draft.myServices);
-  mine.setAttribute("aria-checked", String(draft.myServices));
+  $("cSpineNote").textContent = allOn()
+    ? "No window picked — so this Cascade watches every one of them. Switch one on to narrow it."
+    : "";
   syncMineWarn();
 }
 // ---- Scale: budget band + tentpole tag (lives inside the spine's reveal) --------
+// Scale is global now — a film's size doesn't depend on which window it's sitting in, so it belongs in
+// Quality & taste with the rest of the "what kind of film" controls, not bolted to an availability row.
 function buildScale(){
   const wrap=document.createElement("div");
-  wrap.className="aopts"; wrap.id="cScaleOpts";
-  wrap.innerHTML=`<div><div class="inner" style="padding:8px 0 0">
-    <div class="qrow" style="margin-bottom:7px">
+  wrap.innerHTML=`
+    <div class="qrow">
       <div class="qhead"><span class="qt">Budget</span><span class="qcap" style="margin:0" id="cBudCap"></span></div>
       <div class="rslider">
         <div class="rstops" aria-hidden="true">${BUDGET_BANDS.map(()=>"<i></i>").join("")}</div>
@@ -2213,12 +2218,11 @@ function buildScale(){
       <div class="qcap" id="cBudDesc"></div>
       <button class="hatch" id="cUnbudgeted" role="switch" type="button" hidden></button>
     </div>
-    <div class="qrow" style="margin:0">
+    <div class="qrow">
       <div class="qhead"><span class="qt">Tentpole</span><span class="qcap" style="margin:0" id="cTentCap"></span></div>
       <div class="loz" id="cTentLoz" role="radiogroup" aria-label="Tentpole"></div>
       <div class="qcap" id="cTentDesc"></div>
-    </div>
-  </div></div>`;
+    </div>`;
   const loz=wrap.querySelector("#cTentLoz");
   TENTPOLE_STOPS.forEach(t=>{
     const b=document.createElement("button");
@@ -2248,7 +2252,7 @@ function syncScale(){
   const band=BUDGET_BANDS[draft.budget];
   $("cBudget").value=draft.budget;
   $("cBudget").setAttribute("aria-valuetext", band.label);
-  [...$("cScaleOpts").querySelectorAll(".rstops i")].forEach((el,i)=>el.classList.toggle("lit", i<=draft.budget));
+  [...$("cScale").querySelectorAll(".rstops i")].forEach((el,i)=>el.classList.toggle("lit", i<=draft.budget));
   [...$("cBudLabels").children].forEach((el,i)=>el.classList.toggle("lit", i===draft.budget));
   $("cBudCap").textContent=band.label;
   $("cBudDesc").innerHTML = draft.budget
@@ -2292,13 +2296,15 @@ function bellPaint(row, on, label){
   const b=row.querySelector(".abell");
   b.classList.toggle("on", on);
   b.setAttribute("aria-checked", String(on));
-  b.setAttribute("aria-label", `Alert me — ${label}`);
-  b.querySelector(".bl").textContent = on ? "ON" : "OFF";
+  b.setAttribute("aria-label", `Alert me when a film reaches ${label}`);
+  // The control reads "📣 Alert". State can't be carried by colour alone (WCAG 1.4.1), so the off state
+  // says so in words as well as going grey.
+  b.querySelector(".bl").textContent = on ? "Alert" : "Alert · off";
 }
 function syncMineWarn(){
   const w=$("cMineWarn"); if(!w) return;
-  w.innerHTML = (draft.myServices && !servicesPicked())
-    ? `<div class="warnnote">You haven't picked any services yet, so this scope does nothing.
+  w.innerHTML = (anyScope(draft) && !servicesPicked())
+    ? `<div class="warnnote">You haven't picked any services yet, so that scope does nothing.
          Pick them and this Cascade narrows to what you can actually watch.<br>${pickServicesCTA()}</div>` : "";
 }
 
@@ -2312,11 +2318,11 @@ function ratingCaption(){
 }
 // Built once, then synced — re-rendering the range input mid-drag would drop the drag on the floor.
 function buildQuality(){
-  const ageStops=[{i:-1,label:"Any"}, ...AGE_LEVELS.map((a,i)=>({i,label:a}))];
+  const ageStops=AGE_LEVELS.map((a,i)=>({i,label:a}));   // no "Any": the top level already means any
   $("cQuality").innerHTML=`
     <div class="qrow">
       <div class="qhead"><span class="qt">Rating</span>
-        <button class="pill" id="cAwards" role="switch" type="button">🏆 Awards only</button></div>
+        <button class="qpill" id="cAwards" role="switch" type="button">🏆 Awards only</button></div>
       <div class="rslider">
         <div class="rstops" aria-hidden="true">${RATING_STOPS.map(()=>"<i></i>").join("")}</div>
         <input type="range" id="cRate" min="0" max="${RATING_STOPS.length-1}" step="1" aria-label="Minimum rating">
@@ -2349,9 +2355,25 @@ function buildQuality(){
       <div class="chips" id="cYearChips"></div>
       <div class="qcap">Leave it open for anything, or pin the years — that's how a rewatch radar
         keeps this year's releases out of it.</div>
+    </div>
+    <div id="cScale"></div>
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Exclude</span><span class="qcap" style="margin:0" id="cExCap"></span></div>
+      <div class="switch mini" id="cExWatched" role="switch">
+        <span>✅ Watched <small style="color:var(--faint)">— films you've marked seen</small></span>
+        <span class="knob"></span></div>
+      <div class="switch mini" id="cExBlocked" role="switch" style="margin-top:6px">
+        <span>🙈 Not interested <small style="color:var(--faint)">— films you've waved off</small></span>
+        <span class="knob"></span></div>
+      <div class="qcap" id="cExDesc"></div>
     </div>`;
 
-  // Cumulative: choosing M means G, PG and M — one tap, not three. "Any" clears the constraint.
+  $("cScale").appendChild(buildScale());
+
+  $("cExWatched").onclick=()=>{ draft.excludeWatched=!draft.excludeWatched; syncQuality(); refreshDraft(); };
+  $("cExBlocked").onclick=()=>{ draft.excludeBlocked=!draft.excludeBlocked; syncQuality(); refreshDraft(); };
+
+  // Cumulative: choosing M means G, PG and M — one tap, not three. No "Any" stop: the top level IS any.
   const loz=$("cAgeLoz");
   ageStops.forEach(({i,label})=>{
     const b=document.createElement("button");
@@ -2360,7 +2382,7 @@ function buildQuality(){
     b.onkeydown=e=>{
       const sel=ageSel();
       const to = e.key==="ArrowRight" ? Math.min(AGE_LEVELS.length-1, sel+1)
-               : e.key==="ArrowLeft"  ? Math.max(-1, sel-1) : null;
+               : e.key==="ArrowLeft"  ? Math.max(0, sel-1) : null;
       if(to===null) return;
       e.preventDefault(); setAge(to);
       loz.querySelector('[tabindex="0"]')?.focus();
@@ -2376,8 +2398,10 @@ function buildQuality(){
   $("cAwards").onclick=()=>{ draft.awards=!draft.awards; syncQuality(); refreshDraft(); };
   $("cUnrated").onclick=()=>{ draft.includeUnrated=!draft.includeUnrated; syncQuality(); refreshDraft(); };
 }
-const ageSel = () => draft.age.length ? Math.max(...draft.age.map(a=>AGE_LEVELS.indexOf(a))) : -1;
-function setAge(i){ draft.age = i<0 ? [] : AGE_LEVELS.slice(0,i+1); syncQuality(); refreshDraft(); }
+// No "Any" stop any more: an empty age list (older Cascades, and templates that never set one) still means
+// "everything", so it seats at the top level — which is exactly what everything means.
+const ageSel = () => draft.age.length ? Math.max(...draft.age.map(a=>AGE_LEVELS.indexOf(a))) : AGE_LEVELS.length-1;
+function setAge(i){ draft.age = AGE_LEVELS.slice(0, Math.max(0,i)+1); syncQuality(); refreshDraft(); }
 function syncQuality(){
   const stop=RATING_STOPS[draft.ratingStop];
   $("cRate").value=draft.ratingStop;
@@ -2398,7 +2422,7 @@ function syncQuality(){
   rt.hidden=!draft.rt;
   if(draft.rt){
     rt.innerHTML=`Also carrying <b>RT critic ${draft.rt}%+</b> from your description.
-      <button class="pill" id="cRtClear" type="button" style="margin-left:4px">Clear</button>`;
+      <button class="qpill" id="cRtClear" type="button" style="margin-left:4px">Clear</button>`;
     $("cRtClear").onclick=()=>{ draft.rt=0; syncQuality(); refreshDraft(); };
   }
   $("cGenreCap").textContent=draft.genre.length?`${draft.genre.length} on`:"Any";
@@ -2408,13 +2432,29 @@ function syncQuality(){
     ? (draft.year.length===EARLIER_YEARS.length && !draft.year.includes(CURRENT_YEAR) ? "Earlier years" : draft.year.length+" on")
     : "Any";
   const sel=ageSel();
-  $("cAgeCap").textContent = sel<0 ? "Any" : "Up to "+AGE_LEVELS[sel];
+  $("cAgeCap").textContent = ageOpen(draft) ? "Any" : "Up to "+AGE_LEVELS[sel];
   [...$("cAgeLoz").children].forEach(b=>{
     const i=+b.dataset.i;
-    b.className = i<0 ? (sel<0?"edge":"") : (i<sel ? "fill" : i===sel ? "fill edge" : "");
+    b.className = i<sel ? "fill" : i===sel ? "fill edge" : "";
     b.setAttribute("aria-checked", String(i===sel));
     b.tabIndex = i===sel ? 0 : -1;
   });
+  // Exclusions: a radar shouldn't keep showing you what you've already seen or waved off — but say what
+  // each one is actually removing right now, so it's a choice and not a black box.
+  const nW=MOVIES.filter(m=>watched.has(m.tmdb_id)).length, nB=MOVIES.filter(m=>blocked.has(m.tmdb_id)).length;
+  $("cExWatched").classList.toggle("on", draft.excludeWatched);
+  $("cExWatched").setAttribute("aria-checked", String(draft.excludeWatched));
+  $("cExBlocked").classList.toggle("on", draft.excludeBlocked);
+  $("cExBlocked").setAttribute("aria-checked", String(draft.excludeBlocked));
+  const on=[draft.excludeWatched&&"watched", draft.excludeBlocked&&"not interested"].filter(Boolean);
+  $("cExCap").textContent = on.length ? on.join(" + ") : "Nothing";
+  const hidW=draft.excludeWatched?nW:0, hidB=draft.excludeBlocked?nB:0, hid=hidW+hidB;
+  $("cExDesc").innerHTML = !(nW||nB)
+    ? `You haven't marked anything watched or not-interested yet — these do nothing until you do.`
+    : hid
+      ? `Right now that hides <b>${hid} film${hid===1?"":"s"}</b> — ${hidW} watched, ${hidB} not interested.`
+      : `Nothing hidden: this Cascade will show the ${nW} watched and ${nB} not-interested film${nW+nB===1?"":"s"} too.`;
+  syncScale();
 }
 
 function openEditor(title){
