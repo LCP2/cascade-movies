@@ -612,6 +612,29 @@
   .newchip{display:inline-block;background:rgba(72,199,142,.16);border:1px solid rgba(72,199,142,.55);
     color:#a7eccb;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:7px;
     vertical-align:middle;white-space:nowrap}
+  /* ---- Inline provenance + inline mute (CAS-72) ---- */
+  /* Taking a film off your Found list is one tap, on the card. It used to be a full-screen sheet — a screen
+     takeover for a single yes/no. The "which of my Cascades matched, and what will they tell me" detail is
+     still available, but as a reveal INSIDE the card: it never covers the film it's talking about. */
+  .wlacts{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+  .wlbtn{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:8px;
+    padding:5px 9px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px}
+  .wlbtn:hover{border-color:#3a4150;color:var(--ink)}
+  .wlbtn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .wlbtn.off{border-color:#5c3540;color:#ffb9a6}
+  .wlbtn.on{border-color:var(--green);color:#a7eccb}
+  .wlbtn .cv{transition:transform .18s;font-size:9px}
+  .wlbtn[aria-expanded="true"] .cv{transform:rotate(180deg)}
+  /* 0fr→1fr: the reveal animates open without a hard-coded height (same trick as the editor's rows) */
+  .wlmore{display:grid;grid-template-rows:0fr;transition:grid-template-rows .22s ease,opacity .18s ease;opacity:0}
+  .wlmore>div{overflow:hidden;min-height:0}
+  .wlmore.open{grid-template-rows:1fr;opacity:1;margin-top:8px}
+  .wlmore .provrow{margin-bottom:5px;background:var(--panel)}
+  .wlmore .provnote{margin:2px 0 0}
+  @media (prefers-reduced-motion:reduce){ .wlmore{transition:none} }
+  /* The browse card says it too — in words, not only in the megaphone's colour (WCAG 1.4.1). */
+  .provchip{margin-top:10px;font-size:11px;font-weight:700;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .provchip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -794,10 +817,6 @@
   </div>
 </div>
 
-<!-- PROVENANCE sheet — why this film is (or isn't) on your Found list, and the one control that changes it -->
-<div class="modal" id="prov" role="dialog" aria-modal="true" aria-label="Why Cascade found this film for you">
-  <div class="modalhead"><h3>🔔 Found for you</h3><button class="donebtn" id="provDone">Done</button></div>
-  <div id="provBody"></div>
 </div>
 
 <!-- ALERTS drawer -->
@@ -1556,26 +1575,41 @@ function trailersHTML(m){
     : `<div class="notrailer">No trailer available yet.</div>`;
   return `<div class="exhead">Trailers</div>${body}`;
 }
-// ---- the megaphone (CAS-67) ----------------------------------------------------
-// One button, used on the card and in the Found list, carrying two things at once: whether the film is on your
-// Found list, and WHO put it there. It opens the provenance sheet rather than toggling on the spot, because
-// under auto-membership the interesting question is no longer "do you want this?" (a Cascade already answered)
-// but "who chose this, and what will it tell me?" — and the answer has to be one tap from the film.
+// ---- the megaphone (CAS-67, made a one-tap toggle in CAS-72) --------------------
+// One button, on the card and on every Found row, carrying two things at once: whether the film is on your
+// Found list, and WHO put it there (purple = a Cascade found it, orange = you added it). It TOGGLES, on the
+// spot. It used to open a full-screen sheet, which was a screen takeover for a single yes/no — the "which of
+// my Cascades matched, and what will they tell me" detail now reveals inside the card instead (whyFound).
+// Because it toggles again, it wears aria-pressed and says what a tap will do — and a screen-reader user is
+// told the truth: press it and the film goes on or comes off, right there.
 function notifyBtnHTML(id, cls=""){
   const src=foundSource(id), from=cascadesFor(id);
   const names=from.map(c=>`${c.icon} ${c.name}`).join(", ");
-  // The button OPENS A SHEET; it does not toggle. So it must not wear aria-pressed (a toggle's state) or say
-  // "tap to add it" — a screen-reader user told "not pressed, tap to add" would press it and find a dialog and
-  // an unchanged list. It announces the state it's reporting, and that a dialog is what opens.
+  const on = found.has(id);
   const state = src==="auto"   ? `Cascade found this${names?` — ${names}`:""}`
               : src==="manual" ? "You added this"
               : removedByHand(id) ? (from.length ? `You took this off — ${names} would otherwise find it again`
                                                  : "You took this off your Found list")
               : "Cascade hasn't found this for you";
-  const title = `${state} — tap to see why, and to change it`;
-  const on = src==="auto" ? "on auto" : src==="manual" ? "on mine" : "";
-  return `<button class="actbtn ${cls} ${on}" onclick="openProvenance(${id})" aria-haspopup="dialog"
+  const act = on ? "Tap to take it off your Found list — it stays off"
+                 : "Tap to put it on your Found list";
+  const title = `${state}. ${act}.`;
+  const cl = src==="auto" ? "on auto" : src==="manual" ? "on mine" : "";
+  return `<button class="actbtn ${cls} ${cl}" onclick="setNotify(${id},${!on})" aria-pressed="${on}"
     title="${escA(title)}" aria-label="${escA(title)}">${ICON.alert}</button>`;
+}
+// The same answer in words, for the browse card — where there is no reason line to carry it. Colour alone is
+// not a state (WCAG 1.4.1), and "why is this purple?" should never need a tap to answer.
+function provChipHTML(id){
+  const src=foundSource(id), from=cascadesFor(id);
+  const names=from.map(c=>`${c.icon} ${esc(c.name)}`).join(", ");
+  if(src==="auto")   return `<div class="provchip"><span class="dot" style="background:var(--purple)"></span>
+    <span style="color:#d8c9ff">Cascade found this</span>${names?`<span style="color:var(--faint)">· ${names}</span>`:""}</div>`;
+  if(src==="manual") return `<div class="provchip"><span class="dot" style="background:var(--amber)"></span>
+    <span style="color:#ffd79a">You added this</span></div>`;
+  if(removedByHand(id)) return `<div class="provchip"><span class="dot" style="background:var(--grey)"></span>
+    <span>You took this off — it stays off${names?`, though ${names} still ${from.length===1?"matches":"match"} it`:""}</span></div>`;
+  return "";
 }
 // `lead` is the Found view's reason line (CAS-70) — the agent saying why this film is in front of you. The
 // browse list passes nothing and gets exactly the card it always had.
@@ -1607,7 +1641,7 @@ function cardHTML(m, lead="", markNew=false){
         ${syn}
       </div>
     </div>
-    ${lead}
+    ${lead || provChipHTML(id)}
     ${scaleBadge(m)}
     ${ratingsHTML(m)}
     ${cascadeHTML(m)}
@@ -1893,8 +1927,44 @@ function whyFound(m){
     who = `<b>Cascade found this.</b>`;
   }
   const bits=[where, kind].filter(Boolean).join(" · ");
-  return `<div class="whyline ${mine?"mine":""}">${bits}<br>${who}</div>`;
+  // ---- the inline controls (CAS-72) --------------------------------------------
+  // One tap takes the film off, right here. And the multi-Cascade detail — which of your Cascades are watching
+  // it, and what each will actually tell you about — reveals INSIDE the card, under the reason it belongs to.
+  // Nothing covers the film you are looking at.
+  const open=whyOpen.has(id);
+  const detail = from.length ? `<button class="wlbtn" type="button" onclick="toggleWhy(${id})"
+      aria-expanded="${open}" aria-controls="why-${id}">${from.length===1?"What it'll tell me":`All ${from.length} watching it`}
+      <span class="cv">▾</span></button>` : "";
+  const more = from.length ? `<div class="wlmore ${open?"open":""}" id="why-${id}"><div><div>
+      ${from.map(c=>`<div class="provrow">
+        <span class="provname">${c.icon} ${esc(c.name)}</span>
+        <span class="provalerts">${esc(alertSummary(c))}</span></div>`).join("")}
+      <div class="provnote">${overrideNote(id)}</div>
+    </div></div></div>` : "";
+  return `<div class="whyline ${mine?"mine":""}">${bits}<br>${who}
+    <div class="wlacts">
+      <button class="wlbtn off" type="button" onclick="setNotify(${id},false)">🚫 Take it off</button>
+      ${detail}
+    </div>${more}</div>`;
 }
+// What taking it off actually means — the promise the override layer keeps. Read off the same entry the
+// megaphone's colour is read from, so the words and the colour cannot disagree.
+function overrideNote(id){
+  const from=cascadesFor(id), one=from.length===1;
+  if(foundSource(id)==="manual")
+    return `You put this one here by hand, so no change to your Cascades' criteria can take it away.`
+      + (from.length ? ` It alerts at the moments above.` : "");
+  return `Take it off and it <b>stays off</b> — even though ${one?"this Cascade":"these Cascades"} will go on
+    matching it. Your answer outranks ${one?"it":"them"}, every re-run, until you change it.`;
+}
+const whyOpen = new Set();     // which reason lines are expanded (session only)
+window.toggleWhy=id=>{
+  whyOpen.has(id) ? whyOpen.delete(id) : whyOpen.add(id);
+  const el=document.getElementById("why-"+id); if(!el) return;
+  const open=whyOpen.has(id);
+  el.classList.toggle("open", open);
+  el.closest(".whyline")?.querySelector('[aria-controls="why-'+id+'"]')?.setAttribute("aria-expanded", String(open));
+};
 
 // ---- The view ------------------------------------------------------------------
 function foundFilms(){
@@ -1998,82 +2068,6 @@ function renderFound(){
   markFoundSeen();   // you are looking at it — so the next visit's "since you last looked" counts from here
 }
 
-// ---- the provenance sheet (CAS-67) ---------------------------------------------
-// Who chose this film, which Cascade is watching it, what that Cascade will actually tell you about — and the
-// one control that changes it. Every line is read from the same entry the megaphone's colour is read from.
-let provId=null;
-function renderProvenance(id){
-  const m=MOVIES.find(x=>x.tmdb_id===id); if(!m) return;
-  const src=foundSource(id), off=removedByHand(id), w=primaryStatus(m);
-  const isW=watched.has(id), isB=blocked.has(id);
-  const pinned=!!(notify[id] && notify[id].source==="manual");
-  // A film you've marked watched or waved off has no cascadeIds — the Cascades that WOULD hold it were made to
-  // let go of it. Asking cascadesFor() here would answer "nobody is watching this", flatly contradicting the
-  // Found row that opened this sheet, which says (truthfully) which radar is holding back. Ask the same
-  // question that row asked.
-  const from = (isW||isB) ? wouldWatch(m) : cascadesFor(id);
-  const poster=m.poster ? `background-image:url(https://image.tmdb.org/t/p/w185${m.poster})` : "";
-  const badge = (isW||isB) ? `<span class="provsrc off">${isW?"You've seen this":"You waved this off"}</span>`
-              : src==="auto"   ? `<span class="provsrc auto">🟣 Cascade found this</span>`
-              : src==="manual" ? `<span class="provsrc mine">🟠 You added this</span>`
-              : off            ? `<span class="provsrc off">You took this off your Found list</span>`
-                               : `<span class="provsrc off">Not on your Found list</span>`;
-  // Every Cascade watching the film, and — honestly — the moments it will and won't tell you about. This is a
-  // promise, so it has to hold: a hand-added film that one of these Cascades also watches obeys their moments,
-  // which is why catchReason() applies a Cascade's prefs to a hand-added film too, instead of waving it past.
-  const rows = from.length
-    ? from.map(c=>`<div class="provrow">
-        <span class="provname">${c.icon} ${esc(c.name)}</span>
-        <span class="provalerts">${esc(alertSummary(c))}</span></div>`).join("")
-    : `<div class="provnote">No Cascade of yours ${cascades.length ? "is watching this film" : "exists yet"}.</div>`;
-  const one = from.length===1;
-  // The tag outranks everything, so it's the whole answer — and the way back is to undo the tag, not to pin the
-  // film by hand behind the tag's back (which is what an "Add it" button here would quietly have done).
-  const note = (isW||isB)
-      ? (from.length
-          ? `${one?"It":"They"} would be watching this, but ${isW?"you've marked it watched":"you said you're not interested"}
-             — so ${one?"it lets":"they let"} it go. Undo that and it goes straight back on your Found list.`
-          : `${isW?"You've marked this watched":"You said you're not interested"}, so it's off your Found list.`)
-    : src==="auto"
-      ? `Take it off and it <b>stays off</b> — even though ${one?"this Cascade":"these Cascades"} will go on
-         matching it. Your answer outranks theirs, every re-run, until you change it.`
-    : src==="manual"
-      ? `You put this one here by hand, so no change to your Cascades' criteria can take it away.`
-         + (from.length ? ` It alerts at the moments above.`
-                        : ` Nothing else is watching it, so it tells you about <b>every</b> move it makes.`)
-    : off
-      ? (from.length
-          // Put back a film that was YOURS and it comes back yours (orange) — setNotify keeps the pin. Saying
-          // "it goes back to being theirs" would promise a purple megaphone the code deliberately won't give.
-          ? (pinned
-              ? `${one?"That Cascade":"Those Cascades"} ${one?"matches":"match"} it too, but you added this one by
-                 hand — put it back and it's yours again.`
-              : `${one?"That Cascade":"Those Cascades"} still ${one?"matches":"match"} it — it's off only because
-                 you said so. Put it back and it goes on being theirs.`)
-          : `It's off because you took it off. Put it back and it's yours by hand.`)
-      : `Nothing is watching this one. Add it and it tells you about every move it makes.`;
-  const btn = (isW||isB)
-    ? `<button class="applybtn" onclick="${isW?"toggleWatched":"toggleBlocked"}(${id});closeModal(document.getElementById('prov'))">
-         ${isW?"Unmark watched":"I'm interested after all"}</button>`
-    : (src!=="off")
-      ? `<button class="dangerbtn" onclick="setNotify(${id},false)">Take it off my Found list</button>`
-      : `<button class="applybtn" onclick="setNotify(${id},true)">${off && from.length ? "Put it back" : "Add it to my Found list"}</button>`;
-  $("provBody").innerHTML=`
-    <div class="provfilm">
-      <div class="provposter" style="${poster}"></div>
-      <div>
-        <div class="provtitle">${esc(m.title)}</div>
-        <span class="mlwin" style="background:${WIN_COLOUR[w]}22;border:1px solid ${WIN_COLOUR[w]}88;color:${WIN_COLOUR[w]}">${STATUS_LABEL[w]}</span>
-        <div>${badge}</div>
-      </div>
-    </div>
-    ${rows}
-    <div class="provnote">${note}</div>
-    <div class="provact">${btn}</div>`;
-}
-window.openProvenance=id=>{ provId=id; logEvent("provenance_opened",{key:foundSource(id)});
-  renderProvenance(id); openModal($("prov")); };
-$("provDone").onclick=()=>{ provId=null; closeModal($("prov")); };
 
 // The override layer. Your answer is the one that sticks: OFF records a removal that survives every future
 // re-run (a Cascade that still matches the film will not put it back), and ON clears that removal — restoring
@@ -2103,7 +2097,6 @@ window.setNotify=(id,on)=>{
     : (auto ? `🚫 “${m.title}” is off your Found list — it stays off, even though ${names} still ${e.cascadeIds.length===1?"matches":"match"} it`
             : `🚫 “${m.title}” is off your Found list`));
   render();
-  if($("prov").classList.contains("open") && provId===id) renderProvenance(id);   // the sheet repaints in place
 };
 
 window.toggleExpand=id=>{
@@ -2335,6 +2328,35 @@ const CASCADE_TEMPLATES = [
 ];
 CASCADE_TEMPLATES.forEach(t=>normCascade(t.crit));
 cascades.forEach(normCascade);   // saved Cascades are filled out here, not at load — ALERT_DEFAULTS lives above
+
+// ---- No duplicate Cascades (CAS-72) --------------------------------------------
+// Tapping a template twice gave you two identical Cascades, and the demo state had accumulated four identical
+// "Watch tonight"s — so every film on the Found list cited the same radar four times and the surface read as
+// broken. Two Cascades are the same one when everything that decides what they find is the same: the name, the
+// criteria, the windows, the scope and the alert moments. Nothing about a second copy can ever find a film the
+// first didn't, so keeping it is noise with no upside.
+// Only EXACT twins collapse. Two Cascades that differ anywhere — even one genre chip — are two real radars.
+const cascSigOf = c => JSON.stringify([c.name, c.status, c.genre, c.age, c.lang, c.culture, c.year,
+  c.imdb, c.rt, c.awards, c.budget, c.includeUnbudgeted, c.includeUnrated, c.tentpole,
+  c.myServices, c.alerts, c.sort||"imdb", c.excludeWatched, c.excludeBlocked]);
+function dedupeCascades(){
+  const firstBySig=new Map(); const drop=[];
+  cascades.forEach(c=>{
+    const sig=cascSigOf(c);
+    if(firstBySig.has(sig)) drop.push({c, keep:firstBySig.get(sig)});
+    else firstBySig.set(sig, c);
+  });
+  if(!drop.length) return 0;
+  drop.forEach(({c, keep})=>{
+    // The open Cascade must survive the clean-up — it just becomes the twin that was kept.
+    if(activeId===c.id) setActive(keep.id);
+    cascades.splice(cascades.indexOf(c), 1);
+  });
+  saveCascades();
+  logEvent("cascades_deduped",{dropped:drop.length});
+  return drop.length;
+}
+const dedupedN = dedupeCascades();
 // The Filters panel's budget/tentpole options come from the same constants the editor uses — one source of
 // truth for the bands and the tentpole rule. Filled here because those constants are defined just above.
 $("budgetBand").innerHTML=BUDGET_BANDS.map((b,i)=>
@@ -2906,6 +2928,16 @@ window.quickStart=key=>{
 function commitDraft(){
   const name=(draft.name||"").trim() || CASCADE_TEMPLATES.find(t=>t.key===draft.template)?.name || "My Cascade";
   const isNew=!draft.id;
+  // Saving a template you already have, unchanged, must not hand you a second identical radar (CAS-72). It
+  // would find exactly the same films and cite itself twice on every one of them. Open the one you have.
+  if(isNew){
+    const twin=cascades.find(x=>cascSigOf(x)===cascSigOf({...draft, name}));
+    if(twin){
+      saveCascades(); setActive(twin.id); applyCascade(twin);
+      logEvent("cascade_duplicate_blocked",{key:twin.template||"custom"});
+      return {c:twin, isNew:false, dup:true};
+    }
+  }
   const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
   Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
     age:draft.age, lang:draft.lang, culture:draft.culture, year:draft.year, imdb:draft.imdb, rt:draft.rt,
@@ -3307,10 +3339,11 @@ $("nlGo").onclick=()=>nlDraft();
 $("nlInput").onkeydown=e=>{ if(e.key==="Enter") nlDraft(); };
 $("builderClose").onclick=()=>closeModal($("builder"));
 $("cApply").onclick=()=>{
-  const {c, isNew}=commitDraft();
+  const {c, isNew, dup}=commitDraft();
   closeModal($("builder")); render();
   // The confirmation is the agent accepting the job — and the promise in it is the one alertPromise() can keep.
-  toast(isNew ? `✓ ${c.icon} ${c.name}'s on it — ${watchCount(c)} films found already. ${alertPromise(c)}`
+  toast(dup ? `${c.icon} You already have “${c.name}” — I've opened that one rather than making a second copy of it.`
+      : isNew ? `✓ ${c.icon} ${c.name}'s on it — ${watchCount(c)} films found already. ${alertPromise(c)}`
               : `✓ ${c.icon} “${c.name}” updated — it's watching ${watchCount(c)} films now. ${alertPromise(c)}`);
 };
 $("cDelete").onclick=()=>{
@@ -3545,9 +3578,10 @@ function renderOnboarding(){
 window.onbCreateStarter=tweak=>{
   draft=draftFromTemplate(onbIntent);
   if(tweak){ finishOnboarding(); openEditor("New Cascade"); openModal($("builder")); return; }
-  const {c}=commitDraft();
+  const {c, dup}=commitDraft();
   finishOnboarding(); render();
-  toast(`✓ ${c.icon} ${c.name}'s on it — ${watchCount(c)} films found already. ${alertPromise(c)}`);
+  toast(dup ? `${c.icon} You already have “${c.name}” — I've opened that one rather than making a second copy of it.`
+            : `✓ ${c.icon} ${c.name}'s on it — ${watchCount(c)} films found already. ${alertPromise(c)}`);
 };
 
 function render(){
@@ -3948,9 +3982,13 @@ const openedShared = openSharedFromURL();
 // ?setup replays it on demand: the flag stays set, and the rest of your state is untouched — this is a way to
 // SEE the first run again, not to fake being a new user (that's ?reset, which really does clear the slate).
 if(!openedShared && (forceSetup || !onboardingSeen())) startOnboarding();
+// One screen, one message. Priority: the reset notice, then the duplicate clean-up (it changed your Cascades,
+// so it has to be said out loud), then the agent's report on what it found while you weren't looking.
 if(didReset) toast("🧹 Local state cleared — this is a clean first run.");
+else if(dedupedN)
+  toast(`🧹 Cleaned up ${dedupedN} duplicate Cascade${dedupedN===1?"":"s"} — ${dedupedN===1?"it was an identical copy":"they were identical copies"} finding the same films twice.`);
 // The agent reports in the moment you come back — but only when it has something true to report, and only when
-// nothing else owns the screen (a shared link, first-run setup, or the reset notice).
+// nothing else owns the screen (a shared link, or first-run setup).
 else if(freshFound.length && !openedShared && !$("onb").classList.contains("open"))
   toast(`🔔 Cascade found ${freshFound.length} film${freshFound.length===1?"":"s"} for you since you last looked.`);
 </script>
