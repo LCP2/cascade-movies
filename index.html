@@ -178,7 +178,27 @@
   .tt{display:inline-block;box-sizing:border-box;min-width:46px;text-align:center;font-size:10px;font-weight:700;padding:2px 6px;border-radius:5px;margin-right:8px;vertical-align:middle}
   .tt.sub{background:rgba(72,199,142,.16);color:#a7eccb} .tt.free{background:rgba(72,199,142,.16);color:#a7eccb}
   .tt.rent{background:rgba(90,169,240,.16);color:#bcdcff} .tt.buy{background:rgba(164,134,240,.16);color:#d3c2ff}
-  .empty{color:var(--dim);text-align:center;padding:40px 20px;font-size:14px}
+  /* ---- empty states: never a dead end ---- */
+  .empty{color:var(--dim);text-align:center;padding:34px 18px 40px;font-size:14px}
+  .empty .emoji{font-size:30px;margin-bottom:10px}
+  .empty .eh{font-size:15px;font-weight:800;color:var(--ink);line-height:1.35;margin-bottom:7px}
+  .empty .ep{font-size:12.5px;color:var(--dim);line-height:1.6;max-width:330px;margin:0 auto}
+  .ebtns{display:flex;flex-direction:column;gap:7px;margin:14px auto 0;max-width:330px}
+  .ebtn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:11px;
+    padding:11px 12px;font-size:12.5px;font-weight:700;cursor:pointer;text-align:left;
+    display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .ebtn:hover{border-color:var(--accent)}
+  .ebtn b{color:#a7eccb;white-space:nowrap}
+  .ebtn.ghost{justify-content:center;color:var(--faint);border-style:dashed}
+  .cascstart{margin:2px 12px 0;background:linear-gradient(135deg,rgba(124,92,255,.12),rgba(72,199,142,.07));
+    border:1px solid #3b3560;border-radius:13px;padding:12px}
+  .csh{font-size:13.5px;font-weight:800;color:var(--ink)}
+  .csp{font-size:12px;color:var(--dim);line-height:1.55;margin:4px 0 9px}
+  .cschips{display:flex;flex-wrap:wrap;gap:6px}
+  .cschip{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:20px;
+    padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .cschip:hover{border-color:var(--accent)}
+  .cschip b{color:#a7eccb;font-weight:800}
   .overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:40;display:none}
   .overlay.open{display:block}
   .drawer{position:absolute;top:0;right:0;height:100%;width:88%;max-width:400px;background:var(--panel);
@@ -773,7 +793,10 @@ const ALL_AGES=[...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))];
 const servicesPicked = () => prefs.sub.size>0 || prefs.store.size>0;
 // An open Cascade's "my services" scope wins while it's open; closing it restores the global switch.
 const servicesScoped = () => { const c=activeCascade(); return c ? !!c.myServices : prefs.on; };
-const prefsActive = () => servicesScoped() && servicesPicked();
+// ignoreScope is flipped only by the no-results panel, to ask "how many would there be if the my-services
+// scope weren't applied?" — so it can price that way out honestly instead of guessing.
+let ignoreScope = false;
+const prefsActive = () => !ignoreScope && servicesScoped() && servicesPicked();
 function myService(o){
   if(o.type==="sub"||o.type==="free") return prefs.sub.has(o.service);
   if(o.type==="rent"||o.type==="buy") return prefs.store.has(o.service);
@@ -1168,9 +1191,22 @@ function renderMyList(){
   if(n){ b.style.display="grid"; b.textContent=n; } else b.style.display="none";
   const el=$("mylistBody"); if(!el) return;
   if(!n){
-    el.innerHTML=`<div class="mlempty">Nothing tagged yet.<br><br>
-      Tap <b>☆</b> on any film to have your Cascades watch it, <b>👁</b> once you've seen it,
-      or <b>👎</b> to stop it coming back.<br>Whatever you tag lands here.</div>`;
+    // Above-zero framing: they haven't tagged anything, but their radars are already doing work. Say what
+    // that work IS (a real count), so the empty screen still shows them something they own.
+    const watching = cascades.length ? new Set(cascades.flatMap(c=>MOVIES.filter(m=>matchesCriteria(m,c)).map(m=>m.tmdb_id))).size : 0;
+    el.innerHTML=`<div class="mlempty">
+      <div style="font-size:30px;margin-bottom:10px">📋</div>
+      <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px">Nothing tagged yet.</div>
+      ${cascades.length
+        ? `Your ${cascades.length} Cascade${cascades.length===1?"":"s"} ${cascades.length===1?"is":"are"} already
+           watching <b style="color:#a7eccb">${watching} film${watching===1?"":"s"}</b> for you.<br>
+           Tag one with <b>☆</b> and it lands here — with its window, its price, and the radar that found it.`
+        : `Tag any film with <b>☆</b> and it lands here — with its window, its price, and the radar that found it.`}
+      <div style="margin-top:12px;font-size:11.5px;color:var(--faint)">
+        <b>👁</b> marks one watched · <b>👎</b> stops it coming back. Nothing here needs an account.</div>
+      <div class="ebtns" style="margin-top:14px">
+        <button class="ebtn ghost" onclick="closeModal(document.getElementById('mylist'))">Back to the films</button>
+      </div></div>`;
     return;
   }
   el.innerHTML=TAG_GROUPS.map(g=>{
@@ -1640,12 +1676,100 @@ let deckResizeT=null;
 addEventListener("resize",()=>{ clearTimeout(deckResizeT); deckResizeT=setTimeout(()=>{ deckCentre(deckIdx,false); deckPaint(); },140); });
 deckMotion.addEventListener("change",()=>{ deckCentre(deckIdx,false); deckPaint(); });
 
+// ---- No results: name what's narrowing it, and price the way out ---------------
+// Above-zero framing, honestly: each suggestion is measured by ACTUALLY re-running the filter with that one
+// criterion dropped, so the number on the button is the number you'll get. No "try adjusting your filters".
+function filtSnapshot(){
+  const s={sets:{}};
+  ["status","year","age","culture","lang","genre"].forEach(k=>{ s.sets[k]=[...filt[k]]; });
+  ["imdb","rt","gross","awards","budget","tentpole","includeUnrated","includeUnbudgeted","trackedOnly",
+   "hideWatched","search"].forEach(k=>{ s[k]=filt[k]; });
+  return s;
+}
+function filtRestore(s){
+  Object.entries(s.sets).forEach(([k,v])=>setTo(filt[k],v));
+  Object.keys(s).forEach(k=>{ if(k!=="sets") filt[k]=s[k]; });
+}
+const RELAXERS = [
+  {key:"imdb",     label:()=>`the rating bar (IMDb ${filt.imdb.toFixed(1)}+)`, on:()=>filt.imdb>0,
+   clear:()=>{ filt.imdb=0; filt.includeUnrated=false; }},
+  {key:"status",   label:()=>`the availability window${filt.status.size>1?"s":""}`, on:()=>filt.status.size>0,
+   clear:()=>filt.status.clear()},
+  {key:"genre",    label:()=>"the genre chips",    on:()=>filt.genre.size>0,   clear:()=>filt.genre.clear()},
+  {key:"year",     label:()=>"the release years",  on:()=>filt.year.size>0,    clear:()=>filt.year.clear()},
+  {key:"lang",     label:()=>"the language",       on:()=>filt.lang.size>0,    clear:()=>filt.lang.clear()},
+  {key:"culture",  label:()=>"the origin",         on:()=>filt.culture.size>0, clear:()=>filt.culture.clear()},
+  {key:"age",      label:()=>"the age rating",     on:()=>filt.age.size>0,     clear:()=>filt.age.clear()},
+  {key:"budget",   label:()=>`the budget band (${BUDGET_BANDS[filt.budget].label})`, on:()=>filt.budget>0,
+   clear:()=>{ filt.budget=0; filt.includeUnbudgeted=false; }},
+  {key:"tentpole", label:()=>"the tentpole tag",   on:()=>filt.tentpole!=="any", clear:()=>{ filt.tentpole="any"; }},
+  {key:"awards",   label:()=>"awards-only",        on:()=>filt.awards,         clear:()=>{ filt.awards=false; }},
+  {key:"rt",       label:()=>`the critics bar (${filt.rt}%+)`, on:()=>filt.rt>0, clear:()=>{ filt.rt=0; }},
+  {key:"gross",    label:()=>"the box-office floor", on:()=>filt.gross>0,      clear:()=>{ filt.gross=0; }},
+  {key:"search",   label:()=>`the search “${filt.search}”`, on:()=>!!filt.search, clear:()=>{ filt.search=""; }},
+  {key:"trackedOnly", label:()=>"tracked-only",    on:()=>filt.trackedOnly,    clear:()=>{ filt.trackedOnly=false; }},
+];
+function countIf(fn){
+  const snap=filtSnapshot(), scope=ignoreScope;
+  fn();
+  const n=MOVIES.filter(passes).length;
+  filtRestore(snap); ignoreScope=scope;
+  return n;
+}
+const relaxOptions = () => RELAXERS.filter(r=>r.on())
+  .map(r=>({key:r.key, label:r.label(), n:countIf(r.clear)}))
+  .filter(o=>o.n>0).sort((a,b)=>b.n-a.n).slice(0,3);
+window.relaxFilter=key=>{
+  const r=RELAXERS.find(x=>x.key===key); if(!r) return;
+  r.clear();
+  if(key==="search"){ $("search").value=""; $("searchClear").classList.remove("show"); }
+  syncFilterUI(); render();
+  const n=MOVIES.filter(passes).length;
+  toast(`Loosened — ${n} film${n===1?"":"s"} now`);   // the Cascade reads as "edited": Save it or leave it
+};
+window.resetEverything=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); toast("Filters reset — showing everything"); };
+function emptyResultsHTML(){
+  const c=activeCascade();
+  const opts=relaxOptions();
+  // The my-services scope isn't a filt field — it comes from the open Cascade or the ⚙️ switch — so it
+  // gets counted separately, and pointed at the control that actually owns it.
+  const scopeHides = prefsActive() ? countIf(()=>{ ignoreScope=true; }) : 0;
+  let html=`<div class="empty">
+    <div class="emoji">🔍</div>
+    <div class="eh">${c ? `“${esc(c.name)}” came back empty today.` : "Nothing matches all of that at once."}</div>
+    <div class="ep">Not a broken screen — a real answer: no title in the catalogue clears every bar you've set.
+      Drop one and it's back.</div>`;
+  if(opts.length){
+    html+=`<div class="ebtns">`+opts.map(o=>
+      `<button class="ebtn" onclick="relaxFilter('${o.key}')"><span>Drop ${o.label}</span>
+        <b>→ ${o.n} film${o.n===1?"":"s"}</b></button>`).join("");
+    if(scopeHides>0)
+      html+=`<button class="ebtn" onclick="${c?"editCascade()":"openServices()"}"><span>Look beyond my services</span>
+        <b>→ ${scopeHides} film${scopeHides===1?"":"s"}</b></button>`;
+    html+=`<button class="ebtn ghost" onclick="resetEverything()">Reset everything</button></div>`;
+  } else {
+    html+=`<div class="ebtns"><button class="ebtn ghost" onclick="resetEverything()">Reset everything</button></div>`;
+  }
+  return html+`</div>`;
+}
+
 function renderCascadeBar(shown){
   deckSync(shown);
   const c=activeCascade();
   let html="";
+  // First run: the deck is just the "+ New" card, which asks for a decision without offering a reason.
+  // Give them three real starting points instead — each with the number of films it catches TODAY, so the
+  // payoff is visible before they commit to anything (goal-gradient, and nothing to sign up for).
   if(!cascades.length)
-    html+=`<div class="casccta">Save a search once and Cascade keeps watching it for you — like a saved property alert, for films.</div>`;
+    html+=`<div class="cascstart">
+      <div class="csh">Set your first radar</div>
+      <div class="csp">Save a search once and Cascade keeps watching it for you — like a saved property alert,
+        for films. Start from one of these (you can change every part of it):</div>
+      <div class="cschips">${QUICK_STARTS.map(t=>{
+        const n=countCriteria(t.crit);
+        return `<button class="cschip" onclick="quickStart('${t.key}')">${t.icon} ${t.name} <b>${n}</b></button>`;
+      }).join("")}</div>
+    </div>`;
   // Scoped to my services with none picked: the scope is silently inert. Say it, and give the way out.
   if(c && c.myServices && !servicesPicked())
     html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services — but you haven't picked any
@@ -1776,6 +1900,12 @@ window.newCascade=newCascade;
 const draftFromTemplate = t => ({id:null, template:t.key, icon:t.icon, name:t.name,
   ...JSON.parse(JSON.stringify(t.crit)), alerts:{...ALERT_DEFAULTS, ...(t.alerts||{})}});
 function startFromTemplate(t){ draft=draftFromTemplate(t); openEditor("New Cascade"); }
+// First-run shortcuts on the empty deck. Straight into the editor, pre-filled — never a straight-to-save.
+const QUICK_STARTS = ["watch_tonight","bargain","my_taste"].map(k=>CASCADE_TEMPLATES.find(t=>t.key===k));
+window.quickStart=key=>{
+  const t=CASCADE_TEMPLATES.find(x=>x.key===key); if(!t) return;
+  startFromTemplate(t); openModal($("builder"));
+};
 // Save the current draft as a Cascade and open it. Shared by the builder's apply and onboarding's starter.
 function commitDraft(){
   const name=(draft.name||"").trim() || CASCADE_TEMPLATES.find(t=>t.key===draft.template)?.name || "My Cascade";
@@ -2386,7 +2516,7 @@ function render(){
     : "Done";
   $("count").textContent=`${rows.length} of ${MOVIES.length} titles`+(prefsActive()?" · my services":"");
   const wrap=$("groups");
-  if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
+  if(!rows.length){ wrap.innerHTML=emptyResultsHTML(); return; }
   let html="";
   CASCADE.forEach(g=>{
     const items=rows.filter(m=>primaryStatus(m)===g).sort(sortFor(g));
