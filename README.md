@@ -62,12 +62,46 @@ The upcoming pass costs **zero Watchmode calls**: a film that hasn't opened has 
 home offers to poll, so the free-tier budget stays entirely with the released catalogue.
 Those titles carry no offers and therefore derive to the **`upcoming`** window, which is
 what fills the cinema slot of the app's cascade stepper ("Upcoming → Premium → Standard →
-Streaming") and feeds the **Blockbuster radar** Cascade. Sort by **Budget (tentpoles)** to
-put the big-budget releases first — upcoming films have no box office yet, so budget is the
-only honest proxy for scale.
+Streaming") and feeds the **Blockbuster radar** Cascade. Sort by **Most anticipated** to put
+them in order — upcoming films have no box office and usually no budget either, so TMDB
+`popularity` is the only field that's actually populated for all of them.
 
 Tune the scope with `LOOKBACK_DAYS` / `MAX_TITLES` / `UPCOMING_LOOKAHEAD_DAYS` /
 `MAX_UPCOMING` at the top of `poc_pipeline.py`.
+
+## Scale & origin fields (what the editor's Budget / Tentpole / Origin controls read)
+
+| Field in `movies.json` | Source | Notes |
+| --- | --- | --- |
+| `popularity` | TMDB `popularity` | Present for **every** title — the only scale signal that is. |
+| `budget` | TMDB `budget` | **Missing for 11 of 72** titles, and missing for most *upcoming* ones. |
+| `language` | TMDB `original_language` | ISO code (`en`, `ja`, …). |
+| `culture` | derived: `original_language` + `production_countries` | Bucket: Western / European / Japanese / Chinese / Korean / Indian / Southeast Asian / Spanish-Latin / Other. See `_culture()`. |
+
+**The tentpole rule, stated in full** (front-end, `tentpoleOf()` — and shown to the user
+inside the editor rather than hidden in here):
+
+> A title is a tentpole if its TMDB popularity is in the **top 25% of its own cohort**, *or*
+> in the **top 50%** of it *and* carries a **$120M+ budget**. The cohort is **upcoming** titles
+> (→ **Anticipated**) or **released** titles (→ **Blockbuster**).
+
+Two deliberate choices:
+
+- **Popularity leads; budget only ever *promotes*, never demotes.** Budget is the field we're
+  missing (11 of 72, and most upcoming titles). Leading with it would have blanked exactly the
+  films the tag exists to catch.
+- **Each film is ranked against its own cohort, not the whole catalogue.** A film that opened
+  two years ago has had two years to accumulate popularity; measuring an unreleased title
+  against it is a rigged race. On a whole-catalogue bar, *Spider-Man: Brand New Day* — the #2
+  most-anticipated title in the set, and one with **no budget figure at all** — did not clear
+  it. Against the upcoming cohort it does, which is the honest answer.
+
+Both thresholds are **percentiles recomputed at build** over the current catalogue, so they
+can't drift into meaning nothing.
+
+Titles with **no budget figure** behave exactly like titles with no IMDb rating: included at
+"Any", dropped as soon as a band is chosen, with a one-tap escape hatch that names how many
+are being left out. We never impute a number we don't have.
 
 ## What's real vs. simplified in this POC
 - **Real:** the data-source choices, the join keys (TMDB↔IMDb↔Watchmode), the
