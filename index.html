@@ -197,6 +197,21 @@
   .alert .d{font-size:12px;color:var(--dim);margin-top:4px}
   .alert .w{display:inline-block;margin-top:8px;font-size:11px;font-weight:700;padding:4px 9px;border-radius:7px}
   .noalert{color:var(--faint);font-size:13px;text-align:center;padding:30px 10px}
+  /* ---- per-Cascade digest ---- */
+  #digest{margin:0 16px 6px}
+  .dghead{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin:14px 0 8px}
+  .dgempty{font-size:12px;color:var(--faint);line-height:1.5;background:var(--panel2);border:1px solid var(--line);
+    border-radius:11px;padding:11px 12px;margin-top:12px}
+  .dgcard{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:10px 12px;margin-bottom:8px}
+  .dgname{font-size:13px;font-weight:800;margin-bottom:6px}
+  .dgnone{font-size:11.5px;color:var(--faint)}
+  .dgsec{font-size:10.5px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;margin:8px 0 4px}
+  .dgsec.ok{color:var(--green)} .dgsec.mute{color:var(--faint)}
+  .dgrow{font-size:12px;color:var(--ink);line-height:1.45;padding:4px 0 4px 10px;border-left:2px solid var(--green)}
+  .dgrow b{color:#a7eccb;font-weight:700}
+  .dgrow.mute{border-left-color:#3a4150;color:var(--dim)}
+  .dgrow.mute b{color:var(--dim)}
+  .dgwhy{display:block;font-size:11px;color:#ffce8f;margin-top:2px}
   .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(20px);z-index:60;
     background:#111722;border:1px solid var(--accent);color:#fff;padding:12px 16px;border-radius:12px;
     font-size:13px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;
@@ -591,6 +606,7 @@
          availability window you get an alert — exactly what the backend's diff engine does each night.</p>
       <button id="simBtn">▶ Simulate next daily poll</button>
     </div>
+    <div id="digest"></div>
     <div class="alerts" id="alertsList"></div>
   </div>
 </div>
@@ -848,7 +864,8 @@ function syncFilterUI(){
 }
 $("resetBtn").onclick=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
 
-$("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);renderAlerts();};
+$("bell").onclick=()=>{$("overlay").classList.add("open");setTimeout(()=>$("drawer").classList.add("open"),10);
+  renderAlerts(); renderDigest();};   // the digest re-reads the poll each time: Cascade prefs may have changed since
 $("closeDrawer").onclick=closeDrawer;
 $("overlay").onclick=e=>{if(e.target.id==="overlay")closeDrawer();};
 function closeDrawer(){$("drawer").classList.remove("open");setTimeout(()=>$("overlay").classList.remove("open"),200);}
@@ -2276,22 +2293,32 @@ function alertAllowed(w){
   if(!c || !c.alerts || !k || !(k in c.alerts)) return true;
   return !!c.alerts[k];
 }
+// Every transition today's poll actually produced, before ANY Cascade's prefs get a say. The per-Cascade
+// digest is computed from this — so what a Cascade "caught" and what it "muted" are two readings of one
+// real event list, never two separate inventions.
+let lastPoll = null;   // {day, events:[{id,title,window,services,price}]}
 function simulateDay(){
   dayCounter++; let fired=0, muted=0;
+  const events=[];
   MOVIES.forEach(m=>{
     if(!tracked.has(m.tmdb_id)) return;
     const before=new Set(m.status);
     if(!advanceOneWindow(m)) return;
     m.status=deriveStatus(m);
     m.status.filter(s=>!before.has(s)).forEach(w=>{
+      const offers=dedupOffers(m.offers).filter(o=>windowOf(o)===w);
+      const svc=[...new Set(offers.map(o=>o.service))];
+      const prices=offers.map(o=>o.price).filter(p=>p!=null);
+      events.push({id:m.tmdb_id, title:m.title, window:w, services:svc.slice(0,3),
+                   price: prices.length?Math.min(...prices):null});
       if(!alertAllowed(w)){ muted++; return; }
-      const svc=dedupOffers(m.offers).filter(o=>windowOf(o)===w).map(o=>o.service);
-      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:[...new Set(svc)].slice(0,3),
+      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:svc.slice(0,3),
                       day:dayCounter, frame:lossFrame(m,w,before)});
       fired++;
     });
   });
-  render(); renderAlerts(); updateBadge();
+  lastPoll={day:dayCounter, events};
+  render(); renderAlerts(); renderDigest(); updateBadge();
   const c=activeCascade();
   const mutedNote = muted ? ` · ${muted} muted by “${c.name}” prefs` : "";
   toast(fired ? `🔔 ${fired} alert${fired>1?'s':''} from today's poll${mutedNote}`
@@ -2303,6 +2330,73 @@ function windowOf(o){
   if(o.type==="buy") return "pvod";
   if(o.type==="rent") return (o.price!=null&&o.price<=RENTAL_MAX)?"rental":"pvod";
   return "";
+}
+// ---- Per-Cascade digest: what each radar caught, and what it muted -------------
+// Every line here is a reading of a transition that REALLY happened in the poll above. A Cascade can drop a
+// transition for four different reasons, and they are not the same thing — so the digest says which:
+//   · the film isn't what this Cascade is looking for at all  → out of scope, not reported (it's not news)
+//   · the new window isn't one this Cascade watches           → muted, and it says so
+//   · the film landed somewhere outside "my services"         → muted, and it names the service
+//   · the window's 🔔 is off for this Cascade                 → muted, and it says which toggle did it
+// Taste (genre/rating/age/…) is checked with the SAME matcher the rest of the app uses, minus the two
+// dimensions we want to report on separately. One source of truth for "does this Cascade want this film".
+const matchesTaste = (m,c) => matchesCriteria(m, {...c, status:[], myServices:false});
+function cascadeDigest(c){
+  const caught=[], muted=[];
+  (lastPoll?.events||[]).forEach(e=>{
+    const m=MOVIES.find(x=>x.tmdb_id===e.id);
+    if(!m || !matchesTaste(m,c)) return;                       // not this radar's kind of film — silence is correct
+    const where = e.services.length ? e.services.join(", ") : null;
+    if(c.status.length && !c.status.includes(e.window))
+      return muted.push({e, why:`“${STATUS_LABEL[e.window]}” isn't a window this Cascade watches`});
+    if(c.myServices && servicesPicked() && !matchesServices(m))
+      return muted.push({e, why: where ? `it landed on ${where} — not one of your services`
+                                       : `it isn't on any of your services`});
+    if(!c.alerts[WINDOW_ROW[e.window]])
+      return muted.push({e, why:`your ${ALERT_SHORT[WINDOW_ROW[e.window]]} alerts are off for this Cascade`});
+    caught.push(e);
+  });
+  return {caught, muted};
+}
+const evLine = e => `${esc(e.title)} → <b>${STATUS_LABEL[e.window]}</b>`
+  + (e.services.length ? ` on ${esc(e.services.join(", "))}` : "")
+  + (e.price!=null ? ` · $${e.price.toFixed(2)}` : "");
+function renderDigest(){
+  const el=$("digest"); if(!el) return;
+  if(!cascades.length){
+    el.innerHTML=`<div class="dgempty">No Cascades yet. Create one and this is where it reports what it
+      caught — and what it deliberately didn't.</div>`;
+    return;
+  }
+  if(!lastPoll){
+    el.innerHTML=`<div class="dgempty">Run a poll above and each of your ${cascades.length} Cascade${cascades.length===1?"":"s"}
+      will report here: what it caught, and what it muted for you.</div>`;
+    return;
+  }
+  let html=`<div class="dghead">🔔 What your Cascades caught — day ${lastPoll.day}</div>`;
+  if(!lastPoll.events.length){
+    html+=`<div class="dgempty">Nothing moved today. ${tracked.size ? "Your tagged films all stayed put — that's a quiet day, not a bug."
+      : "Tag a film with ☆ first, then run a poll."}</div>`;
+    return void (el.innerHTML=html);
+  }
+  cascades.forEach(c=>{
+    const {caught, muted}=cascadeDigest(c);
+    html+=`<div class="dgcard">
+      <div class="dgname">${c.icon} ${esc(c.name)}</div>`;
+    if(!caught.length && !muted.length){
+      html+=`<div class="dgnone">Nothing for this one today.</div></div>`;
+      return;
+    }
+    if(caught.length)
+      html+=`<div class="dgsec ok">✓ ${caught.length} to tell you about</div>`
+          + caught.map(e=>`<div class="dgrow">${evLine(e)}</div>`).join("");
+    if(muted.length)
+      html+=`<div class="dgsec mute">🔇 ${muted.length} kept quiet</div>`
+          + muted.map(({e,why})=>`<div class="dgrow mute">${evLine(e)}
+              <span class="dgwhy">${esc(why)}</span></div>`).join("");
+    html+=`</div>`;
+  });
+  el.innerHTML=html;
 }
 function updateBadge(){ const b=$("badge"); if(alerts.length){b.style.display="grid";b.textContent=alerts.length;}else b.style.display="none"; }
 function renderAlerts(){
