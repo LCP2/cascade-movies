@@ -134,20 +134,31 @@
   .trailer .play{width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;display:grid;place-items:center;font-size:12px;border:1px solid rgba(255,255,255,.45)}
   .notrailer{font-size:12px;color:var(--faint)}
   .actions{display:flex;gap:8px;margin-top:12px;justify-content:flex-end}
+  /* ONE icon set for the card's actions (CAS-64). Every action icon is a stroked outline drawn from the same
+     24px grid at the same 1.8 stroke weight, in the same grey — and every ON state is the same purple
+     treatment. Emoji glyphs are out: they carry their own weights, fills and platform styling, which is
+     exactly the mixed line/shading look this replaces. */
   .actbtn{width:38px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--panel2);
-    cursor:pointer;font-size:16px;display:grid;place-items:center;line-height:1;color:#8b93a1;filter:grayscale(1);opacity:.75;transition:.15s}
-  .actbtn.on{filter:none;opacity:1;background:rgba(124,92,255,.2);border-color:var(--accent)}
-  /* Watched: a plain tick that's grey until it isn't. */
-  .actbtn.tick{filter:none;opacity:1;font-size:17px;font-weight:800;color:#6f7889}
-  .actbtn.tick.onw{background:rgba(72,199,142,.2);border-color:var(--green);color:var(--green)}
-  /* Not interested is the quietest thing on the card: no fill, no colour, and it stays that way when set.
-     It's a dismissal — it should never compete with the two actions that mean you WANT something. */
-  .actbtn.quiet{filter:none;opacity:.5;font-size:15px;color:#6f7889;border-color:transparent;background:none}
-  .actbtn.quiet:hover{opacity:.8}
-  .actbtn.quiet.onb{opacity:.9;background:var(--panel2);border-color:var(--line);color:var(--dim)}
-  .actbtn.wtwbtn{font-size:22px;font-weight:700}
-  .actbtn.wtwbtn.open{filter:none;opacity:1;background:rgba(124,92,255,.2);border-color:var(--accent);color:#fff}
-  .actbtn.wtwbtn.off{opacity:.3}
+    cursor:pointer;display:grid;place-items:center;line-height:0;color:#8b93a1;transition:.15s;padding:0}
+  .actbtn svg{width:18px;height:18px;display:block}
+  .actbtn:hover{color:var(--ink);border-color:#3a4150}
+  .actbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  .actbtn.wtwbtn .chev{transition:transform .18s}
+  .actbtn.wtwbtn.open{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  .actbtn.wtwbtn.open .chev{transform:rotate(180deg)}
+  .actbtn.wtwbtn.off{opacity:.35;cursor:not-allowed}
+  /* ---- undo-collapse: a tagged film shrinks to one line, it never vanishes (CAS-64) ---- */
+  /* Tagging something Watched / Not-interested used to delete it from the screen with no way back except a
+     filter you'd have to go and find. Now the row stays, greyed, carrying the very icon that removed it —
+     press it again and the full card comes back. Nothing silently disappears. */
+  .stub{display:flex;align-items:center;gap:9px;background:var(--panel);border:1px dashed var(--line);
+    border-radius:12px;padding:6px 7px 6px 12px;margin-bottom:8px;opacity:.6;transition:opacity .15s}
+  .stub:hover,.stub:focus-within{opacity:.95}
+  .stubname{flex:1;min-width:0;font-size:13px;font-weight:700;color:var(--dim);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stubwhy{font-size:10.5px;font-weight:700;color:var(--faint);white-space:nowrap;flex-shrink:0}
+  .actbtn.stubbtn{width:32px;height:28px;border-radius:9px;flex-shrink:0}
+  .actbtn.stubbtn svg{width:16px;height:16px}
   .ratings{margin-top:12px}
   .rrow{display:flex;gap:3px;align-items:center;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none}
   .rrow::-webkit-scrollbar{display:none}
@@ -159,17 +170,28 @@
   .rb.muted b{color:var(--faint)}
   .rb b{font-size:11px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.mc b{color:var(--meta)} .rb.budget b{color:#c9a2ff} .rb.gross b{color:#9fe6c4}
-  /* the one place a film's scale is claimed — gold, and it names the tier the Cascade filter uses */
-  .rb.tent{border-color:rgba(245,197,24,.5);background:rgba(245,197,24,.12);color:#f5d675}
-  .rb.tent b{color:#f5d675;font-weight:800}
+  /* Scale badge — its own row, directly under the description and above the ratings (CAS-64). It's a claim
+     ABOUT the film, not another metric alongside IMDb/RT, so it gets its own line. Gold, and it names the
+     exact tier the Cascade's Tentpole filter uses. Press it (or hover) for the signals behind it. */
+  .scalerow{display:flex;margin-top:10px}
+  .tentbadge{height:22px;font:inherit;font-size:10px;font-weight:700;padding:0 9px;border-radius:7px;
+    display:inline-flex;gap:4px;align-items:center;white-space:nowrap;cursor:pointer;
+    border:1px solid rgba(245,197,24,.5);background:rgba(245,197,24,.12);color:#f5d675}
+  .tentbadge b{font-size:11px;font-weight:800;color:#f5d675}
+  .tentbadge:hover{border-color:rgba(245,197,24,.85)}
+  .tentbadge:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .award-slot{display:flex;align-items:center;height:22px}
   .award{font-size:15px;line-height:1;cursor:pointer;padding-left:1px}
   /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Rent · Stream */
   .cascade{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:13px}
-  .cascade::before{content:"";position:absolute;top:11px;left:12.5%;right:calc(100% - var(--cx, 87.5%));height:2px;background:var(--dim);z-index:0}
+  /* 13px = the centre of a 22px node that starts 2px down (.cstage padding-top) — the connector has to move
+     with the node height or it draws through the lozenges instead of behind them. */
+  .cascade::before{content:"";position:absolute;top:13px;left:12.5%;right:calc(100% - var(--cx, 87.5%));height:2px;background:var(--dim);z-index:0}
   .cstage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:2px}
-  .cnode{width:calc(100% - 8px);font-size:9px;font-weight:800;letter-spacing:.2px;padding:4px 1px;border-radius:6px;
-    border:1px solid var(--line);background:var(--panel2);color:var(--faint);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  /* 22px tall + 7px radius: the same box as the ratings lozenges (.rb) — the stepper was 19px and read as a
+     different family of control. line-height (not flex) keeps the ellipsis working on a long label. */
+  .cnode{width:calc(100% - 8px);height:22px;font-size:9px;font-weight:800;letter-spacing:.2px;padding:0 4px;border-radius:7px;
+    border:1px solid var(--line);background:var(--panel2);color:var(--faint);line-height:20px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .cstage.past .cnode{color:var(--dim)}
   .cstage.future .cnode{opacity:.4}
   .cstage.current.st-cin-upcoming .cnode{background:linear-gradient(0deg,rgba(107,114,128,.25),rgba(107,114,128,.25)),var(--panel2);border-color:var(--grey);color:#c8cfd9}
@@ -275,9 +297,11 @@
   .mlchip{display:inline-block;background:rgba(124,92,255,.16);border:1px solid #4c4270;color:#cfc2ff;
     border-radius:20px;padding:1px 7px;font-size:10px;font-weight:700;margin-right:4px}
   .mlacts{display:flex;flex-direction:column;gap:5px;flex-shrink:0}
-  .mlbtn{background:var(--panel);border:1px solid var(--line);color:var(--dim);border-radius:8px;
-    width:34px;height:30px;font-size:13px;cursor:pointer;display:grid;place-items:center}
-  .mlbtn.on{border-color:var(--green);color:#a7eccb;background:rgba(72,199,142,.14)}
+  /* My List reuses the card's .actbtn — same three icons, same grey default, same purple ON state — and
+     only overrides the box. One action wearing two different active colours in two places was exactly the
+     inconsistency CAS-64 is here to kill. */
+  .mlbtn{width:34px;height:30px;border-radius:9px;background:var(--panel)}
+  .mlbtn svg{width:16px;height:16px}
   .mlempty{color:var(--faint);font-size:12.5px;line-height:1.6;text-align:center;padding:34px 12px}
   /* ---- per-Cascade digest ---- */
   #digest{margin:0 16px 6px}
@@ -740,6 +764,22 @@ const TODAY  = "2026-07-14";
 const PVOD_MIN = 19.99, RENTAL_MAX = 9.99, OPENING_WEEK_DAYS = 7;
 // (TENTPOLE_MIN is gone: a film's scale is claimed in exactly one place now — the tentpole badge — and it
 //  reads that from the same rule the Cascade filter uses, so the badge and the filter can't disagree.)
+
+// ---- One icon set (CAS-64) -----------------------------------------------------
+// Every action a film can be tagged with — alert / watched / not-interested — is drawn from the same 24px
+// grid, at the same stroke weight, with no fills. They inherit `currentColor`, so ONE rule in .actbtn owns
+// the grey default and ONE rule owns the active purple. The three icons are used on the card, in My List
+// and on the collapsed stub, so the same mark always means the same thing wherever you meet it.
+const svgIcon = (paths, cls="") => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+  stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${paths}</svg>`;
+const ICON = {
+  alert:   svgIcon(`<path d="M3.5 10.8 20.5 5.5v13L3.5 13.2z"/><path d="M11.4 16.4a2.9 2.9 0 1 1-5.6-1.5"/>`),
+  watched: svgIcon(`<circle cx="12" cy="12" r="8.6"/><path d="m8.4 12.2 2.4 2.4 4.8-5.2"/>`),
+  block:   svgIcon(`<circle cx="12" cy="12" r="8.6"/><path d="M5.9 18.1 18.1 5.9"/>`),
+  // the chevron rotates as a whole (the class is on the <svg>, not a path — rotating a path would spin it
+  // about the SVG origin, not its own centre)
+  chev:    svgIcon(`<path d="m6.5 9.5 5.5 5.5 5.5-5.5"/>`, "chev"),
+};
 // Journey order — Upcoming leads (a film reaches cinemas before any home window).
 // primaryStatus() takes the LAST window a film holds, so "upcoming" sitting first is safe:
 // an upcoming film holds only that one, and a released film never holds it.
@@ -974,7 +1014,9 @@ addChips("cultureChips", [...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].
 addChips("langChips", [...new Set(MOVIES.map(m=>m.language).filter(Boolean))].sort((a,b)=>langName(a).localeCompare(langName(b))),
   filt.lang, "yr", langName);
 addChips("genreChips", ALL_GENRES, filt.genre, "gen");
-[["Hide watched","hideWatched"],["Show hidden","showHidden"],["🏆 Award winners & nominees","awards"]].forEach(([lbl,key])=>{
+// "Hide"/"Show" is no longer what these do: a tagged-out film collapses to an undoable one-line stub rather
+// than vanishing, so the chips say collapse/expand — which is what you'll actually see happen.
+[["Collapse watched","hideWatched"],["Expand not-interested","showHidden"],["🏆 Award winners & nominees","awards"]].forEach(([lbl,key])=>{
   const c=document.createElement("div"); c.className="chip"; c.textContent=lbl; c.dataset.val=key;
   c.onclick=()=>{c.classList.toggle("on"); filt[key]=!filt[key]; render();};
   $("viewChips").appendChild(c);
@@ -1088,13 +1130,20 @@ function awardIcon(m){
 window.showAward=id=>{ const m=MOVIES.find(x=>x.tmdb_id===id);
   toast(m && m.award_text ? m.award_text : (m&&m.award==="won"?"Academy Award winner":"Oscar-nominated")); };
 
+// A film is "tagged out" when the Exclude rules (the View chips, or the open Cascade's Exclude toggles)
+// would drop it for something YOU said about it — watched, or not interested. It is the only exclusion the
+// list doesn't act on silently: instead of vanishing, the film collapses to a stub you can undo. Every
+// other filter still removes it outright — a horror film in a comedy radar was never yours to undo.
+const taggedOut = m => (filt.hideWatched && watched.has(m.tmdb_id))
+                    || (!filt.showHidden && blocked.has(m.tmdb_id));
+let ignoreTagged=false;   // set only by passesOrStub(), so the counters that call passes() are unaffected
+const passesOrStub = m => { ignoreTagged=true; const ok=passes(m); ignoreTagged=false; return ok; };
 function passes(m){
   const id=m.tmdb_id;
-  if(blocked.has(id) && !filt.showHidden) return false;
+  if(!ignoreTagged && taggedOut(m)) return false;
   // Scoped per window: a Rent-scoped Cascade filters rental films by your stores, and leaves cinema alone.
   if(!ignoreScope && servicesPicked() && scopedFor(primaryStatus(m)) && !matchesServices(m)) return false;
   if(filt.trackedOnly && !tracked.has(id)) return false;
-  if(filt.hideWatched && watched.has(id)) return false;
   if(filt.search && !m.title.toLowerCase().includes(filt.search)) return false;
   if(filt.status.size && !filt.status.has(primaryStatus(m))) return false;
   if(filt.year.size && !filt.year.has(yearOf(m))) return false;
@@ -1154,28 +1203,47 @@ function ratingsHTML(m){
   // .mc, not .meta: the card's date/genre line is ALSO .meta and carries a 5px top margin, which was
   // silently pushing this one lozenge 2.5px below the rest of the row. Same collision as .pill was.
   const meta  =cell("mc","Meta",    m.metacritic!=null?m.metacritic:"",             m.metacritic!=null);
-  // Budget is just a figure now — one style, always. Scale is said ONCE, by the tentpole badge, using the
-  // same taxonomy the Cascade filter uses; recolouring the budget was a second, competing way to say it.
+  // Budget is just a figure now — one style, always. Scale is said ONCE, by the scale badge on its own row
+  // above, using the same taxonomy the Cascade filter uses; recolouring the budget was a second, competing
+  // way to say it.
   const budget=cell("budget","Budget", m.budget>0?money(m.budget):"", m.budget>0);
   const gross =cell("gross","Gross",   m.worldwide_gross>0?money(m.worldwide_gross):"", m.worldwide_gross>0);
-  // The badge leads the row. It's the headline claim about the film's scale, and the row scrolls
-  // horizontally when it's crowded — trailing it meant a gold badge that was half off the card.
   return `<div class="ratings">
-    <div class="rrow">${tentBadge(m)}${imdb}${rt}${meta}${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
+    <div class="rrow">${imdb}${rt}${meta}${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
   </div>`;
 }
-// The badge and the Cascade's Tentpole filter are the same taxonomy read by the same functions, so a film
-// badged "Blockbuster" is exactly a film the Blockbuster filter returns. "Big budget" is only said when the
-// budget really is the thing promoting it — otherwise the badge would be claiming a number we don't have.
-const TENT_BADGE = {anticipated:{ico:"🚀", label:"Anticipated"}, blockbuster:{ico:"💥", label:"Blockbuster"},
-                    landmark:{ico:"🏛️", label:"Landmark"}};
-function tentBadge(m){
-  const kind = isLandmark(m) ? "landmark" : tentpoleOf(m);
+// ---- The scale badge -----------------------------------------------------------
+// One badge, on its own row under the description. The tooltip (hover) and the toast (tap — a title= on a
+// phone is a tooltip nobody can reach) both say WHY, and the why is only ever the film's own figures:
+// its budget, its critics score, its award, its rank in the catalogue. Honesty guardrail: no signal we
+// don't hold gets named, and no number is invented to fill a gap.
+const TENT_BADGE = {
+  anticipated:{ico:"🚀", label:"Anticipated", why:()=>`in the top ${ANTICIPATED_TOP}% of upcoming titles for anticipation`},
+  blockbuster:{ico:"💥", label:"Blockbuster", why:()=>`in the top ${BLOCKBUSTER_TOP}% of the catalogue for popularity right now`},
+  bigbudget:  {ico:"💰", label:"Big budget",  why:()=>`made for $${BIG_BUDGET/1e6}M or more`},
+  landmark:   {ico:"🏛️", label:"Landmark",    why:()=>`award-winning, acclaimed by the critics, and made at scale`},
+};
+function scaleSignals(m){
+  const s=[];
+  if(m.budget>0)          s.push(money(m.budget)+" budget");
+  if(m.rt_critic!=null)   s.push(m.rt_critic+"% critics");
+  if(m.metacritic!=null)  s.push("Metacritic "+m.metacritic);
+  if(m.award)             s.push(m.award==="won" ? "award winner" : "award-nominated");
+  return s;
+}
+function scaleWhy(m){
+  const b=TENT_BADGE[scaleTier(m)];
+  const sig=scaleSignals(m);
+  return `${b.ico} ${b.label} — ${b.why()}.` + (sig.length ? ` ${sig.join(" · ")}.` : "");
+}
+function scaleBadge(m){
+  const kind=scaleTier(m);
   if(!kind) return "";
   const b=TENT_BADGE[kind];
-  const big = (m.budget||0)>=BUDGET_BOOST ? ` · big budget` : "";
-  return `<div class="rb tent" title="Matches the ${b.label} tentpole filter">${b.ico} <b>${b.label}${big}</b></div>`;
+  return `<div class="scalerow"><button class="tentbadge" type="button" onclick="showScale(${m.tmdb_id})"
+    title="${esc(scaleWhy(m))}">${b.ico} <b>${b.label}</b></button></div>`;
 }
+window.showScale=id=>{ const m=MOVIES.find(x=>x.tmdb_id===id); if(m) toast(scaleWhy(m)); };
 function cascadeHTML(m){
   const slots=["cinema","pvod","rental","included_streaming"];
   const cur=curSlot(m);
@@ -1284,8 +1352,8 @@ function cardHTML(m){
   const isW=watched.has(id), isB=blocked.has(id);
   const poster = m.poster ? `background-image:url(https://image.tmdb.org/t/p/w185${m.poster})` : "";
   const wtwBtn = offers.length
-    ? `<button class="actbtn wtwbtn" onclick="this.closest('.card').querySelector('.wtw').classList.toggle('open');this.classList.toggle('open')" title="Where to watch (${offers.length})">▾</button>`
-    : `<button class="actbtn wtwbtn off" disabled title="No home offers yet">▾</button>`;
+    ? `<button class="actbtn wtwbtn" onclick="this.closest('.card').querySelector('.wtw').classList.toggle('open');this.classList.toggle('open')" title="Where to watch (${offers.length})">${ICON.chev}</button>`
+    : `<button class="actbtn wtwbtn off" disabled title="No home offers yet">${ICON.chev}</button>`;
   return `<div class="card ${isW?'watched':''} ${expandedSet.has(id)?'expanded':''}" id="card-${id}">
     <div class="ctop">
       <div class="poster" style="${poster}" onclick="toggleExpand(${id})"></div>
@@ -1295,6 +1363,7 @@ function cardHTML(m){
         ${syn}
       </div>
     </div>
+    ${scaleBadge(m)}
     ${ratingsHTML(m)}
     ${cascadeHTML(m)}
     <div class="expand">${creditsHTML(m)}${trailersHTML(m)}</div>
@@ -1302,13 +1371,29 @@ function cardHTML(m){
     ${wtw}
     <div class="actions">
       <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})"
-        aria-pressed="${tracked.has(id)}" title="${tracked.has(id)?'Alerting you when this moves':'Alert me when this moves'}">📣</button>
-      <button class="actbtn tick ${isW?'onw':''}" onclick="toggleWatched(${id})"
-        aria-pressed="${isW}" title="${isW?'Marked watched':'Mark as watched'}">✓</button>
-      <button class="actbtn quiet ${isB?'onb':''}" onclick="toggleBlocked(${id})"
-        aria-pressed="${isB}" title="${isB?'Hidden — not interested':'Not interested'}">⊘</button>
+        aria-pressed="${tracked.has(id)}" title="${tracked.has(id)?'Alerting you when this moves':'Alert me when this moves'}">${ICON.alert}</button>
+      <button class="actbtn ${isW?'on':''}" onclick="toggleWatched(${id})"
+        aria-pressed="${isW}" title="${isW?'Marked watched — tap to undo':'Mark as watched'}">${ICON.watched}</button>
+      <button class="actbtn ${isB?'on':''}" onclick="toggleBlocked(${id})"
+        aria-pressed="${isB}" title="${isB?'Not interested — tap to undo':'Not interested'}">${ICON.block}</button>
       ${wtwBtn}
     </div>
+  </div>`;
+}
+// ---- The collapsed stub (CAS-64) -----------------------------------------------
+// What a film becomes when you tag it Watched or Not-interested and the Exclude rules would otherwise drop
+// it off the screen: one greyed line, its title, and the icon that removed it. Press that icon and the full
+// card is back where it was. A film NEVER disappears out from under the tap that tagged it.
+function stubHTML(m){
+  const id=m.tmdb_id;
+  const tags=[];
+  if(filt.hideWatched && watched.has(id))  tags.push({fn:"toggleWatched", ico:ICON.watched, lbl:"Watched"});
+  if(!filt.showHidden && blocked.has(id))  tags.push({fn:"toggleBlocked", ico:ICON.block,   lbl:"Not interested"});
+  return `<div class="stub" id="card-${id}">
+    <span class="stubname">${esc(m.title)}</span>
+    <span class="stubwhy">${tags.map(t=>t.lbl).join(" · ")}</span>
+    ${tags.map(t=>`<button class="actbtn on stubbtn" onclick="${t.fn}(${id})" aria-pressed="true"
+      title="${t.lbl} — tap to undo and bring the card back">${t.ico}</button>`).join("")}
   </div>`;
 }
 // ================= My List =================
@@ -1320,7 +1405,7 @@ const TAG_GROUPS = [
   {key:"watched", icon:"✅", title:"Watched",        colour:"var(--blue)",  set:()=>watched,
    blurb:"Seen them — kept here so you don't re-tag them"},
   {key:"blocked", icon:"🙈", title:"Not interested",  colour:"var(--grey)",  set:()=>blocked,
-   blurb:"Hidden from the list. Unblock any time"},
+   blurb:"Collapsed to one line on the main list. Undo any time — here or there"},
 ];
 const surfacedBy = m => cascades.filter(c=>matchesCriteria(m,c,true));   // true: a blocked film still answers honestly
 const WIN_COLOUR = {opening_week:"var(--open)", in_cinema:"var(--amber)", pvod:"var(--purple)",
@@ -1354,9 +1439,12 @@ function mlRowHTML(m, groupKey){
                            : "You have no Cascades yet — this one is here because you tagged it.") }</div>
     </div>
     <div class="mlacts">
-      <button class="mlbtn ${tracked.has(id)?"on":""}" onclick="toggleTag(${id})" title="Track / untrack">${tracked.has(id)?"🔔":"☆"}</button>
-      <button class="mlbtn ${watched.has(id)?"on":""}" onclick="toggleWatched(${id})" title="Watched">${watched.has(id)?"✅":"👁"}</button>
-      <button class="mlbtn ${blocked.has(id)?"on":""}" onclick="toggleBlocked(${id})" title="Not interested">${blocked.has(id)?"🙈":"👎"}</button>
+      <button class="actbtn mlbtn ${tracked.has(id)?"on":""}" onclick="toggleTag(${id})"
+        aria-pressed="${tracked.has(id)}" title="Alert me when this moves">${ICON.alert}</button>
+      <button class="actbtn mlbtn ${watched.has(id)?"on":""}" onclick="toggleWatched(${id})"
+        aria-pressed="${watched.has(id)}" title="Watched">${ICON.watched}</button>
+      <button class="actbtn mlbtn ${blocked.has(id)?"on":""}" onclick="toggleBlocked(${id})"
+        aria-pressed="${blocked.has(id)}" title="Not interested">${ICON.block}</button>
     </div>
   </div>`;
 }
@@ -1378,7 +1466,8 @@ function renderMyList(){
            Tag one with <b>☆</b> and it lands here — with its window, its price, and the radar that found it.`
         : `Tag any film with <b>☆</b> and it lands here — with its window, its price, and the radar that found it.`}
       <div style="margin-top:12px;font-size:11.5px;color:var(--faint)">
-        <b>👁</b> marks one watched · <b>👎</b> stops it coming back. Nothing here needs an account.</div>
+        The <b>tick</b> marks one watched · the <b>⊘</b> waves it off. Neither one deletes it — a tagged film
+        just collapses to a line you can undo. Nothing here needs an account.</div>
       <div class="ebtns" style="margin-top:14px">
         <button class="ebtn ghost" onclick="closeModal(document.getElementById('mylist'))">Back to the films</button>
       </div></div>`;
@@ -1481,56 +1570,56 @@ function budgetOK(m, band, includeUnbudgeted){
 }
 const budgetBandCount = i => MOVIES.filter(m=>budgetOK(m,i,false)).length;
 
-// Tentpole — popularity-led, budget as a booster only.
-// TMDB's popularity is present for all 72 titles; budget is missing for 11 — and missing for exactly the
-// upcoming ones that matter most (Spider-Man has none). So popularity leads, and a big budget can only
-// ever PROMOTE a title, never demote one. That's the rule the data we actually have can support.
-//
-// Each film is ranked against its OWN cohort, not the whole catalogue: a film that opened two years ago has
-// had two years to accumulate popularity, so measuring an unreleased title against it is a rigged race —
-// on a whole-catalogue bar, Spider-Man (the #2 most-anticipated film here) wouldn't even register.
+// ---- Scale tiers: ONE badge per film, and the same rule the Tentpole filter runs (CAS-64) -------------
+// Four tiers, defined once. The card's badge and the Cascade's Tentpole filter both call scaleTier(), so a
+// film badged "Blockbuster" is exactly a film the Blockbuster filter returns — they cannot drift apart.
+// Every threshold below is a dial, not a law; they're named constants for that reason.
+const ANTICIPATED_TOP = 20;    // top N% of UPCOMING titles by popularity
+const BLOCKBUSTER_TOP = 15;    // top N% of the whole catalogue by popularity
+const BIG_BUDGET      = 120e6; // the "Huge" band — the same $120M line the budget slider draws
+const LANDMARK_RT = 85, LANDMARK_META = 75;   // "high critics" = either one clears its bar
+
 const isUpcoming = m => m.status.includes("upcoming");
-const POP_UPCOMING = MOVIES.filter(isUpcoming).map(m=>m.popularity||0).sort((a,b)=>a-b);
-const POP_RELEASED = MOVIES.filter(m=>!isUpcoming(m)).map(m=>m.popularity||0).sort((a,b)=>a-b);
-const popPctile = (arr,p) => arr.length ? arr[Math.min(arr.length-1, Math.round(p/100*(arr.length-1)))] : Infinity;
-const POP_BARS = {
-  anticipated: {high:popPctile(POP_UPCOMING,75), mid:popPctile(POP_UPCOMING,50), n:POP_UPCOMING.length, of:"upcoming"},
-  blockbuster: {high:popPctile(POP_RELEASED,75), mid:popPctile(POP_RELEASED,50), n:POP_RELEASED.length, of:"released"},
-};
-const BUDGET_BOOST = 120e6;
-function tentpoleOf(m){
-  const kind = isUpcoming(m) ? "anticipated" : "blockbuster";
-  const bar = POP_BARS[kind];
-  const pop = m.popularity||0;
-  const tent = pop>=bar.high || (pop>=bar.mid && (m.budget||0)>=BUDGET_BOOST);
-  return tent ? kind : null;
+const popOf = m => m.popularity||0;
+const POP_UPCOMING = MOVIES.filter(isUpcoming).map(popOf).sort((a,b)=>a-b);
+const POP_ALL      = MOVIES.map(popOf).sort((a,b)=>a-b);
+// A "top N%" bar, read off the real distribution — so the label on the tin is the label in the data.
+const popBar = (arr,topPct) => arr.length
+  ? arr[Math.min(arr.length-1, Math.round((100-topPct)/100*(arr.length-1)))] : Infinity;
+const ANTICIPATED_BAR = popBar(POP_UPCOMING, ANTICIPATED_TOP);
+const BLOCKBUSTER_BAR = popBar(POP_ALL,      BLOCKBUSTER_TOP);
+
+// Anticipated is measured against the UPCOMING cohort, not the catalogue: a film that opened two years ago
+// has had two years to accumulate popularity, so racing an unreleased title against it is rigged — on a
+// whole-catalogue bar, Spider-Man (the #2 most-anticipated film here) wouldn't register at all.
+const bigBudget    = m => (m.budget||0) >= BIG_BUDGET;
+const hiCritics    = m => (m.rt_critic||0) >= LANDMARK_RT || (m.metacritic||0) >= LANDMARK_META;
+const hiPop        = m => popOf(m) >= BLOCKBUSTER_BAR;
+const isAnticipated= m => isUpcoming(m) && popOf(m) >= ANTICIPATED_BAR;
+const isBlockbuster= m => !isUpcoming(m) && hiPop(m);
+// Landmark = acclaim AND an award AND scale. Not "a Blockbuster that's also good": TMDB popularity is this
+// week's buzz and it decays, so Oppenheimer and Dune: Part Two sit nowhere near the blockbuster bar despite
+// being exactly what this tier is for. Budget-or-popularity is the scale test, and either one satisfies it.
+const isLandmark   = m => !!m.award && hiCritics(m) && (bigBudget(m) || hiPop(m));
+
+// One badge per film, in priority order: Landmark > Blockbuster / Anticipated > Big budget. Big budget is
+// the RESIDUAL tier — a film already called Blockbuster or Landmark doesn't need its budget to say it's big
+// — which is what lets the filter share this function: the tier a film is badged is the tier it filters to.
+function scaleTier(m){
+  if(isLandmark(m))     return "landmark";
+  if(isBlockbuster(m))  return "blockbuster";
+  if(isAnticipated(m))  return "anticipated";
+  if(bigBudget(m))      return "bigbudget";
+  return null;
 }
-
-// ---- Landmark: acclaim + award + longevity ------------------------------------
-// The obvious build — "a Blockbuster that's also acclaimed" — returns ZERO films, and the reason is worth
-// keeping: TMDB popularity is CURRENT BUZZ, and it decays. Oppenheimer (28), Dune: Part Two (30) and The
-// Godfather Part II (31) sit far below the blockbuster bar (106) — not because they're small, but because
-// they're no longer new. Popularity is the wrong instrument for enduring stature.
-//
-// IMDb vote COUNT is the right one: it's cumulative reach that never decays, and unlike budget or box
-// office it isn't distorted by inflation (Godfather II's $13M budget in 1974 says nothing today; its 1.49M
-// votes say everything). So a Landmark is a released film that won or was nominated for a top award, sits
-// in the critics' top tier, AND has been seen and rated by enough people to prove it lasted.
-const VOTES = MOVIES.filter(m=>!isUpcoming(m)).map(m=>m.imdb_votes||0).filter(v=>v>0).sort((a,b)=>a-b);
-const VOTES_BAR = VOTES.length ? VOTES[Math.min(VOTES.length-1, Math.round(0.75*(VOTES.length-1)))] : Infinity;
-const LANDMARK_RT = 90;
-const isLandmark = m => !isUpcoming(m) && !!m.award
-  && (m.rt_critic||0) >= LANDMARK_RT && (m.imdb_votes||0) >= VOTES_BAR;
-
-// Landmark is an OVERLAY, not a rung above Blockbuster: a film can be both, and picking either finds it.
-// (Making it a ladder would have hidden Oppenheimer from "Blockbuster" — and it isn't one anyway.)
 const TENTPOLE_STOPS = [
   {key:"any",         label:"Any"},
   {key:"anticipated", label:"Anticipated"},
   {key:"blockbuster", label:"Blockbuster"},
+  {key:"bigbudget",   label:"Big budget"},
   {key:"landmark",    label:"Landmark"},
 ];
-const tentpoleIs = (m,k) => k==="landmark" ? isLandmark(m) : tentpoleOf(m)===k;
+const tentpoleIs = (m,k) => scaleTier(m)===k;
 const tentpoleCount = k => MOVIES.filter(m=>tentpoleIs(m,k)).length;
 
 const AGE_LEVELS = [...ALL_AGES].sort((a,b)=>{
@@ -2308,25 +2397,26 @@ function syncScale(){
     b.setAttribute("aria-checked", String(on));
     b.tabIndex = on ? 0 : -1;
   });
-  // The rule, in the open — no black-box "tentpole" badge. Popularity leads because it's the one scale
-  // field every title has; the bar is drawn against that title's own cohort.
+  // The rule, in the open — no black-box "tentpole" tag. This is the SAME taxonomy the badge on every card
+  // wears, so picking a tier here returns exactly the films badged with it. One tier per film, in priority
+  // order: Landmark > Blockbuster / Anticipated > Big budget.
   const n=tentpoleCount(t);
-  if(t==="any"){ $("cTentDesc").innerHTML=`<b>Any.</b> No size filter.`; }
-  else if(t==="landmark"){
-    $("cTentDesc").innerHTML=`<b>Landmark — ${n} title${n===1?"":"s"}.</b> Won or nominated for a top award,
-      a critics' score of ${LANDMARK_RT}%+, <i>and</i> rated by enough people to prove it lasted
-      (${(VOTES_BAR/1000).toFixed(0)}k+ IMDb votes — the top quarter of released titles).
-      Vote count, not popularity: popularity is this week's buzz and it fades, which is why Oppenheimer and
-      The Godfather Part II don't register on it. A landmark can also be a blockbuster — most aren't.`;
-  }
-  else {
-    const bar=POP_BARS[t];
-    $("cTentDesc").innerHTML=`<b>${TENTPOLE_STOPS.find(x=>x.key===t).label} — ${n} title${n===1?"":"s"}.</b>
-      ${t==="anticipated"?"Not out yet":"Already released"}, and in the top 25% of the ${bar.n}
-      ${bar.of} titles for TMDB popularity (${bar.high.toFixed(0)}+) — or the top 50% (${bar.mid.toFixed(0)}+)
-      with a $120M+ budget to promote it. Ranked against its own cohort: an unreleased film has had no
-      time to build the popularity a two-year-old hit has.`;
-  }
+  const TENT_DESC = {
+    landmark: `Won or was nominated for a top award, cleared the critics' bar (${LANDMARK_RT}%+ RT
+      <i>or</i> ${LANDMARK_META}+ Metacritic), <i>and</i> has the scale to match — a $${BIG_BUDGET/1e6}M+ budget or
+      top-${BLOCKBUSTER_TOP}% popularity. It outranks the other tiers, so a Landmark is badged Landmark and
+      nothing else.`,
+    blockbuster: `Already released, and in the top ${BLOCKBUSTER_TOP}% of the whole catalogue for TMDB
+      popularity (${BLOCKBUSTER_BAR.toFixed(0)}+) — the films everybody is watching right now.`,
+    anticipated: `Not out yet, and in the top ${ANTICIPATED_TOP}% of the ${POP_UPCOMING.length} upcoming titles
+      for popularity (${ANTICIPATED_BAR.toFixed(0)}+). Ranked against the other upcoming films, not against
+      released ones: a film that opened two years ago has had two years to build a following.`,
+    bigbudget: `A production budget of $${BIG_BUDGET/1e6}M or more — the “Huge” band — on a film that isn't
+      already a Blockbuster, an Anticipated title or a Landmark. Big money, no crowd (yet).`,
+  };
+  $("cTentDesc").innerHTML = t==="any"
+    ? `<b>Any.</b> No size filter.`
+    : `<b>${TENTPOLE_STOPS.find(x=>x.key===t).label} — ${n} title${n===1?"":"s"}.</b> ${TENT_DESC[t]}`;
 }
 function bellPaint(row, on, label){
   const b=row.querySelector(".abell");
@@ -2475,8 +2565,8 @@ function syncQuality(){
     b.setAttribute("aria-checked", String(i===sel));
     b.tabIndex = i===sel ? 0 : -1;
   });
-  // Exclusions: a radar shouldn't keep showing you what you've already seen or waved off — but say what
-  // each one is actually removing right now, so it's a choice and not a black box.
+  // Exclusions: a radar shouldn't keep showing you what you've already seen or waved off — but "excluded"
+  // means COLLAPSED to an undoable one-line stub, not deleted, and the copy has to say which.
   const nW=MOVIES.filter(m=>watched.has(m.tmdb_id)).length, nB=MOVIES.filter(m=>blocked.has(m.tmdb_id)).length;
   $("cExWatched").classList.toggle("on", draft.excludeWatched);
   $("cExWatched").setAttribute("aria-checked", String(draft.excludeWatched));
@@ -2488,8 +2578,10 @@ function syncQuality(){
   $("cExDesc").innerHTML = !(nW||nB)
     ? `You haven't marked anything watched or not-interested yet — these do nothing until you do.`
     : hid
-      ? `Right now that hides <b>${hid} film${hid===1?"":"s"}</b> — ${hidW} watched, ${hidB} not interested.`
-      : `Nothing hidden: this Cascade will show the ${nW} watched and ${nB} not-interested film${nW+nB===1?"":"s"} too.`;
+      ? `Right now that collapses <b>${hid} film${hid===1?"":"s"}</b> to a one-line stub — ${hidW} watched,
+         ${hidB} not interested. They stay on the list, greyed: tap the icon on the stub and the card is back.`
+      : `Nothing collapsed: this Cascade shows the ${nW} watched and ${nB} not-interested film${nW+nB===1?"":"s"}
+         as full cards.`;
   syncScale();
 }
 
@@ -2754,26 +2846,36 @@ window.onbCreateStarter=tweak=>{
 };
 
 function render(){
-  const rows=MOVIES.filter(passes);
+  // Two lists, one pass: `rows` is everything the filters allow THROUGH, `shown` is everything that still
+  // gets a full card. The difference is the films you tagged out — they stay on screen as stubs, and they
+  // don't count as results, because you told us you didn't want them.
+  const rows=MOVIES.filter(passesOrStub);
+  const shown=rows.filter(m=>!taggedOut(m));
+  const stubbed=rows.length-shown.length;
   const n=activeCount();
   $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
-  renderCascadeBar(rows.length);
+  renderCascadeBar(shown.length);
   renderMyList();   // tags change from the cards, from My List itself, or from a Cascade — one repaint covers all
   updatePrefSwitch(); updatePrefBtn(); updateUxSwitch(); refreshSetupMeters(); renderServiceAdvice();
   // Smart defaults: label the apply control with its payoff, not a bare "Done".
   $("filtersDone").textContent = ux.on
-    ? (rows.length ? `Show ${rows.length} film${rows.length===1?"":"s"}` : "No films match")
+    ? (shown.length ? `Show ${shown.length} film${shown.length===1?"":"s"}` : "No films match")
     : "Done";
-  $("count").textContent=`${rows.length} of ${MOVIES.length} titles`+(prefsActive()?" · my services":"");
+  $("count").textContent=`${shown.length} of ${MOVIES.length} titles`+(prefsActive()?" · my services":"")
+    +(stubbed?` · ${stubbed} tagged out`:"");
   const wrap=$("groups");
   if(!rows.length){ wrap.innerHTML=emptyResultsHTML(); return; }
   let html="";
   CASCADE.forEach(g=>{
     const items=rows.filter(m=>primaryStatus(m)===g).sort(sortFor(g));
     if(!items.length) return;
+    // Cards first, stubs after: the stub is a receipt for a decision, not a result — it shouldn't push a
+    // film you DO want further down the group.
+    const cards=items.filter(m=>!taggedOut(m)), stubs=items.filter(taggedOut);
     html+=`<div class="group"><div class="grouphead"><span class="gdot ${g}"></span>${STATUS_LABEL[g]}
-      <span class="gcount">${items.length}</span></div><div class="list">${items.map(cardHTML).join("")}</div></div>`;
+      <span class="gcount">${cards.length}</span></div>
+      <div class="list">${cards.map(cardHTML).join("")}${stubs.map(stubHTML).join("")}</div></div>`;
   });
   wrap.innerHTML=html;
 }
@@ -2784,16 +2886,24 @@ window.toggleTag=id=>{
   toast(tracked.has(id)?`🔔 Tracking “${m.title}” — you'll be alerted on changes`:`☆ Stopped tracking “${m.title}”`);
   render();
 };
+// The toast tells the truth about what just happened to the card — which depends on whether the Exclude
+// rules are on. If it collapsed, say so and say how to undo it; if it stayed put, don't claim otherwise.
 window.toggleWatched=id=>{
-  watched.has(id)?watched.delete(id):watched.add(id); saveSet("cascade_watched",watched);
+  const on=!watched.has(id);
+  on?watched.add(id):watched.delete(id); saveSet("cascade_watched",watched);
   const m=MOVIES.find(x=>x.tmdb_id===id);
-  toast(watched.has(id)?`✅ Marked “${m.title}” watched`:`Unmarked “${m.title}”`);
+  toast(!on ? `Unmarked “${m.title}” — card restored`
+    : filt.hideWatched ? `✅ Watched “${m.title}” — collapsed to one line. Tap the tick to bring it back.`
+                       : `✅ Marked “${m.title}” watched`);
   render();
 };
 window.toggleBlocked=id=>{
-  blocked.has(id)?blocked.delete(id):blocked.add(id); saveSet("cascade_blocked",blocked);
+  const on=!blocked.has(id);
+  on?blocked.add(id):blocked.delete(id); saveSet("cascade_blocked",blocked);
   const m=MOVIES.find(x=>x.tmdb_id===id);
-  toast(blocked.has(id)?`🙈 Hidden “${m.title}” — see it again via Filters → Show hidden`:`Restored “${m.title}”`);
+  toast(!on ? `Restored “${m.title}”`
+    : !filt.showHidden ? `🚫 Not interested in “${m.title}” — collapsed to one line. Tap the ⊘ to bring it back.`
+                       : `🚫 Marked “${m.title}” not interested`);
   render();
 };
 
