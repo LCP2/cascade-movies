@@ -87,6 +87,8 @@
   .chip.on.st-rental{background:rgba(90,169,240,.2);border-color:var(--blue);color:#bcdcff}
   .chip.on.st-included_streaming{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
   .chip.on.gen,.chip.on.yr{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  /* the one criterion that SUBTRACTS (CAS-71) — so it must not wear the same colour as the ones that add */
+  .chip.on.exc{background:rgba(192,86,63,.22);border-color:#c0563f;color:#ffb9a6}
   .chip.on.svc{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
   .slider{display:flex;align-items:center;gap:10px}
   .slider input{flex:1;accent-color:var(--accent)}
@@ -766,6 +768,10 @@
   <div class="chips" id="langChips"></div>
   <div class="flabel">Genre</div>
   <div class="chips" id="genreChips"></div>
+  <div class="flabel">Never show me</div>
+  <div class="chips" id="excludeChips"></div>
+  <div class="pnote">A skip beats a match: a film carrying one of these is out even if it also carries a genre
+    you asked for.</div>
   <div class="flabel">View</div>
   <div class="chips" id="viewChips"></div>
   <div class="flabel">Minimum IMDb rating</div>
@@ -1078,12 +1084,17 @@ function loadPrefs(){ try{ const p=JSON.parse(localStorage.getItem("cascade_pref
 function savePrefs(){ try{ localStorage.setItem("cascade_prefs",
   JSON.stringify({on:prefs.on,touched:prefs.touched,sub:[...prefs.sub],store:[...prefs.store]})); }catch(e){} }
 const prefs = loadPrefs();
+// How many times this browser has opened the app. It exists for one reason: "Finish your agent" (CAS-71) must
+// arrive AFTER the agent has proved itself, not on the first screen — so we need to know this isn't the first.
+let visits=1;
+try{ visits=(+localStorage.getItem("cascade_visits")||0)+1; localStorage.setItem("cascade_visits", String(visits)); }catch(e){}
 // UX-psychology framings sit behind one flag so the plain version is the A/B control. Default on.
 const ux = {on:true};
 try{ const v=localStorage.getItem("cascade_ux"); if(v!==null) ux.on = v==="1"; }catch(e){}
 function saveUx(){ try{ localStorage.setItem("cascade_ux", ux.on?"1":"0"); }catch(e){} }
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
+  exclude:new Set(),       // genres you never want to see — the ONE criterion that subtracts (CAS-71)
   imdb:0, rt:0, gross:0, search:"", foundOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb",
   includeUnrated:false,    // set by the open Cascade's escape hatch; off by default = unrated titles drop out
   budget:0, includeUnbudgeted:false, tentpole:"any"};
@@ -1219,7 +1230,8 @@ function addChips(el, values, set, cls, label){
 }
 // The same service Sets back two chip panels (⚙️ prefs and the onboarding card) — repaint both.
 function syncServiceChips(){
-  [["prefSubChips",prefs.sub],["onbSubChips",prefs.sub],["prefStoreChips",prefs.store],["onbStoreChips",prefs.store]]
+  // Onboarding no longer asks for services (CAS-71), so ⚙️ is the only panel these chips live in now.
+  [["prefSubChips",prefs.sub],["prefStoreChips",prefs.store]]
     .forEach(([el,set])=>{ const box=$(el); if(box) [...box.children].forEach(c=>c.classList.toggle("on", set.has(c.dataset.val))); });
 }
 function onChipToggle(cls){
@@ -1244,6 +1256,7 @@ addChips("cultureChips", [...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].
 addChips("langChips", [...new Set(MOVIES.map(m=>m.language).filter(Boolean))].sort((a,b)=>langName(a).localeCompare(langName(b))),
   filt.lang, "yr", langName);
 addChips("genreChips", ALL_GENRES, filt.genre, "gen");
+addChips("excludeChips", ALL_GENRES, filt.exclude, "exc");
 // "Hide"/"Show" is no longer what these do: a tagged-out film collapses to an undoable one-line stub rather
 // than vanishing, so the chips say collapse/expand — which is what you'll actually see happen.
 [["Collapse watched","hideWatched"],["Expand not-interested","showHidden"],["🏆 Award winners & nominees","awards"]].forEach(([lbl,key])=>{
@@ -1352,7 +1365,7 @@ $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
 $("budgetBand").onchange=e=>{filt.budget=+e.target.value; if(!filt.budget) filt.includeUnbudgeted=false; render();};
 $("tentpoleSel").onchange=e=>{filt.tentpole=e.target.value;render();};   // options filled below, with the bands
 function clearFilters(){
-  ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
+  ["status","year","age","culture","lang","genre","exclude"].forEach(k=>filt[k].clear());
   filt.imdb=0;filt.rt=0;filt.gross=0;filt.foundOnly=false;filt.hideWatched=false;filt.showHidden=false;
   filt.awards=false;filt.search="";filt.includeUnrated=false;
   filt.budget=0;filt.includeUnbudgeted=false;filt.tentpole="any";
@@ -1360,7 +1373,8 @@ function clearFilters(){
 // Push filt back onto the Filters modal's controls (a Cascade sets filters programmatically).
 function syncFilterUI(){
   const sets={statusChips:filt.status, yearChips:filt.year, ageChips:filt.age,
-              cultureChips:filt.culture, langChips:filt.lang, genreChips:filt.genre};
+              cultureChips:filt.culture, langChips:filt.lang, genreChips:filt.genre,
+              excludeChips:filt.exclude};
   Object.entries(sets).forEach(([el,set])=>{
     [...$(el).children].forEach(c=>c.classList.toggle("on", set.has(c.dataset.val)));
   });
@@ -1413,6 +1427,9 @@ function passes(m){
   if(filt.age.size && !filt.age.has(m.age_rating)) return false;
   if(filt.culture.size && !filt.culture.has(m.culture)) return false;
   if(filt.lang.size && !filt.lang.has(m.language)) return false;
+  // Exclude beats include. "Horror, but never gore-comedy" has to mean it: a film carrying an excluded genre is
+  // out even if another of its genres is one you asked for — otherwise the skip list is advisory, not a rule.
+  if(filt.exclude.size && (m.genres||[]).some(g=>filt.exclude.has(g))) return false;
   if(filt.genre.size && !(m.genres||[]).some(g=>filt.genre.has(g))) return false;
   if(filt.awards && !m.award) return false;
   if(!ratingOK(m, filt.imdb, filt.includeUnrated)) return false;
@@ -2055,6 +2072,23 @@ function foundEmptyHTML(){
       <button class="ebtn ghost" onclick="setView('find')">Have a look around yourself →</button>
     </div></div>`;
 }
+// ---- "Finish your agent" (CAS-71) ----------------------------------------------
+// The services question, asked at the ONE moment it's worth answering: the agent has already found you films,
+// so the ask now buys you something visible (only what you can watch, and what it saves you) instead of being
+// a toll gate on the way in. It waits for a second visit or a first override — i.e. for the thing to have
+// proved itself — and it disappears the moment services are set.
+const overrideCount = () =>
+  Object.values(notify).filter(e=>e.source==="manual" || e.removed).length + watched.size + blocked.size;
+function finishAgentHTML(){
+  if(servicesPicked() || !found.size) return "";
+  if(visits<2 && overrideCount()===0) return "";
+  return `<div class="cascstart" style="margin:12px 12px 0">
+    <div class="csh">📺 Finish your agent</div>
+    <div class="csp">I'm working on taste and price alone — I don't know what you're already paying for. Tell me,
+      and I'll only put films in front of you that you can actually watch, and show you what they're saving you.</div>
+    <button class="ctabtn" onclick="openServices()">📺 Add my services</button>
+  </div>`;
+}
 function renderFound(){
   const el=$("foundView"); if(!el) return;
   $("vFoundN").textContent=found.size;
@@ -2091,7 +2125,7 @@ function renderFound(){
     ? `Ordered by what I've learned about you — not by what a database sorted first.`
     : `Ordered by how well they score for now. Keep the ones you like and take off the ones you don't, and I'll
        order by <i>you</i> instead.`;
-  let html=agentHeadHTML(films);
+  let html=agentHeadHTML(films)+finishAgentHTML();
   // The "new this week" group only exists when it tells you something. On the first run EVERY film is new, and
   // a group holding all of them would say nothing — the header says it plainly instead.
   if(split){
@@ -2309,6 +2343,7 @@ const yearCount = y => MOVIES.filter(m=>yearOf(m)===y).length;
 
 function normCascade(c){
   c.status = c.status||[]; c.genre = c.genre||[]; c.age = c.age||[];
+  c.exclude = c.exclude||[];                 // [] = skip nothing (what every pre-existing Cascade meant)
   c.lang = c.lang||[];                       // [] = any language (what every pre-existing Cascade meant)
   c.culture = c.culture||[];                 // [] = any origin
   c.year = c.year||[];                       // [] = any year; mirrors filt.year, so the Filters panel shows it too
@@ -2385,7 +2420,7 @@ cascades.forEach(normCascade);   // saved Cascades are filled out here, not at l
 // criteria, the windows, the scope and the alert moments. Nothing about a second copy can ever find a film the
 // first didn't, so keeping it is noise with no upside.
 // Only EXACT twins collapse. Two Cascades that differ anywhere — even one genre chip — are two real radars.
-const cascSigOf = c => JSON.stringify([c.name, c.status, c.genre, c.age, c.lang, c.culture, c.year,
+const cascSigOf = c => JSON.stringify([c.name, c.status, c.genre, c.exclude, c.age, c.lang, c.culture, c.year,
   c.imdb, c.rt, c.awards, c.budget, c.includeUnbudgeted, c.includeUnrated, c.tentpole,
   c.myServices, c.alerts, c.sort||"imdb", c.excludeWatched, c.excludeBlocked]);
 function dedupeCascades(){
@@ -2438,6 +2473,7 @@ function matchesCriteria(m,c,ignoreBlocked){
   if(c.excludeWatched!==false && watched.has(m.tmdb_id)) return false;
   if(servicesPicked() && scopeOf(c)[primaryStatus(m)] && !matchesServices(m)) return false;
   if(c.status.length && !c.status.includes(primaryStatus(m))) return false;
+  if((c.exclude||[]).length && (m.genres||[]).some(g=>c.exclude.includes(g))) return false;   // skip beats match
   if(c.genre.length && !(m.genres||[]).some(g=>c.genre.includes(g))) return false;
   if(!ageOpen(c) && !c.age.includes(m.age_rating)) return false;
   if((c.year||[]).length && !c.year.includes(yearOf(m))) return false;
@@ -2518,6 +2554,7 @@ const setTo=(s,arr)=>{ s.clear(); (arr||[]).forEach(v=>s.add(v)); };
 function applyCascade(c){
   clearFilters();
   setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age); setTo(filt.lang,c.lang);
+  setTo(filt.exclude,c.exclude||[]);
   setTo(filt.culture,c.culture||[]); setTo(filt.year,c.year||[]);   // year rides the Filters panel's own chips
   filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via scopedFor()
   filt.includeUnrated=!!c.includeUnrated;
@@ -2543,6 +2580,7 @@ const sameSet=(s,a)=> s.size===a.length && a.every(v=>s.has(v));
 function cascadeDirty(){
   const c=activeCascade(); if(!c) return false;
   return !sameSet(filt.status,c.status) || !sameSet(filt.genre,c.genre) || !sameSet(filt.age,c.age)
+      || !sameSet(filt.exclude,c.exclude||[])
       || !sameSet(filt.lang,c.lang||[]) || !sameSet(filt.culture,c.culture||[]) || !sameSet(filt.year,c.year||[])
       || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards
       || filt.includeUnrated!==!!c.includeUnrated || filt.sort!==(c.sort||"imdb")
@@ -2553,6 +2591,7 @@ function cascadeDirty(){
 window.saveCascadeEdits=()=>{
   const c=activeCascade(); if(!c) return;
   c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age]; c.lang=[...filt.lang];
+  c.exclude=[...filt.exclude];
   c.culture=[...filt.culture]; c.year=[...filt.year];
   c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards; c.sort=filt.sort;
   c.includeUnrated=filt.includeUnrated; c.ratingStop=stopFor(c.imdb);
@@ -2750,7 +2789,7 @@ deckMotion.addEventListener("change",()=>{ deckCentre(deckIdx,false); deckPaint(
 // criterion dropped, so the number on the button is the number you'll get. No "try adjusting your filters".
 function filtSnapshot(){
   const s={sets:{}};
-  ["status","year","age","culture","lang","genre"].forEach(k=>{ s.sets[k]=[...filt[k]]; });
+  ["status","year","age","culture","lang","genre","exclude"].forEach(k=>{ s.sets[k]=[...filt[k]]; });
   ["imdb","rt","gross","awards","budget","tentpole","includeUnrated","includeUnbudgeted","foundOnly",
    "hideWatched","search"].forEach(k=>{ s[k]=filt[k]; });
   return s;
@@ -2765,6 +2804,8 @@ const RELAXERS = [
   {key:"status",   label:()=>`the availability window${filt.status.size>1?"s":""}`, on:()=>filt.status.size>0,
    clear:()=>filt.status.clear()},
   {key:"genre",    label:()=>"the genre chips",    on:()=>filt.genre.size>0,   clear:()=>filt.genre.clear()},
+  {key:"exclude",  label:()=>`the ${filt.exclude.size} genre${filt.exclude.size===1?"":"s"} you're skipping`,
+   on:()=>filt.exclude.size>0, clear:()=>filt.exclude.clear()},
   {key:"year",     label:()=>"the release years",  on:()=>filt.year.size>0,    clear:()=>filt.year.clear()},
   {key:"lang",     label:()=>"the language",       on:()=>filt.lang.size>0,    clear:()=>filt.lang.clear()},
   {key:"culture",  label:()=>"the origin",         on:()=>filt.culture.size>0, clear:()=>filt.culture.clear()},
@@ -2996,6 +3037,7 @@ function commitDraft(){
   }
   const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
   Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
+    exclude:draft.exclude,
     age:draft.age, lang:draft.lang, culture:draft.culture, year:draft.year, imdb:draft.imdb, rt:draft.rt,
     ratingStop:draft.ratingStop, includeUnrated:draft.includeUnrated,
     budget:draft.budget, includeUnbudgeted:draft.includeUnbudgeted, tentpole:draft.tentpole,
@@ -3244,6 +3286,12 @@ function buildQuality(){
       <div class="chips" id="cGenreChips"></div>
     </div>
     <div class="qrow">
+      <div class="qhead"><span class="qt">Never show me</span><span class="qcap" style="margin:0" id="cExclCap"></span></div>
+      <div class="chips" id="cExclChips"></div>
+      <div class="qcap">A skip beats a match — a film carrying one of these is out even if it also carries a
+        genre you asked for.</div>
+    </div>
+    <div class="qrow">
       <div class="qhead"><span class="qt">Age rating</span><span class="qcap" style="margin:0" id="cAgeCap"></span></div>
       <div class="loz" id="cAgeLoz" role="radiogroup" aria-label="Age rating — up to and including"></div>
       <div class="qcap">Picks everything <b>up to and including</b> the level you choose.</div>
@@ -3333,6 +3381,7 @@ function syncQuality(){
     $("cRtClear").onclick=()=>{ draft.rt=0; syncQuality(); refreshDraft(); };
   }
   $("cGenreCap").textContent=draft.genre.length?`${draft.genre.length} on`:"Any";
+  $("cExclCap").textContent=draft.exclude.length?`${draft.exclude.length} skipped`:"Nothing";
   $("cLangCap").textContent=draft.lang.length?draft.lang.map(langName).join(", "):"Any";
   $("cCultCap").textContent=draft.culture.length?draft.culture.join(", "):"Any";
   $("cYearCap").textContent=draft.year.length
@@ -3376,6 +3425,7 @@ function openEditor(title){
   buildSpine(); syncSpine();
   buildQuality();
   buildEditorChips("cGenreChips", ALL_GENRES, "genre", null, ()=>"gen");
+  buildEditorChips("cExclChips", ALL_GENRES, "exclude", null, ()=>"exc");
   buildEditorChips("cLangChips", ALL_LANGS, "lang", c=>`${langName(c)} · ${LANG_COUNT[c]}`, ()=>"gen");
   buildEditorChips("cCultChips", ALL_CULTURES, "culture", c=>`${c} · ${CULTURE_COUNT[c]}`, ()=>"gen");
   buildEditorChips("cYearChips", ALL_YEARS, "year", y=>`${y} · ${yearCount(y)}`, ()=>"yr");
@@ -3519,8 +3569,10 @@ function setupItems(){
   return [
     {label:"📍 Region: Australia", done:true},
     {label:"💾 Saved on this device", done:true},
-    {label:"📺 My services", done:servicesPicked()},
-    {label:"🎯 First Cascade", done:cascades.length>0},
+    // The services step is the "finish your agent" one now — it is no longer asked for on the way in (CAS-71),
+    // so the meter names it for what it is: the last thing left, not a gate you failed to pass.
+    {label:"📺 Finish it — your services", done:servicesPicked()},
+    {label:"🎯 Your agent", done:cascades.length>0},
     // Not "first film tracked" any more — tracking is no longer something you do. This step is done the moment
     // a Cascade of yours has actually found something, which is a real state and usually true one tap later.
     {label:"🔔 Films found for you", done:found.size>0},
@@ -3538,10 +3590,46 @@ function refreshSetupMeters(){
   if($("onb").classList.contains("open")) $("onbSetup").innerHTML=setupHTML();
 }
 
-// The intent pick — each maps to an existing template, so the starter Cascade is one the app already serves.
-const ONB_INTENTS=["watch_tonight","bargain","my_taste","family"]
-  .map(k=>CASCADE_TEMPLATES.find(t=>t.key===k));
-let onbStep=0, onbIntent=null;
+// ================= Onboarding: set up your agent (CAS-71) =================
+// Not a profile form. You are BUILDING something, and the thing you build is a representation of your taste —
+// which is exactly what makes it yours, and what makes it worth coming back to (IKEA effect / endowment). So
+// every question here is about what the agent should FIND. None of them are about you: no email, no account,
+// and — deliberately — no "which services do you pay for?". That one is friction traded for nothing at this
+// point in the journey, so it is deferred to "Finish your agent", once the agent has already delivered.
+const STANDARDS = [
+  {key:"great",  icon:"⭐", name:"Only the great stuff", blurb:"Top-rated films, nothing else",
+   apply:c=>{ c.ratingStop=4; c.imdb=RATING_STOPS[4].imdb; }},
+  {key:"crowd",  icon:"💥", name:"Crowd-pleasers & blockbusters", blurb:"What everyone's watching, buzz first",
+   apply:c=>{ c.ratingStop=1; c.imdb=RATING_STOPS[1].imdb; c.sort="popularity"; }},
+  {key:"awards", icon:"🏆", name:"Award winners", blurb:"Winners and nominees only",
+   apply:c=>{ c.awards=true; }},
+  // "Hidden gem" has to MEAN something checkable, or it is a vibe we can't deliver on: highly rated, and made
+  // for under $15M — the catalogue's own "Small" budget band. Not a synonym for "obscure", which we can't see.
+  {key:"gems",   icon:"💎", name:"Hidden gems", blurb:"Highly rated, made on a small budget",
+   apply:c=>{ c.ratingStop=3; c.imdb=RATING_STOPS[3].imdb; c.budget=1; }},
+  {key:"nofuss", icon:"🤷", name:"I'm not fussy", blurb:"Anything that matches your taste",
+   apply:c=>{}},
+];
+const GENRE_COUNT={};
+MOVIES.forEach(m=>(m.genres||[]).forEach(g=>{ GENRE_COUNT[g]=(GENRE_COUNT[g]||0)+1; }));
+const ONB_GENRES=[...ALL_GENRES].sort((a,b)=>GENRE_COUNT[b]-GENRE_COUNT[a] || a.localeCompare(b));
+
+const onb = {genres:[], standard:"nofuss", exclude:[], name:""};
+let onbStep=0;
+const ONB_STEPS=4;
+// The agent as it stands RIGHT NOW, rebuilt from the answers every time one changes — so every count on screen
+// is the real number of films it would find this second. Nothing in this flow is a mock-up.
+function agentDraft(over){
+  const a={...onb, ...(over||{})};
+  const c={id:null, template:"agent", icon:"🎯", name:(a.name||"").trim() || "My agent",
+    status:[], genre:[...a.genres], exclude:[...a.exclude], age:[], lang:[], culture:[], year:[],
+    imdb:0, rt:0, awards:false, budget:0, tentpole:"any", myServices:false, sort:"imdb",
+    alerts:{...ALERT_DEFAULTS}};
+  (STANDARDS.find(s=>s.key===a.standard) || {apply(){}}).apply(c);
+  return normCascade(c);
+}
+const agentFinds = over => watchCount(agentDraft(over));
+
 const onboardingSeen = () => { try{ return localStorage.getItem("cascade_onboarded")==="1"; }catch(e){ return true; } };
 function finishOnboarding(){
   try{ localStorage.setItem("cascade_onboarded","1"); }catch(e){}
@@ -3549,110 +3637,144 @@ function finishOnboarding(){
 }
 function skipOnboarding(){
   finishOnboarding(); render();
-  toast("No problem — set a Cascade to work whenever you like (+ New Cascade) and it does the watching for you.");
+  toast("No problem — build your agent whenever you like (+ New Cascade) and it does the watching for you.");
 }
 window.skipOnboarding=skipOnboarding;
 function startOnboarding(){
-  onbStep=0; onbIntent=null;
+  onbStep=0;
   $("onb").classList.add("open"); document.body.style.overflow="hidden";
   renderOnboarding();
 }
-window.onbGo=n=>{ onbStep=n; renderOnboarding(); };
-window.onbPickIntent=key=>{ onbIntent=CASCADE_TEMPLATES.find(t=>t.key===key); renderOnboarding(); };
-// Only repaints the live numbers — rebuilding the whole card on every chip tap would fight the user's taps.
+window.onbGo=n=>{ onbStep=n; logEvent("onb_step",{key:n}); renderOnboarding(); };
+window.onbPickStandard=key=>{ onb.standard=key; renderOnboarding(); };
+// Repaints ONLY the live numbers — rebuilding the whole card on every chip tap would fight the user's taps.
 function refreshOnboarding(){
   if(!$("onb").classList.contains("open")) return;
   $("onbSetup").innerHTML=setupHTML();
-  const btn=$("onbSvcNext"); if(btn) btn.textContent=onbServicesLabel();
-  const note=$("onbSvcNote"); if(note) note.innerHTML=onbServicesNote();
+  const live=$("onbLive"); if(live) live.innerHTML=onbLiveHTML();
 }
-const onbServicesLabel = () => {
-  const n=prefs.sub.size+prefs.store.size;
-  return n ? `Save my list (${n} selected)` : "Skip for now";
-};
-const onbServicesNote = () => servicesPicked()
-  ? `<div class="onbp" style="color:#a7eccb;margin:10px 0 0">✓ We'll show you what you can watch on these first —
-       you can switch that off any time under ⚙️.</div>`
-  : "";
-
+function onbLiveHTML(){
+  const n=agentFinds();
+  return n
+    ? `<div class="csh">🎯 ${n} film${n===1?"":"s"} already</div>
+       <div class="csp">That is what your agent would go and find for you right now — and it keeps watching for
+         more, every day, without you.</div>`
+    : `<div class="csh">🎯 Nothing matches that yet</div>
+       <div class="csp">Loosen one of your answers and I'll have something for you — I'd rather say so now than
+         hand you an agent that comes back empty.</div>`;
+}
+function onbChips(el, values, arr, cls, label){
+  const box=$(el); if(!box) return;
+  box.innerHTML="";
+  values.forEach(v=>{
+    const c=document.createElement("button");
+    c.type="button";
+    c.className="chip "+cls+(arr.includes(v)?" on":"");
+    c.setAttribute("aria-pressed", String(arr.includes(v)));
+    c.textContent=label?label(v):v;
+    c.onclick=()=>{
+      const i=arr.indexOf(v);
+      i<0 ? arr.push(v) : arr.splice(i,1);
+      c.classList.toggle("on");
+      c.setAttribute("aria-pressed", String(arr.includes(v)));
+      refreshOnboarding();
+    };
+    box.appendChild(c);
+  });
+}
+// What the agent will be, in plain English — read off the answers, so it cannot promise anything it won't do.
+function agentSummary(){
+  const c=agentDraft();
+  const std=STANDARDS.find(s=>s.key===onb.standard);
+  const bits=[];
+  bits.push(onb.genres.length ? `<b>${onb.genres.map(esc).join(", ")}</b>` : `<b>anything</b>`);
+  if(onb.standard!=="nofuss") bits.push(std.blurb.toLowerCase());
+  if(onb.exclude.length) bits.push(`never <b>${onb.exclude.map(esc).join(" or ")}</b>`);
+  return `${c.icon} <b>${esc(c.name)}</b> watches for ${bits.join(" · ")}. ${alertPromise(c)}`;
+}
 function renderOnboarding(){
   $("onbSetup").innerHTML=setupHTML();
-  const skip=`<button class="onbskip" onclick="skipOnboarding()">Skip setup — just let me browse</button>`;
+  const skip=`<button class="onbskip" onclick="skipOnboarding()">Skip — I'll build it later</button>`;
   const b=$("onbBody");
+  const step=n=>`<div class="onbstep">Step ${n} of ${ONB_STEPS} · Set up your agent</div>`;
+  const live=`<div class="starter" id="onbLive">${onbLiveHTML()}</div>`;
 
+  // 1 — what you love. Chips, not a form field: the agent is being built out of your taste.
   if(onbStep===0){
-    b.innerHTML=`<div class="onbstep">Step 1 of 3</div>
-      <div class="onbh">Films don't just appear on your subscriptions.</div>
-      <p class="onbp">They fall down a cascade — and the same film costs wildly different amounts depending on
-        where you catch it. Cascade tracks all ${MOVIES.length} titles through every window and tells you the
-        moment one reaches a way you're actually happy to watch it.</p>
-      <div class="onbcascade">
-        <b class="s1">Cinema</b> <i>→</i> <b class="s2">Premium ~$30</b> <i>→</i>
-        <b class="s3">Rental ~$7</b> <i>→</i> <b class="s4">Included on a service you have</b>
-      </div>
-      <p class="onbp">No account needed. Everything you set up stays on this device.</p>
+    b.innerHTML=`${step(1)}
+      <div class="onbh">What do you love watching?</div>
+      <p class="onbp">Pick as many as you like — your agent goes out and finds these for you. Skip it and it
+        watches everything. You can change any of this later.</p>
+      <div class="chips" id="onbGenreChips"></div>
+      ${live}
       <div class="onbfoot"><button class="onbnext" onclick="onbGo(1)">Continue</button></div>
       ${skip}`;
+    onbChips("onbGenreChips", ONB_GENRES, onb.genres, "gen", g=>`${g} · ${GENRE_COUNT[g]}`);
     return;
   }
 
+  // 2 — your standards. Every option carries the number of films it would ACTUALLY find, computed live.
   if(onbStep===1){
-    b.innerHTML=`<div class="onbstep">Step 2 of 3</div>
-      <div class="onbh">Which services do you already pay for?</div>
-      <p class="onbp">We'll use these to tell you when a film you want is already included on something you have —
-        instead of you paying twice. Pick as many as you like, or skip and do it later.</p>
-      <div class="flabel">Paid streaming — I subscribe to</div>
-      <div class="chips" id="onbSubChips"></div>
-      <div class="flabel">Rent / Buy — stores I use</div>
-      <div class="chips" id="onbStoreChips"></div>
-      <div id="onbSvcNote">${onbServicesNote()}</div>
-      <div class="onbfoot"><button class="onbnext" id="onbSvcNext" onclick="onbGo(2)">${onbServicesLabel()}</button></div>
+    const cards=STANDARDS.map(s=>{
+      const n=agentFinds({standard:s.key});
+      return `<button class="intentbtn ${onb.standard===s.key?"on":""}" onclick="onbPickStandard('${s.key}')">
+        <span class="ii">${s.icon}</span>
+        <span><span class="iname">${s.name}</span><span class="iblurb">${s.blurb}</span>
+          <span class="icount">${n} film${n===1?"":"s"} right now</span></span></button>`;
+    }).join("");
+    b.innerHTML=`${step(2)}
+      <div class="onbh">What's worth your time?</div>
+      <p class="onbp">This is the bar your agent holds everything to. The numbers are real — that's how many
+        films clear it today.</p>
+      <div class="intent">${cards}</div>
+      <div class="onbfoot">
+        <button class="onbnext ghost" onclick="onbGo(0)">Back</button>
+        <button class="onbnext" onclick="onbGo(2)">Continue</button></div>
       ${skip}`;
-    addChips("onbSubChips", SUB_SERVICES, prefs.sub, "svc", svcName);
-    addChips("onbStoreChips", STORE_SERVICES, prefs.store, "svc", svcName);
     return;
   }
 
-  // Step 3 — intent → a ready-to-run starter Cascade the user accepts, tweaks or skips.
-  const cards=ONB_INTENTS.map(t=>{
-    const n=countCriteria(t.crit);
-    return `<button class="intentbtn ${onbIntent===t?"on":""}" onclick="onbPickIntent('${t.key}')">
-      <span class="ii">${t.icon}</span>
-      <span><span class="iname">${t.name}</span><span class="iblurb">${t.blurb}</span>
-        <span class="icount">${n} film${n===1?"":"s"} match right now</span></span></button>`;
-  }).join("");
-  let starter="";
-  if(onbIntent){
-    const t=onbIntent, n=countCriteria(t.crit);
-    const inert = anyScope(t.crit) && !servicesPicked();
-    starter=`<div class="starter">
-      <div class="ca-name">${t.icon} ${t.name}</div>
-      <div class="ca-sub">${n} film${n===1?"":"s"} right now · ${alertSummary(t)}${
-        anyScope(t.crit) ? (allScoped(t.crit) ? " · my services" : ` · my services on ${scopeSummary(t.crit)}`) : ""}</div>
-      ${inert?`<div class="ca-sub" style="color:#ffce8f">This one watches your services — you haven't picked any yet,
-        so for now it'll show films from every service.<br>${pickServicesCTA("onbGo(1)")}</div>`:""}
-    </div>
-    <div class="onbfoot">
-      <button class="onbnext" onclick="onbCreateStarter(false)">Start my Cascade</button>
-      <button class="onbnext ghost" onclick="onbCreateStarter(true)">Tweak it</button>
-    </div>`;
+  // 3 — the skip list (optional). The one criterion that subtracts.
+  if(onbStep===2){
+    b.innerHTML=`${step(3)}
+      <div class="onbh">Anything you always want to skip?</div>
+      <p class="onbp">Optional. Tell me what you never want to see and I'll keep it away from you — a skip beats
+        a match, so it holds even when a film ticks one of your other boxes.</p>
+      <div class="chips" id="onbExclChips"></div>
+      ${live}
+      <div class="onbfoot">
+        <button class="onbnext ghost" onclick="onbGo(1)">Back</button>
+        <button class="onbnext" onclick="onbGo(3)">Continue</button></div>
+      ${skip}`;
+    onbChips("onbExclChips", ONB_GENRES, onb.exclude, "exc", g=>`${g} · ${GENRE_COUNT[g]}`);
+    return;
   }
-  b.innerHTML=`<div class="onbstep">Step 3 of 3</div>
-    <div class="onbh">What are you here for?</div>
-    <p class="onbp">Pick one and we'll set up a starter Cascade — a search you save once that keeps watching the
-      catalogue for you. Change or delete it any time.</p>
-    <div class="intent">${cards}</div>
-    ${starter}
+
+  // 4 — name it, and let it run. The CTA is never "Sign up": there is no account, and nothing to sign up to.
+  b.innerHTML=`${step(4)}
+    <div class="onbh">Name your agent.</div>
+    <p class="onbp">Optional — but it's yours, and it's about to go to work for you.</p>
+    <input id="onbName" class="namein" type="text" maxlength="40" autocomplete="off"
+           placeholder="My agent" value="${escA(onb.name)}">
+    <div class="starter" style="margin-top:12px"><div class="csp" style="margin:0">${agentSummary()}</div></div>
+    <div class="onbfoot">
+      <button class="onbnext ghost" onclick="onbGo(2)">Back</button>
+      <button class="onbnext" onclick="onbCreateAgent()">▶ Let it run</button></div>
     ${skip}`;
+  $("onbName").oninput=e=>{ onb.name=e.target.value; };
 }
-// accept as-is, or open the builder pre-filled ("tweak") — never auto-saving something they didn't see.
-window.onbCreateStarter=tweak=>{
-  draft=draftFromTemplate(onbIntent);
-  if(tweak){ finishOnboarding(); openEditor("New Cascade"); openModal($("builder")); return; }
-  const {c, dup}=commitDraft();
-  finishOnboarding(); render();
-  toast(dup ? `${c.icon} You already have “${c.name}” — I've opened that one rather than making a second copy of it.`
-            : `✓ ${c.icon} ${c.name}'s on it — ${watchCount(c)} films found already. ${alertPromise(c)}`);
+// Build it, set it to work, and land straight on what it found. Value first: nothing was asked of them, and
+// the first thing they see is the agent's delivery.
+window.onbCreateAgent=()=>{
+  draft=agentDraft();
+  const {c}=commitDraft();
+  logEvent("agent_created",{genres:onb.genres.length, key:onb.standard, skips:onb.exclude.length,
+                            named:onb.name.trim()?1:0, matches:watchCount(c)});
+  finishOnboarding();
+  view="found";                                   // the payoff IS the front door
+  try{ localStorage.setItem("cascade_view","found"); }catch(e){}
+  render();
+  toast(`✓ ${c.icon} ${c.name}'s on it — ${watchCount(c)} films found already. ${alertPromise(c)}`);
 };
 
 function render(){
@@ -3960,7 +4082,14 @@ function renderAlerts(){
   if(!alerts.length){el.innerHTML='<div class="noalert">Nothing to report yet.<br>Cascade\'s out there watching — run a day forward to see what it finds.</div>';return;}
   const col={opening_week:"#ff6b6b",in_cinema:"#f0a336",past_opening:"#f0a336",pvod:"#a486f0",
              rental:"#5aa9f0",included_streaming:"#48c78e"};
-  el.innerHTML=alerts.map(a=>`<div class="alert"><div class="t">${esc(a.title)}</div>
+  // Services aren't asked for up front any more (CAS-71), so until they're set we do NOT pretend to know which
+  // streaming alerts matter to you. We show them all — hiding them would be worse — and say why, once, at the
+  // top, with the way to fix it. That's the honest version of "sharper alerts once you tell me".
+  const nudge = (!servicesPicked() && alerts.some(a=>a.window==="included_streaming"))
+    ? `<div class="dgempty" style="margin-bottom:10px">I don't know what you're paying for yet, so I'm telling you
+        about <b>every</b> service. Tell me what you have and I'll only mention the ones you can actually watch on
+        — and I'll price up what they're saving you.<br>${pickServicesCTA()}</div>` : "";
+  el.innerHTML=nudge+alerts.map(a=>`<div class="alert"><div class="t">${esc(a.title)}</div>
     <div class="d">${esc(alertVoice(a))} · day ${a.day}</div>
     <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">→ ${a.label}</span>
     ${ux.on&&a.frame?`<div class="frame">${esc(a.frame)}</div>`:""}</div>`).join("");
@@ -3972,7 +4101,7 @@ let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList
 // catalogue behind it has changed. So everything arriving from a URL is treated as hostile: whitelisted
 // keys only, every value checked against what the catalogue ACTUALLY has, and the result opened as a
 // DRAFT the recipient has to accept. A share link can never write to someone's saved Cascades by itself.
-const SHARE_KEYS = ["name","icon","status","genre","age","lang","culture","year","imdb","ratingStop",
+const SHARE_KEYS = ["name","icon","status","genre","exclude","age","lang","culture","year","imdb","ratingStop",
   "includeUnrated","budget","includeUnbudgeted","tentpole","awards","myServices","sort","alerts","rt"];
 const b64url = s => btoa(String.fromCharCode(...new TextEncoder().encode(s)))
   .replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
@@ -4007,6 +4136,7 @@ function sanitiseShared(o){
     icon:typeof o.icon==="string" ? o.icon.slice(0,4) : "🔗",
     status:keepKnown(o.status, ALL_WINDOWS),
     genre:keepKnown(o.genre, ALL_GENRES),
+    exclude:keepKnown(o.exclude, ALL_GENRES),
     age:keepKnown(o.age, AGE_LEVELS),
     lang:keepKnown(o.lang, ALL_LANGS),
     culture:keepKnown(o.culture, ALL_CULTURES),
