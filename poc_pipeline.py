@@ -104,7 +104,10 @@ def _tmdb_record(detail: dict) -> dict:
         "cinema_date": cinema_date,
         "age_rating": age_rating,
         "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
-        "budget": detail.get("budget") or None,             # TMDB budget (0 when unknown)
+        "budget": detail.get("budget") or None,             # TMDB budget (0 when unknown) — a badge, never a ranker:
+                                                            # TMDB knows it for only ~5 of our 12 upcoming titles
+        "popularity": detail.get("popularity") or None,     # TMDB popularity — present for every title, so it's what
+                                                            # ranks the un-released "Most anticipated" list
         "synopsis": (detail.get("overview") or "").strip(),
         "language": lang,
         "culture": _culture(lang, countries),
@@ -159,7 +162,7 @@ def ingest_tmdb_upcoming(seen: set) -> list[dict]:
     """Work FORWARDS from cinema: films with an announced AU theatrical date in the
     next UPCOMING_LOOKAHEAD_DAYS. These have not opened, so they carry no offers and
     derive to the "upcoming" window — the real state for the stepper's cinema slot,
-    and the pool the Blockbuster-radar Cascade sorts by budget."""
+    and the pool the Blockbuster-radar Cascade ranks by popularity ("Most anticipated")."""
     today = datetime.date.today()
     start = (today + datetime.timedelta(days=1)).isoformat()          # strictly future
     end   = (today + datetime.timedelta(days=UPCOMING_LOOKAHEAD_DAYS)).isoformat()
