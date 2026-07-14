@@ -959,8 +959,13 @@ const servicesPicked = () => prefs.sub.size>0 || prefs.store.size>0;
 const HOME_KEYS = ["pvod","rental","included_streaming"];
 const scopeOf = c => (c && c.myServices && typeof c.myServices==="object") ? c.myServices : {};
 const anyScope = c => HOME_KEYS.some(k=>!!scopeOf(c)[k]);
+const allScoped = c => HOME_KEYS.every(k=>!!scopeOf(c)[k]);
 const scopedFor = w => { const c=activeCascade(); return c ? !!scopeOf(c)[w] : prefs.on; };
 const servicesScoped = () => { const c=activeCascade(); return c ? anyScope(c) : prefs.on; };
+// Short window names for scope copy. A per-window scope has to be REPORTED per window: "my services" alone
+// is what the old global boolean said, and saying it for a Cascade scoped to Stream only would be a lie.
+const SCOPE_SHORT = {pvod:"premium", rental:"rent", included_streaming:"stream"};
+const scopeSummary = c => HOME_KEYS.filter(k=>scopeOf(c)[k]).map(k=>SCOPE_SHORT[k]).join(" + ");
 // ignoreScope is flipped only by the no-results panel, to ask "how many would there be if the my-services
 // scope weren't applied?" — so it can price that way out honestly instead of guessing.
 let ignoreScope = false;
@@ -1055,9 +1060,11 @@ function updatePrefSwitch(){
   // An open Cascade sets its own service scope, so the switch above may not be what's actually filtering.
   const c=activeCascade();
   const notes=[];
-  if(c && c.myServices !== prefs.on)
+  if(c && anyScope(c) !== prefs.on)
     notes.push(`<div class="warnnote">While the Cascade “${esc(c.name)}” is open it sets this scope itself —
-         it is ${c.myServices?"only showing films on your services":"showing films from every service"}.
+         it is ${anyScope(c) ? (allScoped(c) ? "only showing films on your services"
+                                             : `only showing films on your services in <b>${scopeSummary(c)}</b>`)
+                             : "showing films from every service"}.
          Close it (×) to go back to the switch above.</div>`);
   // The switch on with nothing picked filters nothing — say so rather than looking quietly broken.
   if(servicesScoped() && !servicesPicked())
@@ -1914,7 +1921,8 @@ function deckSync(shown){
     el.querySelector(".dc-icon").textContent=c.icon;
     el.querySelector(".dc-name").innerHTML=`${esc(c.name)}${on&&dirty?' <span class="dirty">· edited</span>':""}`;
     el.querySelector(".dc-sub").textContent=
-      `${n} film${n===1?"":"s"} ${on?"right now":"match now"} · ${alertSummary(c)}${c.myServices?" · my services":""}`;
+      `${n} film${n===1?"":"s"} ${on?"right now":"match now"} · ${alertSummary(c)}`
+      + (anyScope(c) ? (allScoped(c) ? " · my services" : ` · my services on ${scopeSummary(c)}`) : "");
     el.querySelector('[data-act="save"]').hidden=!(on&&dirty);
   });
   deckPaint();
@@ -2089,9 +2097,10 @@ function renderCascadeBar(shown){
       }).join("")}</div>
     </div>`;
   // Scoped to my services with none picked: the scope is silently inert. Say it, and give the way out.
-  if(c && c.myServices && !servicesPicked())
-    html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services — but you haven't picked any
-      yet, so it's showing everything.<br>${pickServicesCTA()}</div>`;
+  if(c && anyScope(c) && !servicesPicked())
+    html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services${allScoped(c)?"":` in
+      <b>${scopeSummary(c)}</b>`} — but you haven't picked any yet, so it's showing everything.
+      <br>${pickServicesCTA()}</div>`;
   $("cascDetail").innerHTML=html;
 }
 
@@ -2245,7 +2254,7 @@ function commitDraft(){
   // The template key and the shape of the radar — never its name, which is the one thing the user typed.
   logEvent(isNew?"cascade_created":"cascade_edited",
     {key:c.template||"custom", windows:c.status.length||"all", genres:c.genre.length, rating:c.ratingStop,
-     mine:c.myServices?1:0, matches:countCriteria(c)});
+     mine:HOME_KEYS.filter(k=>scopeOf(c)[k]).length, matches:countCriteria(c)});
   return {c, isNew};
 }
 window.editCascade=()=>{
@@ -2317,7 +2326,10 @@ function syncSpine(){
     bellPaint(el, !!draft.alerts[r.alert], r.title);
     if(!r.home) return;
     // Each home window owns its own scope now, and it only appears while that window is being watched.
-    $("opt-"+r.key).classList.toggle("open", st!=="off");
+    // An empty status set IS "watching every window" (see the note below), so the scopes have to be
+    // reachable there too — otherwise a Cascade with no window picked filters on a scope it won't show
+    // you, and the only way to reach the switch is to narrow the radar you didn't want to narrow.
+    $("opt-"+r.key).classList.toggle("open", st!=="off" || allOn());
     const mine=$("mine-"+r.key), on=!!draft.myServices[r.key];
     mine.classList.toggle("on", on);
     mine.setAttribute("aria-checked", String(on));
@@ -2816,10 +2828,11 @@ function renderOnboarding(){
   let starter="";
   if(onbIntent){
     const t=onbIntent, n=countCriteria(t.crit);
-    const inert = t.crit.myServices && !servicesPicked();
+    const inert = anyScope(t.crit) && !servicesPicked();
     starter=`<div class="starter">
       <div class="ca-name">${t.icon} ${t.name}</div>
-      <div class="ca-sub">${n} film${n===1?"":"s"} right now · ${alertSummary(t)}${t.crit.myServices?" · my services":""}</div>
+      <div class="ca-sub">${n} film${n===1?"":"s"} right now · ${alertSummary(t)}${
+        anyScope(t.crit) ? (allScoped(t.crit) ? " · my services" : ` · my services on ${scopeSummary(t.crit)}`) : ""}</div>
       ${inert?`<div class="ca-sub" style="color:#ffce8f">This one watches your services — you haven't picked any yet,
         so for now it'll show films from every service.<br>${pickServicesCTA("onbGo(1)")}</div>`:""}
     </div>
@@ -2985,7 +2998,9 @@ function cascadeDigest(c){
     const where = e.services.length ? e.services.join(", ") : null;
     if(c.status.length && !c.status.includes(e.window))
       return muted.push({e, why:`“${STATUS_LABEL[e.window]}” isn't a window this Cascade watches`});
-    if(c.myServices && servicesPicked() && !matchesServices(m))
+    // Per-window: a Cascade scoped to Stream only must still shout about a Rent drop on a service you
+    // don't have. The scope that decides is the one on the window the film actually LANDED in.
+    if(scopeOf(c)[e.window] && servicesPicked() && !matchesServices(m))
       return muted.push({e, why: where ? `it landed on ${where} — not one of your services`
                                        : `it isn't on any of your services`});
     if(!c.alerts[WINDOW_ROW[e.window]])
@@ -3095,7 +3110,13 @@ function sanitiseShared(o){
     tentpole:TENTPOLE_STOPS.some(t=>t.key===o.tentpole) ? o.tentpole : "any",
     sort:["imdb","rt","gross","popularity","cinema","title"].includes(o.sort) ? o.sort : "imdb",
     includeUnrated:!!o.includeUnrated, includeUnbudgeted:!!o.includeUnbudgeted,
-    awards:!!o.awards, myServices:!!o.myServices,
+    // Per-window scope survives the trip. `!!o.myServices` would have coerced the object to `true` and
+    // normCascade would then switch ALL THREE windows on — a link scoped to Stream arriving scoped to
+    // everything. An old link's boolean still means what it meant, and normCascade widens that one.
+    awards:!!o.awards,
+    myServices: (o.myServices && typeof o.myServices==="object")
+      ? Object.fromEntries(HOME_KEYS.map(k=>[k, !!o.myServices[k]]))
+      : !!o.myServices,
     alerts:{},
   };
   Object.keys(ALERT_DEFAULTS).forEach(k=>{
