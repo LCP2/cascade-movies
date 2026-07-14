@@ -232,8 +232,10 @@
   .tplname{font-size:13.5px;font-weight:800;margin-top:6px}
   .tplblurb{font-size:11px;color:var(--dim);line-height:1.4;margin-top:3px}
   .tplcount{font-size:11px;font-weight:800;color:#a7eccb;margin-top:7px}
-  .tpl.soon{cursor:not-allowed;opacity:.55;border-style:dashed}
-  .tpl.soon .tplcount{color:var(--faint);font-weight:600;font-style:italic}
+  .tpl.soon{cursor:not-allowed;opacity:.6;border-style:dashed;background:transparent}
+  .tpl.soon:hover{border-color:var(--line)}
+  .tpl.soon .tplname{color:var(--dim)}
+  .soonwhy{font-size:10.5px;line-height:1.4;color:var(--faint);font-style:italic;margin-top:7px}
   /* builder editor */
   .namein{width:100%;background:var(--panel2);border:1px solid var(--line);color:var(--ink);
     border-radius:10px;padding:11px 12px;font-size:16px;font-weight:600}
@@ -344,6 +346,11 @@
       Start from a template (each comes pre-filled, never blank) and tune it however you like.</div>
     <div class="flabel">Start from a template</div>
     <div class="tplgrid" id="tplGrid"></div>
+    <div id="tplSoonWrap" style="display:none">
+      <div class="flabel">Coming soon</div>
+      <div class="pnote">Radars we can't run yet, and why. We'd rather tell you than hand you one that can't see anything.</div>
+      <div class="tplgrid" id="tplSoon"></div>
+    </div>
   </div>
 
   <div id="editPane" style="display:none">
@@ -937,7 +944,8 @@ const CASCADE_TEMPLATES = [
 // Honesty guardrail: templates the current data can't actually serve are shown as unavailable,
 // with the real reason — never wired up to fake a result.
 const CASCADE_TEMPLATES_SOON = [
-  {icon:"⏳", name:"Leaving soon", blurb:"Last chance before it leaves", why:"No cinema-exit / removal dates in the data"},
+  {icon:"⏳", name:"Leaving soon", blurb:"Last chance before it leaves a cinema or a service",
+   why:"Needs cinema-exit and streaming-removal dates — no source we have gives us them"},
 ];
 
 // Mirrors passes() for exactly the fields a Cascade owns — so "Show N films" is the number you get.
@@ -1033,12 +1041,16 @@ function newCascade(){
     b.onclick=()=>startFromTemplate(t);
     grid.appendChild(b);
   });
+  // Templates the data can't serve sit in their own de-emphasised group BELOW the live ones, each stating the
+  // real reason. Not buttons, no onclick — there is no dead query to tap into.
+  const soon=$("tplSoon"); soon.innerHTML="";
   CASCADE_TEMPLATES_SOON.forEach(t=>{
-    const b=document.createElement("div"); b.className="tpl soon";
+    const b=document.createElement("div"); b.className="tpl soon"; b.setAttribute("aria-disabled","true");
     b.innerHTML=`<div class="tplicon">${t.icon}</div><div class="tplname">${t.name}</div>
-      <div class="tplblurb">${t.blurb}</div><div class="tplcount">${t.why}</div>`;
-    grid.appendChild(b);
+      <div class="tplblurb">${t.blurb}</div><div class="soonwhy">🔒 ${t.why}</div>`;
+    soon.appendChild(b);
   });
+  $("tplSoonWrap").style.display = CASCADE_TEMPLATES_SOON.length ? "" : "none";
   openModal($("builder"));
 }
 window.newCascade=newCascade;
