@@ -310,6 +310,17 @@
   .advbar span{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green))}
   .advrent{font-size:11.5px;font-weight:700;color:#a7eccb;margin-top:7px}
   .advfoot{font-size:11px;color:var(--faint);line-height:1.55;margin-top:2px}
+  /* ---- plain-English setup (rules-based preview) ---- */
+  .nlrow{display:flex;gap:8px;align-items:stretch}
+  .nlrow .namein{flex:1;min-width:0;font-size:16px;font-weight:500}
+  .nlrow .ca-btn{flex-shrink:0;padding:0 14px}
+  .nlread{background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(72,199,142,.08));
+    border:1px solid var(--accent);border-radius:12px;padding:11px 12px;margin:10px 0 4px}
+  .nlread .h{font-size:12px;font-weight:800;margin-bottom:7px}
+  .nlchips{display:flex;flex-wrap:wrap;gap:6px}
+  .nlchip{font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;
+    background:var(--panel2);border:1px solid var(--accent);color:#cfc2ff;white-space:nowrap}
+  .nlmiss{font-size:11px;color:var(--faint);line-height:1.5;margin-top:8px;font-style:italic}
 </style>
 </head>
 <body>
@@ -357,7 +368,19 @@
   <div id="tplPane">
     <div class="pnote">A Cascade is a search you save once — it keeps watching the catalogue for you.
       Start from a template (each comes pre-filled, never blank) and tune it however you like.</div>
-    <div class="flabel">Start from a template</div>
+
+    <div class="flabel">Preview — say it in plain English</div>
+    <div class="nlrow">
+      <input id="nlInput" class="namein" type="text" maxlength="90" autocomplete="off"
+             placeholder="e.g. highly rated horror on my services">
+      <button class="ca-btn save" id="nlGo">Draft it</button>
+    </div>
+    <div class="pnote">This is a <b>keyword parser, not AI</b> — it reads words like “horror”, “highly rated”,
+      “on my services”, “cheap rental”, “Oscar”, “for the kids”. It always drops you into the editor to check
+      and change what it understood; nothing saves until you say so. The real AI version comes later.</div>
+    <div id="nlOut"></div>
+
+    <div class="flabel">Or start from a template</div>
     <div class="tplgrid" id="tplGrid"></div>
     <div id="tplSoonWrap" style="display:none">
       <div class="flabel">Coming soon</div>
@@ -367,6 +390,7 @@
   </div>
 
   <div id="editPane" style="display:none">
+    <div id="nlUnderstood"></div>
     <div class="flabel">Name</div>
     <input id="cName" class="namein" type="text" maxlength="40" autocomplete="off">
     <div class="flabel">Availability — which windows this Cascade watches</div>
@@ -579,6 +603,8 @@ $("updated").textContent = "Live AU data · updated " + fmtDate(TODAY);
 // service lists derived from the data
 const SUB_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="sub"||o.type==="free").map(o=>o.service)))].sort();
 const STORE_SERVICES=[...new Set(MOVIES.flatMap(m=>(m.offers||[]).filter(o=>o.type==="rent"||o.type==="buy").map(o=>o.service)))].sort();
+const ALL_GENRES=[...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort();
+const ALL_AGES=[...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))];
 const servicesPicked = () => prefs.sub.size>0 || prefs.store.size>0;
 // An open Cascade's "my services" scope wins while it's open; closing it restores the global switch.
 const servicesScoped = () => { const c=activeCascade(); return c ? !!c.myServices : prefs.on; };
@@ -631,7 +657,7 @@ addChips("ageChips",
 addChips("cultureChips", [...new Set(MOVIES.map(m=>m.culture).filter(Boolean))].sort(), filt.culture, "yr");
 addChips("langChips", [...new Set(MOVIES.map(m=>m.language).filter(Boolean))].sort((a,b)=>langName(a).localeCompare(langName(b))),
   filt.lang, "yr", langName);
-addChips("genreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), filt.genre, "gen");
+addChips("genreChips", ALL_GENRES, filt.genre, "gen");
 [["Hide watched","hideWatched"],["Show hidden","showHidden"],["🏆 Award winners & nominees","awards"]].forEach(([lbl,key])=>{
   const c=document.createElement("div"); c.className="chip"; c.textContent=lbl; c.dataset.val=key;
   c.onclick=()=>{c.classList.toggle("on"); filt[key]=!filt[key]; render();};
@@ -1041,12 +1067,104 @@ function renderCascadeBar(shown){
   $("cascbar").innerHTML=html;
 }
 
+// ---- Plain-English setup (PREVIEW) --------------------------------------------
+// A rules-based keyword parser — deliberately NOT an LLM, and the UI says so. The concept doc's honesty
+// guardrail is explicit that the marketing must not run ahead of the product, so this is labelled a
+// keyword parser everywhere it appears. It only ever produces a DRAFT: the user lands in the editor and
+// has to press "Show N films" themselves, so a misparse can never auto-commit.
+// Keys are regex fragments, so every one of them is quoted.
+const NL_SYNONYMS = {   // spoken word -> catalogue genre
+  "scary":"Horror", "frightening":"Horror",
+  "sci-?fi":"Science Fiction", "science fiction":"Science Fiction",
+  "rom-?coms?":"Romance", "romantic":"Romance",
+  "kids":"Family", "children":"Family",
+  "cartoons?":"Animation", "anime":"Animation",
+  "docos?":"Documentary", "documentaries":"Documentary",
+  "funny":"Comedy", "superheroe?s?":"Action", "action-?packed":"Action",
+};
+function parseNL(text){
+  const s=" "+String(text||"").toLowerCase().replace(/[^\w\s.$+-]/g," ").replace(/\s+/g," ")+" ";
+  const has=re=>new RegExp(re).test(s);
+  const c={status:[], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false};
+  const read=[];    // what we understood — shown back to the user, in their terms
+  const unmet=[];   // understood, but this catalogue can't serve it — say so rather than quietly dropping it
+
+  // genre: catalogue genres by name, then the spoken synonyms
+  ALL_GENRES.forEach(g=>{ if(has("\\b"+g.toLowerCase().replace(/\s/g,"\\s")+"s?\\b")) c.genre.push(g); });
+  Object.entries(NL_SYNONYMS).forEach(([word,g])=>{
+    if(!has("\\b"+word+"\\b")) return;
+    if(!ALL_GENRES.includes(g)){ if(!unmet.includes(g)) unmet.push(g); return; }
+    if(!c.genre.includes(g)) c.genre.push(g);
+  });
+  if(c.genre.length) read.push("Genre: "+c.genre.join(" or "));
+
+  // rating bar — an explicit number wins over the vague words
+  const num=s.match(/\b(?:imdb\s*)?(\d(?:\.\d)?)\s*(?:\+|or (?:higher|above|better)|and (?:up|above))/)
+         || s.match(/\brated (?:above|over|at least|better than)\s*(\d(?:\.\d)?)/);
+  if(num){ c.imdb=Math.min(10, parseFloat(num[1])); }
+  else if(has("\\b(highly rated|top rated|great|brilliant|excellent|best|must.?watch)\\b")) c.imdb=7.5;
+  else if(has("\\b(good|decent|solid|worth (?:a )?watch(?:ing)?)\\b")) c.imdb=6.5;
+  if(c.imdb) read.push(`IMDb ${c.imdb.toFixed(1)}+`);
+  if(has("\\b(critically acclaimed|well.?reviewed|critics? love|acclaimed)\\b")){ c.rt=80; read.push("RT critic 80%+"); }
+
+  // availability windows
+  if(has("\\b(stream|streaming|included|subscription|free with)\\b")) c.status.push("included_streaming");
+  if(has("\\b(rent|rental|cheap|cheaply|under \\$?\\d+|budget)\\b")) c.status.push("rental");
+  if(has("\\b(cinema|cinemas|theatre|theater|big screen)\\b")){ c.status.push("in_cinema","opening_week"); }
+  if(has("\\b(upcoming|coming soon|not out yet|anticipated|hasn.?t come out)\\b")) c.status.push("upcoming");
+  if(has("\\b(never overpay|don.?t overpay|bargain|drops? in price|stop paying)\\b")){
+    c.status.push("rental","included_streaming");
+  }
+  c.status=[...new Set(c.status)];
+  if(c.status.length) read.push("Window: "+c.status.map(w=>STATUS_LABEL[w]).join(" or "));
+
+  // scope + flags
+  if(has("\\b(my services|services i (?:have|pay|already)|i (?:can|could) watch|already pay|i subscribe)\\b")){
+    c.myServices=true; read.push("Only what I can watch (my services)");
+  }
+  if(has("\\b(oscar|oscars|academy award|award|awards|prestige|nominee|nominated)\\b")){
+    c.awards=true; read.push("Award winners & nominees");
+  }
+  if(has("\\b(kids|children|family|kid.?friendly|with the kids)\\b")){
+    c.age=["G","PG"].filter(a=>ALL_AGES.includes(a));
+    if(c.age.length) read.push("Age rating: "+c.age.join(" / "));
+  }
+  return {crit:c, read, unmet, confident:read.length>0};
+}
+const nlUnmetNote = u => u.length
+  ? ` This catalogue has no ${u.join(" or ")} titles at all, so I left that out rather than hand you an empty radar.`
+  : "";
+window.nlDraft=()=>{
+  const text=$("nlInput").value.trim();
+  const out=$("nlOut");
+  if(!text){ out.innerHTML=""; return; }
+  const {crit, read, unmet, confident}=parseNL(text);
+  // Low confidence: nothing usable recognised. Say so plainly and leave them on the picker — never guess.
+  if(!confident){
+    out.innerHTML=`<div class="warnnote">I didn't recognise anything I can filter on.${nlUnmetNote(unmet)}
+      This is only a keyword parser — try words like “horror”, “highly rated”, “on my services”,
+      “cheap rental”, “Oscar”, “for the kids”, or just pick a template below.</div>`;
+    return;
+  }
+  out.innerHTML="";
+  draft={id:null, template:"nl", icon:"🔎", name:text.slice(0,40),
+         ...crit, alerts:{...ALERT_DEFAULTS}};
+  openEditor("Review your draft");
+  $("nlUnderstood").innerHTML=`<div class="nlread">
+    <div class="h">🔎 Here's what I understood — check it before you save</div>
+    <div class="nlchips">${read.map(r=>`<span class="nlchip">${esc(r)}</span>`).join("")}</div>
+    <div class="nlmiss">Anything I missed is just not set — tune it below. Nothing saves until you press the
+      button at the bottom.${nlUnmetNote(unmet)}</div>
+  </div>`;
+};
+
 // ---- builder (template picker → editor) ----
 let draft=null;
 function newCascade(){
   draft=null;
   $("builderTitle").textContent="New Cascade";
   $("tplPane").style.display=""; $("editPane").style.display="none";
+  $("nlInput").value=""; $("nlOut").innerHTML="";
   const grid=$("tplGrid"); grid.innerHTML="";
   CASCADE_TEMPLATES.forEach(t=>{
     const n=countCriteria(t.crit);
@@ -1094,11 +1212,12 @@ window.editCascade=()=>{
 function openEditor(title){
   $("builderTitle").textContent=title;
   $("tplPane").style.display="none"; $("editPane").style.display="";
+  $("nlUnderstood").innerHTML="";   // nlDraft() refills this straight after; every other path clears it
   $("cName").value=draft.name;
   $("cDelete").style.display = draft.id ? "" : "none";
   buildEditorChips("cStatusChips", CASCADE, "status", s=>STATUS_LABEL[s], s=>"st-"+s);
-  buildEditorChips("cGenreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), "genre", null, ()=>"gen");
-  buildEditorChips("cAgeChips", [...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))]
+  buildEditorChips("cGenreChips", ALL_GENRES, "genre", null, ()=>"gen");
+  buildEditorChips("cAgeChips", [...ALL_AGES]
       .sort((a,b)=>{const ia=AGE_ORDER.indexOf(a),ib=AGE_ORDER.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}),
       "age", null, ()=>"yr");
   $("cImdb").value=draft.imdb; $("cImdbVal").textContent=draft.imdb?draft.imdb.toFixed(1)+"+":"Any";
@@ -1141,6 +1260,8 @@ $("cRt").oninput=e=>{ draft.rt=+e.target.value; $("cRtVal").textContent=draft.rt
 [["cAlertPvod","pvod"],["cAlertRental","rental"],["cAlertStream","included_streaming"]].forEach(([el,key])=>{
   $(el).onclick=()=>{ draft.alerts[key]=!draft.alerts[key]; $(el).classList.toggle("on",draft.alerts[key]); };
 });
+$("nlGo").onclick=()=>nlDraft();
+$("nlInput").onkeydown=e=>{ if(e.key==="Enter") nlDraft(); };
 $("builderClose").onclick=()=>closeModal($("builder"));
 $("cApply").onclick=()=>{
   const {c, isNew}=commitDraft();
