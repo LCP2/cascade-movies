@@ -1316,10 +1316,18 @@ const ALL_CULTURES = Object.keys(CULTURE_COUNT).sort((a,b)=>CULTURE_COUNT[b]-CUL
 
 // Every Cascade — template, saved, or parsed from a description — is filled out to the full shape here, so
 // the editor never meets a missing field and a Cascade saved before these controls existed still opens clean.
+// Years the catalogue actually holds, newest first. "Older" has to mean something checkable, so the
+// Rewatch template selects real years rather than a vibe.
+const ALL_YEARS = [...new Set(MOVIES.map(yearOf).filter(Boolean))].sort().reverse();
+const CURRENT_YEAR = ALL_YEARS[0];
+const EARLIER_YEARS = ALL_YEARS.slice(1);
+const yearCount = y => MOVIES.filter(m=>yearOf(m)===y).length;
+
 function normCascade(c){
   c.status = c.status||[]; c.genre = c.genre||[]; c.age = c.age||[];
   c.lang = c.lang||[];                       // [] = any language (what every pre-existing Cascade meant)
   c.culture = c.culture||[];                 // [] = any origin
+  c.year = c.year||[];                       // [] = any year; mirrors filt.year, so the Filters panel shows it too
   c.imdb = c.imdb||0; c.rt = c.rt||0;
   c.ratingStop = (typeof c.ratingStop==="number") ? c.ratingStop : stopFor(c.imdb);
   c.includeUnrated = !!c.includeUnrated;
@@ -1348,6 +1356,22 @@ const CASCADE_TEMPLATES = [
    crit:{status:[], genre:["Horror"], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false}},
   {key:"blockbuster", icon:"💥", name:"Blockbuster radar", blurb:"The films heading for cinemas, most anticipated first",
    crit:{status:["upcoming"], genre:[], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false, sort:"popularity"}},
+  // Date night: crowd-pleasing genres, a bar high enough that neither of you resents the pick, at home,
+  // and scoped to what you already pay for — nobody rents a $30 premium for a Tuesday.
+  {key:"date_night", icon:"🍷", name:"Date night", blurb:"Crowd-pleasers you both agree on, on your services",
+   crit:{status:["rental","included_streaming"], genre:["Romance","Comedy","Drama"], age:[], lang:["en"],
+         imdb:RATING_STOPS[2].imdb, rt:0, awards:false, myServices:true},
+   alerts:{cinema:false, pvod:false, rental:true, included_streaming:true}},
+  // Rewatch: "older" is a real filter here, not a vibe — every year in the catalogue except the current one.
+  {key:"rewatch", icon:"🛋️", name:"Rewatch & comfort", blurb:"Films you already love, now included or cheap",
+   crit:{status:["rental","included_streaming"], genre:[], age:[], lang:[], year:EARLIER_YEARS,
+         imdb:RATING_STOPS[3].imdb, rt:0, awards:false, myServices:false},
+   alerts:{cinema:false, pvod:false, rental:true, included_streaming:true}},
+  // Foreign & Arthouse: shippable for real now that CAS-52 landed the language field. Non-English titles
+  // that clear the rating bar — which is exactly what the two fields we have can honestly express.
+  {key:"foreign", icon:"🎭", name:"Foreign & arthouse", blurb:"Non-English films that clear the rating bar",
+   crit:{status:[], genre:[], age:[], lang:ALL_LANGS.filter(l=>l!=="en"),
+         imdb:RATING_STOPS[1].imdb, rt:0, awards:false, myServices:false}},
   {key:"custom", icon:"⚙️", name:"Custom", blurb:"Start from a sensible baseline and tune it",
    crit:{status:[], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:false}},
 ];
@@ -1382,6 +1406,7 @@ function matchesCriteria(m,c,ignoreBlocked){
   if(c.status.length && !c.status.includes(primaryStatus(m))) return false;
   if(c.genre.length && !(m.genres||[]).some(g=>c.genre.includes(g))) return false;
   if(c.age.length && !c.age.includes(m.age_rating)) return false;
+  if((c.year||[]).length && !c.year.includes(yearOf(m))) return false;
   if((c.lang||[]).length && !c.lang.includes(m.language)) return false;
   if((c.culture||[]).length && !c.culture.includes(m.culture)) return false;
   if(c.awards && !m.award) return false;
@@ -1404,7 +1429,7 @@ const setTo=(s,arr)=>{ s.clear(); (arr||[]).forEach(v=>s.add(v)); };
 function applyCascade(c){
   clearFilters();
   setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age); setTo(filt.lang,c.lang);
-  setTo(filt.culture,c.culture||[]);
+  setTo(filt.culture,c.culture||[]); setTo(filt.year,c.year||[]);   // year rides the Filters panel's own chips
   filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via servicesScoped()
   filt.includeUnrated=!!c.includeUnrated;
   filt.budget=c.budget||0; filt.includeUnbudgeted=!!c.includeUnbudgeted; filt.tentpole=c.tentpole||"any";
@@ -1424,7 +1449,7 @@ const sameSet=(s,a)=> s.size===a.length && a.every(v=>s.has(v));
 function cascadeDirty(){
   const c=activeCascade(); if(!c) return false;
   return !sameSet(filt.status,c.status) || !sameSet(filt.genre,c.genre) || !sameSet(filt.age,c.age)
-      || !sameSet(filt.lang,c.lang||[]) || !sameSet(filt.culture,c.culture||[])
+      || !sameSet(filt.lang,c.lang||[]) || !sameSet(filt.culture,c.culture||[]) || !sameSet(filt.year,c.year||[])
       || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards
       || filt.includeUnrated!==!!c.includeUnrated || filt.sort!==(c.sort||"imdb")
       || filt.budget!==(c.budget||0) || filt.includeUnbudgeted!==!!c.includeUnbudgeted
@@ -1433,7 +1458,7 @@ function cascadeDirty(){
 window.saveCascadeEdits=()=>{
   const c=activeCascade(); if(!c) return;
   c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age]; c.lang=[...filt.lang];
-  c.culture=[...filt.culture];
+  c.culture=[...filt.culture]; c.year=[...filt.year];
   c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards; c.sort=filt.sort;
   c.includeUnrated=filt.includeUnrated; c.ratingStop=stopFor(c.imdb);
   c.budget=filt.budget; c.includeUnbudgeted=filt.includeUnbudgeted; c.tentpole=filt.tentpole;
@@ -1757,7 +1782,7 @@ function commitDraft(){
   const isNew=!draft.id;
   const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
   Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
-    age:draft.age, lang:draft.lang, culture:draft.culture, imdb:draft.imdb, rt:draft.rt,
+    age:draft.age, lang:draft.lang, culture:draft.culture, year:draft.year, imdb:draft.imdb, rt:draft.rt,
     ratingStop:draft.ratingStop, includeUnrated:draft.includeUnrated,
     budget:draft.budget, includeUnbudgeted:draft.includeUnbudgeted, tentpole:draft.tentpole,
     awards:draft.awards, myServices:draft.myServices,
@@ -2013,6 +2038,12 @@ function buildQuality(){
       <div class="qhead"><span class="qt">Audience / origin</span><span class="qcap" style="margin:0" id="cCultCap"></span></div>
       <div class="chips" id="cCultChips"></div>
       <div class="qcap">Where a film was made for, from its original language and production countries.</div>
+    </div>
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Release year</span><span class="qcap" style="margin:0" id="cYearCap"></span></div>
+      <div class="chips" id="cYearChips"></div>
+      <div class="qcap">Leave it open for anything, or pin the years — that's how a rewatch radar
+        keeps this year's releases out of it.</div>
     </div>`;
 
   // Cumulative: choosing M means G, PG and M — one tap, not three. "Any" clears the constraint.
@@ -2068,6 +2099,9 @@ function syncQuality(){
   $("cGenreCap").textContent=draft.genre.length?`${draft.genre.length} on`:"Any";
   $("cLangCap").textContent=draft.lang.length?draft.lang.map(langName).join(", "):"Any";
   $("cCultCap").textContent=draft.culture.length?draft.culture.join(", "):"Any";
+  $("cYearCap").textContent=draft.year.length
+    ? (draft.year.length===EARLIER_YEARS.length && !draft.year.includes(CURRENT_YEAR) ? "Earlier years" : draft.year.length+" on")
+    : "Any";
   const sel=ageSel();
   $("cAgeCap").textContent = sel<0 ? "Any" : "Up to "+AGE_LEVELS[sel];
   [...$("cAgeLoz").children].forEach(b=>{
@@ -2090,6 +2124,7 @@ function openEditor(title){
   buildEditorChips("cGenreChips", ALL_GENRES, "genre", null, ()=>"gen");
   buildEditorChips("cLangChips", ALL_LANGS, "lang", c=>`${langName(c)} · ${LANG_COUNT[c]}`, ()=>"gen");
   buildEditorChips("cCultChips", ALL_CULTURES, "culture", c=>`${c} · ${CULTURE_COUNT[c]}`, ()=>"gen");
+  buildEditorChips("cYearChips", ALL_YEARS, "year", y=>`${y} · ${yearCount(y)}`, ()=>"yr");
   syncQuality(); refreshDraft();
 }
 function buildEditorChips(el, values, key, label, cls){
