@@ -202,27 +202,54 @@
     font-size:13px;font-weight:600;box-shadow:0 8px 30px rgba(0,0,0,.5);opacity:0;pointer-events:none;
     transition:all .25s ease;max-width:420px;text-align:center;line-height:1.4}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  /* ---- My Cascades (saved living searches) ---- */
-  .cascbar{padding:11px 12px 2px}
-  .casclbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin-bottom:7px}
-  .cascchips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
-  .cascchips::-webkit-scrollbar{display:none}
-  .cascchip{flex-shrink:0;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:20px;cursor:pointer;
-    background:var(--panel2);border:1px solid var(--line);color:var(--dim);white-space:nowrap}
-  .cascchip.on{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
-  .cascchip.new{border-style:dashed;color:var(--accent);border-color:#4c4270}
-  .casccta{font-size:12px;color:var(--faint);line-height:1.5;margin-top:8px}
-  .cascactive{margin-top:9px;background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(72,199,142,.08));
-    border:1px solid var(--accent);border-radius:12px;padding:10px 12px;display:flex;align-items:center;gap:10px}
-  .ca-l{flex:1;min-width:0}
-  .ca-name{font-size:13.5px;font-weight:800}
-  .ca-sub{font-size:11px;color:var(--dim);margin-top:3px;line-height:1.4}
-  .ca-r{display:flex;gap:6px;flex-shrink:0}
+  /* ---- My Cascades — coverflow deck (the chip row clipped once you had a few) ---- */
+  .cascbar{--dcw:206px;--dgap:12px;padding:11px 0 2px}
+  .casclbl{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;
+    margin:0 12px 4px}
+  .deck{position:relative}
+  .deck::before,.deck::after{content:"";position:absolute;top:0;bottom:0;width:22px;z-index:6;pointer-events:none}
+  .deck::before{left:0;background:linear-gradient(90deg,var(--bg),rgba(14,17,22,0))}
+  .deck::after{right:0;background:linear-gradient(270deg,var(--bg),rgba(14,17,22,0))}
+  .deckstrip{position:relative;display:flex;gap:var(--dgap);align-items:stretch;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;perspective:900px;
+    padding:12px calc(50% - var(--dcw)/2) 16px;outline:none}
+  .deckstrip::-webkit-scrollbar{display:none}
+  .deckstrip.dragging{scroll-snap-type:none;cursor:grabbing}
+  /* The card is the snap box and stays UNtransformed — scroll-snap measures the transformed border box,
+     so putting the coverflow transform on .dcard itself would fight the snap. It goes on .dc-in instead. */
+  .dcard{position:relative;flex:0 0 var(--dcw);width:var(--dcw);min-height:118px;scroll-snap-align:center;
+    display:flex;cursor:pointer}
+  .dc-in{flex:1;min-width:0;display:flex;flex-direction:column;text-align:left;
+    background:var(--panel2);border:1px solid var(--line);border-radius:14px;padding:11px 12px;color:var(--dim);
+    transform-origin:50% 50%;box-shadow:0 8px 22px rgba(0,0,0,.4);will-change:transform}
+  .dcard:focus-visible{outline:none}
+  .dcard:focus-visible .dc-in{outline:2px solid var(--accent);outline-offset:2px}
+  .dcard.is-centre .dc-in{background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(72,199,142,.08));
+    border-color:var(--accent);color:var(--ink)}
+  .dc-icon{font-size:18px;line-height:1}
+  .dc-name{font-size:13.5px;font-weight:800;margin-top:7px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dcard.is-centre.is-active .dc-name{color:#cfc2ff}
+  .dc-sub{font-size:11px;color:var(--dim);margin-top:4px;line-height:1.4;display:none}
+  .dcard.is-centre .dc-sub{display:block}
+  .dc-acts{display:none;gap:6px;margin-top:auto;padding-top:9px}
+  .dcard.is-centre.is-active .dc-acts,.dcard.new.is-centre .dc-acts{display:flex}
+  .dcard.new .dc-in{border-style:dashed;border-color:#4c4270}
+  .dcard.new .dc-icon,.dcard.new .dc-name{color:var(--accent)}
+  .casccta{font-size:12px;color:var(--faint);line-height:1.5;margin:0 12px}
   .ca-btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;
     padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
   .ca-btn.save{background:rgba(72,199,142,.2);border-color:var(--green);color:#a7eccb}
   .ca-btn.x{padding:6px 9px;color:var(--dim)}
+  .ca-btn.new{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff;flex:1}
   .dirty{font-style:italic;color:#ffce8f}
+  #cascDetail{margin-top:2px}
+  #cascDetail .warnnote{margin:0 12px 6px}
+  @media (max-width:400px){ .cascbar{--dcw:178px} }
+  /* Reduced motion: no coverflow transform — a plain horizontal snap-scroll (the JS clears the inline styles too) */
+  @media (prefers-reduced-motion:reduce){
+    .deckstrip{scroll-behavior:auto}
+    .dc-in{transform:none!important;filter:none!important;opacity:1!important}
+  }
   /* template picker */
   .tplgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .tpl{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px;cursor:pointer;
@@ -356,7 +383,13 @@
     </div>
   </header>
 
-  <div class="cascbar" id="cascbar"></div>
+  <div class="cascbar" id="cascbar">
+    <div class="casclbl" id="cascLbl">My Cascades</div>
+    <div class="deck">
+      <div class="deckstrip" id="cascStrip" role="listbox" aria-label="My Cascades" aria-orientation="horizontal"></div>
+    </div>
+    <div id="cascDetail"></div>
+  </div>
   <div class="count" id="count"></div>
   <div id="groups"></div>
 </div>
@@ -1018,9 +1051,10 @@ function applyCascade(c){
   filt.sort=c.sort||"imdb";                                      // Blockbuster radar leads with budget
   syncFilterUI();
 }
+// Opening is idempotent: landing a card in the deck's centre IS selecting it, so this can be called
+// with the already-open Cascade. Closing is the centre card's × — never a side-effect of selection.
 window.openCascade=id=>{
-  const c=cascades.find(x=>x.id===id); if(!c) return;
-  if(activeId===id){ closeCascade(); return; }             // tapping the open Cascade's chip closes it
+  const c=cascades.find(x=>x.id===id); if(!c || activeId===id) return;
   setActive(id); applyCascade(c); render();
   toast(`${c.icon} “${c.name}” — ${countCriteria(c)} films · ${alertSummary(c)}`);
 };
@@ -1040,31 +1074,192 @@ window.saveCascadeEdits=()=>{
   saveCascades(); render(); toast(`✅ Saved changes to “${c.name}”`);
 };
 
+// ---- My Cascades — coverflow deck ---------------------------------------------
+// The old chip row clipped once you had a few Cascades, and took "+ New Cascade" off-screen with it.
+// The deck is a centre-snapping scroller: the centred card is the selected one, "+ New" is a permanent
+// card at the right end, and depth (scale/rotate/blur) is applied per frame from each card's LAYOUT
+// position — offsetLeft, NOT getBoundingClientRect, which would feed our own transforms back in.
+const deckStrip=$("cascStrip");
+const deckMotion=matchMedia("(prefers-reduced-motion: reduce)");
+const deckCards=()=>[...deckStrip.children];
+const deckCount=()=>cascades.length+1;              // +1 = the "+ New Cascade" card
+const cascSig=()=>cascades.map(c=>c.id+"|"+c.icon+"|"+c.name).join("~");
+let deckIdx=0;          // centred card
+let deckSig=null;       // cards are rebuilt only when the Cascade list itself changes — never mid-scroll
+let deckHold=false;     // a programmatic re-centre must not re-fire selection when it settles
+let deckHoldT=null, deckSettleT=null, deckRaf=0, deckDragged=false, drag=null;
+
+function deckNearest(){
+  const mid=deckStrip.scrollLeft+deckStrip.clientWidth/2;
+  let best=0, bestD=Infinity;
+  deckCards().forEach((el,i)=>{
+    const d=Math.abs(el.offsetLeft+el.offsetWidth/2-mid);
+    if(d<bestD){ bestD=d; best=i; }
+  });
+  return best;
+}
+function deckPaint(){
+  const flat=deckMotion.matches;
+  const mid=deckStrip.scrollLeft+deckStrip.clientWidth/2;
+  deckCards().forEach(el=>{
+    const inner=el.firstElementChild;
+    if(flat){ inner.style.cssText=""; el.style.zIndex=""; return; }   // reduced motion → plain snap-scroll
+    const d=(el.offsetLeft+el.offsetWidth/2-mid)/(el.offsetWidth+12); // distance from centre, in cards
+    const a=Math.min(Math.abs(d),3);
+    inner.style.transform=`translateX(${-d*34}px) rotateY(${Math.max(-34,Math.min(34,-d*24))}deg) scale(${1-.13*a})`;
+    inner.style.filter=a>.12?`blur(${Math.min(2.4,1.3*(a-.12))}px)`:"";
+    inner.style.opacity=String(Math.max(.3,1-.3*a));
+    el.style.zIndex=String(50-Math.round(a*10));
+  });
+}
+function deckCentre(i,smooth){
+  const el=deckCards()[i]; if(!el) return;
+  const left=el.offsetLeft+el.offsetWidth/2-deckStrip.clientWidth/2;
+  if(Math.abs(left-deckStrip.scrollLeft)<2) return;   // already there — don't arm the hold for a scroll that won't come
+  deckHold=true; clearTimeout(deckHoldT); deckHoldT=setTimeout(()=>{deckHold=false;},700);
+  deckStrip.scrollTo({left, behavior:(smooth && !deckMotion.matches)?"smooth":"auto"});
+}
+function deckFocus(i,moveDom){
+  deckIdx=Math.max(0,Math.min(deckCount()-1,i));
+  deckCards().forEach((el,j)=>{
+    el.tabIndex=j===deckIdx?0:-1;                     // roving tabindex — one stop for the whole deck
+    el.classList.toggle("is-centre",j===deckIdx);
+    el.setAttribute("aria-selected",String(j===deckIdx));
+  });
+  if(moveDom) deckCards()[deckIdx]?.focus({preventScroll:true});
+}
+// Centring the "+ New" card selects nothing — browsing past your Cascades must not close the open one.
+const deckSelect=i=>{ if(i<cascades.length) openCascade(cascades[i].id); };
+function deckGo(i,moveDom){
+  const n=Math.max(0,Math.min(deckCount()-1,i));
+  deckFocus(n,moveDom); deckCentre(n,true); deckSelect(n);
+}
+function deckBuild(){
+  deckStrip.innerHTML=cascades.map(c=>`
+    <div class="dcard" role="option" aria-selected="false" tabindex="-1" data-id="${c.id}"><div class="dc-in">
+      <div class="dc-icon">${c.icon}</div>
+      <div class="dc-name">${esc(c.name)}</div>
+      <div class="dc-sub"></div>
+      <div class="dc-acts">
+        <button class="ca-btn save" data-act="save" hidden>Save</button>
+        <button class="ca-btn" data-act="edit">Edit</button>
+        <button class="ca-btn x" data-act="close" aria-label="Close this Cascade" title="Close this Cascade">×</button>
+      </div>
+    </div></div>`).join("")
+  + `<div class="dcard new" role="option" aria-selected="false" tabindex="-1"><div class="dc-in">
+      <div class="dc-icon">＋</div>
+      <div class="dc-name">New Cascade</div>
+      <div class="dc-sub">Save a search once — Cascade keeps watching it for you.</div>
+      <div class="dc-acts"><button class="ca-btn new" data-act="new">Create</button></div>
+    </div></div>`;
+}
+function deckSync(shown){
+  const sig=cascSig();
+  if(sig!==deckSig){
+    deckSig=sig; deckBuild();
+    const ai=cascades.findIndex(c=>c.id===activeId);
+    deckFocus(ai>=0?ai:Math.min(deckIdx,deckCount()-1),false);
+    deckCentre(deckIdx,false);
+  } else {
+    deckFocus(deckIdx,false);
+  }
+  const dirty=cascadeDirty();
+  deckCards().forEach((el,i)=>{
+    if(i>=cascades.length) return;
+    const c=cascades[i], on=c.id===activeId;
+    const n=on?shown:countCriteria(c);               // real counts on every card — the open one shows what's on screen
+    el.classList.toggle("is-active",on);
+    el.querySelector(".dc-icon").textContent=c.icon;
+    el.querySelector(".dc-name").innerHTML=`${esc(c.name)}${on&&dirty?' <span class="dirty">· edited</span>':""}`;
+    el.querySelector(".dc-sub").textContent=
+      `${n} film${n===1?"":"s"} ${on?"right now":"match now"} · ${alertSummary(c)}${c.myServices?" · my services":""}`;
+    el.querySelector('[data-act="save"]').hidden=!(on&&dirty);
+  });
+  deckPaint();
+}
+deckStrip.addEventListener("scroll",()=>{
+  if(!deckRaf) deckRaf=requestAnimationFrame(()=>{ deckRaf=0; deckPaint(); });
+  clearTimeout(deckSettleT);
+  deckSettleT=setTimeout(()=>{                       // settled: whatever landed in the centre is now selected
+    const i=deckNearest();
+    if(deckHold){ deckHold=false; deckFocus(i,false); return; }
+    deckGo(i,false);
+  },120);
+},{passive:true});
+deckStrip.addEventListener("keydown",e=>{
+  const last=deckCount()-1;
+  if(e.key==="Enter"||e.key===" "){
+    e.preventDefault();
+    if(deckIdx>=cascades.length) newCascade();
+    else if(cascades[deckIdx].id===activeId) editCascade();   // already centred + open → Enter edits it
+    else deckSelect(deckIdx);
+    return;
+  }
+  const to=e.key==="ArrowRight"?deckIdx+1 : e.key==="ArrowLeft"?deckIdx-1
+         : e.key==="Home"?0 : e.key==="End"?last : null;
+  if(to===null) return;
+  e.preventDefault(); deckGo(to,true);
+});
+// Wheel steps card-by-card rather than nudging scrollLeft — a free-running wheel fights the mandatory snap.
+let wheelAcc=0, wheelLock=0;
+deckStrip.addEventListener("wheel",e=>{
+  const d=Math.abs(e.deltaX)>Math.abs(e.deltaY)?e.deltaX:e.deltaY;
+  const to=deckIdx+(d>0?1:-1);
+  if(to<0||to>=deckCount()) return;                  // at an end — leave the wheel to the page
+  e.preventDefault();
+  const now=performance.now();
+  if(now<wheelLock) return;
+  wheelAcc=(wheelAcc>0)===(d>0) ? wheelAcc+d : d;    // direction flip restarts the accumulator
+  if(Math.abs(wheelAcc)<26) return;
+  wheelAcc=0; wheelLock=now+200; deckGo(to,false);
+},{passive:false});
+// Mouse drag. Touch is left alone: native momentum + snap already do exactly what we want.
+deckStrip.addEventListener("pointerdown",e=>{
+  if(e.pointerType!=="mouse"||e.button!==0||e.target.closest("button")) return;
+  drag={x:e.clientX,left:deckStrip.scrollLeft,moved:0,id:e.pointerId}; deckDragged=false;
+  deckStrip.classList.add("dragging");
+});
+deckStrip.addEventListener("pointermove",e=>{
+  if(!drag||e.pointerId!==drag.id) return;
+  const dx=e.clientX-drag.x;
+  drag.moved=Math.max(drag.moved,Math.abs(dx));
+  if(drag.moved>4&&!drag.cap){ drag.cap=true; deckDragged=true; deckStrip.setPointerCapture(e.pointerId); }
+  deckStrip.scrollLeft=drag.left-dx;                 // the scroll listener's settle does the snap + select
+});
+const deckDragEnd=()=>{
+  if(!drag) return;
+  if(drag.cap){ try{ deckStrip.releasePointerCapture(drag.id); }catch(_){} }
+  drag=null; deckStrip.classList.remove("dragging");
+};
+deckStrip.addEventListener("pointerup",deckDragEnd);
+deckStrip.addEventListener("pointercancel",deckDragEnd);
+deckStrip.addEventListener("click",e=>{
+  const card=e.target.closest(".dcard"); if(!card) return;
+  const act=e.target.closest("button[data-act]")?.dataset.act;
+  if(act==="new") return newCascade();
+  if(act==="edit") return editCascade();
+  if(act==="close") return closeCascade();
+  if(act==="save") return saveCascadeEdits();
+  if(deckDragged) return;                            // that click was the end of a drag
+  const i=deckCards().indexOf(card);
+  if(i>=cascades.length){ deckFocus(i,true); deckCentre(i,true); return newCascade(); }
+  deckGo(i,true);
+});
+let deckResizeT=null;
+addEventListener("resize",()=>{ clearTimeout(deckResizeT); deckResizeT=setTimeout(()=>{ deckCentre(deckIdx,false); deckPaint(); },140); });
+deckMotion.addEventListener("change",()=>{ deckCentre(deckIdx,false); deckPaint(); });
+
 function renderCascadeBar(shown){
+  deckSync(shown);
   const c=activeCascade();
-  let html=`<div class="casclbl">My Cascades</div><div class="cascchips">`;
-  html+=cascades.map(x=>`<button class="cascchip ${x.id===activeId?"on":""}" onclick="openCascade('${x.id}')">${x.icon} ${esc(x.name)}</button>`).join("");
-  html+=`<button class="cascchip new" onclick="newCascade()">+ New Cascade</button></div>`;
+  let html="";
   if(!cascades.length)
     html+=`<div class="casccta">Save a search once and Cascade keeps watching it for you — like a saved property alert, for films.</div>`;
-  if(c){
-    const dirty=cascadeDirty();
-    html+=`<div class="cascactive">
-      <div class="ca-l">
-        <div class="ca-name">${c.icon} ${esc(c.name)} ${dirty?'<span class="dirty">· edited</span>':""}</div>
-        <div class="ca-sub">${shown} film${shown===1?"":"s"} right now · ${alertSummary(c)}${c.myServices?" · my services":""}</div>
-      </div>
-      <div class="ca-r">
-        ${dirty?'<button class="ca-btn save" onclick="saveCascadeEdits()">Save</button>':""}
-        <button class="ca-btn" onclick="editCascade()">Edit</button>
-        <button class="ca-btn x" onclick="closeCascade()" title="Close this Cascade">×</button>
-      </div></div>`;
-    // Scoped to my services with none picked: the scope is silently inert. Say it, and give the way out.
-    if(c.myServices && !servicesPicked())
-      html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services — but you haven't picked any
-        yet, so it's showing everything.<br>${pickServicesCTA()}</div>`;
-  }
-  $("cascbar").innerHTML=html;
+  // Scoped to my services with none picked: the scope is silently inert. Say it, and give the way out.
+  if(c && c.myServices && !servicesPicked())
+    html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services — but you haven't picked any
+      yet, so it's showing everything.<br>${pickServicesCTA()}</div>`;
+  $("cascDetail").innerHTML=html;
 }
 
 // ---- Plain-English setup (PREVIEW) --------------------------------------------
