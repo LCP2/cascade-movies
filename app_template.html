@@ -64,6 +64,7 @@
   .chip{font-size:12px;padding:6px 11px;border-radius:20px;border:1px solid var(--line);
     background:var(--panel2);color:var(--dim);cursor:pointer;user-select:none;font-weight:600}
   .chip.on{color:#fff}
+  .chip.on.st-upcoming{background:rgba(107,114,128,.25);border-color:var(--grey);color:#c8cfd9}
   .chip.on.st-opening_week{background:rgba(255,107,107,.22);border-color:var(--open);color:#ffc2c2}
   .chip.on.st-in_cinema{background:rgba(240,163,54,.22);border-color:var(--amber);color:#ffce8f}
   .chip.on.st-pvod{background:rgba(164,134,240,.22);border-color:var(--purple);color:#d3c2ff}
@@ -272,6 +273,7 @@
         <option value="imdb">IMDb ▾</option>
         <option value="rt">RT critic</option>
         <option value="gross">Box office</option>
+        <option value="budget">Budget (tentpoles)</option>
         <option value="cinema">Newest cinema</option>
         <option value="title">Title A–Z</option>
       </select>
@@ -386,7 +388,10 @@ const MOVIES = __MOVIES_JSON__;
 const TODAY  = "__TODAY__";
 
 const PVOD_MIN = 19.99, RENTAL_MAX = 9.99, OPENING_WEEK_DAYS = 7;
-const CASCADE = ["opening_week","in_cinema","pvod","rental","included_streaming","upcoming"];
+// Journey order — Upcoming leads (a film reaches cinemas before any home window).
+// primaryStatus() takes the LAST window a film holds, so "upcoming" sitting first is safe:
+// an upcoming film holds only that one, and a released film never holds it.
+const CASCADE = ["upcoming","opening_week","in_cinema","pvod","rental","included_streaming"];
 const STATUS_LABEL = {
   opening_week:"In Cinema · Opening week", in_cinema:"In Cinema",
   pvod:"Premium Buy/Rent (~$30)", rental:"Standard Rental (~$7)",
@@ -497,7 +502,7 @@ function addChips(el, values, set, cls, label){
   });
 }
 function onChipToggle(cls){ if(cls==="svc"){ savePrefs(); updatePrefBtn(); } }
-CASCADE.filter(s=>s!=="upcoming").forEach(s=>{
+CASCADE.forEach(s=>{
   const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s]; c.dataset.val=s;
   c.onclick=()=>{c.classList.toggle("on"); filt.status.has(s)?filt.status.delete(s):filt.status.add(s); render();};
   $("statusChips").appendChild(c);
@@ -567,6 +572,7 @@ function syncFilterUI(){
   $("grossMin").value=filt.gross;
   $("search").value=filt.search; $("searchClear").classList.toggle("show", !!filt.search);
   $("trackedBtn").classList.toggle("active", filt.trackedOnly);
+  $("sort").value=filt.sort;
 }
 $("resetBtn").onclick=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
 
@@ -610,6 +616,7 @@ function sortMovies(a,b){
   switch(filt.sort){
     case "rt": return (b.rt_critic||0)-(a.rt_critic||0);
     case "gross": return (b.worldwide_gross||0)-(a.worldwide_gross||0);
+    case "budget": return (b.budget||0)-(a.budget||0);   // tentpoles first — the Upcoming group has no gross yet
     case "cinema": return (b.cinema_date||"").localeCompare(a.cinema_date||"");
     case "title": return a.title.localeCompare(b.title);
     default: return (b.imdb_rating||0)-(a.imdb_rating||0);
@@ -750,13 +757,14 @@ const CASCADE_TEMPLATES = [
    crit:{status:[], genre:[], age:[], imdb:0, rt:0, awards:true, myServices:false}},
   {key:"genre_fan", icon:"🎃", name:"Genre superfan", blurb:"A standing radar for one genre — horror to start",
    crit:{status:[], genre:["Horror"], age:[], imdb:0, rt:0, awards:false, myServices:false}},
+  {key:"blockbuster", icon:"💥", name:"Blockbuster radar", blurb:"Tentpoles heading for cinemas, biggest budget first",
+   crit:{status:["upcoming"], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false, sort:"budget"}},
   {key:"custom", icon:"⚙️", name:"Custom", blurb:"Start from a sensible baseline and tune it",
    crit:{status:[], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:false}},
 ];
 // Honesty guardrail: templates the current data can't actually serve are shown as unavailable,
 // with the real reason — never wired up to fake a result.
 const CASCADE_TEMPLATES_SOON = [
-  {icon:"💥", name:"Blockbuster radar", blurb:"Tentpoles as they hit cinemas", why:"Needs the upcoming-releases ingest"},
   {icon:"⏳", name:"Leaving soon", blurb:"Last chance before it leaves", why:"No cinema-exit / removal dates in the data"},
 ];
 
@@ -786,6 +794,7 @@ function applyCascade(c){
   clearFilters();
   setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age);
   filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via servicesScoped()
+  filt.sort=c.sort||"imdb";                                      // Blockbuster radar leads with budget
   syncFilterUI();
 }
 window.openCascade=id=>{
@@ -800,12 +809,13 @@ const sameSet=(s,a)=> s.size===a.length && a.every(v=>s.has(v));
 function cascadeDirty(){
   const c=activeCascade(); if(!c) return false;
   return !sameSet(filt.status,c.status) || !sameSet(filt.genre,c.genre) || !sameSet(filt.age,c.age)
-      || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards;
+      || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards
+      || filt.sort!==(c.sort||"imdb");
 }
 window.saveCascadeEdits=()=>{
   const c=activeCascade(); if(!c) return;
   c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age];
-  c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards;
+  c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards; c.sort=filt.sort;
   saveCascades(); render(); toast(`✅ Saved changes to “${c.name}”`);
 };
 
@@ -873,7 +883,7 @@ function openEditor(title){
   $("tplPane").style.display="none"; $("editPane").style.display="";
   $("cName").value=draft.name;
   $("cDelete").style.display = draft.id ? "" : "none";
-  buildEditorChips("cStatusChips", CASCADE.filter(s=>s!=="upcoming"), "status", s=>STATUS_LABEL[s], s=>"st-"+s);
+  buildEditorChips("cStatusChips", CASCADE, "status", s=>STATUS_LABEL[s], s=>"st-"+s);
   buildEditorChips("cGenreChips", [...new Set(MOVIES.flatMap(m=>m.genres||[]))].sort(), "genre", null, ()=>"gen");
   buildEditorChips("cAgeChips", [...new Set(MOVIES.map(m=>m.age_rating).filter(Boolean))]
       .sort((a,b)=>{const ia=AGE_ORDER.indexOf(a),ib=AGE_ORDER.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}),
@@ -924,7 +934,8 @@ $("cApply").onclick=()=>{
   const isNew=!draft.id;
   const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
   Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
-    age:draft.age, imdb:draft.imdb, rt:draft.rt, awards:draft.awards, myServices:draft.myServices, alerts:draft.alerts});
+    age:draft.age, imdb:draft.imdb, rt:draft.rt, awards:draft.awards, myServices:draft.myServices,
+    sort:draft.sort||"imdb", alerts:draft.alerts});
   if(isNew) cascades.push(c);
   saveCascades(); setActive(c.id); applyCascade(c); closeModal($("builder")); render();
   toast(isNew ? `${c.icon} Created “${c.name}” — ${countCriteria(c)} films · ${alertSummary(c)}`
