@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-13",
+  "generated": "2026-07-14",
   "region": "AU",
   "currency": "AUD",
   "live": true,
@@ -545,7 +545,7 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
@@ -557,13 +557,13 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -575,7 +575,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         }
       ],
       "status": [
@@ -748,19 +748,19 @@
         {
           "service": "Amazon",
           "type": "rent",
-          "price": 6.99,
+          "price": 4.99,
           "format": "4K"
         },
         {
           "service": "Amazon",
           "type": "rent",
-          "price": 6.99,
+          "price": 4.99,
           "format": "SD"
         },
         {
           "service": "Amazon",
           "type": "rent",
-          "price": 6.99,
+          "price": 4.99,
           "format": "HD"
         },
         {
@@ -983,7 +983,7 @@
         "2JuEmP6uHqs",
         "35kFpZ3Y10Q"
       ],
-      "director": "Michael Jelenic, Aaron Horvath",
+      "director": "Aaron Horvath, Michael Jelenic",
       "cast": [
         "Chris Pratt",
         "Anya Taylor-Joy",
@@ -1087,7 +1087,7 @@
       ],
       "cinema_date": "2026-07-09",
       "age_rating": "R 18+",
-      "worldwide_gross": 40700000,
+      "worldwide_gross": 25031978,
       "budget": 20000000,
       "synopsis": "After her husband's abrupt death, a woman seeks solace with her in-laws. As they transform into Deadites one by one, she comes to discover that the vows she took in life survive even in death.",
       "language": "en",
@@ -1166,16 +1166,22 @@
           "service": "Amazon",
           "type": "buy",
           "price": 24.99,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 24.99,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 24.99,
           "format": "SD"
         },
         {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
+          "service": "AppleTV",
           "type": "buy",
           "price": 24.99,
           "format": "4K"
@@ -1190,7 +1196,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 24.99,
-          "format": "4K"
+          "format": "SD"
         }
       ],
       "status": [
@@ -1350,11 +1356,11 @@
       "poster": "/vrTlRYPhnf107vbTiDf6DRrdV3r.jpg",
       "trailers": [
         "a_G7XFjggI8",
+        "6LHjHY-WHL4",
         "aSxYl3qbN8Y",
-        "RO5x9EecfKQ",
-        "ySjj_Y5jfHY"
+        "RO5x9EecfKQ"
       ],
-      "director": "Pierre Coffin, James",
+      "director": "Pierre Coffin",
       "cast": [
         "Pierre Coffin",
         "Trey Parker",
@@ -1436,7 +1442,7 @@
       "synopsis": "George Hardy is a shepherd who reads detective novels to his beloved sheep every night, assuming they can't possibly understand. But when a mysterious incident disrupts life on the farm, the sheep realize they must become the detectives. As they follow the clues and investigate human suspects, they prove that even sheep can be brilliant crime-solvers.",
       "language": "en",
       "culture": "Western",
-      "poster": "/iKy5460GdsoknM8ppmGlJbKxAKa.jpg",
+      "poster": "/mGWOmj2jHFol3kOGNv1EhbSDDE1.jpg",
       "trailers": [
         "kIGsC3Vk-ZA",
         "E0RYuyLNVQA",
@@ -1854,7 +1860,7 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
@@ -1866,13 +1872,13 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -1884,7 +1890,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
@@ -2272,7 +2278,7 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
@@ -2284,13 +2290,13 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -2302,7 +2308,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
@@ -2755,31 +2761,31 @@
           "service": "Amazon",
           "type": "buy",
           "price": 24.99,
-          "format": "HD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
           "type": "buy",
           "price": 24.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
           "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "HD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 24.99,
           "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "4K"
         }
       ],
       "status": [
@@ -2998,31 +3004,31 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "HD"
         },
         {
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
           "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
           "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
@@ -3954,31 +3960,31 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "HD"
         },
         {
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
           "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
           "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
@@ -4315,7 +4321,7 @@
           "service": "Amazon",
           "type": "buy",
           "price": 9.99,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
@@ -4327,13 +4333,13 @@
           "service": "Amazon",
           "type": "buy",
           "price": 9.99,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 9.99,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -4345,7 +4351,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 9.99,
-          "format": "4K"
+          "format": "SD"
         }
       ],
       "status": [
@@ -5095,7 +5101,7 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
@@ -5107,13 +5113,13 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -5125,7 +5131,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
@@ -5348,7 +5354,7 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "Amazon",
@@ -5360,13 +5366,13 @@
           "service": "Amazon",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "SD"
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -5378,7 +5384,7 @@
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
-          "format": "4K"
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
@@ -5671,37 +5677,37 @@
           "service": "Amazon",
           "type": "buy",
           "price": 24.99,
-          "format": "SD"
+          "format": "HD"
         },
         {
           "service": "Amazon",
           "type": "buy",
           "price": 24.99,
-          "format": "HD"
+          "format": "SD"
         },
         {
           "service": "Fetch TV",
           "type": "buy",
-          "price": 24.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
           "price": 19.98,
           "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
           "price": 19.98,
           "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
         }
       ],
       "status": [
@@ -5709,6 +5715,512 @@
       ],
       "window_dates": {
         "included_streaming": "2026-07-13"
+      }
+    },
+    {
+      "tmdb_id": 1368337,
+      "imdb_id": "tt33764258",
+      "title": "The Odyssey",
+      "year": "2026",
+      "genres": [
+        "Adventure",
+        "Action",
+        "Fantasy"
+      ],
+      "cinema_date": "2026-07-16",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": 250000000,
+      "synopsis": "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/5rhTDKUhPYvpdQIijFIs5VoWsON.jpg",
+      "trailers": [
+        "AyIZ9tiiN8I",
+        "ie6k69mpHHI",
+        "f_bKjZeJBBI",
+        "Mzw2ttJD2qQ"
+      ],
+      "director": "Christopher Nolan",
+      "cast": [
+        "Matt Damon",
+        "Tom Holland",
+        "Anne Hathaway",
+        "Robert Pattinson"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "1 win total",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 969681,
+      "imdb_id": "tt22084616",
+      "title": "Spider-Man: Brand New Day",
+      "year": "2026",
+      "genres": [
+        "Science Fiction",
+        "Action",
+        "Adventure"
+      ],
+      "cinema_date": "2026-07-30",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": null,
+      "synopsis": "Fighting crime full-time as Spider-Man in a world that doesn't remember him\u2014and the pressure of seeing his old friends move on without him\u2014sparks a change in Peter Parker he may not have the power to control. But that transformation might also be the only thing that can stop a shocking new threat to the city and those he loves - a powerful villain no one can even see.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/yyB2VJEW3an2xCdcYCPQhn9QERR.jpg",
+      "trailers": [
+        "8vXGGMrrH48",
+        "f0EzGMi4H5c",
+        "cH4w04AGftI",
+        "bHYEaSZA2YQ"
+      ],
+      "director": "Destin Daniel Cretton",
+      "cast": [
+        "Tom Holland",
+        "Zendaya",
+        "Sadie Sink",
+        "Jacob Batalon"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "1 nomination total",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1545621,
+      "imdb_id": "tt39123115",
+      "title": "Detective Conan: Fallen Angel of the Highway",
+      "year": "2026",
+      "genres": [
+        "Animation",
+        "Action",
+        "Mystery",
+        "Crime"
+      ],
+      "cinema_date": "2026-07-23",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": null,
+      "synopsis": "When a string of deadly highway incidents begin, Conan Edogawa's investigations point towards an orchestrated plot rather than mere accidents. As he uncovers a conspiracy involving hidden identities and advanced technology, the case escalates into a high-speed race against time to stop a calculating mastermind before more lives are lost.",
+      "language": "ja",
+      "culture": "Japanese",
+      "poster": "/tqlOfb1ekyVYpDumiL9MsK6uirw.jpg",
+      "trailers": [
+        "wCPXkbMMWKQ",
+        "e3eH661jY-Q",
+        "x02SHu0a-sY",
+        "-OmZGxr23hY"
+      ],
+      "director": "Takahiro Hasui",
+      "cast": [
+        "Minami Takayama",
+        "Wakana Yamazaki",
+        "Rikiya Koyama",
+        "Megumi Hayashibara"
+      ],
+      "imdb_rating": 6.5,
+      "imdb_votes": 176,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1308767,
+      "imdb_id": "tt32104007",
+      "title": "Young Washington",
+      "year": "2026",
+      "genres": [
+        "History",
+        "War",
+        "Drama"
+      ],
+      "cinema_date": "2026-08-06",
+      "age_rating": "M",
+      "worldwide_gross": 33105849,
+      "budget": 20000000,
+      "synopsis": "Before he led a nation, George Washington was a young soldier thrown into a global conflict. With alliances crumbling and war closing in, he must choose who to trust and confront the leader he's becoming.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/ntW9zzhDmbt3sXDyPXb7SHVuDdB.jpg",
+      "trailers": [
+        "LJek-kc384w",
+        "_Q3WkycWjLc"
+      ],
+      "director": "Jon Erwin",
+      "cast": [
+        "William Franklyn-Miller",
+        "Ben Kingsley",
+        "Mary-Louise Parker",
+        "Leo Hanna"
+      ],
+      "imdb_rating": 7.3,
+      "imdb_votes": 4171,
+      "metacritic": 49,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1058424,
+      "imdb_id": "tt27369017",
+      "title": "Hope",
+      "year": "2026",
+      "genres": [
+        "Science Fiction",
+        "Mystery",
+        "Action"
+      ],
+      "cinema_date": "2026-09-17",
+      "age_rating": "MA 15+",
+      "worldwide_gross": null,
+      "budget": null,
+      "synopsis": "In the remote South Korean village of Hope Harbor, police chief Bum-seok and officer Sung-ae are called to investigate a mysterious creature wreaking havoc on the community. But all is not as it seems, and perceptions can be misleading. What begins as ignorance plants the seed of disaster, escalating through human conflict into a tragedy of cosmic proportions.",
+      "language": "ko",
+      "culture": "Korean",
+      "poster": "/1n37BJchWHLiSYQkuFxe5KjB951.jpg",
+      "trailers": [
+        "R5jcEBVBEbQ",
+        "Vt7860xZFXk",
+        "ODnHr2Emnf0"
+      ],
+      "director": "Na Hong-jin",
+      "cast": [
+        "Hwang Jung-min",
+        "Zo In-sung",
+        "Hoyeon",
+        "Alicia Vikander"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1101383,
+      "imdb_id": "tt27165187",
+      "title": "The End of Oak Street",
+      "year": "2026",
+      "genres": [
+        "Science Fiction",
+        "Mystery",
+        "Thriller"
+      ],
+      "cinema_date": "2026-08-13",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": 85000000,
+      "synopsis": "After a mysterious cosmic event rips Oak Street from suburbia and transports their neighborhood to someplace unknown, the Platt family soon discovers that their very survival depends on them sticking together as they navigate their now unrecognizable surroundings.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/3SifFCwwFzXdU1Ew0nA4Z92Bs15.jpg",
+      "trailers": [
+        "p4zNsXjPeMU",
+        "dBb0EQSEGAk",
+        "53K8aw3xmwg",
+        "a-cpY1HbMGo"
+      ],
+      "director": "David Robert Mitchell",
+      "cast": [
+        "Anne Hathaway",
+        "Ewan McGregor",
+        "Christian Convery",
+        "Maisy Stella"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1465063,
+      "imdb_id": "tt36583977",
+      "title": "Forgotten Island",
+      "year": "2026",
+      "genres": [
+        "Adventure",
+        "Animation",
+        "Comedy",
+        "Family",
+        "Fantasy"
+      ],
+      "cinema_date": "2026-09-17",
+      "age_rating": "PG",
+      "worldwide_gross": null,
+      "budget": null,
+      "synopsis": "While celebrating their last night together, high school graduates and best friends Jo and Raissa stumble upon a mysterious portal that transports them to the fantastical island of Nakali. When they discover that the memories of their entire friendship are the price for returning home, Jo and Raissa will race to find a way to leave the island before they forget each other forever.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/kW1fH2jZZM5tVHwNaDdUOUXJvWU.jpg",
+      "trailers": [
+        "f7mFVeWnVLw",
+        "a8RHqN93qfo"
+      ],
+      "director": "Januel Mercado, Joel Crawford",
+      "cast": [
+        "H.E.R.",
+        "Liza Soberano",
+        "Dave Franco",
+        "Lea Salonga"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1497970,
+      "imdb_id": "tt37185884",
+      "title": "Tom and Jerry: Forbidden Compass",
+      "year": "2025",
+      "genres": [
+        "Animation",
+        "Comedy",
+        "Family",
+        "Fantasy",
+        "Adventure"
+      ],
+      "cinema_date": "2026-08-13",
+      "age_rating": "PG",
+      "worldwide_gross": 2730116,
+      "budget": null,
+      "synopsis": "During a chase inside a museum, Tom and Jerry find an ancient magical compass and end up being transported through time. Lost in a distant era, they will need to work together to find a way back home.",
+      "language": "zh",
+      "culture": "Chinese",
+      "poster": "/5qttWFjsO62k88civZaDMHiBTvy.jpg",
+      "trailers": [
+        "VBPlpfK6zXg",
+        "lScTuXgrf4k"
+      ],
+      "director": "Zhang Gang",
+      "cast": [
+        "John Shang",
+        "Ruan Yifei",
+        "Jiang Wen",
+        "Shun Zi"
+      ],
+      "imdb_rating": 3.7,
+      "imdb_votes": 447,
+      "award": null,
+      "award_text": "1 nomination total",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1248832,
+      "imdb_id": "tt31450459",
+      "title": "Digger",
+      "year": "2026",
+      "genres": [
+        "Comedy"
+      ],
+      "cinema_date": "2026-10-02",
+      "age_rating": null,
+      "worldwide_gross": null,
+      "budget": 200000000,
+      "synopsis": "The most powerful man in the world embarks on a frantic mission to prove he is humanity's savior before the disaster he's unleashed destroys everything.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/1ATXKrIPJyKNwnJ6lcG088Sa6zi.jpg",
+      "trailers": [
+        "qORTe1wW3Wg",
+        "Pd4Olzi0HEc",
+        "Rd21PhsDHww"
+      ],
+      "director": "Alejandro G. I\u00f1\u00e1rritu",
+      "cast": [
+        "Tom Cruise",
+        "Riz Ahmed",
+        "John Goodman",
+        "Sandra H\u00fcller"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1423191,
+      "imdb_id": "tt35538033",
+      "title": "Resident Evil",
+      "year": "2026",
+      "genres": [
+        "Horror",
+        "Science Fiction",
+        "Thriller"
+      ],
+      "cinema_date": "2026-09-17",
+      "age_rating": null,
+      "worldwide_gross": null,
+      "budget": 80000000,
+      "synopsis": "Bryan, a medical courier, is in the process of making a delivery when a sudden outbreak occurs, forcing him to fight for survival.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/zP83bIkBViw5b1s9bDemYJ3AAgX.jpg",
+      "trailers": [
+        "vjq7I-lNBSU",
+        "SJPu1spHqfk"
+      ],
+      "director": "Zach Cregger",
+      "cast": [
+        "Austin Abrams",
+        "Zach Cherry",
+        "Kali Reis",
+        "Paul Walter Hauser"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1185806,
+      "imdb_id": "tt29356163",
+      "title": "PAW Patrol: The Dino Movie",
+      "year": "2026",
+      "genres": [
+        "Adventure",
+        "Animation",
+        "Comedy",
+        "Family"
+      ],
+      "cinema_date": "2026-09-10",
+      "age_rating": "G",
+      "worldwide_gross": null,
+      "budget": null,
+      "synopsis": "The Paw Patrol lands on a mysterious dinosaur island after a storm, where they meet Rex, a stranded pup. When Humdinger's reckless mining triggers a volcano, the team faces their biggest rescue mission yet to save the island.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/mVx2O7ikolw0lQC3XEIM4C2uYwd.jpg",
+      "trailers": [
+        "knDmb8lWEhQ",
+        "xgI5iYmOf5Q",
+        "dFdVkmaIfYE",
+        "aHw4PuLCUIc"
+      ],
+      "director": "Cal Brunker",
+      "cast": [
+        "Carter Young",
+        "Hayden Chamberlen",
+        "Mckenna Grace",
+        "Rain Janjua"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
+      "tmdb_id": 1101412,
+      "imdb_id": "tt31192372",
+      "title": "Fall 2: Deadpoint",
+      "year": "2026",
+      "genres": [
+        "Thriller"
+      ],
+      "cinema_date": "2026-09-03",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": null,
+      "synopsis": "On a perilous climb across Thailand's Mount Kwan, two climbers become trapped thousands of feet above the ground, where vertigo-inducing heights, sheer exposure, and impossible odds turn every moment into a fight for survival.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/ckKAdEz49bJ10jCLbCYIzVHJGEu.jpg",
+      "trailers": [
+        "Rsztt5qDj_A"
+      ],
+      "director": "Michael Spierig, Peter Spierig",
+      "cast": [
+        "Harriet Slater",
+        "Arsema Thomas",
+        "Tom Brittney",
+        "Einar Haraldsson"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
       }
     }
   ]
