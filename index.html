@@ -250,6 +250,85 @@
     .deckstrip{scroll-behavior:auto}
     .dc-in{transform:none!important;filter:none!important;opacity:1!important}
   }
+  /* ---- Cascade editor — Zone A: availability spine ---- */
+  .zone{margin-top:18px}
+  .zone:first-child{margin-top:0}
+  .zhead{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin-bottom:3px}
+  .zsub{font-size:11.5px;color:var(--dim);line-height:1.45;margin-bottom:9px}
+  .spine{display:flex;flex-direction:column;gap:7px}
+  .arow{background:var(--panel2);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:border-color .15s}
+  .arow.on{border-color:#3d4a63}
+  .arow.subsumed{opacity:.45}
+  .arow.subsumed .atog{pointer-events:none}
+  .arow-main{display:flex;align-items:center;gap:8px;padding:9px 10px}
+  .atog{flex:1;min-width:0;display:flex;align-items:center;gap:9px;background:none;border:none;padding:0;
+    cursor:pointer;color:var(--dim);text-align:left;font:inherit}
+  .atog:focus-visible,.abell:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+  .adot{width:19px;height:19px;border-radius:6px;border:1.5px solid var(--line);flex-shrink:0;position:relative;
+    background:var(--panel);transition:.15s}
+  .arow.on .adot{background:var(--accent);border-color:var(--accent)}
+  .arow.on .adot::after{content:"✓";position:absolute;inset:0;display:grid;place-items:center;
+    font-size:12px;font-weight:800;color:#fff}
+  .alab{min-width:0}
+  .alab b{display:block;font-size:13px;font-weight:700;color:var(--ink)}
+  .arow.on .alab b{color:#cfc2ff}
+  .alab small{display:block;font-size:10.5px;color:var(--faint);margin-top:1px;line-height:1.3}
+  .abell{flex-shrink:0;display:flex;align-items:center;gap:5px;background:var(--panel);border:1px solid var(--line);
+    border-radius:20px;padding:5px 9px;font-size:11px;font-weight:700;color:var(--faint);cursor:pointer}
+  .abell.on{background:rgba(240,163,54,.14);border-color:var(--amber);color:#ffce8f}
+  .abell .bl{font-size:10px;letter-spacing:.3px}
+  /* the reveal: 0fr→1fr animates the row's options open without hard-coding a height */
+  .aopts{display:grid;grid-template-rows:0fr;transition:grid-template-rows .24s ease,opacity .2s ease;opacity:0}
+  .aopts>div{overflow:hidden;min-height:0}
+  .aopts.open{grid-template-rows:1fr;opacity:1}
+  .aopts .inner{padding:0 10px 10px}
+  .homeopts{margin-top:-2px}
+  /* ---- Zone B: quality & taste ---- */
+  .qrow{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:7px}
+  .qhead{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+  .qhead .qt{font-size:12.5px;font-weight:700;color:var(--ink)}
+  .qcap{font-size:11px;color:var(--dim);line-height:1.45;margin-top:9px}
+  .qcap b{color:#cfc2ff}
+  .pill{background:var(--panel);border:1px solid var(--line);color:var(--faint);border-radius:20px;
+    padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .pill.on{background:rgba(240,163,54,.16);border-color:var(--amber);color:#ffce8f}
+  .hatch{margin-top:9px;background:none;border:1px dashed #4c4270;color:var(--accent);border-radius:9px;
+    padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;width:100%;text-align:left}
+  .hatch.on{background:rgba(124,92,255,.14);border-style:solid;color:#cfc2ff}
+  /* Rating — circle stops drawn UNDER a real range input (native drag, keyboard and a11y for free).
+     The input's own track is transparent so the stops show through; only its thumb paints. */
+  .rslider{position:relative;height:22px;display:flex;align-items:center}
+  .rstops{position:absolute;inset:0;display:flex;justify-content:space-between;align-items:center;
+    pointer-events:none;padding:0 4px}
+  .rstops::before{content:"";position:absolute;left:4px;right:4px;top:50%;height:3px;margin-top:-1.5px;
+    background:#2a303b;border-radius:2px}
+  .rstops i{position:relative;width:10px;height:10px;border-radius:50%;background:#39414f;
+    box-shadow:0 0 0 3px var(--panel2)}
+  .rstops i.lit{background:var(--accent)}
+  .rslider input{position:relative;z-index:2;width:100%;height:18px;margin:0;cursor:pointer;
+    -webkit-appearance:none;appearance:none;background:transparent}
+  .rslider input::-webkit-slider-runnable-track{height:18px;background:transparent}
+  .rslider input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;
+    background:var(--accent);border:2px solid #cfc2ff;box-shadow:0 2px 8px rgba(0,0,0,.55);cursor:grab}
+  .rslider input::-moz-range-track{height:18px;background:transparent;border:none}
+  .rslider input::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:var(--accent);
+    border:2px solid #cfc2ff;box-shadow:0 2px 8px rgba(0,0,0,.55);cursor:grab}
+  .rslider input:focus-visible{outline:none}
+  .rslider input:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 3px rgba(124,92,255,.5)}
+  .rslider input:focus-visible::-moz-range-thumb{box-shadow:0 0 0 3px rgba(124,92,255,.5)}
+  .rlabels{display:flex;justify-content:space-between;gap:2px;margin-top:5px}
+  .rlabels span{flex:1;text-align:center;font-size:9.5px;line-height:1.2;color:var(--faint);font-weight:700}
+  .rlabels span:first-child{text-align:left} .rlabels span:last-child{text-align:right}
+  .rlabels span.lit{color:#cfc2ff}
+  /* age — joined lozenge, cumulative up-to-and-including */
+  .loz{display:flex;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:var(--panel)}
+  .loz button{flex:1;background:none;border:none;border-right:1px solid var(--line);color:var(--faint);
+    padding:8px 2px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap}
+  .loz button:last-child{border-right:none}
+  .loz button.fill{background:rgba(124,92,255,.22);color:#cfc2ff}
+  .loz button.edge{background:var(--accent);color:#fff}
+  .loz button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+  @media (prefers-reduced-motion:reduce){ .aopts{transition:none} }
   /* template picker */
   .tplgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
   .tpl{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px;cursor:pointer;
@@ -426,30 +505,23 @@
     <div id="nlUnderstood"></div>
     <div class="flabel">Name</div>
     <input id="cName" class="namein" type="text" maxlength="40" autocomplete="off">
-    <div class="flabel">Availability — which windows this Cascade watches</div>
-    <div class="chips" id="cStatusChips"></div>
-    <div class="pnote">Leave all off to watch every window.</div>
-    <div class="flabel">Genre</div>
-    <div class="chips" id="cGenreChips"></div>
-    <div class="flabel">Age rating</div>
-    <div class="chips" id="cAgeChips"></div>
-    <div class="flabel">Minimum IMDb rating</div>
-    <div class="slider"><input type="range" id="cImdb" min="0" max="10" step="0.1" value="0"><div class="val" id="cImdbVal">Any</div></div>
-    <div class="flabel">Minimum Rotten Tomatoes (critic)</div>
-    <div class="slider"><input type="range" id="cRt" min="0" max="100" step="1" value="0"><div class="val" id="cRtVal">Any</div></div>
-    <div class="flabel">Scope</div>
-    <div class="switch" id="cAwards"><span>🏆 Award winners &amp; nominees only</span><span class="knob"></span></div>
-    <div class="switch" id="cMine"><span>Only what I can watch (my services)</span><span class="knob"></span></div>
-    <div id="cMineWarn"></div>
-    <div class="flabel">Alert me when a tracked film reaches…</div>
-    <div class="switch" id="cAlertPvod"><span>Premium buy/rent (~$30)</span><span class="knob"></span></div>
-    <div class="switch" id="cAlertRental"><span>Standard rental (~$7)</span><span class="knob"></span></div>
-    <div class="switch" id="cAlertStream"><span>Included streaming</span><span class="knob"></span></div>
-    <div class="pnote">These prefs shape the simulated daily poll (🔔) while this Cascade is open.
-      Premium is off by default — most people don't want to be nudged to overpay.</div>
+
+    <div class="zone">
+      <div class="zhead">Where &amp; when</div>
+      <div class="zsub">Which windows this Cascade watches — and which ones are worth a 🔔 when a tagged
+        film lands there.</div>
+      <div class="spine" id="cSpine"></div>
+    </div>
+
+    <div class="zone">
+      <div class="zhead">Quality &amp; taste</div>
+      <div class="zsub">Applies across every window you switched on above.</div>
+      <div id="cQuality"></div>
+    </div>
+
     <div class="cascfoot">
       <button class="dangerbtn" id="cDelete" style="display:none">Delete</button>
-      <button class="applybtn" id="cApply">Show 0 films</button>
+      <button class="applybtn" id="cApply">Continue</button>
     </div>
   </div>
 </div>
@@ -562,7 +634,9 @@ function deriveStatus(m){
   const buys  = o.filter(x=>x.type==="buy"&&x.price!=null).map(x=>x.price);
   const cheapestRent = rents.length?Math.min(...rents):null;
   const dearestBuy   = buys.length?Math.max(...buys):null;
-  const cd = m.cinema_date, released = cd && cd<=TODAY;
+  // _simReleased: the daily-poll sim has advanced this upcoming film into cinemas. Nothing else sets it —
+  // the catalogue's own dates are never rewritten.
+  const cd = m.cinema_date, released = (cd && cd<=TODAY) || !!m._simReleased;
   if(!o.length && released){
     if(cd >= addDays(TODAY,-OPENING_WEEK_DAYS)) s.add("opening_week"); else s.add("in_cinema");
   }
@@ -609,7 +683,8 @@ try{ const v=localStorage.getItem("cascade_ux"); if(v!==null) ux.on = v==="1"; }
 function saveUx(){ try{ localStorage.setItem("cascade_ux", ux.on?"1":"0"); }catch(e){} }
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
-  imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb"};
+  imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb",
+  includeUnrated:false};   // set by the open Cascade's escape hatch; off by default = unrated titles drop out
 const $=id=>document.getElementById(id);
 
 // ---- My Cascades: saved living searches (prototype state — localStorage, per device) ----
@@ -620,7 +695,8 @@ function loadCascades(){
     // The budget sort is gone (it buried tentpoles TMDB has no budget for). Carry old Blockbuster
     // Cascades over to the popularity sort rather than silently dropping them back to IMDb.
     a.forEach(c=>{ if(c.sort==="budget") c.sort="popularity"; });
-    return a;
+    return a;   // filled out to the current shape by normCascade() below — a Cascade saved before the
+                // language/rating-stop controls existed still opens clean, and means what it always meant.
   }catch(e){ return []; }
 }
 function saveCascades(){ try{ localStorage.setItem("cascade_cascades", JSON.stringify(cascades)); }catch(e){} }
@@ -742,7 +818,7 @@ $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
 function clearFilters(){
   ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
   filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;
-  filt.awards=false;filt.search="";
+  filt.awards=false;filt.search="";filt.includeUnrated=false;
 }
 // Push filt back onto the Filters modal's controls (a Cascade sets filters programmatically).
 function syncFilterUI(){
@@ -792,7 +868,7 @@ function passes(m){
   if(filt.lang.size && !filt.lang.has(m.language)) return false;
   if(filt.genre.size && !(m.genres||[]).some(g=>filt.genre.has(g))) return false;
   if(filt.awards && !m.award) return false;
-  if((m.imdb_rating||0) < filt.imdb) return false;
+  if(!ratingOK(m, filt.imdb, filt.includeUnrated)) return false;
   if((m.rt_critic||0) < filt.rt) return false;
   if((m.worldwide_gross||0) < filt.gross) return false;
   return true;
@@ -992,29 +1068,95 @@ function activeCount(){
 // ================= My Cascades =================
 // Smart defaults: every template lands pre-filled with a criteria set that already returns films —
 // the user scans and adjusts rather than filling a blank query.
-// Alert defaults follow the Cascades concept: standard-rental + included-streaming ON, premium-rent OFF.
-const ALERT_DEFAULTS = {pvod:false, rental:true, included_streaming:true};
+// Alert defaults follow the Cascades concept: standard-rental + included-streaming ON, premium-rent OFF
+// (nobody wants to be nudged to overpay), and cinema OFF — a release is news, not a saving.
+const ALERT_DEFAULTS = {cinema:false, pvod:false, rental:true, included_streaming:true};
+
+// ---- The availability spine ---------------------------------------------------
+// One row per window a film can be in. "All" is not a window — it's the empty status set, i.e. any window.
+// Each row owns its alert toggle; the window→row map is what the poll sim consults.
+const AVAIL_ROWS = [
+  {key:"cinema", alert:"cinema", windows:["upcoming","opening_week","in_cinema"],
+   title:"Upcoming / In cinema", sub:"Announced, and on the big screen"},
+  {key:"pvod", alert:"pvod", windows:["pvod"],
+   title:"Premium", sub:"Buy or rent early, ~$30", home:true},
+  {key:"rental", alert:"rental", windows:["rental"],
+   title:"Standard", sub:"Rental drops to ~$7", home:true},
+  {key:"included_streaming", alert:"included_streaming", windows:["included_streaming"],
+   title:"Streaming", sub:"Included on a subscription", home:true},
+];
+const WINDOW_ROW = {};
+AVAIL_ROWS.forEach(r=>r.windows.forEach(w=>{ WINDOW_ROW[w]=r.alert; }));
+const HOME_ROWS = AVAIL_ROWS.filter(r=>r.home).map(r=>r.key);
+const ALL_WINDOWS = AVAIL_ROWS.flatMap(r=>r.windows);
+
+// ---- Rating: catalogue percentile, not a bare IMDb number ----------------------
+// The bar is a plain word; what it MEANS is a percentile of this catalogue's rated titles, computed here
+// over the real data (the honesty guardrail cuts both ways — the label has to be backed by the numbers).
+const RATED = MOVIES.map(m=>m.imdb_rating).filter(r=>typeof r==="number" && r>0).sort((a,b)=>a-b);
+const UNRATED_N = MOVIES.filter(m=>!m.imdb_rating).length;
+const pctile = p => RATED.length ? RATED[Math.min(RATED.length-1, Math.round(p/100*(RATED.length-1)))] : 0;
+// Share of rated titles that clear a threshold — "top N%", stated honestly.
+const topPct = v => RATED.length ? Math.round(RATED.filter(r=>r>=v).length/RATED.length*100) : 0;
+const RATING_STOPS = [
+  {label:"All",           pct:null},
+  {label:"Above average", pct:50},
+  {label:"Good",          pct:60},
+  {label:"Very good",     pct:70},
+  {label:"Great",         pct:80},
+  {label:"Elite",         pct:95},
+];
+RATING_STOPS.forEach(s=>{ s.imdb = s.pct==null ? 0 : Math.round(pctile(s.pct)*10)/10; });
+// An existing Cascade carries a raw IMDb number — seat it at the nearest stop without rewriting the number
+// (its results must not shift just because it was opened in the new editor).
+const stopFor = v => { if(!v) return 0;
+  let best=0; RATING_STOPS.forEach((s,i)=>{ if(Math.abs(s.imdb-v) < Math.abs(RATING_STOPS[best].imdb-v)) best=i; });
+  return best; };
+
+const AGE_LEVELS = [...ALL_AGES].sort((a,b)=>{
+  const ia=AGE_ORDER.indexOf(a), ib=AGE_ORDER.indexOf(b);
+  return (ia<0?99:ia)-(ib<0?99:ib) || a.localeCompare(b);
+});
+// Languages the catalogue actually has, commonest first — so the chips are never a wish-list.
+const LANG_COUNT = {};
+MOVIES.forEach(m=>{ if(m.language) LANG_COUNT[m.language]=(LANG_COUNT[m.language]||0)+1; });
+const ALL_LANGS = Object.keys(LANG_COUNT).sort((a,b)=>LANG_COUNT[b]-LANG_COUNT[a] || langName(a).localeCompare(langName(b)));
+
+// Every Cascade — template, saved, or parsed from a description — is filled out to the full shape here, so
+// the editor never meets a missing field and a Cascade saved before these controls existed still opens clean.
+function normCascade(c){
+  c.status = c.status||[]; c.genre = c.genre||[]; c.age = c.age||[];
+  c.lang = c.lang||[];                       // [] = any language (what every pre-existing Cascade meant)
+  c.imdb = c.imdb||0; c.rt = c.rt||0;
+  c.ratingStop = (typeof c.ratingStop==="number") ? c.ratingStop : stopFor(c.imdb);
+  c.includeUnrated = !!c.includeUnrated;
+  c.awards = !!c.awards; c.myServices = !!c.myServices;
+  c.alerts = {...ALERT_DEFAULTS, ...(c.alerts||{})};
+  return c;
+}
 const CASCADE_TEMPLATES = [
   {key:"my_taste", icon:"🎯", name:"My taste", blurb:"Great films that clear my rating bar",
-   crit:{status:[], genre:[], age:[], imdb:7.5, rt:0, awards:false, myServices:false}},
+   crit:{status:[], genre:[], age:[], lang:["en"], imdb:7.5, rt:0, awards:false, myServices:false}},
   {key:"watch_tonight", icon:"🍿", name:"Watch tonight", blurb:"Included on services I already have",
-   crit:{status:["included_streaming"], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:true},
+   crit:{status:["included_streaming"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:true},
    alerts:{pvod:false, rental:false, included_streaming:true}},
   {key:"rent_radar", icon:"📼", name:"Rent radar", blurb:"Good films that reach standard rental (~$7)",
-   crit:{status:["rental"], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:false}},
+   crit:{status:["rental"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:false}},
   {key:"bargain", icon:"🏷️", name:"Bargain hunter", blurb:"Never overpay — tell me when it drops below premium",
-   crit:{status:["rental","included_streaming"], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false}},
+   crit:{status:["rental","included_streaming"], genre:[], age:[], lang:["en"], imdb:0, rt:0, awards:false, myServices:false}},
   {key:"family", icon:"👨‍👩‍👧", name:"Family fun", blurb:"Cert-appropriate films for me and the kids",
-   crit:{status:[], genre:["Family","Animation","Adventure"], age:["G","PG"], imdb:6, rt:0, awards:false, myServices:false}},
+   crit:{status:[], genre:["Family","Animation","Adventure"], age:["G","PG"], lang:["en"], imdb:6, rt:0, awards:false, myServices:false}},
   {key:"prestige", icon:"🏆", name:"Awards & prestige", blurb:"Winners and nominees, as they become watchable",
-   crit:{status:[], genre:[], age:[], imdb:0, rt:0, awards:true, myServices:false}},
+   crit:{status:[], genre:[], age:[], lang:[], imdb:0, rt:0, awards:true, myServices:false}},
   {key:"genre_fan", icon:"🎃", name:"Genre superfan", blurb:"A standing radar for one genre — horror to start",
-   crit:{status:[], genre:["Horror"], age:[], imdb:0, rt:0, awards:false, myServices:false}},
+   crit:{status:[], genre:["Horror"], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false}},
   {key:"blockbuster", icon:"💥", name:"Blockbuster radar", blurb:"The films heading for cinemas, most anticipated first",
-   crit:{status:["upcoming"], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false, sort:"popularity"}},
+   crit:{status:["upcoming"], genre:[], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false, sort:"popularity"}},
   {key:"custom", icon:"⚙️", name:"Custom", blurb:"Start from a sensible baseline and tune it",
-   crit:{status:[], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:false}},
+   crit:{status:[], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:false}},
 ];
+CASCADE_TEMPLATES.forEach(t=>normCascade(t.crit));
+cascades.forEach(normCascade);   // saved Cascades are filled out here, not at load — ALERT_DEFAULTS lives above
 // Honesty guardrail: templates the current data can't actually serve are shown as unavailable,
 // with the real reason — never wired up to fake a result.
 const CASCADE_TEMPLATES_SOON = [
@@ -1022,20 +1164,28 @@ const CASCADE_TEMPLATES_SOON = [
    why:"Needs cinema-exit and streaming-removal dates — no source we have gives us them"},
 ];
 
-// Mirrors passes() for exactly the fields a Cascade owns — so "Show N films" is the number you get.
+// A film with no IMDb score isn't a bad film — it's an unknown one (13 of them here, mostly unreleased).
+// It rides along at "All", and drops out the moment you raise the bar, unless you take the escape hatch.
+function ratingOK(m, min, includeUnrated){          // declared, not const — passes() is defined above this
+  if(!min) return true;
+  if(!m.imdb_rating) return !!includeUnrated;
+  return m.imdb_rating >= min;
+}
+// Mirrors passes() for exactly the fields a Cascade owns — so the CTA's count is the number you get.
 function matchesCriteria(m,c){
   if(blocked.has(m.tmdb_id)) return false;
   if(c.myServices && servicesPicked() && !matchesServices(m)) return false;
   if(c.status.length && !c.status.includes(primaryStatus(m))) return false;
   if(c.genre.length && !(m.genres||[]).some(g=>c.genre.includes(g))) return false;
   if(c.age.length && !c.age.includes(m.age_rating)) return false;
+  if((c.lang||[]).length && !c.lang.includes(m.language)) return false;
   if(c.awards && !m.award) return false;
-  if((m.imdb_rating||0) < (c.imdb||0)) return false;
+  if(!ratingOK(m, c.imdb||0, c.includeUnrated)) return false;
   if((m.rt_critic||0) < (c.rt||0)) return false;
   return true;
 }
 const countCriteria = c => MOVIES.filter(m=>matchesCriteria(m,c)).length;
-const ALERT_SHORT = {pvod:"premium", rental:"standard rental", included_streaming:"streaming"};
+const ALERT_SHORT = {cinema:"cinema", pvod:"premium", rental:"standard rental", included_streaming:"streaming"};
 function alertSummary(c){
   const on=Object.keys(ALERT_SHORT).filter(k=>(c.alerts||ALERT_DEFAULTS)[k]);
   return on.length ? "alerts on "+on.map(k=>ALERT_SHORT[k]).join(" + ") : "alerts off";
@@ -1046,9 +1196,10 @@ function alertSummary(c){
 const setTo=(s,arr)=>{ s.clear(); (arr||[]).forEach(v=>s.add(v)); };
 function applyCascade(c){
   clearFilters();
-  setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age);
+  setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age); setTo(filt.lang,c.lang);
   filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via servicesScoped()
-  filt.sort=c.sort||"imdb";                                      // Blockbuster radar leads with budget
+  filt.includeUnrated=!!c.includeUnrated;
+  filt.sort=c.sort||"imdb";                                      // Blockbuster radar leads with popularity
   syncFilterUI();
 }
 // Opening is idempotent: landing a card in the deck's centre IS selecting it, so this can be called
@@ -1064,13 +1215,15 @@ const sameSet=(s,a)=> s.size===a.length && a.every(v=>s.has(v));
 function cascadeDirty(){
   const c=activeCascade(); if(!c) return false;
   return !sameSet(filt.status,c.status) || !sameSet(filt.genre,c.genre) || !sameSet(filt.age,c.age)
+      || !sameSet(filt.lang,c.lang||[])
       || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards
-      || filt.sort!==(c.sort||"imdb");
+      || filt.includeUnrated!==!!c.includeUnrated || filt.sort!==(c.sort||"imdb");
 }
 window.saveCascadeEdits=()=>{
   const c=activeCascade(); if(!c) return;
-  c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age];
+  c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age]; c.lang=[...filt.lang];
   c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards; c.sort=filt.sort;
+  c.includeUnrated=filt.includeUnrated; c.ratingStop=stopFor(c.imdb);
   saveCascades(); render(); toast(`✅ Saved changes to “${c.name}”`);
 };
 
@@ -1266,7 +1419,7 @@ function renderCascadeBar(shown){
 // A rules-based keyword parser — deliberately NOT an LLM, and the UI says so. The concept doc's honesty
 // guardrail is explicit that the marketing must not run ahead of the product, so this is labelled a
 // keyword parser everywhere it appears. It only ever produces a DRAFT: the user lands in the editor and
-// has to press "Show N films" themselves, so a misparse can never auto-commit.
+// has to press the Continue button themselves, so a misparse can never auto-commit.
 // Keys are regex fragments, so every one of them is quoted.
 const NL_SYNONYMS = {   // spoken word -> catalogue genre
   "scary":"Horror", "frightening":"Horror",
@@ -1391,8 +1544,10 @@ function commitDraft(){
   const isNew=!draft.id;
   const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
   Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
-    age:draft.age, imdb:draft.imdb, rt:draft.rt, awards:draft.awards, myServices:draft.myServices,
+    age:draft.age, lang:draft.lang, imdb:draft.imdb, rt:draft.rt, ratingStop:draft.ratingStop,
+    includeUnrated:draft.includeUnrated, awards:draft.awards, myServices:draft.myServices,
     sort:draft.sort||"imdb", alerts:draft.alerts});
+  normCascade(c);
   if(isNew) cascades.push(c);
   saveCascades(); setActive(c.id); applyCascade(c);
   return {c, isNew};
@@ -1404,57 +1559,251 @@ window.editCascade=()=>{
   openEditor("Edit Cascade");
   openModal($("builder"));
 };
+// ---- Editor: Zone A, the availability spine ------------------------------------
+// The invariant: "All" is ON exactly when draft.status is empty (= watch every window). Turning All OFF
+// doesn't narrow anything on its own, so it lights every specific row instead — same films, now editable.
+// Turning the last specific row off empties the set again, and All lights back up. No dead state either way.
+const allOn = () => draft.status.length===0;
+// A row can be half-on: a Cascade saved as ["upcoming"] fills only part of the Upcoming/In-cinema row. We
+// say so rather than rounding it up (which would silently widen the radar) or down (which would lose it).
+function rowState(r){
+  const n=r.windows.filter(w=>draft.status.includes(w)).length;
+  return n===0 ? "off" : n===r.windows.length ? "on" : "part";
+}
+function setRow(r, on){
+  const set=new Set(draft.status);
+  r.windows.forEach(w=> on ? set.add(w) : set.delete(w));
+  draft.status = ALL_WINDOWS.filter(w=>set.has(w));
+  if(draft.status.length===ALL_WINDOWS.length) draft.status=[];    // every window on IS "All"
+}
+function buildSpine(){
+  const spine=$("cSpine"); spine.innerHTML="";
+  const mkRow=(cls,title,sub,onTog,onBell)=>{
+    const el=document.createElement("div");
+    el.className="arow "+cls;
+    el.innerHTML=`<div class="arow-main">
+        <button class="atog" role="switch"><span class="adot"></span>
+          <span class="alab"><b>${title}</b><small>${sub}</small></span></button>
+        <button class="abell" role="switch"><span>🔔</span><span class="bl">OFF</span></button>
+      </div>`;
+    el.querySelector(".atog").onclick=onTog;
+    el.querySelector(".abell").onclick=onBell;
+    return el;
+  };
+  // "All" — the empty status set. Turning it OFF lights every specific row instead: same films, now
+  // narrowable. Turning the last specific row off empties the set and All lights back up. No dead state.
+  spine.appendChild(mkRow("r-all","All windows","Anywhere a film shows up — cinema to streaming",
+    ()=>{ draft.status = allOn() ? [...ALL_WINDOWS] : []; syncSpine(); refreshDraft(); },
+    ()=>{ const to=!AVAIL_ROWS.every(r=>draft.alerts[r.alert]);
+          AVAIL_ROWS.forEach(r=>{ draft.alerts[r.alert]=to; }); syncSpine(); }));
+
+  const home=document.createElement("div");
+  home.className="spine"; home.style.marginTop="7px";
+  AVAIL_ROWS.forEach(r=>{
+    const el=mkRow("r-"+r.key, r.title, r.sub,
+      ()=>{ if(allOn()) return; setRow(r, rowState(r)==="off"); syncSpine(); refreshDraft(); },
+      ()=>{ draft.alerts[r.alert]=!draft.alerts[r.alert]; syncSpine(); });
+    (r.home ? home : spine).appendChild(el);
+  });
+  spine.appendChild(home);
+
+  // ONE "only what I can watch" governs all three home windows — three copies of it would be three ways to
+  // say the same thing. It lives in a persistent reveal so toggling a window animates it open.
+  const opts=document.createElement("div");
+  opts.className="aopts homeopts"; opts.id="cHomeOpts";
+  opts.innerHTML=`<div><div class="inner" style="padding-top:8px">
+      <div class="switch" id="cMine" role="switch">
+        <span>Only what I can watch <small style="color:var(--faint)">(my services)</small></span>
+        <span class="knob"></span></div>
+      <div id="cMineWarn"></div></div></div>`;
+  opts.querySelector("#cMine").onclick=()=>{ draft.myServices=!draft.myServices; syncSpine(); refreshDraft(); };
+  home.appendChild(opts);
+}
+// State lives in `draft`; the DOM is only ever synced to it — so the reveal transition survives a toggle.
+function syncSpine(){
+  const all=allOn();
+  const paint=(el,on,part)=>{
+    el.classList.toggle("on", on||part);
+    el.querySelector(".atog").setAttribute("aria-checked", String(on||part));
+  };
+  const allRow=$("cSpine").querySelector(".r-all");
+  const allAlert=AVAIL_ROWS.every(r=>draft.alerts[r.alert]);
+  paint(allRow, all, false);
+  bellPaint(allRow, allAlert, "every window");
+
+  AVAIL_ROWS.forEach(r=>{
+    const el=$("cSpine").querySelector(".r-"+r.key);
+    const st=all ? "off" : rowState(r);
+    paint(el, st==="on", st==="part");
+    el.classList.toggle("subsumed", all);
+    const tog=el.querySelector(".atog");
+    tog.tabIndex = all ? -1 : 0;
+    tog.setAttribute("aria-disabled", String(all));
+    // A half-filled row says which windows it actually holds — the label must not overstate the radar.
+    const part = st==="part" ? r.windows.filter(w=>draft.status.includes(w)).map(w=>STATUS_LABEL[w]).join(" + ") : "";
+    el.querySelector(".alab small").textContent = part ? `Currently: ${part} only — tap to watch the whole window` : r.sub;
+    bellPaint(el, !!draft.alerts[r.alert], r.title);
+  });
+
+  const homeLive = all || AVAIL_ROWS.some(r=>r.home && rowState(r)!=="off");
+  $("cHomeOpts").classList.toggle("open", homeLive);
+  const mine=$("cMine");
+  mine.classList.toggle("on", draft.myServices);
+  mine.setAttribute("aria-checked", String(draft.myServices));
+  syncMineWarn();
+}
+function bellPaint(row, on, label){
+  const b=row.querySelector(".abell");
+  b.classList.toggle("on", on);
+  b.setAttribute("aria-checked", String(on));
+  b.setAttribute("aria-label", `Alert me — ${label}`);
+  b.querySelector(".bl").textContent = on ? "ON" : "OFF";
+}
+function syncMineWarn(){
+  const w=$("cMineWarn"); if(!w) return;
+  w.innerHTML = (draft.myServices && !servicesPicked())
+    ? `<div class="warnnote">You haven't picked any services yet, so this scope does nothing.
+         Pick them and this Cascade narrows to what you can actually watch.<br>${pickServicesCTA()}</div>` : "";
+}
+
+// ---- Editor: Zone B, quality & taste -------------------------------------------
+function ratingCaption(){
+  const stop=RATING_STOPS[draft.ratingStop];
+  if(!draft.imdb) return `<b>All ratings.</b> Every title qualifies — including the ${UNRATED_N} with no IMDb
+    score yet (mostly unreleased).`;
+  return `<b>${stop.label} — IMDb ${draft.imdb.toFixed(1)}+.</b> That's the top ${topPct(draft.imdb)}% of the
+    ${RATED.length} rated titles in the catalogue.`;
+}
+// Built once, then synced — re-rendering the range input mid-drag would drop the drag on the floor.
+function buildQuality(){
+  const ageStops=[{i:-1,label:"Any"}, ...AGE_LEVELS.map((a,i)=>({i,label:a}))];
+  $("cQuality").innerHTML=`
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Rating</span>
+        <button class="pill" id="cAwards" role="switch" type="button">🏆 Awards only</button></div>
+      <div class="rslider">
+        <div class="rstops" aria-hidden="true">${RATING_STOPS.map(()=>"<i></i>").join("")}</div>
+        <input type="range" id="cRate" min="0" max="${RATING_STOPS.length-1}" step="1" aria-label="Minimum rating">
+      </div>
+      <div class="rlabels" id="cRateLabels">${RATING_STOPS.map(s=>`<span>${s.label}</span>`).join("")}</div>
+      <div class="qcap" id="cRateCap"></div>
+      <button class="hatch" id="cUnrated" role="switch" type="button" hidden></button>
+      <div class="qcap" id="cRtRow" hidden></div>
+    </div>
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Genre</span><span class="qcap" style="margin:0" id="cGenreCap"></span></div>
+      <div class="chips" id="cGenreChips"></div>
+    </div>
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Age rating</span><span class="qcap" style="margin:0" id="cAgeCap"></span></div>
+      <div class="loz" id="cAgeLoz" role="radiogroup" aria-label="Age rating — up to and including"></div>
+      <div class="qcap">Picks everything <b>up to and including</b> the level you choose.</div>
+    </div>
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Primary language</span><span class="qcap" style="margin:0" id="cLangCap"></span></div>
+      <div class="chips" id="cLangChips"></div>
+    </div>`;
+
+  // Cumulative: choosing M means G, PG and M — one tap, not three. "Any" clears the constraint.
+  const loz=$("cAgeLoz");
+  ageStops.forEach(({i,label})=>{
+    const b=document.createElement("button");
+    b.type="button"; b.setAttribute("role","radio"); b.dataset.i=i; b.textContent=label;
+    b.onclick=()=>setAge(i);
+    b.onkeydown=e=>{
+      const sel=ageSel();
+      const to = e.key==="ArrowRight" ? Math.min(AGE_LEVELS.length-1, sel+1)
+               : e.key==="ArrowLeft"  ? Math.max(-1, sel-1) : null;
+      if(to===null) return;
+      e.preventDefault(); setAge(to);
+      loz.querySelector('[tabindex="0"]')?.focus();
+    };
+    loz.appendChild(b);
+  });
+
+  $("cRate").oninput=e=>{
+    draft.ratingStop=+e.target.value; draft.imdb=RATING_STOPS[draft.ratingStop].imdb;
+    if(!draft.imdb) draft.includeUnrated=false;   // at "All" nothing is being excluded — the hatch is moot
+    syncQuality(); refreshDraft();
+  };
+  $("cAwards").onclick=()=>{ draft.awards=!draft.awards; syncQuality(); refreshDraft(); };
+  $("cUnrated").onclick=()=>{ draft.includeUnrated=!draft.includeUnrated; syncQuality(); refreshDraft(); };
+}
+const ageSel = () => draft.age.length ? Math.max(...draft.age.map(a=>AGE_LEVELS.indexOf(a))) : -1;
+function setAge(i){ draft.age = i<0 ? [] : AGE_LEVELS.slice(0,i+1); syncQuality(); refreshDraft(); }
+function syncQuality(){
+  const stop=RATING_STOPS[draft.ratingStop];
+  $("cRate").value=draft.ratingStop;
+  $("cRate").setAttribute("aria-valuetext", stop.label);
+  [...$("cQuality").querySelectorAll(".rstops i")].forEach((el,i)=>el.classList.toggle("lit", i<=draft.ratingStop));
+  [...$("cRateLabels").children].forEach((el,i)=>el.classList.toggle("lit", i===draft.ratingStop));
+  $("cRateCap").innerHTML=ratingCaption();
+  const hatch=$("cUnrated");
+  hatch.hidden=!draft.imdb || !UNRATED_N;
+  hatch.classList.toggle("on", draft.includeUnrated);
+  hatch.setAttribute("aria-checked", String(draft.includeUnrated));
+  hatch.textContent=`${draft.includeUnrated?"✓":"＋"} Include the ${UNRATED_N} titles with no IMDb score yet`;
+  $("cAwards").classList.toggle("on", draft.awards);
+  $("cAwards").setAttribute("aria-checked", String(draft.awards));
+  // An RT bar can only arrive from a typed description — it has no control of its own, so show it and
+  // give it an exit rather than filtering on something the editor never mentions.
+  const rt=$("cRtRow");
+  rt.hidden=!draft.rt;
+  if(draft.rt){
+    rt.innerHTML=`Also carrying <b>RT critic ${draft.rt}%+</b> from your description.
+      <button class="pill" id="cRtClear" type="button" style="margin-left:4px">Clear</button>`;
+    $("cRtClear").onclick=()=>{ draft.rt=0; syncQuality(); refreshDraft(); };
+  }
+  $("cGenreCap").textContent=draft.genre.length?`${draft.genre.length} on`:"Any";
+  $("cLangCap").textContent=draft.lang.length?draft.lang.map(langName).join(", "):"Any";
+  const sel=ageSel();
+  $("cAgeCap").textContent = sel<0 ? "Any" : "Up to "+AGE_LEVELS[sel];
+  [...$("cAgeLoz").children].forEach(b=>{
+    const i=+b.dataset.i;
+    b.className = i<0 ? (sel<0?"edge":"") : (i<sel ? "fill" : i===sel ? "fill edge" : "");
+    b.setAttribute("aria-checked", String(i===sel));
+    b.tabIndex = i===sel ? 0 : -1;
+  });
+}
+
 function openEditor(title){
   $("builderTitle").textContent=title;
   $("tplPane").style.display="none"; $("editPane").style.display="";
   $("nlUnderstood").innerHTML="";   // nlDraft() refills this straight after; every other path clears it
+  normCascade(draft);
   $("cName").value=draft.name;
   $("cDelete").style.display = draft.id ? "" : "none";
-  buildEditorChips("cStatusChips", CASCADE, "status", s=>STATUS_LABEL[s], s=>"st-"+s);
+  buildSpine(); syncSpine();
+  buildQuality();
   buildEditorChips("cGenreChips", ALL_GENRES, "genre", null, ()=>"gen");
-  buildEditorChips("cAgeChips", [...ALL_AGES]
-      .sort((a,b)=>{const ia=AGE_ORDER.indexOf(a),ib=AGE_ORDER.indexOf(b);return (ia<0?99:ia)-(ib<0?99:ib)||a.localeCompare(b);}),
-      "age", null, ()=>"yr");
-  $("cImdb").value=draft.imdb; $("cImdbVal").textContent=draft.imdb?draft.imdb.toFixed(1)+"+":"Any";
-  $("cRt").value=draft.rt;     $("cRtVal").textContent=draft.rt?draft.rt+"%+":"Any";
-  $("cAwards").classList.toggle("on", !!draft.awards);
-  $("cMine").classList.toggle("on", !!draft.myServices);
-  $("cAlertPvod").classList.toggle("on", !!draft.alerts.pvod);
-  $("cAlertRental").classList.toggle("on", !!draft.alerts.rental);
-  $("cAlertStream").classList.toggle("on", !!draft.alerts.included_streaming);
-  refreshDraft();
+  buildEditorChips("cLangChips", ALL_LANGS, "lang", c=>`${langName(c)} · ${LANG_COUNT[c]}`, ()=>"gen");
+  syncQuality(); refreshDraft();
 }
 function buildEditorChips(el, values, key, label, cls){
   const box=$(el); box.innerHTML="";
   values.forEach(v=>{
-    const c=document.createElement("div");
+    const c=document.createElement("button");
+    c.type="button";
     c.className="chip "+cls(v)+(draft[key].includes(v)?" on":"");
+    c.setAttribute("aria-pressed", String(draft[key].includes(v)));
     c.textContent=label?label(v):v;
     c.onclick=()=>{
       const i=draft[key].indexOf(v);
       i<0 ? draft[key].push(v) : draft[key].splice(i,1);
-      c.classList.toggle("on"); refreshDraft();
+      c.classList.toggle("on"); c.setAttribute("aria-pressed", String(draft[key].includes(v)));
+      syncQuality(); refreshDraft();
     };
     box.appendChild(c);
   });
 }
 function refreshDraft(){
   const n=countCriteria(draft);
-  $("cApply").textContent = n ? `Show ${n} film${n===1?"":"s"}` : "No films match — loosen it";
+  const verb=draft.id ? "Save" : "Continue";           // never "Sign up" — you're building your thing, not an account
+  $("cApply").textContent = n ? `${verb} · ${n} film${n===1?"":"s"}` : "No films match — loosen it";
   $("cApply").disabled = n===0;
-  $("cMineWarn").innerHTML = (draft.myServices && !servicesPicked())
-    ? `<div class="warnnote">You haven't picked any services yet, so this scope does nothing.
-         Pick them and this Cascade narrows to what you can actually watch.<br>${pickServicesCTA()}</div>` : "";
+  syncMineWarn();
 }
 $("cName").oninput=e=>{ draft.name=e.target.value; };
-$("cImdb").oninput=e=>{ draft.imdb=+e.target.value; $("cImdbVal").textContent=draft.imdb?draft.imdb.toFixed(1)+"+":"Any"; refreshDraft(); };
-$("cRt").oninput=e=>{ draft.rt=+e.target.value; $("cRtVal").textContent=draft.rt?draft.rt+"%+":"Any"; refreshDraft(); };
-[["cAwards","awards"],["cMine","myServices"]].forEach(([el,key])=>{
-  $(el).onclick=()=>{ draft[key]=!draft[key]; $(el).classList.toggle("on",draft[key]); refreshDraft(); };
-});
-[["cAlertPvod","pvod"],["cAlertRental","rental"],["cAlertStream","included_streaming"]].forEach(([el,key])=>{
-  $(el).onclick=()=>{ draft.alerts[key]=!draft.alerts[key]; $(el).classList.toggle("on",draft.alerts[key]); };
-});
 $("nlGo").onclick=()=>nlDraft();
 $("nlInput").onkeydown=e=>{ if(e.key==="Enter") nlDraft(); };
 $("builderClose").onclick=()=>closeModal($("builder"));
@@ -1721,16 +2070,22 @@ let dayCounter=0;
 function advanceOneWindow(m){
   const st=new Set(m.status);
   if(st.has("included_streaming")) return false;
+  // An upcoming film's next window is the cinema — which is what the Upcoming/In-cinema row alerts on.
+  // Without this the sim could only ever move films between home windows, and that row's 🔔 would be a
+  // switch that can never fire. It moves one step per poll, same as every other window.
+  if(st.has("upcoming")){ m._simReleased=true; return true; }
   if(st.has("rental")||st.has("pvod")) m.offers=(m.offers||[]).concat([{service:"Netflix",type:"sub",price:null,format:"4K"}]);
   else m.offers=(m.offers||[]).concat([{service:"Apple TV",type:"buy",price:24.99,format:"4K"}]);
   return true;
 }
-// While a Cascade is open, its per-status alert prefs decide which transitions are worth telling you about.
+// While a Cascade is open, its per-row alert prefs decide which transitions are worth telling you about.
+// The spine merges upcoming/opening-week/in-cinema into one row, so the window maps to its row's toggle.
 // With no Cascade open, every transition alerts (unchanged behaviour).
 function alertAllowed(w){
   const c=activeCascade();
-  if(!c || !c.alerts || !(w in c.alerts)) return true;
-  return !!c.alerts[w];
+  const k=WINDOW_ROW[w];
+  if(!c || !c.alerts || !k || !(k in c.alerts)) return true;
+  return !!c.alerts[k];
 }
 function simulateDay(){
   dayCounter++; let fired=0, muted=0;
