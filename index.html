@@ -552,6 +552,12 @@
     <option value="0">Any</option><option value="10000000">$10M+</option>
     <option value="50000000">$50M+</option><option value="100000000">$100M+</option><option value="250000000">$250M+</option>
   </select>
+  <!-- Budget + Tentpole live here too, not only in the Cascade editor: a Cascade pushes its criteria into
+       these same filters, and a filter you can't see is a filter you can't turn off. -->
+  <div class="flabel">Budget band</div>
+  <select id="budgetBand" style="width:100%"></select>
+  <div class="flabel">Tentpole</div>
+  <select id="tentpoleSel" style="width:100%"></select>
   <br><button class="reset" id="resetBtn">Reset all filters</button>
 </div>
 
@@ -684,7 +690,8 @@ function saveUx(){ try{ localStorage.setItem("cascade_ux", ux.on?"1":"0"); }catc
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
   imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb",
-  includeUnrated:false};   // set by the open Cascade's escape hatch; off by default = unrated titles drop out
+  includeUnrated:false,    // set by the open Cascade's escape hatch; off by default = unrated titles drop out
+  budget:0, includeUnbudgeted:false, tentpole:"any"};
 const $=id=>document.getElementById(id);
 
 // ---- My Cascades: saved living searches (prototype state — localStorage, per device) ----
@@ -815,10 +822,13 @@ $("searchClear").onclick=()=>{$("search").value="";filt.search="";$("searchClear
 $("imdbMin").oninput=e=>{filt.imdb=+e.target.value;$("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";render();};
 $("rtMin").oninput=e=>{filt.rt=+e.target.value;$("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";render();};
 $("grossMin").onchange=e=>{filt.gross=+e.target.value;render();};
+$("budgetBand").onchange=e=>{filt.budget=+e.target.value; if(!filt.budget) filt.includeUnbudgeted=false; render();};
+$("tentpoleSel").onchange=e=>{filt.tentpole=e.target.value;render();};   // options filled below, with the bands
 function clearFilters(){
   ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
   filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;
   filt.awards=false;filt.search="";filt.includeUnrated=false;
+  filt.budget=0;filt.includeUnbudgeted=false;filt.tentpole="any";
 }
 // Push filt back onto the Filters modal's controls (a Cascade sets filters programmatically).
 function syncFilterUI(){
@@ -831,6 +841,7 @@ function syncFilterUI(){
   $("imdbMin").value=filt.imdb; $("imdbVal").textContent=filt.imdb?filt.imdb.toFixed(1)+"+":"Any";
   $("rtMin").value=filt.rt;     $("rtVal").textContent=filt.rt?filt.rt+"%+":"Any";
   $("grossMin").value=filt.gross;
+  $("budgetBand").value=filt.budget; $("tentpoleSel").value=filt.tentpole;
   $("search").value=filt.search; $("searchClear").classList.toggle("show", !!filt.search);
   $("trackedBtn").classList.toggle("active", filt.trackedOnly);
   $("sort").value=filt.sort;
@@ -869,6 +880,8 @@ function passes(m){
   if(filt.genre.size && !(m.genres||[]).some(g=>filt.genre.has(g))) return false;
   if(filt.awards && !m.award) return false;
   if(!ratingOK(m, filt.imdb, filt.includeUnrated)) return false;
+  if(!budgetOK(m, filt.budget, filt.includeUnbudgeted)) return false;
+  if(filt.tentpole!=="any" && tentpoleOf(m)!==filt.tentpole) return false;
   if((m.rt_critic||0) < filt.rt) return false;
   if((m.worldwide_gross||0) < filt.gross) return false;
   return true;
@@ -1063,6 +1076,7 @@ function activeCount(){
   let n=filt.status.size+filt.year.size+filt.age.size+filt.culture.size+filt.lang.size+filt.genre.size;
   if(filt.imdb)n++; if(filt.rt)n++; if(filt.gross)n++; if(filt.trackedOnly)n++;
   if(filt.hideWatched)n++; if(filt.showHidden)n++; if(filt.search)n++; if(filt.awards)n++;
+  if(filt.budget)n++; if(filt.tentpole!=="any")n++;
   return n;
 }
 // ================= My Cascades =================
@@ -1113,6 +1127,57 @@ const stopFor = v => { if(!v) return 0;
   let best=0; RATING_STOPS.forEach((s,i)=>{ if(Math.abs(s.imdb-v) < Math.abs(RATING_STOPS[best].imdb-v)) best=i; });
   return best; };
 
+// ---- Scale: budget bands + the tentpole tag ------------------------------------
+// Bands, not a minimum: the labels ARE ranges, so "Big" means $50–120M, not "$50M and up".
+const BUDGET_BANDS = [
+  {label:"Any",     min:null,  max:null,  hint:"any budget"},
+  {label:"Small",   min:0,     max:15e6,  hint:"under $15M"},
+  {label:"Average", min:15e6,  max:50e6,  hint:"$15M to $50M"},
+  {label:"Big",     min:50e6,  max:120e6, hint:"$50M to $120M"},
+  {label:"Huge",    min:120e6, max:null,  hint:"$120M and up"},
+];
+const UNBUDGETED_N = MOVIES.filter(m=>!m.budget).length;
+// Same rule as an unrated film: 11 titles have no budget figure. They ride along at "Any" and drop out
+// the moment a band is picked — unless you take the escape hatch. We never guess a number we don't have.
+function budgetOK(m, band, includeUnbudgeted){
+  if(!band) return true;
+  const b=BUDGET_BANDS[band];
+  if(!m.budget) return !!includeUnbudgeted;
+  return m.budget>=b.min && (b.max==null || m.budget<b.max);
+}
+const budgetBandCount = i => MOVIES.filter(m=>budgetOK(m,i,false)).length;
+
+// Tentpole — popularity-led, budget as a booster only.
+// TMDB's popularity is present for all 72 titles; budget is missing for 11 — and missing for exactly the
+// upcoming ones that matter most (Spider-Man has none). So popularity leads, and a big budget can only
+// ever PROMOTE a title, never demote one. That's the rule the data we actually have can support.
+//
+// Each film is ranked against its OWN cohort, not the whole catalogue: a film that opened two years ago has
+// had two years to accumulate popularity, so measuring an unreleased title against it is a rigged race —
+// on a whole-catalogue bar, Spider-Man (the #2 most-anticipated film here) wouldn't even register.
+const isUpcoming = m => m.status.includes("upcoming");
+const POP_UPCOMING = MOVIES.filter(isUpcoming).map(m=>m.popularity||0).sort((a,b)=>a-b);
+const POP_RELEASED = MOVIES.filter(m=>!isUpcoming(m)).map(m=>m.popularity||0).sort((a,b)=>a-b);
+const popPctile = (arr,p) => arr.length ? arr[Math.min(arr.length-1, Math.round(p/100*(arr.length-1)))] : Infinity;
+const POP_BARS = {
+  anticipated: {high:popPctile(POP_UPCOMING,75), mid:popPctile(POP_UPCOMING,50), n:POP_UPCOMING.length, of:"upcoming"},
+  blockbuster: {high:popPctile(POP_RELEASED,75), mid:popPctile(POP_RELEASED,50), n:POP_RELEASED.length, of:"released"},
+};
+const BUDGET_BOOST = 120e6;
+function tentpoleOf(m){
+  const kind = isUpcoming(m) ? "anticipated" : "blockbuster";
+  const bar = POP_BARS[kind];
+  const pop = m.popularity||0;
+  const tent = pop>=bar.high || (pop>=bar.mid && (m.budget||0)>=BUDGET_BOOST);
+  return tent ? kind : null;
+}
+const TENTPOLE_STOPS = [
+  {key:"any",         label:"Any"},
+  {key:"anticipated", label:"Anticipated"},
+  {key:"blockbuster", label:"Blockbuster"},
+];
+const tentpoleCount = k => MOVIES.filter(m=>tentpoleOf(m)===k).length;
+
 const AGE_LEVELS = [...ALL_AGES].sort((a,b)=>{
   const ia=AGE_ORDER.indexOf(a), ib=AGE_ORDER.indexOf(b);
   return (ia<0?99:ia)-(ib<0?99:ib) || a.localeCompare(b);
@@ -1121,15 +1186,24 @@ const AGE_LEVELS = [...ALL_AGES].sort((a,b)=>{
 const LANG_COUNT = {};
 MOVIES.forEach(m=>{ if(m.language) LANG_COUNT[m.language]=(LANG_COUNT[m.language]||0)+1; });
 const ALL_LANGS = Object.keys(LANG_COUNT).sort((a,b)=>LANG_COUNT[b]-LANG_COUNT[a] || langName(a).localeCompare(langName(b)));
+// Audience/origin buckets the PIPELINE derived (original language + production countries). Only the ones
+// this catalogue actually contains are offered — an empty "Bollywood" chip would be a promise we can't keep.
+const CULTURE_COUNT = {};
+MOVIES.forEach(m=>{ if(m.culture) CULTURE_COUNT[m.culture]=(CULTURE_COUNT[m.culture]||0)+1; });
+const ALL_CULTURES = Object.keys(CULTURE_COUNT).sort((a,b)=>CULTURE_COUNT[b]-CULTURE_COUNT[a] || a.localeCompare(b));
 
 // Every Cascade — template, saved, or parsed from a description — is filled out to the full shape here, so
 // the editor never meets a missing field and a Cascade saved before these controls existed still opens clean.
 function normCascade(c){
   c.status = c.status||[]; c.genre = c.genre||[]; c.age = c.age||[];
   c.lang = c.lang||[];                       // [] = any language (what every pre-existing Cascade meant)
+  c.culture = c.culture||[];                 // [] = any origin
   c.imdb = c.imdb||0; c.rt = c.rt||0;
   c.ratingStop = (typeof c.ratingStop==="number") ? c.ratingStop : stopFor(c.imdb);
   c.includeUnrated = !!c.includeUnrated;
+  c.budget = c.budget||0;                    // index into BUDGET_BANDS; 0 = Any
+  c.includeUnbudgeted = !!c.includeUnbudgeted;
+  c.tentpole = c.tentpole||"any";
   c.awards = !!c.awards; c.myServices = !!c.myServices;
   c.alerts = {...ALERT_DEFAULTS, ...(c.alerts||{})};
   return c;
@@ -1157,6 +1231,12 @@ const CASCADE_TEMPLATES = [
 ];
 CASCADE_TEMPLATES.forEach(t=>normCascade(t.crit));
 cascades.forEach(normCascade);   // saved Cascades are filled out here, not at load — ALERT_DEFAULTS lives above
+// The Filters panel's budget/tentpole options come from the same constants the editor uses — one source of
+// truth for the bands and the tentpole rule. Filled here because those constants are defined just above.
+$("budgetBand").innerHTML=BUDGET_BANDS.map((b,i)=>
+  `<option value="${i}">${i?`${b.label} (${b.hint})`:"Any"}</option>`).join("");
+$("tentpoleSel").innerHTML=TENTPOLE_STOPS.map(t=>
+  `<option value="${t.key}">${t.key==="any"?"Any":`${t.label} (${tentpoleCount(t.key)})`}</option>`).join("");
 // Honesty guardrail: templates the current data can't actually serve are shown as unavailable,
 // with the real reason — never wired up to fake a result.
 const CASCADE_TEMPLATES_SOON = [
@@ -1179,8 +1259,11 @@ function matchesCriteria(m,c){
   if(c.genre.length && !(m.genres||[]).some(g=>c.genre.includes(g))) return false;
   if(c.age.length && !c.age.includes(m.age_rating)) return false;
   if((c.lang||[]).length && !c.lang.includes(m.language)) return false;
+  if((c.culture||[]).length && !c.culture.includes(m.culture)) return false;
   if(c.awards && !m.award) return false;
   if(!ratingOK(m, c.imdb||0, c.includeUnrated)) return false;
+  if(!budgetOK(m, c.budget||0, c.includeUnbudgeted)) return false;
+  if(c.tentpole && c.tentpole!=="any" && tentpoleOf(m)!==c.tentpole) return false;
   if((m.rt_critic||0) < (c.rt||0)) return false;
   return true;
 }
@@ -1197,8 +1280,10 @@ const setTo=(s,arr)=>{ s.clear(); (arr||[]).forEach(v=>s.add(v)); };
 function applyCascade(c){
   clearFilters();
   setTo(filt.status,c.status); setTo(filt.genre,c.genre); setTo(filt.age,c.age); setTo(filt.lang,c.lang);
+  setTo(filt.culture,c.culture||[]);
   filt.imdb=c.imdb||0; filt.rt=c.rt||0; filt.awards=!!c.awards;   // c.myServices is honoured via servicesScoped()
   filt.includeUnrated=!!c.includeUnrated;
+  filt.budget=c.budget||0; filt.includeUnbudgeted=!!c.includeUnbudgeted; filt.tentpole=c.tentpole||"any";
   filt.sort=c.sort||"imdb";                                      // Blockbuster radar leads with popularity
   syncFilterUI();
 }
@@ -1215,15 +1300,19 @@ const sameSet=(s,a)=> s.size===a.length && a.every(v=>s.has(v));
 function cascadeDirty(){
   const c=activeCascade(); if(!c) return false;
   return !sameSet(filt.status,c.status) || !sameSet(filt.genre,c.genre) || !sameSet(filt.age,c.age)
-      || !sameSet(filt.lang,c.lang||[])
+      || !sameSet(filt.lang,c.lang||[]) || !sameSet(filt.culture,c.culture||[])
       || filt.imdb!==(c.imdb||0) || filt.rt!==(c.rt||0) || filt.awards!==!!c.awards
-      || filt.includeUnrated!==!!c.includeUnrated || filt.sort!==(c.sort||"imdb");
+      || filt.includeUnrated!==!!c.includeUnrated || filt.sort!==(c.sort||"imdb")
+      || filt.budget!==(c.budget||0) || filt.includeUnbudgeted!==!!c.includeUnbudgeted
+      || filt.tentpole!==(c.tentpole||"any");
 }
 window.saveCascadeEdits=()=>{
   const c=activeCascade(); if(!c) return;
   c.status=[...filt.status]; c.genre=[...filt.genre]; c.age=[...filt.age]; c.lang=[...filt.lang];
+  c.culture=[...filt.culture];
   c.imdb=filt.imdb; c.rt=filt.rt; c.awards=filt.awards; c.sort=filt.sort;
   c.includeUnrated=filt.includeUnrated; c.ratingStop=stopFor(c.imdb);
+  c.budget=filt.budget; c.includeUnbudgeted=filt.includeUnbudgeted; c.tentpole=filt.tentpole;
   saveCascades(); render(); toast(`✅ Saved changes to “${c.name}”`);
 };
 
@@ -1544,8 +1633,10 @@ function commitDraft(){
   const isNew=!draft.id;
   const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
   Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
-    age:draft.age, lang:draft.lang, imdb:draft.imdb, rt:draft.rt, ratingStop:draft.ratingStop,
-    includeUnrated:draft.includeUnrated, awards:draft.awards, myServices:draft.myServices,
+    age:draft.age, lang:draft.lang, culture:draft.culture, imdb:draft.imdb, rt:draft.rt,
+    ratingStop:draft.ratingStop, includeUnrated:draft.includeUnrated,
+    budget:draft.budget, includeUnbudgeted:draft.includeUnbudgeted, tentpole:draft.tentpole,
+    awards:draft.awards, myServices:draft.myServices,
     sort:draft.sort||"imdb", alerts:draft.alerts});
   normCascade(c);
   if(isNew) cascades.push(c);
@@ -1605,6 +1696,9 @@ function buildSpine(){
       ()=>{ draft.alerts[r.alert]=!draft.alerts[r.alert]; syncSpine(); });
     (r.home ? home : spine).appendChild(el);
   });
+  // Scale (budget + tentpole) belongs to the two rows above it — All and Upcoming/In cinema — because
+  // that's where a film's size is the thing you're actually filtering on. It sits directly beneath them.
+  spine.appendChild(buildScale());
   spine.appendChild(home);
 
   // ONE "only what I can watch" governs all three home windows — three copies of it would be three ways to
@@ -1645,12 +1739,100 @@ function syncSpine(){
     bellPaint(el, !!draft.alerts[r.alert], r.title);
   });
 
+  // Scale opens for the rows it belongs to — but ALSO stays open whenever it's actually set, so a live
+  // criterion can never end up hidden behind a switched-off row.
+  const scaleLive = all || rowState(AVAIL_ROWS[0])!=="off" || draft.budget>0 || draft.tentpole!=="any";
+  $("cScaleOpts").classList.toggle("open", scaleLive);
+  syncScale();
+
   const homeLive = all || AVAIL_ROWS.some(r=>r.home && rowState(r)!=="off");
   $("cHomeOpts").classList.toggle("open", homeLive);
   const mine=$("cMine");
   mine.classList.toggle("on", draft.myServices);
   mine.setAttribute("aria-checked", String(draft.myServices));
   syncMineWarn();
+}
+// ---- Scale: budget band + tentpole tag (lives inside the spine's reveal) --------
+function buildScale(){
+  const wrap=document.createElement("div");
+  wrap.className="aopts"; wrap.id="cScaleOpts";
+  wrap.innerHTML=`<div><div class="inner" style="padding:8px 0 0">
+    <div class="qrow" style="margin-bottom:7px">
+      <div class="qhead"><span class="qt">Budget</span><span class="qcap" style="margin:0" id="cBudCap"></span></div>
+      <div class="rslider">
+        <div class="rstops" aria-hidden="true">${BUDGET_BANDS.map(()=>"<i></i>").join("")}</div>
+        <input type="range" id="cBudget" min="0" max="${BUDGET_BANDS.length-1}" step="1" aria-label="Budget band">
+      </div>
+      <div class="rlabels" id="cBudLabels">${BUDGET_BANDS.map(b=>`<span>${b.label}</span>`).join("")}</div>
+      <div class="qcap" id="cBudDesc"></div>
+      <button class="hatch" id="cUnbudgeted" role="switch" type="button" hidden></button>
+    </div>
+    <div class="qrow" style="margin:0">
+      <div class="qhead"><span class="qt">Tentpole</span><span class="qcap" style="margin:0" id="cTentCap"></span></div>
+      <div class="loz" id="cTentLoz" role="radiogroup" aria-label="Tentpole"></div>
+      <div class="qcap" id="cTentDesc"></div>
+    </div>
+  </div></div>`;
+  const loz=wrap.querySelector("#cTentLoz");
+  TENTPOLE_STOPS.forEach(t=>{
+    const b=document.createElement("button");
+    b.type="button"; b.setAttribute("role","radio"); b.dataset.k=t.key; b.textContent=t.label;
+    b.onclick=()=>{ draft.tentpole=t.key; syncScale(); refreshDraft(); };
+    b.onkeydown=e=>{
+      const i=TENTPOLE_STOPS.findIndex(x=>x.key===draft.tentpole);
+      const to = e.key==="ArrowRight" ? Math.min(TENTPOLE_STOPS.length-1,i+1)
+               : e.key==="ArrowLeft"  ? Math.max(0,i-1) : null;
+      if(to===null) return;
+      e.preventDefault(); draft.tentpole=TENTPOLE_STOPS[to].key; syncScale(); refreshDraft();
+      $("cTentLoz").querySelector('[tabindex="0"]')?.focus();
+    };
+    loz.appendChild(b);
+  });
+  wrap.querySelector("#cBudget").oninput=e=>{
+    draft.budget=+e.target.value;
+    if(!draft.budget) draft.includeUnbudgeted=false;   // at "Any" nothing is excluded — the hatch is moot
+    syncScale(); refreshDraft();
+  };
+  wrap.querySelector("#cUnbudgeted").onclick=()=>{
+    draft.includeUnbudgeted=!draft.includeUnbudgeted; syncScale(); refreshDraft();
+  };
+  return wrap;
+}
+function syncScale(){
+  const band=BUDGET_BANDS[draft.budget];
+  $("cBudget").value=draft.budget;
+  $("cBudget").setAttribute("aria-valuetext", band.label);
+  [...$("cScaleOpts").querySelectorAll(".rstops i")].forEach((el,i)=>el.classList.toggle("lit", i<=draft.budget));
+  [...$("cBudLabels").children].forEach((el,i)=>el.classList.toggle("lit", i===draft.budget));
+  $("cBudCap").textContent=band.label;
+  $("cBudDesc").innerHTML = draft.budget
+    ? `<b>${band.label} — ${band.hint}.</b> ${budgetBandCount(draft.budget)} titles in the catalogue sit in that band.`
+    : `<b>Any budget.</b> Includes the ${UNBUDGETED_N} titles TMDB gives no budget figure for.`;
+  const hatch=$("cUnbudgeted");
+  hatch.hidden=!draft.budget || !UNBUDGETED_N;
+  hatch.classList.toggle("on", draft.includeUnbudgeted);
+  hatch.setAttribute("aria-checked", String(draft.includeUnbudgeted));
+  hatch.textContent=`${draft.includeUnbudgeted?"✓":"＋"} Include the ${UNBUDGETED_N} titles with no budget figure`;
+
+  const t=draft.tentpole;
+  $("cTentCap").textContent=TENTPOLE_STOPS.find(x=>x.key===t).label;
+  [...$("cTentLoz").children].forEach(b=>{
+    const on=b.dataset.k===t;
+    b.className = on ? "fill edge" : "";
+    b.setAttribute("aria-checked", String(on));
+    b.tabIndex = on ? 0 : -1;
+  });
+  // The rule, in the open — no black-box "tentpole" badge. Popularity leads because it's the one scale
+  // field every title has; the bar is drawn against that title's own cohort.
+  if(t==="any"){ $("cTentDesc").innerHTML=`<b>Any.</b> No size filter.`; }
+  else {
+    const bar=POP_BARS[t], n=tentpoleCount(t);
+    $("cTentDesc").innerHTML=`<b>${TENTPOLE_STOPS.find(x=>x.key===t).label} — ${n} title${n===1?"":"s"}.</b>
+      ${t==="anticipated"?"Not out yet":"Already released"}, and in the top 25% of the ${bar.n}
+      ${bar.of} titles for TMDB popularity (${bar.high.toFixed(0)}+) — or the top 50% (${bar.mid.toFixed(0)}+)
+      with a $120M+ budget to promote it. Ranked against its own cohort: an unreleased film has had no
+      time to build the popularity a two-year-old hit has.`;
+  }
 }
 function bellPaint(row, on, label){
   const b=row.querySelector(".abell");
@@ -1702,6 +1884,11 @@ function buildQuality(){
     <div class="qrow">
       <div class="qhead"><span class="qt">Primary language</span><span class="qcap" style="margin:0" id="cLangCap"></span></div>
       <div class="chips" id="cLangChips"></div>
+    </div>
+    <div class="qrow">
+      <div class="qhead"><span class="qt">Audience / origin</span><span class="qcap" style="margin:0" id="cCultCap"></span></div>
+      <div class="chips" id="cCultChips"></div>
+      <div class="qcap">Where a film was made for, from its original language and production countries.</div>
     </div>`;
 
   // Cumulative: choosing M means G, PG and M — one tap, not three. "Any" clears the constraint.
@@ -1756,6 +1943,7 @@ function syncQuality(){
   }
   $("cGenreCap").textContent=draft.genre.length?`${draft.genre.length} on`:"Any";
   $("cLangCap").textContent=draft.lang.length?draft.lang.map(langName).join(", "):"Any";
+  $("cCultCap").textContent=draft.culture.length?draft.culture.join(", "):"Any";
   const sel=ageSel();
   $("cAgeCap").textContent = sel<0 ? "Any" : "Up to "+AGE_LEVELS[sel];
   [...$("cAgeLoz").children].forEach(b=>{
@@ -1777,6 +1965,7 @@ function openEditor(title){
   buildQuality();
   buildEditorChips("cGenreChips", ALL_GENRES, "genre", null, ()=>"gen");
   buildEditorChips("cLangChips", ALL_LANGS, "lang", c=>`${langName(c)} · ${LANG_COUNT[c]}`, ()=>"gen");
+  buildEditorChips("cCultChips", ALL_CULTURES, "culture", c=>`${c} · ${CULTURE_COUNT[c]}`, ()=>"gen");
   syncQuality(); refreshDraft();
 }
 function buildEditorChips(el, values, key, label, cls){
