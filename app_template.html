@@ -612,6 +612,8 @@
   .newchip{display:inline-block;background:rgba(72,199,142,.16);border:1px solid rgba(72,199,142,.55);
     color:#a7eccb;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:7px;
     vertical-align:middle;white-space:nowrap}
+  /* the opening-weekend state (CAS-68) — amber, the cinema's colour, and it never claims a leave date */
+  .newchip.po{background:rgba(240,163,54,.14);border-color:rgba(240,163,54,.5);color:#ffce8f;cursor:help}
   /* ---- Inline provenance + inline mute (CAS-72) ---- */
   /* Taking a film off your Found list is one tap, on the card. It used to be a full-screen sheet — a screen
      takeover for a single yes/no. The "which of my Cascades matched, and what will they tell me" detail is
@@ -848,6 +850,15 @@ const MOVIES = __MOVIES_JSON__;
 const TODAY  = "__TODAY__";
 
 const PVOD_MIN = 19.99, RENTAL_MAX = 9.99, OPENING_WEEK_DAYS = 7;
+// ---- "Past opening weekend" — the fourth alert moment (CAS-68) ------------------------------------------
+// "About to leave the cinema" has no data behind it: nobody publishes the date a film comes off the screen, so
+// any countdown to it would be a fabricated timer. What IS computable from a real opening date is the moment a
+// film is PAST its opening weekend — it's had its moment, and the big-screen window is finite even though we
+// can't say when it closes. That is the honest version of the same alert, and these two constants are its dials.
+const PAST_OPENING_DAYS  = 4;   // opening date + N days = past its opening weekend. THE tunable for this moment.
+const PAST_OPENING_GRACE = 7;   // how long after the crossing it is still news. A film that opened seven weeks
+                                // ago is past its opening weekend too, but telling you so today is archaeology,
+                                // not an alert — so the moment only fires while the crossing is recent.
 // (TENTPOLE_MIN is gone: a film's scale is claimed in exactly one place now — the tentpole badge — and it
 //  reads that from the same rule the Cascade filter uses, so the badge and the filter can't disagree.)
 
@@ -873,7 +884,10 @@ const CASCADE = ["upcoming","opening_week","in_cinema","pvod","rental","included
 const STATUS_LABEL = {
   opening_week:"In Cinema · Opening week", in_cinema:"In Cinema",
   pvod:"Premium Buy/Rent (~$30)", rental:"Rent (~$7)",
-  included_streaming:"Stream (included)", upcoming:"Upcoming"
+  included_streaming:"Stream (included)", upcoming:"Upcoming",
+  // Not an availability window (it isn't in CASCADE, so it is never a status a film HOLDS) — it's a moment,
+  // and this is the label the alerts and the report print for it.
+  past_opening:"Past opening weekend"
 };
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const FMT_RANK = {SD:1, HD:2, "4K":3};
@@ -913,6 +927,19 @@ function deriveStatus(m){
 }
 const primaryStatus = m => m.status[m.status.length-1];
 MOVIES.forEach(m=>m.status=deriveStatus(m));
+
+// The state, derived from the film's REAL opening date and nothing else. A film the sim has pushed into
+// cinemas early (_simReleased) has an opening date in the future, so it is honestly not past anything yet.
+const inCinemaWindow = m => ["opening_week","in_cinema"].includes(primaryStatus(m));
+const pastOpeningOn  = m => m.cinema_date ? addDays(m.cinema_date, PAST_OPENING_DAYS) : null;
+const isPastOpening  = (m, day=TODAY) => {
+  const d=pastOpeningOn(m);
+  return !!d && inCinemaWindow(m) && d<=day;
+};
+// Ready to be TOLD about: past the threshold, and the crossing is still recent enough to be news.
+const pastOpeningDue = (m, day) => isPastOpening(m, day) && day <= addDays(pastOpeningOn(m), PAST_OPENING_GRACE);
+const daysOut = (m, day=TODAY) =>
+  Math.round((Date.parse(day) - Date.parse(m.cinema_date)) / 864e5);
 
 function dedupOffers(offers){
   const map=new Map();
@@ -1562,6 +1589,14 @@ function lossFrame(m,w,before){
   return "";
 }
 
+// The loss framing for the opening-weekend moment (CAS-68). Truthful by construction: it states the one number
+// we hold (how long the film has actually been in cinemas) and then says out loud that we do NOT know when it
+// leaves. That disclaimer is the point — the honesty guardrail forbids the countdown everyone else would fake.
+function pastOpeningFrame(m, day=TODAY){
+  const n=daysOut(m, day);
+  return `It's been in cinemas ${n} day${n===1?"":"s"} and it's had its opening weekend. Nobody publishes the `
+       + `date a film comes off the screen, so we won't invent one — but the big-screen window doesn't last.`;
+}
 function creditsHTML(m){
   const rows=[];
   if(m.director) rows.push(`<div class="credit"><span class="clbl">Director</span>${esc(m.director)}</div>`);
@@ -1632,11 +1667,15 @@ function cardHTML(m, lead="", markNew=false){
   // and some aren't. On a first run every film is new, and marking all of them would be noise dressed up as
   // news — the agent header says "all of them this week" in words instead.
   const isNew = markNew ? `<span class="newchip">🆕 New this week</span>` : "";
+  // The opening-weekend state, on the card, in both views (CAS-68). Computed from the real opening date, so it
+  // says how long the film has actually been out — never how long it has left, which nobody knows.
+  const po = isPastOpening(m)
+    ? `<span class="newchip po" title="Opened ${daysOut(m)} days ago — past its opening weekend (opening + ${PAST_OPENING_DAYS} days). We don't know when it leaves the cinema; nobody publishes that.">🎬 Past opening weekend</span>` : "";
   return `<div class="card ${isW?'watched':''} ${expandedSet.has(id)?'expanded':''}" id="card-${id}">
     <div class="ctop">
       <div class="poster" style="${poster}" onclick="toggleExpand(${id})"></div>
       <div class="chead">
-        <div class="title" onclick="toggleExpand(${id})">${m.title}${cert}${isNew}</div>
+        <div class="title" onclick="toggleExpand(${id})">${m.title}${cert}${isNew}${po}</div>
         <div class="meta">${m.cinema_date?fmtDate(m.cinema_date):""}${(m.genres||[]).length?(m.cinema_date?" · ":"")+(m.genres||[]).join(", "):""}${cult}</div>
         ${syn}
       </div>
@@ -1903,6 +1942,9 @@ function whyFound(m){
     where = `Premium only so far — I'm watching for it to drop`;
   } else if(w==="upcoming"){
     where = m.cinema_date ? `Out ${fmtDate(m.cinema_date)} — I'm watching it in` : `Not out yet — I'm watching it in`;
+  } else if(isPastOpening(m)){
+    // The derived state, said in words on the card (CAS-68) — from the film's real opening date.
+    where = `In cinemas ${daysOut(m)} days now — past its opening weekend`;
   } else {
     where = `In cinemas now`;
   }
@@ -2120,14 +2162,21 @@ function activeCount(){
 // the user scans and adjusts rather than filling a blank query.
 // Alert defaults follow the Cascades concept: Rent + Stream ON, Premium OFF
 // (nobody wants to be nudged to overpay), and cinema OFF — a release is news, not a saving.
-const ALERT_DEFAULTS = {cinema:false, pvod:false, rental:true, included_streaming:true};
+// past_opening (CAS-68) defaults OFF for the same reason cinema does: it's news about the big screen, not a
+// saving, and a Cascade nobody pointed at the cinema shouldn't start talking about it.
+const ALERT_DEFAULTS = {cinema:false, past_opening:false, pvod:false, rental:true, included_streaming:true};
 
 // ---- The availability spine ---------------------------------------------------
 // One row per window a film can be in. "All" is not a window — it's the empty status set, i.e. any window.
 // Each row owns its alert toggle; the window→row map is what the poll sim consults.
 const AVAIL_ROWS = [
+  // The cinema row owns TWO moments, because the big screen has two: the film arriving, and the film having
+  // had its weekend. The second is a moment, not a window — a film doesn't move anywhere when it crosses it —
+  // so it rides here as an extra bell rather than as a row of its own with nothing to switch on.
   {key:"cinema", alert:"cinema", windows:["upcoming","opening_week","in_cinema"], pill:"in_cinema",
-   title:"Upcoming / In cinema", sub:"Announced, and on the big screen"},
+   title:"Upcoming / In cinema", sub:"Announced, and on the big screen",
+   extraAlert:{key:"past_opening", label:"📣 Past opening weekend",
+               sub:`opening + ${PAST_OPENING_DAYS} days · it's had its moment, catch it before it's gone`}},
   {key:"pvod", alert:"pvod", windows:["pvod"], pill:"pvod",
    title:"Premium", sub:"Buy or rent early, ~$30", home:true},
   {key:"rental", alert:"rental", windows:["rental"], pill:"rental",
@@ -2428,7 +2477,8 @@ const watchesFilm = (m,c) => matchesTaste(m,c) && inScope(m,c);
 // Not countCriteria(), which is the narrower "what it can show you today" number.
 const watchCount = c => MOVIES.filter(m=>watchesFilm(m,c)).length;
 
-const ALERT_SHORT = {cinema:"cinema", pvod:"premium", rental:"rent", included_streaming:"stream"};
+const ALERT_SHORT = {cinema:"cinema", past_opening:"opening weekend", pvod:"premium", rental:"rent",
+                     included_streaming:"stream"};
 // A Cascade lets a film go once it passes the last window in its scope — so the last move it can ever witness
 // is the one OUT of that window. Rows past that point are unreachable, and a bell on one of them is a switch
 // wired to nothing. The card and the provenance sheet both print this line as a promise about what you'll be
@@ -2437,7 +2487,12 @@ const ALERT_SHORT = {cinema:"cinema", pvod:"premium", rental:"rent", included_st
 const lastScopeIdx = c => (c.status||[]).length ? Math.max(...c.status.map(winIdx)) : CASCADE.length-1;
 const reachableRows = c => {
   const limit=lastScopeIdx(c)+1;                       // +1: the move OUT of the last watched window still counts
-  return new Set(CASCADE.filter(w=>winIdx(w)<=limit).map(w=>WINDOW_ROW[w]).filter(Boolean));
+  const rows=new Set(CASCADE.filter(w=>winIdx(w)<=limit).map(w=>WINDOW_ROW[w]).filter(Boolean));
+  // The opening-weekend moment happens to a film ON the big screen, so it can only ever fire for a Cascade that
+  // is still watching the film there. A Cascade scoped to Rent has let go of it long before — its bell would be
+  // wired to nothing, and promising it in the card's "alerts on…" line would be a promise we can't keep.
+  if(rows.has("cinema")) rows.add("past_opening");
+  return rows;
 };
 function alertSummary(c){
   const reach=reachableRows(c);
@@ -2446,7 +2501,8 @@ function alertSummary(c){
 }
 // The same fact, said in the agent's voice — what it will actually come back to you about. Read off the same
 // reachable-bells rule as alertSummary(), so the promise can only name a moment that can really fire.
-const ALERT_MOMENT = {cinema:"reaches a cinema", pvod:"hits premium", rental:"drops to a rental price",
+const ALERT_MOMENT = {cinema:"reaches a cinema", past_opening:"is past its opening weekend",
+                      pvod:"hits premium", rental:"drops to a rental price",
                       included_streaming:"lands on a service"};
 function alertPromise(c){
   const reach=reachableRows(c);
@@ -2992,14 +3048,21 @@ function buildSpine(){
           <span class="alab"><span class="pill ${r.pill}">${r.title}</span><small>${r.sub}</small></span></button>
         <button class="abell" role="switch"><span>📣</span><span class="bl">Alert</span></button>
       </div>
-      ${r.home ? `<div class="aopts" id="opt-${r.key}"><div><div class="inner" style="padding-top:6px">
-        <div class="switch mini" id="mine-${r.key}" role="switch">
+      ${(r.home || r.extraAlert) ? `<div class="aopts" id="opt-${r.key}"><div><div class="inner" style="padding-top:6px">
+        ${r.home ? `<div class="switch mini" id="mine-${r.key}" role="switch">
           <span>Only what I can watch <small style="color:var(--faint)">(my services)</small></span>
-          <span class="knob"></span></div></div></div></div>` : ""}`;
+          <span class="knob"></span></div>` : ""}
+        ${r.extraAlert ? `<div class="switch mini" id="moment-${r.extraAlert.key}" role="switch">
+          <span>${r.extraAlert.label} <small style="color:var(--faint)">— ${r.extraAlert.sub}</small></span>
+          <span class="knob"></span></div>` : ""}</div></div></div>` : ""}`;
     el.querySelector(".atog").onclick=()=>{ setRow(r, rowState(r)==="off"); syncSpine(); refreshDraft(); };
     el.querySelector(".abell").onclick=()=>{ draft.alerts[r.alert]=!draft.alerts[r.alert]; syncSpine(); };
-    const mine=el.querySelector(".switch");
+    const mine=r.home ? el.querySelector("#mine-"+r.key) : null;
     if(mine) mine.onclick=()=>{ draft.myServices[r.key]=!draft.myServices[r.key]; syncSpine(); refreshDraft(); };
+    if(r.extraAlert){
+      const mo=el.querySelector("#moment-"+r.extraAlert.key);
+      mo.onclick=()=>{ draft.alerts[r.extraAlert.key]=!draft.alerts[r.extraAlert.key]; syncSpine(); };
+    }
     spine.appendChild(el);
   });
   // With the "All windows" row gone, an empty status set has no control of its own — so say what it means
@@ -3022,6 +3085,14 @@ function syncSpine(){
     const part = st==="part" ? r.windows.filter(w=>draft.status.includes(w)).map(w=>STATUS_LABEL[w]).join(" + ") : "";
     el.querySelector(".alab small").textContent = part ? `Currently: ${part} only — tap for the whole window` : r.sub;
     bellPaint(el, !!draft.alerts[r.alert], r.title);
+    // The second moment on the cinema row (CAS-68). It's a bell, not a window: it never narrows what the
+    // Cascade finds, it only decides whether you're told when a film it already watches has had its weekend.
+    if(r.extraAlert){
+      $("opt-"+r.key).classList.toggle("open", st!=="off" || allOn());
+      const mo=$("moment-"+r.extraAlert.key), on=!!draft.alerts[r.extraAlert.key];
+      mo.classList.toggle("on", on);
+      mo.setAttribute("aria-checked", String(on));
+    }
     if(!r.home) return;
     // Each home window owns its own scope now, and it only appears while that window is being watched.
     // An empty status set IS "watching every window" (see the note below), so the scopes have to be
@@ -3692,7 +3763,10 @@ function catchReason(m, c, w, services){
   if(scopeOf(c)[w] && servicesPicked() && !matchesServices(m))
     return (services && services.length) ? `it landed on ${services.join(", ")} — not one of your services`
                                          : `it isn't on any of your services`;
-  const k=WINDOW_ROW[w];
+  // "past_opening" is a moment, not a window, so it has no row in WINDOW_ROW — it IS its own alert key. Without
+  // this the lookup would come back undefined and the moment would fire for every Cascade, including the ones
+  // whose bell for it is switched off.
+  const k = w==="past_opening" ? "past_opening" : WINDOW_ROW[w];
   if(k && c.alerts && (k in c.alerts) && !c.alerts[k])
     return `your ${ALERT_SHORT[k]} alerts are off for this Cascade`;
   return null;                                  // caught: this Cascade tells you about it
@@ -3703,6 +3777,9 @@ let lastPoll = null;   // {day, events:[{id,title,window,services,price,caught:[
 function simulateDay(){
   dayCounter++; let fired=0, quiet=0;
   const events=[];
+  // The poll has a calendar: each run is one day forward. That is what lets a DATE-driven moment fire at all —
+  // the opening-weekend threshold is crossed by the clock, not by a film moving between windows.
+  const pollDay = addDays(TODAY, dayCounter);
   MOVIES.forEach(m=>{
     if(!found.has(m.tmdb_id)) return;   // the Found list IS the poll's watchlist — auto-selected and all
     const before=new Set(m.status);
@@ -3710,6 +3787,28 @@ function simulateDay(){
     // would ask the wrong question — a film that has just moved past a Cascade's window is no longer watched by
     // it, and that Cascade would go silent about the very arrival it had been waiting for.
     const watching=cascadesFor(m.tmdb_id);
+    // ---- Moment: past its opening weekend (CAS-68) ----------------------------
+    // Checked BEFORE the window ladder runs. The ladder hands an in-cinema film its first home offer, which
+    // takes it off the big screen — and a film that has left the cinema cannot be "past its opening weekend
+    // and still up there". Reading this after the move would silently kill the moment it exists to report.
+    // _poTold: the crossing happens once, so it is reported once, however many days you poll.
+    if(!m._poTold && pastOpeningDue(m, pollDay)){
+      m._poTold=true;
+      const caught=[], muted=[];
+      watching.forEach(c=>{
+        const why=catchReason(m, c, "past_opening", []);
+        why ? muted.push({cid:c.id, why}) : caught.push(c.id);
+      });
+      const alerted = caught.length>0 || !watching.length;
+      events.push({id:m.tmdb_id, title:m.title, window:"past_opening", services:[], price:null,
+                   caught, muted, alerted});
+      if(alerted){
+        alerts.unshift({id:m.tmdb_id, title:m.title, window:"past_opening",
+                        label:STATUS_LABEL.past_opening, services:[], day:dayCounter,
+                        frame:pastOpeningFrame(m, pollDay)});
+        fired++;
+      } else quiet++;
+    }
     if(!advanceOneWindow(m)) return;
     m.status=deriveStatus(m);
     m.status.filter(s=>!before.has(s)).forEach(w=>{
@@ -3849,6 +3948,9 @@ function alertVoice(a){
     case "opening_week":
     case "in_cinema":
       return `${lead} — “${a.title}” is in cinemas now.`;
+    // The moment, not a move: the film hasn't gone anywhere, it has simply had its weekend (CAS-68).
+    case "past_opening":
+      return `“${a.title}” has had its opening weekend — catch it on the big screen before it's gone.`;
     default:
       return `“${a.title}” moved to ${a.label}${svc?` on ${svc}`:""}.`;
   }
@@ -3856,7 +3958,8 @@ function alertVoice(a){
 function renderAlerts(){
   const el=$("alertsList");
   if(!alerts.length){el.innerHTML='<div class="noalert">Nothing to report yet.<br>Cascade\'s out there watching — run a day forward to see what it finds.</div>';return;}
-  const col={opening_week:"#ff6b6b",in_cinema:"#f0a336",pvod:"#a486f0",rental:"#5aa9f0",included_streaming:"#48c78e"};
+  const col={opening_week:"#ff6b6b",in_cinema:"#f0a336",past_opening:"#f0a336",pvod:"#a486f0",
+             rental:"#5aa9f0",included_streaming:"#48c78e"};
   el.innerHTML=alerts.map(a=>`<div class="alert"><div class="t">${esc(a.title)}</div>
     <div class="d">${esc(alertVoice(a))} · day ${a.day}</div>
     <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">→ ${a.label}</span>
