@@ -143,6 +143,13 @@
   .actbtn svg{width:18px;height:18px;display:block}
   .actbtn:hover{color:var(--ink);border-color:#3a4150}
   .actbtn.on{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
+  /* ---- provenance: who put this film on your Found list (CAS-67) ---- */
+  /* The megaphone is the only icon on the card that answers a question about US as well as about the film,
+     so it is the only one that carries two ON colours: PURPLE = one of your Cascades chose it, ORANGE = you
+     did, by hand. Same mark, same place, two honest answers — and the same pair is used in the Found list and
+     in the provenance sheet, so a colour never means one thing here and another thing there. */
+  .actbtn.on.auto{background:rgba(164,134,240,.2);border-color:var(--purple);color:#d8c9ff}
+  .actbtn.on.mine{background:rgba(240,163,54,.18);border-color:var(--amber);color:#ffd79a}
   .actbtn.wtwbtn .chev{transition:transform .18s}
   .actbtn.wtwbtn.open{background:rgba(124,92,255,.2);border-color:var(--accent);color:#cfc2ff}
   .actbtn.wtwbtn.open .chev{transform:rotate(180deg)}
@@ -303,6 +310,25 @@
   .mlbtn{width:34px;height:30px;border-radius:9px;background:var(--panel)}
   .mlbtn svg{width:16px;height:16px}
   .mlempty{color:var(--faint);font-size:12.5px;line-height:1.6;text-align:center;padding:34px 12px}
+  /* ---- the provenance sheet (CAS-67) ---- */
+  /* Tap the megaphone anywhere and this is what opens: who put the film on your Found list, which Cascade is
+     watching it, what that Cascade will actually tell you about — and the one control that changes any of it. */
+  .provfilm{display:flex;gap:11px;align-items:center;margin-bottom:13px}
+  .provposter{width:52px;height:78px;border-radius:8px;background:#0c0f14 center/cover no-repeat;flex-shrink:0}
+  .provtitle{font-size:15px;font-weight:800;line-height:1.25}
+  .provsrc{display:inline-block;border-radius:20px;padding:3px 10px;font-size:11.5px;font-weight:800;margin-top:7px}
+  .provsrc.auto{background:rgba(164,134,240,.16);border:1px solid var(--purple);color:#d8c9ff}
+  .provsrc.mine{background:rgba(240,163,54,.15);border:1px solid var(--amber);color:#ffd79a}
+  .provsrc.off {background:var(--panel2);border:1px solid var(--line);color:var(--dim)}
+  .provrow{display:flex;justify-content:space-between;align-items:center;gap:9px;background:var(--panel2);
+    border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin-bottom:6px}
+  .provname{font-size:12.5px;font-weight:700;min-width:0}
+  .provalerts{font-size:10.5px;color:var(--faint);white-space:nowrap;flex-shrink:0}
+  .provnote{font-size:11.5px;color:var(--faint);line-height:1.6;margin:10px 0 13px}
+  .provnote b{color:var(--dim)}
+  .provact{display:flex}
+  .provact .dangerbtn{flex:1}
+  .mlfrom .provsrc{margin-top:0;padding:1px 7px;font-size:10px}
   /* ---- per-Cascade digest ---- */
   #digest{margin:0 16px 6px}
   .dghead{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin:14px 0 8px}
@@ -567,7 +593,7 @@
         <div class="updated" id="updated"></div>
       </div>
       <div class="hdr-actions">
-        <div class="iconbtn" id="listBtn" title="My List — everything you've tagged">📋<div class="badge grn" id="listBadge" style="display:none">0</div></div>
+        <div class="iconbtn" id="listBtn" title="Your Found list — the films your Cascades are watching for you">📋<div class="badge grn" id="listBadge" style="display:none">0</div></div>
         <div class="iconbtn" id="prefBtn" title="My streaming services">⚙️</div>
         <div class="iconbtn" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
       </div>
@@ -578,7 +604,7 @@
     </div>
     <div class="filtoggle">
       <button class="btn" id="filterBtn">≡ Filters</button>
-      <button class="btn" id="trackedBtn">☆ Tracked</button>
+      <button class="btn" id="foundBtn" title="Show only the films on your Found list">🔔 Found only</button>
       <div style="flex:1"></div>
       <select id="sort">
         <option value="imdb">IMDb ▾</option>
@@ -640,8 +666,8 @@
 
     <div class="zone">
       <div class="zhead">Where &amp; when</div>
-      <div class="zsub">Which windows this Cascade watches — and which ones are worth a 📣 when a tagged
-        film lands there.</div>
+      <div class="zsub">Which windows this Cascade watches for you — and which ones are worth a 📣 when one of
+        the films it found lands there.</div>
       <div class="spine" id="cSpine"></div>
     </div>
 
@@ -726,12 +752,19 @@
   </div>
 </div>
 
-<!-- MY LIST modal — everything you've tagged, wherever you tagged it from -->
+<!-- FOUND modal — the union of what every Cascade selected and what you added by hand, minus what you took off -->
 <div class="modal" id="mylist">
-  <div class="modalhead"><h3>📋 My List</h3><button class="donebtn" id="mylistDone">Done</button></div>
-  <div class="pnote">Everything you've tagged, grouped by what you said about it. The window and the price are
-    today's real data — and each film says which of your Cascades is watching it.</div>
+  <div class="modalhead"><h3>🔔 Found</h3><button class="donebtn" id="mylistDone">Done</button></div>
+  <div class="pnote">Your Cascades put these here — you don't have to. Each film says who chose it
+    (<b style="color:#d8c9ff">purple</b> = a Cascade, <b style="color:#ffd79a">orange</b> = you), and the window
+    and price are today's real data. Add or remove any of them; your answer sticks.</div>
   <div id="mylistBody"></div>
+</div>
+
+<!-- PROVENANCE sheet — why this film is (or isn't) on your Found list, and the one control that changes it -->
+<div class="modal" id="prov" role="dialog" aria-modal="true" aria-label="Why this film is on your Found list">
+  <div class="modalhead"><h3>🔔 Found list</h3><button class="donebtn" id="provDone">Done</button></div>
+  <div id="provBody"></div>
 </div>
 
 <!-- ALERTS drawer -->
@@ -739,8 +772,9 @@
   <div class="drawer" id="drawer">
     <div class="dhead"><h3>🔔 Alerts</h3><button class="close" id="closeDrawer">×</button></div>
     <div class="sim">
-      <p>Tag titles with ☆, then run a daily poll. When a tagged film moves to a new
-         availability window you get an alert — exactly what the backend's diff engine does each night.</p>
+      <p>Your Cascades keep your Found list up to date on their own — nothing to tag. Run a daily poll and any
+         film on that list that moves to a new availability window alerts you, at the moments its Cascade
+         watches — exactly what the backend's diff engine does each night.</p>
       <button id="simBtn">▶ Simulate next daily poll</button>
     </div>
     <div id="digest"></div>
@@ -802,6 +836,9 @@ function addDays(iso, n){ const d=new Date(iso+"T00:00:00Z"); d.setUTCDate(d.get
 function fmtDate(iso){ if(!iso) return ""; const [y,m,d]=iso.split("-"); return `${MONTHS[+m-1]} ${y.slice(2)}`; }
 function yearOf(m){ return (m.cinema_date||m.year||"").slice(0,4); }
 function esc(s){ return (s||"").replace(/</g,"&lt;"); }
+// Same job, for text going inside a double-quoted attribute (a title=""), where a stray " would end it early.
+// Cascade names are the one string in this app the user types, and they land in exactly such an attribute.
+function escA(s){ return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;"); }
 
 function deriveStatus(m){
   const o = m.offers||[]; const s = new Set();
@@ -864,10 +901,96 @@ if(didReset || forceSetup){
 // ---- persisted user state (localStorage, with graceful fallback) ----
 function loadSet(k){ try{ return new Set(JSON.parse(localStorage.getItem(k)||"[]")); }catch(e){ return new Set(); } }
 function saveSet(k,set){ try{ localStorage.setItem(k, JSON.stringify([...set])); }catch(e){} }
-const tracked = loadSet("cascade_tracked");
 const watched = loadSet("cascade_watched");
 const blocked = loadSet("cascade_blocked");
 const expandedSet = new Set();   // which cards are expanded (session only)
+
+// ---- The Found list: auto-membership + overrides + provenance (CAS-67) ---------------------------------
+// A Cascade is a standing rule, not a search you harvest by hand — so every film that matches one is ALREADY
+// on your Found list. There is no approve step. On top of that sits an override layer that is yours alone:
+// hand-add anything, hand-remove anything, and both answers PERSIST.
+//
+// The auto set is never stored. It is recomputed from the Cascades on every render (recomputeFound(), first
+// line of render()), and that is what buys the re-run semantics for free: edit a Cascade's criteria and its
+// auto set is re-selected from scratch, while the only things we ever wrote down — your adds and your removes
+// — survive untouched. A film you removed stays removed even when it still matches; a film you added stays
+// even when nothing matches it any more.
+//
+// Stored per film, under cascade_notify: {source:"auto"|"manual", cascadeIds:[…], removed:bool}
+//   source "manual", removed false  → you added it       → ORANGE megaphone
+//   source "auto",   removed false  → a Cascade chose it → PURPLE megaphone
+//   removed true                    → you took it off    → grey; and it stays off across every future re-run
+// cascadeIds is DERIVED — rewritten on every recompute — and is persisted only because it's part of the entry
+// the concept doc specifies. Nothing ever reads it back from storage as the truth about membership.
+const NOTIFY_KEY="cascade_notify";
+function loadNotify(){
+  let n={};
+  try{ const o=JSON.parse(localStorage.getItem(NOTIFY_KEY)||"{}"); if(o && typeof o==="object" && !Array.isArray(o)) n=o; }catch(e){}
+  Object.keys(n).forEach(k=>{                       // anything malformed is discarded, not trusted
+    const e=n[k];
+    if(!e || typeof e!=="object"){ delete n[k]; return; }
+    e.source = e.source==="manual" ? "manual" : "auto";
+    e.cascadeIds = Array.isArray(e.cascadeIds) ? e.cascadeIds : [];
+    e.removed = !!e.removed;
+  });
+  // Migration: every film you tracked by hand under the old model WAS a manual add — carry it over as one,
+  // rather than dropping the list you built on the floor the day the model inverted.
+  try{
+    const old=JSON.parse(localStorage.getItem("cascade_tracked")||"[]");
+    if(Array.isArray(old) && old.length){
+      old.forEach(id=>{ if(!n[id]) n[id]={source:"manual", cascadeIds:[], removed:false}; });
+      // Write the new list BEFORE dropping the old one. The other order loses the user's whole list if the
+      // write fails (a full quota, a locked-down browser) — the one moment we'd have nothing to fall back on.
+      localStorage.setItem(NOTIFY_KEY, JSON.stringify(n));
+      localStorage.removeItem("cascade_tracked");
+    }
+  }catch(e){}
+  return n;
+}
+const notify = loadNotify();
+let notifySaved=null;
+function saveNotify(){
+  const s=JSON.stringify(notify);
+  if(s===notifySaved) return;                       // recompute runs on every render — only real changes write
+  notifySaved=s;
+  try{ localStorage.setItem(NOTIFY_KEY, s); }catch(e){}
+}
+const entryFor = id => notify[id] || (notify[id]={source:"auto", cascadeIds:[], removed:false});
+// The live membership: auto ∪ your adds − your removes. Rebuilt by recomputeFound(), read everywhere else.
+const found = new Set();
+function recomputeFound(){
+  const hits=new Map();                             // film id -> the Cascades that chose it, THIS run
+  cascades.forEach(c=>MOVIES.forEach(m=>{
+    if(!watchesFilm(m,c)) return;                   // WATCHES, not shows — see the note above matchesTaste
+    if(!hits.has(m.tmdb_id)) hits.set(m.tmdb_id, []);
+    hits.get(m.tmdb_id).push(c.id);
+  }));
+  found.clear();
+  Object.keys(notify).forEach(id=>{ notify[id].cascadeIds=[]; });   // the auto half is rebuilt, never merged
+  hits.forEach((ids,id)=>{ entryFor(id).cascadeIds=ids; });
+  Object.entries(notify).forEach(([id,e])=>{
+    const auto=e.cascadeIds.length>0, mine=e.source==="manual";
+    // An entry that records neither an override nor a current match is just noise — don't keep it.
+    if(!auto && !mine && !e.removed){ delete notify[id]; return; }
+    // "I've seen it" / "not for me" outranks EVERY route onto the list, including your own pin. A Cascade's
+    // auto set already honours those two tags (matchesCriteria excludes them), so this is what applies them to
+    // a hand-added film — otherwise a film you pinned and then ticked as watched would sit in the Found group
+    // and the Watched group at the same time, and go on alerting you about a film you told us you'd seen.
+    // The PIN survives (the entry is kept): untick the film and it comes straight back.
+    const tagged = watched.has(+id) || blocked.has(+id);
+    if(!e.removed && !tagged && (auto||mine)) found.add(+id);
+  });
+  saveNotify();
+}
+// What the megaphone's colour is claiming, in one word.
+const foundSource = id => {
+  const e=notify[id];
+  if(!e || !found.has(id)) return "off";
+  return e.source==="manual" ? "manual" : "auto";
+};
+const removedByHand = id => !!(notify[id] && notify[id].removed);
+const cascadesFor = id => ((notify[id]||{}).cascadeIds||[])
+  .map(cid=>cascades.find(c=>c.id===cid)).filter(Boolean);
 // `touched` = the user has worked the my-services switch by hand, so we stop auto-defaulting it for them.
 function loadPrefs(){ try{ const p=JSON.parse(localStorage.getItem("cascade_prefs")||"{}");
   return {on:!!p.on, touched:!!p.touched, sub:new Set(p.sub||[]), store:new Set(p.store||[])}; }
@@ -881,7 +1004,7 @@ try{ const v=localStorage.getItem("cascade_ux"); if(v!==null) ux.on = v==="1"; }
 function saveUx(){ try{ localStorage.setItem("cascade_ux", ux.on?"1":"0"); }catch(e){} }
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
-  imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb",
+  imdb:0, rt:0, gross:0, search:"", foundOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb",
   includeUnrated:false,    // set by the open Cascade's escape hatch; off by default = unrated titles drop out
   budget:0, includeUnbudgeted:false, tentpole:"any"};
 const $=id=>document.getElementById(id);
@@ -1072,7 +1195,13 @@ armSwitches();
 new MutationObserver(()=>armSwitches()).observe(document.body, {childList:true, subtree:true});
 
 function openModal(el){ el.classList.add("open"); document.body.style.overflow="hidden"; }
-function closeModal(el){ el.classList.remove("open"); document.body.style.overflow=""; }
+// Modals stack now — the provenance sheet opens on top of the Found list. So the scroll lock is released only
+// when the LAST one closes; releasing it on the first would let the page scroll away underneath a modal that
+// is still open, and the user would come back to a list that had moved.
+function closeModal(el){
+  el.classList.remove("open");
+  if(!document.querySelector(".modal.open")) document.body.style.overflow="";
+}
 $("filterBtn").onclick=()=>{ logEvent("filters_opened",{active:activeCount()}); openModal($("filters")); };
 $("filtersDone").onclick=()=>{ logEvent("filters_applied",{active:activeCount(), shown:MOVIES.filter(passes).length}); closeModal($("filters")); };
 $("prefBtn").onclick=()=>{ logEvent("services_opened",{picked:prefs.sub.size+prefs.store.size}); openModal($("prefs")); };
@@ -1104,7 +1233,7 @@ $("uxSwitch").onclick=()=>{ ux.on=!ux.on; saveUx(); updateUxSwitch(); render(); 
 updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
 
 // ---- controls ----
-$("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
+$("foundBtn").onclick=()=>{filt.foundOnly=!filt.foundOnly;$("foundBtn").classList.toggle("active");render();};
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
 let searchLogged=false;
 $("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();$("searchClear").classList.toggle("show", e.target.value.length>0);
@@ -1118,7 +1247,7 @@ $("budgetBand").onchange=e=>{filt.budget=+e.target.value; if(!filt.budget) filt.
 $("tentpoleSel").onchange=e=>{filt.tentpole=e.target.value;render();};   // options filled below, with the bands
 function clearFilters(){
   ["status","year","age","culture","lang","genre"].forEach(k=>filt[k].clear());
-  filt.imdb=0;filt.rt=0;filt.gross=0;filt.trackedOnly=false;filt.hideWatched=false;filt.showHidden=false;
+  filt.imdb=0;filt.rt=0;filt.gross=0;filt.foundOnly=false;filt.hideWatched=false;filt.showHidden=false;
   filt.awards=false;filt.search="";filt.includeUnrated=false;
   filt.budget=0;filt.includeUnbudgeted=false;filt.tentpole="any";
 }
@@ -1135,7 +1264,7 @@ function syncFilterUI(){
   $("grossMin").value=filt.gross;
   $("budgetBand").value=filt.budget; $("tentpoleSel").value=filt.tentpole;
   $("search").value=filt.search; $("searchClear").classList.toggle("show", !!filt.search);
-  $("trackedBtn").classList.toggle("active", filt.trackedOnly);
+  $("foundBtn").classList.toggle("active", filt.foundOnly);
   $("sort").value=filt.sort;
 }
 $("resetBtn").onclick=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
@@ -1172,7 +1301,7 @@ function passes(m){
   if(!ignoreTagged && taggedOut(m)) return false;
   // Scoped per window: a Rent-scoped Cascade filters rental films by your stores, and leaves cinema alone.
   if(!ignoreScope && servicesPicked() && scopedFor(primaryStatus(m)) && !matchesServices(m)) return false;
-  if(filt.trackedOnly && !tracked.has(id)) return false;
+  if(filt.foundOnly && !found.has(id)) return false;
   if(filt.search && !m.title.toLowerCase().includes(filt.search)) return false;
   if(filt.status.size && !filt.status.has(primaryStatus(m))) return false;
   if(filt.year.size && !filt.year.has(yearOf(m))) return false;
@@ -1368,6 +1497,27 @@ function trailersHTML(m){
     : `<div class="notrailer">No trailer available yet.</div>`;
   return `<div class="exhead">Trailers</div>${body}`;
 }
+// ---- the megaphone (CAS-67) ----------------------------------------------------
+// One button, used on the card and in the Found list, carrying two things at once: whether the film is on your
+// Found list, and WHO put it there. It opens the provenance sheet rather than toggling on the spot, because
+// under auto-membership the interesting question is no longer "do you want this?" (a Cascade already answered)
+// but "who chose this, and what will it tell me?" — and the answer has to be one tap from the film.
+function notifyBtnHTML(id, cls=""){
+  const src=foundSource(id), from=cascadesFor(id);
+  const names=from.map(c=>`${c.icon} ${c.name}`).join(", ");
+  // The button OPENS A SHEET; it does not toggle. So it must not wear aria-pressed (a toggle's state) or say
+  // "tap to add it" — a screen-reader user told "not pressed, tap to add" would press it and find a dialog and
+  // an unchanged list. It announces the state it's reporting, and that a dialog is what opens.
+  const state = src==="auto"   ? `${names} found this`
+              : src==="manual" ? "You added this"
+              : removedByHand(id) ? (from.length ? `You took this off — ${names} would otherwise pick it up`
+                                                 : "You took this off your Found list")
+              : "Not on your Found list";
+  const title = `${state} — tap to see why, and to change it`;
+  const on = src==="auto" ? "on auto" : src==="manual" ? "on mine" : "";
+  return `<button class="actbtn ${cls} ${on}" onclick="openProvenance(${id})" aria-haspopup="dialog"
+    title="${escA(title)}" aria-label="${escA(title)}">${ICON.alert}</button>`;
+}
 function cardHTML(m){
   const id=m.tmdb_id;
   let offers=dedupOffers(m.offers);
@@ -1399,8 +1549,7 @@ function cardHTML(m){
     ${savingsHTML(m)}
     ${wtw}
     <div class="actions">
-      <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})"
-        aria-pressed="${tracked.has(id)}" title="${tracked.has(id)?'Alerting you when this moves':'Alert me when this moves'}">${ICON.alert}</button>
+      ${notifyBtnHTML(id)}
       <button class="actbtn ${isW?'on':''}" onclick="toggleWatched(${id})"
         aria-pressed="${isW}" title="${isW?'Marked watched — tap to undo':'Mark as watched'}">${ICON.watched}</button>
       <button class="actbtn ${isB?'on':''}" onclick="toggleBlocked(${id})"
@@ -1425,18 +1574,28 @@ function stubHTML(m){
       title="${t.lbl} — tap to undo and bring the card back">${t.ico}</button>`).join("")}
   </div>`;
 }
-// ================= My List =================
-// The payoff view for tagging: everything you've said something about, in one place, with today's real
-// window and price — and the honest answer to "why am I seeing this?" (which Cascade is watching it).
+// ================= Found (CAS-67) =================
+// The payoff view, and now the point of the whole app: the union of what every Cascade selected, plus what you
+// added by hand, minus what you took off — with today's real window and price, and the honest answer to "why is
+// this here?" printed on every row. (Watched / Not-interested still live here too: they're the other two things
+// you can say about a film, and the undo for both has to be somewhere.)
+const removedIds = () => new Set(Object.entries(notify)
+  .filter(([,e])=>e.removed && e.cascadeIds.length).map(([id])=>+id));
 const TAG_GROUPS = [
-  {key:"tracked", icon:"🔔", title:"Tracking",       colour:"var(--green)", set:()=>tracked,
-   blurb:"You'll be alerted when these move"},
+  {key:"found", icon:"🔔", title:"Found for you", colour:"var(--purple)", set:()=>found,
+   blurb:"Your Cascades chose these — you don't have to. You'll be alerted when they move"},
+  {key:"removed", icon:"🚫", title:"You took these off", colour:"var(--grey)", set:removedIds,
+   blurb:"A Cascade still matches them. They stay off until you say otherwise — that's your call, not ours"},
   {key:"watched", icon:"✅", title:"Watched",        colour:"var(--blue)",  set:()=>watched,
-   blurb:"Seen them — kept here so you don't re-tag them"},
+   blurb:"Seen them — kept here so no Cascade puts them back in front of you"},
   {key:"blocked", icon:"🙈", title:"Not interested",  colour:"var(--grey)",  set:()=>blocked,
    blurb:"Collapsed to one line on the main list. Undo any time — here or there"},
 ];
-const surfacedBy = m => cascades.filter(c=>matchesCriteria(m,c,true));   // true: a blocked film still answers honestly
+// "Which of your Cascades WOULD be watching this, if you hadn't tagged it?" — the only honest question to ask
+// of a watched / not-interested film, because a Cascade excludes both by default. Asking the plain matcher
+// would always answer "none", which is not an answer: it flatly contradicts the purple chip the same film was
+// wearing a second before you ticked it.
+const wouldWatch = m => cascades.filter(c=>watchesFilm(m, {...c, excludeWatched:false, excludeBlocked:false}));
 const WIN_COLOUR = {opening_week:"var(--open)", in_cinema:"var(--amber)", pvod:"var(--purple)",
                     rental:"var(--blue)", included_streaming:"var(--green)", upcoming:"var(--grey)"};
 function mlOffersHTML(m){
@@ -1452,24 +1611,47 @@ function mlOffersHTML(m){
   if(paid.length) bits.push(`${sub.length?"or f":"F"}rom <b>$${paid[0].price.toFixed(2)}</b> on ${esc(svcName(paid[0].service))}`);
   return `<div class="mloffers">${bits.join(" · ")}</div>`;
 }
+const cascChips = list => list.map(c=>`<span class="mlchip">${c.icon} ${esc(c.name)}</span>`).join("");
+// The provenance line — the row's answer to "why is this here?". It is read off the same entry that decides the
+// megaphone's colour, so the words and the colour can never disagree.
+function mlWhyHTML(m, groupKey){
+  const id=m.tmdb_id, from=cascadesFor(id), src=foundSource(id);
+  if(groupKey==="found"){
+    if(src==="auto")
+      return `<span class="provsrc auto">Cascade found this</span> ${cascChips(from)}`;
+    return `<span class="provsrc mine">You added this</span> `
+      + (from.length ? `also matched by ${cascChips(from)}`
+                     : (cascades.length ? "no Cascade of yours matches it — it's here because you said so."
+                                        : "you have no Cascades yet — this one is here because you added it."));
+  }
+  if(groupKey==="removed"){
+    // A film you PINNED and then took off comes back as yours (orange), not the Cascade's — setNotify keeps the
+    // pin on purpose. So the row must not promise "theirs again".
+    const pinned = !!(notify[id] && notify[id].source==="manual");
+    return `<span class="provsrc off">You took this off</span> ${cascChips(from)}
+      ${from.length===1?"matches":"match"} it${pinned ? " too, but you added this one by hand — put it back and it's yours again."
+                                                      : " — put it back and it's theirs again."}`;
+  }
+  const would=wouldWatch(m);   // watched / not-interested: which radars WOULD have it, if you hadn't said otherwise
+  const why = groupKey==="watched" ? "you've seen it" : "you waved it off";
+  return would.length
+    ? `${cascChips(would)} would be watching this — held back because ${why}.`
+    : (cascades.length ? "No Cascade of yours matches this one."
+                       : "You have no Cascades yet — this one is here because you tagged it.");
+}
 function mlRowHTML(m, groupKey){
   const id=m.tmdb_id, w=primaryStatus(m);
-  const from=surfacedBy(m);
   const poster=m.poster ? `background-image:url(https://image.tmdb.org/t/p/w92${m.poster})` : "";
-  return `<div class="mlrow ${groupKey==="blocked"?"dim":""}">
+  return `<div class="mlrow ${groupKey==="blocked"||groupKey==="removed"?"dim":""}">
     <div class="mlposter" style="${poster}"></div>
     <div class="mlmain">
       <div class="mltitle">${esc(m.title)}</div>
       <span class="mlwin" style="background:${WIN_COLOUR[w]}22;border:1px solid ${WIN_COLOUR[w]}88;color:${WIN_COLOUR[w]}">${STATUS_LABEL[w]}</span>
       ${mlOffersHTML(m)}
-      <div class="mlfrom">${ from.length
-        ? "Watched by " + from.map(c=>`<span class="mlchip">${c.icon} ${esc(c.name)}</span>`).join("")
-        : (cascades.length ? "No Cascade of yours is watching this one — you tagged it by hand."
-                           : "You have no Cascades yet — this one is here because you tagged it.") }</div>
+      <div class="mlfrom">${mlWhyHTML(m, groupKey)}</div>
     </div>
     <div class="mlacts">
-      <button class="actbtn mlbtn ${tracked.has(id)?"on":""}" onclick="toggleTag(${id})"
-        aria-pressed="${tracked.has(id)}" title="Alert me when this moves">${ICON.alert}</button>
+      ${notifyBtnHTML(id, "mlbtn")}
       <button class="actbtn mlbtn ${watched.has(id)?"on":""}" onclick="toggleWatched(${id})"
         aria-pressed="${watched.has(id)}" title="Watched">${ICON.watched}</button>
       <button class="actbtn mlbtn ${blocked.has(id)?"on":""}" onclick="toggleBlocked(${id})"
@@ -1478,42 +1660,151 @@ function mlRowHTML(m, groupKey){
   </div>`;
 }
 function renderMyList(){
-  const n=new Set([...tracked,...watched,...blocked]).size;
+  // The badge counts the Found list itself — the number your Cascades are working for you, not the number of
+  // things you've had to do. That IS the product's claim, so it's the number that belongs on the header.
   const b=$("listBadge");
-  if(n){ b.style.display="grid"; b.textContent=n; } else b.style.display="none";
+  if(found.size){ b.style.display="grid"; b.textContent=found.size; } else b.style.display="none";
   const el=$("mylistBody"); if(!el) return;
-  if(!n){
-    // Above-zero framing: they haven't tagged anything, but their radars are already doing work. Say what
-    // that work IS (a real count), so the empty screen still shows them something they own.
-    const watching = cascades.length ? new Set(cascades.flatMap(c=>MOVIES.filter(m=>matchesCriteria(m,c)).map(m=>m.tmdb_id))).size : 0;
+  // g.set() is evaluated ONCE per group, not once per film — removedIds() rebuilds a Set from the whole notify
+  // map, and calling it inside the filter would rebuild it for every title in the catalogue.
+  const groups=TAG_GROUPS.map(g=>{ const ids=g.set(); return {g, films:MOVIES.filter(m=>ids.has(m.tmdb_id))}; })
+    .filter(x=>x.films.length);
+  if(!groups.length){
+    // With auto-membership there is only one way to have an empty Found list: no Cascades. So say the one thing
+    // that fixes it, rather than asking them to go and tag films by hand — which is the job we just took over.
     el.innerHTML=`<div class="mlempty">
-      <div style="font-size:30px;margin-bottom:10px">📋</div>
-      <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px">Nothing tagged yet.</div>
+      <div style="font-size:30px;margin-bottom:10px">🔔</div>
+      <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px">Nothing found yet.</div>
       ${cascades.length
-        ? `Your ${cascades.length} Cascade${cascades.length===1?"":"s"} ${cascades.length===1?"is":"are"} already
-           watching <b style="color:#a7eccb">${watching} film${watching===1?"":"s"}</b> for you.<br>
-           Tag one with <b>☆</b> and it lands here — with its window, its price, and the radar that found it.`
-        : `Tag any film with <b>☆</b> and it lands here — with its window, its price, and the radar that found it.`}
+        ? `Your ${cascades.length} Cascade${cascades.length===1?"":"s"} ${cascades.length===1?"isn't":"aren't"}
+           matching anything in today's catalogue. Widen ${cascades.length===1?"it":"one of them"} and whatever it
+           finds lands here on its own.`
+        : `Create a Cascade and it starts finding films for you — everything it picks up appears here, with its
+           window, its price, and the name of the Cascade that chose it. You never have to tag anything.`}
       <div style="margin-top:12px;font-size:11.5px;color:var(--faint)">
-        The <b>tick</b> marks one watched · the <b>⊘</b> waves it off. Neither one deletes it — a tagged film
-        just collapses to a line you can undo. Nothing here needs an account.</div>
+        You can still add a film by hand — the <b>megaphone</b> on any card. Yours show <b style="color:#ffd79a">orange</b>,
+        a Cascade's show <b style="color:#d8c9ff">purple</b>. Nothing here needs an account.</div>
       <div class="ebtns" style="margin-top:14px">
         <button class="ebtn ghost" onclick="closeModal(document.getElementById('mylist'))">Back to the films</button>
       </div></div>`;
     return;
   }
-  el.innerHTML=TAG_GROUPS.map(g=>{
-    const films=MOVIES.filter(m=>g.set().has(m.tmdb_id));
-    if(!films.length) return "";
-    return `<div class="mlgroup">
+  el.innerHTML=groups.map(({g,films})=>`<div class="mlgroup">
       <div class="mlhead" style="color:${g.colour}">${g.icon} ${g.title}<span class="n">${films.length}</span></div>
       <div class="pnote" style="margin:-4px 0 8px">${g.blurb}</div>
-      ${films.map(m=>mlRowHTML(m,g.key)).join("")}</div>`;
-  }).join("");
+      ${films.map(m=>mlRowHTML(m,g.key)).join("")}</div>`).join("");
 }
-$("listBtn").onclick=()=>{ logEvent("mylist_opened",{tagged:new Set([...tracked,...watched,...blocked]).size});
+$("listBtn").onclick=()=>{ logEvent("found_opened",{found:found.size, manual:[...found].filter(id=>foundSource(id)==="manual").length});
   renderMyList(); openModal($("mylist")); };
 $("mylistDone").onclick=()=>closeModal($("mylist"));
+
+// ---- the provenance sheet (CAS-67) ---------------------------------------------
+// Who chose this film, which Cascade is watching it, what that Cascade will actually tell you about — and the
+// one control that changes it. Every line is read from the same entry the megaphone's colour is read from.
+let provId=null;
+function renderProvenance(id){
+  const m=MOVIES.find(x=>x.tmdb_id===id); if(!m) return;
+  const src=foundSource(id), off=removedByHand(id), w=primaryStatus(m);
+  const isW=watched.has(id), isB=blocked.has(id);
+  const pinned=!!(notify[id] && notify[id].source==="manual");
+  // A film you've marked watched or waved off has no cascadeIds — the Cascades that WOULD hold it were made to
+  // let go of it. Asking cascadesFor() here would answer "nobody is watching this", flatly contradicting the
+  // Found row that opened this sheet, which says (truthfully) which radar is holding back. Ask the same
+  // question that row asked.
+  const from = (isW||isB) ? wouldWatch(m) : cascadesFor(id);
+  const poster=m.poster ? `background-image:url(https://image.tmdb.org/t/p/w185${m.poster})` : "";
+  const badge = (isW||isB) ? `<span class="provsrc off">${isW?"You've seen this":"You waved this off"}</span>`
+              : src==="auto"   ? `<span class="provsrc auto">🟣 Cascade found this</span>`
+              : src==="manual" ? `<span class="provsrc mine">🟠 You added this</span>`
+              : off            ? `<span class="provsrc off">You took this off your Found list</span>`
+                               : `<span class="provsrc off">Not on your Found list</span>`;
+  // Every Cascade watching the film, and — honestly — the moments it will and won't tell you about. This is a
+  // promise, so it has to hold: a hand-added film that one of these Cascades also watches obeys their moments,
+  // which is why catchReason() applies a Cascade's prefs to a hand-added film too, instead of waving it past.
+  const rows = from.length
+    ? from.map(c=>`<div class="provrow">
+        <span class="provname">${c.icon} ${esc(c.name)}</span>
+        <span class="provalerts">${esc(alertSummary(c))}</span></div>`).join("")
+    : `<div class="provnote">No Cascade of yours ${cascades.length ? "is watching this film" : "exists yet"}.</div>`;
+  const one = from.length===1;
+  // The tag outranks everything, so it's the whole answer — and the way back is to undo the tag, not to pin the
+  // film by hand behind the tag's back (which is what an "Add it" button here would quietly have done).
+  const note = (isW||isB)
+      ? (from.length
+          ? `${one?"It":"They"} would be watching this, but ${isW?"you've marked it watched":"you said you're not interested"}
+             — so ${one?"it lets":"they let"} it go. Undo that and it goes straight back on your Found list.`
+          : `${isW?"You've marked this watched":"You said you're not interested"}, so it's off your Found list.`)
+    : src==="auto"
+      ? `Take it off and it <b>stays off</b> — even though ${one?"this Cascade":"these Cascades"} will go on
+         matching it. Your answer outranks theirs, every re-run, until you change it.`
+    : src==="manual"
+      ? `You put this one here by hand, so no change to your Cascades' criteria can take it away.`
+         + (from.length ? ` It alerts at the moments above.`
+                        : ` Nothing else is watching it, so it tells you about <b>every</b> move it makes.`)
+    : off
+      ? (from.length
+          // Put back a film that was YOURS and it comes back yours (orange) — setNotify keeps the pin. Saying
+          // "it goes back to being theirs" would promise a purple megaphone the code deliberately won't give.
+          ? (pinned
+              ? `${one?"That Cascade":"Those Cascades"} ${one?"matches":"match"} it too, but you added this one by
+                 hand — put it back and it's yours again.`
+              : `${one?"That Cascade":"Those Cascades"} still ${one?"matches":"match"} it — it's off only because
+                 you said so. Put it back and it goes on being theirs.`)
+          : `It's off because you took it off. Put it back and it's yours by hand.`)
+      : `Nothing is watching this one. Add it and it tells you about every move it makes.`;
+  const btn = (isW||isB)
+    ? `<button class="applybtn" onclick="${isW?"toggleWatched":"toggleBlocked"}(${id});closeModal(document.getElementById('prov'))">
+         ${isW?"Unmark watched":"I'm interested after all"}</button>`
+    : (src!=="off")
+      ? `<button class="dangerbtn" onclick="setNotify(${id},false)">Take it off my Found list</button>`
+      : `<button class="applybtn" onclick="setNotify(${id},true)">${off && from.length ? "Put it back" : "Add it to my Found list"}</button>`;
+  $("provBody").innerHTML=`
+    <div class="provfilm">
+      <div class="provposter" style="${poster}"></div>
+      <div>
+        <div class="provtitle">${esc(m.title)}</div>
+        <span class="mlwin" style="background:${WIN_COLOUR[w]}22;border:1px solid ${WIN_COLOUR[w]}88;color:${WIN_COLOUR[w]}">${STATUS_LABEL[w]}</span>
+        <div>${badge}</div>
+      </div>
+    </div>
+    ${rows}
+    <div class="provnote">${note}</div>
+    <div class="provact">${btn}</div>`;
+}
+window.openProvenance=id=>{ provId=id; logEvent("provenance_opened",{key:foundSource(id)});
+  renderProvenance(id); openModal($("prov")); };
+$("provDone").onclick=()=>{ provId=null; closeModal($("prov")); };
+
+// The override layer. Your answer is the one that sticks: OFF records a removal that survives every future
+// re-run (a Cascade that still matches the film will not put it back), and ON clears that removal — restoring
+// the film to its Cascade if one matches it, or pinning it by hand if none does.
+window.setNotify=(id,on)=>{
+  const e=entryFor(id);
+  const auto=e.cascadeIds.length>0, wasMine=e.source==="manual";
+  if(on){
+    e.removed=false;
+    // Restoring keeps a pin a pin. Only a film that was never yours to begin with takes its source from the
+    // Cascades: theirs if one matches it, yours if none does (there'd be nothing holding it on the list).
+    if(!wasMine) e.source = auto ? "auto" : "manual";
+  }else if(wasMine && !auto){
+    delete notify[id];                        // unpinning your own add: no Cascade wants it, so there's nothing to remember
+  }else{
+    // "No" is recorded WITHOUT spending the pin: a hand-added film that a Cascade also matches must come back
+    // as YOURS if you put it back, or a later criteria change would quietly drop the film you chose by hand.
+    e.removed=true;
+  }
+  logEvent("notify",{key: on ? (auto?"restore_auto":"add_manual") : (auto?"remove_auto":"unpin"), cascades:e.cascadeIds.length});
+  saveNotify();
+  const m=MOVIES.find(x=>x.tmdb_id===id);
+  const names=cascadesFor(id).map(c=>c.name).join(", ");
+  toast(on
+    ? (auto ? `🔔 “${m.title}” is back on your Found list — ${names} ${e.cascadeIds.length===1?"is":"are"} watching it again`
+            : `🔔 You added “${m.title}” — you'll be alerted when it moves`)
+    : (auto ? `🚫 “${m.title}” is off your Found list — it stays off, even though ${names} still ${e.cascadeIds.length===1?"matches":"match"} it`
+            : `🚫 “${m.title}” is off your Found list`));
+  render();
+  if($("prov").classList.contains("open") && provId===id) renderProvenance(id);   // the sheet repaints in place
+};
 
 window.toggleExpand=id=>{
   expandedSet.has(id)?expandedSet.delete(id):expandedSet.add(id);
@@ -1526,7 +1817,7 @@ window.toggleExpand=id=>{
 };
 function activeCount(){
   let n=filt.status.size+filt.year.size+filt.age.size+filt.culture.size+filt.lang.size+filt.genre.size;
-  if(filt.imdb)n++; if(filt.rt)n++; if(filt.gross)n++; if(filt.trackedOnly)n++;
+  if(filt.imdb)n++; if(filt.rt)n++; if(filt.gross)n++; if(filt.foundOnly)n++;
   if(filt.hideWatched)n++; if(filt.showHidden)n++; if(filt.search)n++; if(filt.awards)n++;
   if(filt.budget)n++; if(filt.tentpole!=="any")n++;
   return n;
@@ -1718,8 +2009,11 @@ const CASCADE_TEMPLATES = [
    crit:{status:[], genre:[], age:[], lang:[], imdb:0, rt:0, awards:true, myServices:false}},
   {key:"genre_fan", icon:"🎃", name:"Genre superfan", blurb:"A standing radar for one genre — horror to start",
    crit:{status:[], genre:["Horror"], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false}},
+  // The one Cascade whose moment IS the cinema: it watches films on their way to a release, so the arrival is
+  // the news. The default bells (rent + stream) are rows it doesn't watch — it would have rung none of them.
   {key:"blockbuster", icon:"💥", name:"Blockbuster radar", blurb:"The films heading for cinemas, most anticipated first",
-   crit:{status:["upcoming"], genre:[], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false, sort:"popularity"}},
+   crit:{status:["upcoming"], genre:[], age:[], lang:[], imdb:0, rt:0, awards:false, myServices:false, sort:"popularity"},
+   alerts:{cinema:true, pvod:false, rental:false, included_streaming:false}},
   // Date night: crowd-pleasing genres, a bar high enough that neither of you resents the pick, at home,
   // and scoped to what you already pay for — nobody rents a $30 premium for a Tuesday.
   {key:"date_night", icon:"🍷", name:"Date night", blurb:"Crowd-pleasers you both agree on, on your services",
@@ -1786,9 +2080,43 @@ function matchesCriteria(m,c,ignoreBlocked){
   return true;
 }
 const countCriteria = c => MOVIES.filter(m=>matchesCriteria(m,c)).length;
+
+// ---- What a Cascade WATCHES vs what it SHOWS you (CAS-67) -----------------------
+// These are two different questions, and keeping them apart is the whole of this ticket:
+//
+//   · SHOWS you (matchesCriteria, above) — taste AND the film is in one of the Cascade's windows RIGHT NOW,
+//     AND it's on your services if that window is scoped. That's the browse list: what you could watch today.
+//
+//   · WATCHES (below) — taste, plus "a window this Cascade cares about is still AHEAD of the film, or is where
+//     the film is now". This is Found-list membership, and it CANNOT be the same test. A Rent radar has to be
+//     watching a film while it's still in the cinema; if membership required the film to already BE at rent,
+//     the radar could only ever notice the one moment it exists to warn you about after it had passed. Same
+//     for every window-scoped Cascade — the alert would be structurally unable to fire.
+//
+// A film that is already PAST every window a Cascade watches is dropped: nothing is coming for it there.
+// Membership is deliberately NOT scoped by "my services" either. A film landing somewhere you can't watch is
+// something the Cascade must still notice and then MUTE with a reason (catchReason) — muting it honestly is the
+// product; never seeing it is a blind spot, and it would also reduce the service advice to "keep what you have".
+const matchesTaste = (m,c) => matchesCriteria(m, {...c, status:[], myServices:false});
+const winIdx = w => CASCADE.indexOf(w);                       // CASCADE is the journey, in order
+const stillAhead = (m,w) => winIdx(primaryStatus(m)) <= winIdx(w);
+const inScope = (m,c) => !(c.status||[]).length || c.status.some(w=>stillAhead(m,w));
+const watchesFilm = (m,c) => matchesTaste(m,c) && inScope(m,c);
+
 const ALERT_SHORT = {cinema:"cinema", pvod:"premium", rental:"rent", included_streaming:"stream"};
+// A Cascade lets a film go once it passes the last window in its scope — so the last move it can ever witness
+// is the one OUT of that window. Rows past that point are unreachable, and a bell on one of them is a switch
+// wired to nothing. The card and the provenance sheet both print this line as a promise about what you'll be
+// told, so it must count only the bells that can actually ring. (A Blockbuster radar scoped to `upcoming` ships
+// with rent + stream bells lit; its films graduate off the list the day they open, so it will never ring either.)
+const lastScopeIdx = c => (c.status||[]).length ? Math.max(...c.status.map(winIdx)) : CASCADE.length-1;
+const reachableRows = c => {
+  const limit=lastScopeIdx(c)+1;                       // +1: the move OUT of the last watched window still counts
+  return new Set(CASCADE.filter(w=>winIdx(w)<=limit).map(w=>WINDOW_ROW[w]).filter(Boolean));
+};
 function alertSummary(c){
-  const on=Object.keys(ALERT_SHORT).filter(k=>(c.alerts||ALERT_DEFAULTS)[k]);
+  const reach=reachableRows(c);
+  const on=Object.keys(ALERT_SHORT).filter(k=>(c.alerts||ALERT_DEFAULTS)[k] && reach.has(k));
   return on.length ? "alerts on "+on.map(k=>ALERT_SHORT[k]).join(" + ") : "alerts off";
 }
 
@@ -2029,7 +2357,7 @@ deckMotion.addEventListener("change",()=>{ deckCentre(deckIdx,false); deckPaint(
 function filtSnapshot(){
   const s={sets:{}};
   ["status","year","age","culture","lang","genre"].forEach(k=>{ s.sets[k]=[...filt[k]]; });
-  ["imdb","rt","gross","awards","budget","tentpole","includeUnrated","includeUnbudgeted","trackedOnly",
+  ["imdb","rt","gross","awards","budget","tentpole","includeUnrated","includeUnbudgeted","foundOnly",
    "hideWatched","search"].forEach(k=>{ s[k]=filt[k]; });
   return s;
 }
@@ -2054,7 +2382,7 @@ const RELAXERS = [
   {key:"rt",       label:()=>`the critics bar (${filt.rt}%+)`, on:()=>filt.rt>0, clear:()=>{ filt.rt=0; }},
   {key:"gross",    label:()=>"the box-office floor", on:()=>filt.gross>0,      clear:()=>{ filt.gross=0; }},
   {key:"search",   label:()=>`the search “${filt.search}”`, on:()=>!!filt.search, clear:()=>{ filt.search=""; }},
-  {key:"trackedOnly", label:()=>"tracked-only",    on:()=>filt.trackedOnly,    clear:()=>{ filt.trackedOnly=false; }},
+  {key:"foundOnly", label:()=>"Found-list-only",   on:()=>filt.foundOnly,      clear:()=>{ filt.foundOnly=false; }},
 ];
 function countIf(fn){
   const snap=filtSnapshot(), scope=ignoreScope;
@@ -2670,10 +2998,25 @@ $("cApply").onclick=()=>{
 };
 $("cDelete").onclick=()=>{
   const c=cascades.find(x=>x.id===draft.id); if(!c) return;
-  if(!confirm(`Delete the Cascade “${c.name}”? Your tagged films and watched marks are not affected.`)) return;
+  // Under auto-membership, deleting a Cascade DOES take its films off your Found list — it was the thing
+  // holding them there. Say so, with the real number, and say exactly what survives: the films you added by
+  // hand (they were never this Cascade's), and your watched / not-interested marks.
+  // Only films this Cascade holds ALONE actually leave. One that a second Cascade also watches stays put, and
+  // counting it here would warn about a loss that isn't going to happen.
+  const mine=MOVIES.filter(m=>{
+    const ids=(notify[m.tmdb_id]||{}).cascadeIds||[];
+    return found.has(m.tmdb_id) && foundSource(m.tmdb_id)==="auto"
+        && ids.length===1 && ids[0]===c.id;
+  }).length;
+  if(!confirm(`Delete the Cascade “${c.name}”?\n\n`
+    + (mine ? `The ${mine} film${mine===1?"":"s"} it found will drop off your Found list — it's what was watching `
+              + `${mine===1?"it":"them"}. `
+            : "")
+    + `Anything you added by hand stays, and your watched / not-interested marks aren't touched.`)) return;
   cascades.splice(cascades.indexOf(c),1); saveCascades();
   if(activeId===c.id){ setActive(null); clearFilters(); syncFilterUI(); }
-  closeModal($("builder")); render(); toast(`🗑️ Deleted “${c.name}”`);
+  closeModal($("builder")); render();
+  toast(`🗑️ Deleted “${c.name}”` + (mine?` — ${mine} film${mine===1?"":"s"} left your Found list`:""));
 };
 
 // ================= Service selector (insight) =================
@@ -2683,7 +3026,7 @@ $("cDelete").onclick=()=>{
 // films would cost instead — every dollar of that is a price sitting in the offer data (contrast effect,
 // honestly sourced). Films still in cinemas are excluded from the denominator: no service can cover them.
 function serviceAdvice(){
-  const want = MOVIES.filter(m=>tracked.has(m.tmdb_id));
+  const want = MOVIES.filter(m=>found.has(m.tmdb_id));   // your Found list — whoever put each film on it
   const home = want.filter(m=>(m.offers||[]).length);
   const byService = new Map();
   home.forEach(m=>{
@@ -2699,24 +3042,32 @@ function serviceAdvice(){
   });
   const ranked=[...byService.values()].sort((a,b)=> b.films.length-a.films.length || a.svc.localeCompare(b.svc));
   const covered=new Set(ranked.flatMap(e=>e.films));
-  return {total:want.length, home:home.length, inCinema:want.length-home.length,
+  // "No offers" is not the same as "in cinemas". Under auto-membership the Found list carries films that
+  // haven't been RELEASED yet (a Cascade watches them all the way in), and they have no offers either — so
+  // lumping the two together would have told the user that unreleased films were "still in cinemas".
+  const noHome=want.filter(m=>!(m.offers||[]).length);
+  const upcoming=noHome.filter(m=>primaryStatus(m)==="upcoming").length;
+  return {total:want.length, home:home.length,
+          inCinema:noHome.length-upcoming, upcoming,
           ranked, uncovered:home.length-covered.size};
 }
 function renderServiceAdvice(){
   const el=$("svcAdvice"); if(!el) return;
   const a=serviceAdvice();
   if(!a.total){
-    el.innerHTML=`<div class="pnote">Track a few films with ☆ and we'll work out which service covers the most of
-      them — and what renting them instead would cost you.</div>`;
+    el.innerHTML=`<div class="pnote">Create a Cascade and it starts finding films for you — then we'll work out
+      which service covers the most of them, and what renting them instead would cost you.</div>`;
     return;
   }
   const notes=[];
-  if(a.inCinema) notes.push(`${a.inCinema} of your ${a.total} tracked film${a.total===1?"":"s"}
+  if(a.inCinema) notes.push(`${a.inCinema} of the ${a.total} film${a.total===1?"":"s"} on your Found list
     ${a.inCinema===1?"is":"are"} still in cinemas, so no service can cover ${a.inCinema===1?"it":"them"} yet.`);
+  if(a.upcoming) notes.push(`${a.upcoming} ${a.upcoming===1?"hasn't":"haven't"} been released yet — your
+    Cascades are watching ${a.upcoming===1?"it":"them"} all the way in.`);
   if(a.uncovered) notes.push(`${a.uncovered} ${a.uncovered===1?"is":"are"} rent-or-buy only so far —
     not included on any service.`);
   if(!a.ranked.length){
-    el.innerHTML=`<div class="pnote">None of your tracked films are included on a service yet.
+    el.innerHTML=`<div class="pnote">Nothing on your Found list is included on a service yet.
       ${notes.join(" ")}</div>`;
     return;
   }
@@ -2733,7 +3084,7 @@ function renderServiceAdvice(){
         <span class="advsvc">${i===0?"🥇 ":""}${esc(svcName(e.svc))}</span>
         ${prefs.sub.has(e.svc)?'<span class="advhave">✓ you have it</span>':""}
       </div>
-      <div class="advwhy">Covers <b>${n} of the ${a.home}</b> tracked film${a.home===1?"":"s"} that have reached home.</div>
+      <div class="advwhy">Covers <b>${n} of the ${a.home}</b> film${a.home===1?"":"s"} on your Found list that have reached home.</div>
       <div class="advbar"><span style="width:${pct}%"></span></div>
       ${rent}</div>`;
   }).join("");
@@ -2749,7 +3100,9 @@ function setupItems(){
     {label:"💾 Saved on this device", done:true},
     {label:"📺 My services", done:servicesPicked()},
     {label:"🎯 First Cascade", done:cascades.length>0},
-    {label:"🔔 First film tracked", done:tracked.size>0},
+    // Not "first film tracked" any more — tracking is no longer something you do. This step is done the moment
+    // a Cascade of yours has actually found something, which is a real state and usually true one tap later.
+    {label:"🔔 Films found for you", done:found.size>0},
   ];
 }
 function setupHTML(){
@@ -2881,6 +3234,11 @@ window.onbCreateStarter=tweak=>{
 };
 
 function render(){
+  // The re-run. Every paint re-selects each Cascade's auto set from scratch and re-applies your overrides on
+  // top — so a criteria edit, a new Cascade, a deleted one, a film you just marked watched, a service you just
+  // picked, all land in the Found list immediately, and none of them can clobber an override. It's cheap
+  // (Cascades × titles) and it means membership has exactly one definition, evaluated in exactly one place.
+  recomputeFound();
   // Two lists, one pass: `rows` is everything the filters allow THROUGH, `shown` is everything that still
   // gets a full card. The difference is the films you tagged out — they stay on screen as stubs, and they
   // don't count as results, because you told us you didn't want them.
@@ -2891,7 +3249,7 @@ function render(){
   $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
   renderCascadeBar(shown.length);
-  renderMyList();   // tags change from the cards, from My List itself, or from a Cascade — one repaint covers all
+  renderMyList();   // membership changes from a card, from the Found list itself, or from a Cascade — one repaint covers all
   updatePrefSwitch(); updatePrefBtn(); updateUxSwitch(); refreshSetupMeters(); renderServiceAdvice();
   // Smart defaults: label the apply control with its payoff, not a bare "Done".
   $("filtersDone").textContent = ux.on
@@ -2914,32 +3272,34 @@ function render(){
   });
   wrap.innerHTML=html;
 }
-window.toggleTag=id=>{
-  tracked.has(id)?tracked.delete(id):tracked.add(id); saveSet("cascade_tracked",tracked);
-  logEvent("tag",{key:"track", on:tracked.has(id)?1:0});   // which film it was is not the signal we need
+// The toast tells the truth about what just happened to the card — which depends on whether the Exclude rules
+// are on. If it collapsed, say so and say how to undo it; if it stayed put, don't claim otherwise.
+// And since a Cascade excludes what you've watched or waved off, either tag can now take a film OFF your Found
+// list and end its alerts. That's a real consequence of a one-tap action, so it gets said out loud — the
+// render() runs FIRST so we can report what actually happened rather than what we assume will.
+function tagToast(id, on, icon, verb, undone, collapsed, wasFound){
   const m=MOVIES.find(x=>x.tmdb_id===id);
-  toast(tracked.has(id)?`🔔 Tracking “${m.title}” — you'll be alerted on changes`:`☆ Stopped tracking “${m.title}”`);
-  render();
-};
-// The toast tells the truth about what just happened to the card — which depends on whether the Exclude
-// rules are on. If it collapsed, say so and say how to undo it; if it stayed put, don't claim otherwise.
+  if(!on){
+    // Undo is symmetrical: if the tag had dropped the film off the Found list, taking the tag off puts it back.
+    const back = !wasFound && found.has(id) ? " — back on your Found list" : "";
+    return toast(`${undone} “${m.title}”${back}`);
+  }
+  const bits=[];
+  if(collapsed) bits.push("collapsed to one line");
+  if(wasFound && !found.has(id)) bits.push("your Cascades will stop alerting on it");
+  toast(`${icon} ${verb} “${m.title}”${bits.length?" — "+bits.join(" · "):""}`);
+}
 window.toggleWatched=id=>{
-  const on=!watched.has(id);
+  const on=!watched.has(id), wasFound=found.has(id);
   on?watched.add(id):watched.delete(id); saveSet("cascade_watched",watched);
-  const m=MOVIES.find(x=>x.tmdb_id===id);
-  toast(!on ? `Unmarked “${m.title}” — card restored`
-    : filt.hideWatched ? `✅ Watched “${m.title}” — collapsed to one line. Tap the tick to bring it back.`
-                       : `✅ Marked “${m.title}” watched`);
   render();
+  tagToast(id, on, "✅", "Watched", "Unmarked", filt.hideWatched, wasFound);
 };
 window.toggleBlocked=id=>{
-  const on=!blocked.has(id);
+  const on=!blocked.has(id), wasFound=found.has(id);
   on?blocked.add(id):blocked.delete(id); saveSet("cascade_blocked",blocked);
-  const m=MOVIES.find(x=>x.tmdb_id===id);
-  toast(!on ? `Restored “${m.title}”`
-    : !filt.showHidden ? `🚫 Not interested in “${m.title}” — collapsed to one line. Tap the ⊘ to bring it back.`
-                       : `🚫 Marked “${m.title}” not interested`);
   render();
+  tagToast(id, on, "🚫", "Not interested in", "Restored", !filt.showHidden, wasFound);
 };
 
 let dayCounter=0;
@@ -2950,51 +3310,87 @@ function advanceOneWindow(m){
   // Without this the sim could only ever move films between home windows, and that row's 🔔 would be a
   // switch that can never fire. It moves one step per poll, same as every other window.
   if(st.has("upcoming")){ m._simReleased=true; return true; }
-  if(st.has("rental")||st.has("pvod")) m.offers=(m.offers||[]).concat([{service:"Netflix",type:"sub",price:null,format:"4K"}]);
-  else m.offers=(m.offers||[]).concat([{service:"Apple TV",type:"buy",price:24.99,format:"4K"}]);
+  // The real ladder is cinema → premium (~$30) → rent (~$7) → streaming, and the sim now walks all four. It
+  // used to jump straight from premium to streaming, which meant the RENT moment never occurred — so the one
+  // promise the whole product is built on ("we'll tell you when it drops to a price you'll pay") was the one
+  // alert that could not fire, for any Cascade. A radar for it (Rent radar) therefore reported nothing, ever.
+  if(st.has("rental"))   m.offers=(m.offers||[]).concat([{service:"Netflix", type:"sub",  price:null,  format:"4K"}]);
+  else if(st.has("pvod")) m.offers=(m.offers||[]).concat([{service:"Apple TV",type:"rent", price:6.99,  format:"HD"}]);
+  else                    m.offers=(m.offers||[]).concat([{service:"Apple TV",type:"buy",  price:24.99, format:"4K"}]);
   return true;
 }
-// While a Cascade is open, its per-row alert prefs decide which transitions are worth telling you about.
-// The spine merges upcoming/opening-week/in-cinema into one row, so the window maps to its row's toggle.
-// With no Cascade open, every transition alerts (unchanged behaviour).
-function alertAllowed(w){
-  const c=activeCascade();
+// ---- One decision, two readers (CAS-67) ----------------------------------------
+// Does Cascade `c` report film `m`'s move into window `w` — and if not, exactly why not? This is the ONLY place
+// that answer is computed. The bell drawer uses it to decide what fires; the digest uses it to explain itself.
+// They used to be two separate pieces of logic, which is how the digest could claim it "kept quiet" about an
+// alert that was sitting in the drawer three inches above it. One function, one answer, no contradiction.
+// A Cascade drops a move for three distinct reasons, and they are not the same thing — so it says which.
+// (The spine merges upcoming/opening-week/in-cinema into one row, so a window maps to its row's toggle.)
+// The 📣 bells ARE the alert moments — the window scope is not a second, hidden veto on top of them. Those are
+// the two separate things the concept doc keeps apart (§5: "availability scope + which of the four moments
+// alert"), and collapsing them breaks a promise the UI makes out loud: a Rent radar scoped to `rental` ships
+// with its Stream bell lit and its card reads "alerts on rent + stream". Vetoing by scope would make that bell
+// a switch wired to nothing. So scope decides WHICH FILMS a Cascade watches (inScope, above) and for how long;
+// the bells decide WHICH MOMENTS it speaks up about. Nothing here reads c.status.
+function catchReason(m, c, w, services){
+  // Per-window: a Cascade scoped to Stream only must still shout about a Rent drop on a service you don't
+  // have. The scope that decides is the one on the window the film actually LANDED in.
+  if(scopeOf(c)[w] && servicesPicked() && !matchesServices(m))
+    return (services && services.length) ? `it landed on ${services.join(", ")} — not one of your services`
+                                         : `it isn't on any of your services`;
   const k=WINDOW_ROW[w];
-  if(!c || !c.alerts || !k || !(k in c.alerts)) return true;
-  return !!c.alerts[k];
+  if(k && c.alerts && (k in c.alerts) && !c.alerts[k])
+    return `your ${ALERT_SHORT[k]} alerts are off for this Cascade`;
+  return null;                                  // caught: this Cascade tells you about it
 }
-// Every transition today's poll actually produced, before ANY Cascade's prefs get a say. The per-Cascade
-// digest is computed from this — so what a Cascade "caught" and what it "muted" are two readings of one
-// real event list, never two separate inventions.
-let lastPoll = null;   // {day, events:[{id,title,window,services,price}]}
+// Every transition today's poll produced, WITH the per-Cascade verdict already attached. The digest is a
+// reading of this list, never a second computation of it.
+let lastPoll = null;   // {day, events:[{id,title,window,services,price,caught:[cid],muted:[{cid,why}],alerted}]}
 function simulateDay(){
-  dayCounter++; let fired=0, muted=0;
+  dayCounter++; let fired=0, quiet=0;
   const events=[];
   MOVIES.forEach(m=>{
-    if(!tracked.has(m.tmdb_id)) return;
+    if(!found.has(m.tmdb_id)) return;   // the Found list IS the poll's watchlist — auto-selected and all
     const before=new Set(m.status);
+    // Captured BEFORE the move: the radars that were watching the film on its way IN. Reading them afterwards
+    // would ask the wrong question — a film that has just moved past a Cascade's window is no longer watched by
+    // it, and that Cascade would go silent about the very arrival it had been waiting for.
+    const watching=cascadesFor(m.tmdb_id);
     if(!advanceOneWindow(m)) return;
     m.status=deriveStatus(m);
     m.status.filter(s=>!before.has(s)).forEach(w=>{
       const offers=dedupOffers(m.offers).filter(o=>windowOf(o)===w);
-      const svc=[...new Set(offers.map(o=>o.service))];
+      const svc=[...new Set(offers.map(o=>o.service))].slice(0,3);
       const prices=offers.map(o=>o.price).filter(p=>p!=null);
-      events.push({id:m.tmdb_id, title:m.title, window:w, services:svc.slice(0,3),
-                   price: prices.length?Math.min(...prices):null});
-      if(!alertAllowed(w)){ muted++; return; }
-      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:svc.slice(0,3),
+      const caught=[], muted=[];
+      watching.forEach(c=>{
+        const why=catchReason(m,c,w,svc);
+        why ? muted.push({cid:c.id, why}) : caught.push(c.id);
+      });
+      // A film you added by hand answers to no Cascade, so it tells you about every move it makes. A film a
+      // Cascade found is reported if ANY of the Cascades watching it wants that moment — one radar's prefs
+      // can't gag another radar's film.
+      const alerted = caught.length>0 || !watching.length;
+      events.push({id:m.tmdb_id, title:m.title, window:w, services:svc,
+                   price: prices.length?Math.min(...prices):null, caught, muted, alerted});
+      if(!alerted){ quiet++; return; }
+      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:svc,
                       day:dayCounter, frame:lossFrame(m,w,before)});
       fired++;
     });
   });
   lastPoll={day:dayCounter, events};
-  logEvent("poll_run",{day:dayCounter, moved:events.length, fired, muted});
+  logEvent("poll_run",{day:dayCounter, moved:events.length, fired, quiet});
   render(); renderAlerts(); renderDigest(); updateBadge();
-  const c=activeCascade();
-  const mutedNote = muted ? ` · ${muted} muted by “${c.name}” prefs` : "";
-  toast(fired ? `🔔 ${fired} alert${fired>1?'s':''} from today's poll${mutedNote}`
-      : muted ? `Day ${dayCounter}: ${muted} change${muted>1?'s':''} muted by “${c.name}” alert prefs`
-              : `Day ${dayCounter}: no changes on tagged titles`+(tracked.size?"":" — tag some first!"));
+  // "Kept quiet" counts only moves NO Cascade reported — a move one Cascade muted and another shouted about is
+  // not a quiet one. And it does NOT name a cause: a move can be dropped because a bell is off OR because the
+  // film landed on a service you don't have, and blaming "alert prefs" for the second sends the user hunting
+  // for a toggle that would not have changed anything. The digest gives the real reason, per film.
+  const quietNote = quiet ? ` · ${quiet} kept quiet — see the digest for why` : "";
+  toast(fired ? `🔔 ${fired} alert${fired>1?'s':''} from today's poll${quietNote}`
+      : quiet ? `Day ${dayCounter}: ${quiet} change${quiet>1?'s':''} your Cascades kept quiet — see the digest for why`
+              : `Day ${dayCounter}: nothing on your Found list moved`
+                + (found.size?"":" — it's empty. Create a Cascade and it fills itself."));
 }
 function windowOf(o){
   if(o.type==="sub"||o.type==="free") return "included_streaming";
@@ -3002,41 +3398,28 @@ function windowOf(o){
   if(o.type==="rent") return (o.price!=null&&o.price<=RENTAL_MAX)?"rental":"pvod";
   return "";
 }
-// ---- Per-Cascade digest: what each radar caught, and what it muted -------------
-// Every line here is a reading of a transition that REALLY happened in the poll above. A Cascade can drop a
-// transition for four different reasons, and they are not the same thing — so the digest says which:
-//   · the film isn't what this Cascade is looking for at all  → out of scope, not reported (it's not news)
-//   · the new window isn't one this Cascade watches           → muted, and it says so
-//   · the film landed somewhere outside "my services"         → muted, and it names the service
-//   · the window's 🔔 is off for this Cascade                 → muted, and it says which toggle did it
-// Taste (genre/rating/age/…) is checked with the SAME matcher the rest of the app uses, minus the two
-// dimensions we want to report on separately. One source of truth for "does this Cascade want this film".
-const matchesTaste = (m,c) => matchesCriteria(m, {...c, status:[], myServices:false});
+// ---- Per-Cascade digest: what each radar caught, and what it kept quiet ---------
+// A pure reading of the verdicts the poll already recorded (catchReason, above). A film this Cascade wasn't
+// watching at all simply isn't here — silence about someone else's film is correct, not a mute.
 function cascadeDigest(c){
   const caught=[], muted=[];
   (lastPoll?.events||[]).forEach(e=>{
-    const m=MOVIES.find(x=>x.tmdb_id===e.id);
-    if(!m || !matchesTaste(m,c)) return;                       // not this radar's kind of film — silence is correct
-    const where = e.services.length ? e.services.join(", ") : null;
-    if(c.status.length && !c.status.includes(e.window))
-      return muted.push({e, why:`“${STATUS_LABEL[e.window]}” isn't a window this Cascade watches`});
-    // Per-window: a Cascade scoped to Stream only must still shout about a Rent drop on a service you
-    // don't have. The scope that decides is the one on the window the film actually LANDED in.
-    if(scopeOf(c)[e.window] && servicesPicked() && !matchesServices(m))
-      return muted.push({e, why: where ? `it landed on ${where} — not one of your services`
-                                       : `it isn't on any of your services`});
-    if(!c.alerts[WINDOW_ROW[e.window]])
-      return muted.push({e, why:`your ${ALERT_SHORT[WINDOW_ROW[e.window]]} alerts are off for this Cascade`});
-    caught.push(e);
+    if(e.caught.includes(c.id)) return void caught.push(e);
+    const mine=e.muted.find(x=>x.cid===c.id);
+    if(mine) muted.push({e, why:mine.why});
   });
   return {caught, muted};
 }
 const evLine = e => `${esc(e.title)} → <b>${STATUS_LABEL[e.window]}</b>`
   + (e.services.length ? ` on ${esc(e.services.join(", "))}` : "")
   + (e.price!=null ? ` · $${e.price.toFixed(2)}` : "");
+// Moves on films that answer to NO Cascade — the ones you added by hand. They alert (nothing is there to mute
+// them), so the digest has to own them: an alert in the drawer that no card in the report accounts for is the
+// exact silent contradiction this ticket exists to kill.
+const ownDigest = () => (lastPoll?.events||[]).filter(e=>!e.caught.length && !e.muted.length && e.alerted);
 function renderDigest(){
   const el=$("digest"); if(!el) return;
-  if(!cascades.length){
+  if(!cascades.length && !ownDigest().length){
     el.innerHTML=`<div class="dgempty">No Cascades yet. Create one and this is where it reports what it
       caught — and what it deliberately didn't.</div>`;
     return;
@@ -3048,8 +3431,9 @@ function renderDigest(){
   }
   let html=`<div class="dghead">🔔 What your Cascades caught — day ${lastPoll.day}</div>`;
   if(!lastPoll.events.length){
-    html+=`<div class="dgempty">Nothing moved today. ${tracked.size ? "Your tagged films all stayed put — that's a quiet day, not a bug."
-      : "Tag a film with ☆ first, then run a poll."}</div>`;
+    html+=`<div class="dgempty">Nothing moved today. ${found.size
+      ? `All ${found.size} film${found.size===1?"":"s"} on your Found list stayed put — that's a quiet day, not a bug.`
+      : "Your Found list is empty, so there was nothing to poll. Create a Cascade and it fills itself."}</div>`;
     return void (el.innerHTML=html);
   }
   cascades.forEach(c=>{
@@ -3064,17 +3448,32 @@ function renderDigest(){
       html+=`<div class="dgsec ok">✓ ${caught.length} to tell you about</div>`
           + caught.map(e=>`<div class="dgrow">${evLine(e)}</div>`).join("");
     if(muted.length)
-      html+=`<div class="dgsec mute">🔇 ${muted.length} kept quiet</div>`
-          + muted.map(({e,why})=>`<div class="dgrow mute">${evLine(e)}
-              <span class="dgwhy">${esc(why)}</span></div>`).join("");
+      html+=`<div class="dgsec mute">🔇 ${muted.length} this one didn't report</div>`
+          + muted.map(({e,why})=>{
+              // If another Cascade shouted about the same move, saying "kept quiet" full stop would be a lie —
+              // the alert is sitting in the drawer. Name the radar that told you instead.
+              const other=e.caught.map(cid=>cascades.find(x=>x.id===cid)).filter(Boolean)[0];
+              return `<div class="dgrow mute">${evLine(e)}
+                <span class="dgwhy">${esc(why)}${other?` — though “${esc(other.name)}” told you anyway`:""}</span></div>`;
+            }).join("");
     html+=`</div>`;
   });
+  // The films you put on the list yourself. No Cascade is watching them, so nothing decided anything about
+  // them — they simply tell you every time they move, and that gets its own card rather than no card at all.
+  const own=ownDigest();
+  if(own.length)
+    html+=`<div class="dgcard">
+      <div class="dgname">🟠 Added by you</div>
+      <div class="dgsec ok">✓ ${own.length} to tell you about</div>`
+      + own.map(e=>`<div class="dgrow">${evLine(e)}</div>`).join("")
+      + `<div class="dgnone">No Cascade of yours is watching ${own.length===1?"this one":"these"}, so
+           ${own.length===1?"it tells":"they tell"} you about every move.</div></div>`;
   el.innerHTML=html;
 }
 function updateBadge(){ const b=$("badge"); if(alerts.length){b.style.display="grid";b.textContent=alerts.length;}else b.style.display="none"; }
 function renderAlerts(){
   const el=$("alertsList");
-  if(!alerts.length){el.innerHTML='<div class="noalert">No alerts yet.<br>Tag a movie, then run a daily poll.</div>';return;}
+  if(!alerts.length){el.innerHTML='<div class="noalert">No alerts yet.<br>Your Cascades are watching — run a daily poll to see what they catch.</div>';return;}
   const col={opening_week:"#ff6b6b",in_cinema:"#f0a336",pvod:"#a486f0",rental:"#5aa9f0",included_streaming:"#48c78e"};
   el.innerHTML=alerts.map(a=>`<div class="alert"><div class="t">${a.title}</div>
     <div class="d">Now in a new window${a.services.length?" on "+a.services.join(", "):""} · day ${a.day}</div>

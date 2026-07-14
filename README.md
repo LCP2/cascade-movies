@@ -9,8 +9,10 @@ to **live AU data** the moment you add three free API keys.
 
 ## Files
 - `index.html` — the app. **Open it in any real browser** (double-click, or drag into
-  Chrome/Edge/Firefox/Safari). Filters, tagging, and a "Simulate next daily poll"
-  button that fires alerts on tagged titles. Self-contained; data is embedded so it
+  Chrome/Edge/Firefox/Safari). Filters, Cascades, and a "Simulate next daily poll"
+  button that walks every film on your Found list one step along the release ladder
+  (cinema → premium ~$30 → rent ~$7 → streaming) and fires the alerts each film's
+  Cascade asked for. Self-contained; data is embedded so it
   needs no server. (Note: it will look empty in a sanitised inline *preview* that
   strips JavaScript — that's the preview, not the file. A normal browser runs it.)
 - `poc_pipeline.py` — the real backend loop: ingest → enrich → poll → derive → diff →
@@ -31,8 +33,56 @@ fresh and to detect window changes → alerts. To rebuild the page from the last
 movies.json without re-polling: `python3 poc_pipeline.py --build-html`.
 
 ## Try the app
-Just open `index.html`. Tap **⚙︎ Filters**, tap the **☆** on a couple of films to
-track them, open the **🔔** drawer, and hit **Simulate next daily poll**.
+Just open `index.html`. Create a Cascade — it **auto-fills your Found list** with every film
+that matches it, no tagging step. Open **📋 Found** to see what it picked up, then the **🔔**
+drawer, and hit **Simulate next daily poll**.
+
+### The Found list — auto-membership, overrides, provenance
+Your Found list is **what your Cascades selected ∪ what you added by hand − what you took off**.
+
+- The **megaphone** on any film says who put it there: **purple** = a Cascade chose it,
+  **orange** = you did. Tap it for the provenance sheet — which Cascade, what that Cascade
+  will actually alert you about, and the one control that changes it.
+- **Your overrides win, and they persist.** Take an auto film off and it *stays* off, even
+  though its Cascade goes on matching it; add one by hand and no criteria change can take it away.
+- **Editing a Cascade re-runs it.** Its auto set is re-selected from scratch on every render
+  (`recomputeFound()`), then your adds and removes are re-applied on top — so widening or
+  narrowing a Cascade never clobbers a decision you made.
+- Stored in `localStorage` under `cascade_notify`, one entry per film:
+  `{source:"auto"|"manual", cascadeIds:[…], removed:bool}`. Only the overrides are authoritative;
+  `cascadeIds` is derived and rewritten on every re-run. A pre-existing hand-tagged list
+  (`cascade_tracked`) migrates to manual adds on first load.
+
+#### What a Cascade *watches* is not what it *shows you*
+This distinction is the whole of the auto-membership model, and getting it wrong makes the
+alerts structurally unable to fire:
+
+| | Test | Used for |
+| --- | --- | --- |
+| **Shows you** | taste **and** the film is in one of the Cascade's windows **right now** (and on your services, if that window is scoped) | the browse list — what you could watch today |
+| **Watches** | taste **and** one of the Cascade's windows is **still ahead of** the film (or is where it is now) | the Found list, and the poll's watchlist |
+
+A Rent radar has to be watching a film *while it's still in the cinema*. If membership required
+the film to already be **at** rent, the radar could only ever notice the one moment it exists to
+warn you about **after it had passed**. Membership is likewise **not** scoped by "my services": a
+film landing somewhere you can't watch is something the Cascade must still notice and then *mute
+with a reason* — muting it honestly is the product, never seeing it is a blind spot.
+
+A film that is already **past** every window a Cascade watches drops off that Cascade — nothing is
+coming for it there.
+
+The window scope is **not** a second, hidden veto on the alerts. The 📣 **bells are the alert
+moments**; the scope decides *which films* a Cascade watches and *for how long*. (Vetoing by scope
+too would make a Rent radar's Stream bell — lit by default, and printed on its card as "alerts on
+rent + stream" — a switch wired to nothing.) `alertSummary()` counts only bells the Cascade's films
+can actually reach, so the card never promises an alert that cannot ring.
+
+#### One decision, two readers
+`catchReason(film, cascade, window)` is the single place that decides whether a Cascade reports a
+move, and if not, why not. The bell drawer uses it to decide what fires; the digest uses it to
+explain itself. They used to be separate pieces of logic, which is how the digest could claim it
+"kept quiet" about an alert sitting in the drawer three inches above it. When one Cascade mutes a
+move and another shouts about it, the digest now says so ("…though *Stream only* told you anyway").
 
 ### URL params (for reviewing and demoing)
 No incognito window, no DevTools — append one of these to the URL:
@@ -40,7 +90,7 @@ No incognito window, no DevTools — append one of these to the URL:
 | Param | What it does |
 | --- | --- |
 | `?setup` (or `?onboard`) | Replays the first-run onboarding. Your Cascades, services and tags are left **untouched** — this shows you the first run again, it doesn't pretend you're a new user. |
-| `?reset` | Clears **all** local Cascade state (Cascades, service prefs, tracked/watched/not-interested tags, the onboarded flag, the usage log) and boots a genuine clean first run. |
+| `?reset` | Clears **all** local Cascade state (Cascades, service prefs, the Found list and its overrides, watched/not-interested tags, the onboarded flag, the usage log) and boots a genuine clean first run. |
 | `?log` | Opens the local usage log. |
 
 Both `?setup` and `?reset` remove themselves from the address bar once they've run
