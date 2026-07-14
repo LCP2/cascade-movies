@@ -156,7 +156,7 @@
   .rb.tent{border-color:rgba(240,163,54,.55);background:rgba(240,163,54,.12);color:#ffce8f} .rb.tent b{color:#ffce8f}
   .award-slot{display:flex;align-items:center;height:22px}
   .award{font-size:15px;line-height:1;cursor:pointer;padding-left:1px}
-  /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Standard · Streaming */
+  /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Rent · Stream */
   .cascade{position:relative;display:grid;grid-template-columns:repeat(4,1fr);margin-top:13px}
   .cascade::before{content:"";position:absolute;top:11px;left:12.5%;right:calc(100% - var(--cx, 87.5%));height:2px;background:var(--dim);z-index:0}
   .cstage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding-top:2px}
@@ -730,8 +730,8 @@ const TENTPOLE_MIN = 100e6;   // a "$$$" badge has to mean something — studio-
 const CASCADE = ["upcoming","opening_week","in_cinema","pvod","rental","included_streaming"];
 const STATUS_LABEL = {
   opening_week:"In Cinema · Opening week", in_cinema:"In Cinema",
-  pvod:"Premium Buy/Rent (~$30)", rental:"Standard Rental (~$7)",
-  included_streaming:"Included Streaming", upcoming:"Upcoming"
+  pvod:"Premium Buy/Rent (~$30)", rental:"Rent (~$7)",
+  included_streaming:"Stream (included)", upcoming:"Upcoming"
 };
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const FMT_RANK = {SD:1, HD:2, "4K":3};
@@ -1103,7 +1103,7 @@ function sortMovies(a,b){
 // Upcoming group always ranks by anticipation, except under the two sorts that DO mean something pre-release.
 const PRE_RELEASE_SORTS=new Set(["title","cinema"]);
 const sortFor = g => (g==="upcoming" && !PRE_RELEASE_SORTS.has(filt.sort)) ? byPopularity : sortMovies;
-const CSTAGE_LABEL = {pvod:"Premium", rental:"Standard", included_streaming:"Streaming"};
+const CSTAGE_LABEL = {pvod:"Premium", rental:"Rent", included_streaming:"Stream"};
 const EST_OFFSET = {pvod:90, rental:120, included_streaming:180};   // days after cinema (rough AU windows)
 // The first cascade slot is the CINEMA slot, tri-state: Upcoming -> Opening -> Cinema.
 function cinemaState(m){
@@ -1369,7 +1369,7 @@ function activeCount(){
 // ================= My Cascades =================
 // Smart defaults: every template lands pre-filled with a criteria set that already returns films —
 // the user scans and adjusts rather than filling a blank query.
-// Alert defaults follow the Cascades concept: standard-rental + included-streaming ON, premium-rent OFF
+// Alert defaults follow the Cascades concept: Rent + Stream ON, Premium OFF
 // (nobody wants to be nudged to overpay), and cinema OFF — a release is news, not a saving.
 const ALERT_DEFAULTS = {cinema:false, pvod:false, rental:true, included_streaming:true};
 
@@ -1382,9 +1382,9 @@ const AVAIL_ROWS = [
   {key:"pvod", alert:"pvod", windows:["pvod"],
    title:"Premium", sub:"Buy or rent early, ~$30", home:true},
   {key:"rental", alert:"rental", windows:["rental"],
-   title:"Standard", sub:"Rental drops to ~$7", home:true},
+   title:"Rent", sub:"Rental drops to ~$7", home:true},
   {key:"included_streaming", alert:"included_streaming", windows:["included_streaming"],
-   title:"Streaming", sub:"Included on a subscription", home:true},
+   title:"Stream", sub:"Included on a subscription", home:true},
 ];
 const WINDOW_ROW = {};
 AVAIL_ROWS.forEach(r=>r.windows.forEach(w=>{ WINDOW_ROW[w]=r.alert; }));
@@ -1530,7 +1530,7 @@ const CASCADE_TEMPLATES = [
   {key:"watch_tonight", icon:"🍿", name:"Watch tonight", blurb:"Included on services I already have",
    crit:{status:["included_streaming"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:true},
    alerts:{pvod:false, rental:false, included_streaming:true}},
-  {key:"rent_radar", icon:"📼", name:"Rent radar", blurb:"Good films that reach standard rental (~$7)",
+  {key:"rent_radar", icon:"📼", name:"Rent radar", blurb:"Good films that reach Rent (~$7)",
    crit:{status:["rental"], genre:[], age:[], lang:["en"], imdb:6.5, rt:0, awards:false, myServices:false}},
   {key:"bargain", icon:"🏷️", name:"Bargain hunter", blurb:"Never overpay — tell me when it drops below premium",
    crit:{status:["rental","included_streaming"], genre:[], age:[], lang:["en"], imdb:0, rt:0, awards:false, myServices:false}},
@@ -1573,7 +1573,7 @@ $("tentpoleSel").innerHTML=TENTPOLE_STOPS.map(t=>
 // with the real reason — never wired up to fake a result.
 const CASCADE_TEMPLATES_SOON = [
   {icon:"⏳", name:"Leaving soon", blurb:"Last chance before it leaves a cinema or a service",
-   why:"Needs cinema-exit and streaming-removal dates — no source we have gives us them"},
+   why:"Needs the date a film leaves a cinema or a service — no source we have gives us them"},
 ];
 
 // A film with no IMDb score isn't a bad film — it's an unknown one (13 of them here, mostly unreleased).
@@ -1603,7 +1603,7 @@ function matchesCriteria(m,c,ignoreBlocked){
   return true;
 }
 const countCriteria = c => MOVIES.filter(m=>matchesCriteria(m,c)).length;
-const ALERT_SHORT = {cinema:"cinema", pvod:"premium", rental:"standard rental", included_streaming:"streaming"};
+const ALERT_SHORT = {cinema:"cinema", pvod:"premium", rental:"rent", included_streaming:"stream"};
 function alertSummary(c){
   const on=Object.keys(ALERT_SHORT).filter(k=>(c.alerts||ALERT_DEFAULTS)[k]);
   return on.length ? "alerts on "+on.map(k=>ALERT_SHORT[k]).join(" + ") : "alerts off";
@@ -2129,7 +2129,7 @@ function buildSpine(){
   };
   // "All" — the empty status set. Turning it OFF lights every specific row instead: same films, now
   // narrowable. Turning the last specific row off empties the set and All lights back up. No dead state.
-  spine.appendChild(mkRow("r-all","All windows","Anywhere a film shows up — cinema to streaming",
+  spine.appendChild(mkRow("r-all","All windows","Anywhere a film shows up — from the cinema to your subscriptions",
     ()=>{ draft.status = allOn() ? [...ALL_WINDOWS] : []; syncSpine(); refreshDraft(); },
     ()=>{ const to=!AVAIL_ROWS.every(r=>draft.alerts[r.alert]);
           AVAIL_ROWS.forEach(r=>{ draft.alerts[r.alert]=to; }); syncSpine(); }));
@@ -2606,7 +2606,7 @@ function renderOnboarding(){
 
   if(onbStep===0){
     b.innerHTML=`<div class="onbstep">Step 1 of 3</div>
-      <div class="onbh">Films don't just appear on streaming.</div>
+      <div class="onbh">Films don't just appear on your subscriptions.</div>
       <p class="onbp">They fall down a cascade — and the same film costs wildly different amounts depending on
         where you catch it. Cascade tracks all ${MOVIES.length} titles through every window and tells you the
         moment one reaches a way you're actually happy to watch it.</p>
