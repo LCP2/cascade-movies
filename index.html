@@ -581,6 +581,37 @@
   .nlchip{font-size:11px;font-weight:700;padding:4px 9px;border-radius:20px;
     background:var(--panel2);border:1px solid var(--accent);color:#cfc2ff;white-space:nowrap}
   .nlmiss{font-size:11px;color:var(--faint);line-height:1.5;margin-top:8px;font-style:italic}
+  /* ---- Found view — where the agent shows its work (CAS-70) ---- */
+  /* Found is the front door now, not a drawer behind an icon: the first thing you meet is what Cascade went
+     and found for you, presented — a header in its voice, a reason on every card, and the new ones marked. */
+  .viewbar{display:flex;gap:8px;margin-top:10px}
+  .vbtn{flex:1;display:flex;align-items:center;justify-content:center;gap:7px;background:var(--panel2);
+    border:1px solid var(--line);color:var(--dim);border-radius:11px;padding:9px 10px;font-size:13px;
+    font-weight:700;cursor:pointer}
+  .vbtn.on{background:rgba(124,92,255,.16);border-color:var(--accent);color:#fff}
+  .vbtn .vn{background:var(--panel);border:1px solid var(--line);border-radius:20px;padding:0 7px;
+    font-size:11px;font-weight:800;color:var(--dim);line-height:17px}
+  .vbtn.on .vn{background:var(--accentdeep);border-color:var(--accentdeep);color:#fff}
+  .agenthead{margin:12px 12px 2px;background:linear-gradient(135deg,rgba(124,92,255,.14),rgba(72,199,142,.07));
+    border:1px solid #3b3560;border-radius:14px;padding:13px 14px}
+  .agenthead .ah{font-size:15px;font-weight:800;line-height:1.4;color:var(--ink)}
+  .agenthead .ah b{color:#cfc2ff}
+  .agenthead .ap{font-size:12px;color:var(--dim);line-height:1.55;margin-top:7px}
+  .agenthead .ap b{color:#cfc2ff}
+  .fglabel{display:flex;align-items:center;gap:8px;padding:15px 12px 4px;font-size:13px;font-weight:800}
+  .fglabel .n{background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:1px 7px;
+    font-size:10.5px;color:var(--dim);font-weight:700}
+  .fgnote{font-size:11.5px;color:var(--faint);line-height:1.5;margin:0 12px 8px}
+  /* The reason line — the agent saying, on the card, why this film is in front of you. Purple when a Cascade
+     found it, orange when you added it: the same two colours the megaphone wears, so they can't disagree. */
+  .whyline{margin-top:11px;font-size:12px;line-height:1.55;color:#c4ccd6;background:var(--panel2);
+    border:1px solid var(--line);border-left:3px solid var(--purple);border-radius:9px;padding:8px 10px}
+  .whyline.mine{border-left-color:var(--amber)}
+  .whyline b{color:#d8c9ff}
+  .whyline.mine b{color:#ffd79a}
+  .newchip{display:inline-block;background:rgba(72,199,142,.16);border:1px solid rgba(72,199,142,.55);
+    color:#a7eccb;border-radius:20px;padding:1px 8px;font-size:10px;font-weight:800;margin-left:7px;
+    vertical-align:middle;white-space:nowrap}
 </style>
 </head>
 <body>
@@ -593,7 +624,6 @@
         <div class="updated" id="updated"></div>
       </div>
       <div class="hdr-actions">
-        <div class="iconbtn" id="listBtn" title="Found for you — the films Cascade found and is watching on your behalf">📋<div class="badge grn" id="listBadge" style="display:none">0</div></div>
         <div class="iconbtn" id="prefBtn" title="My streaming services">⚙️</div>
         <div class="iconbtn" id="bell">🔔<div class="badge" id="badge" style="display:none">0</div></div>
       </div>
@@ -602,9 +632,14 @@
       <input id="search" class="search" type="text" inputmode="search" placeholder="🔍  Search titles…" autocomplete="off">
       <button class="searchclear" id="searchClear" aria-label="Clear search" type="button">×</button>
     </div>
-    <div class="filtoggle">
+    <!-- The two doors, and Found is the one that opens (CAS-70): what Cascade found FOR you, or the engine
+         you drive yourself. -->
+    <div class="viewbar" role="tablist" aria-label="Found for you, or Find something yourself">
+      <button class="vbtn" id="vFound" role="tab" aria-selected="true">🔔 Found for you <span class="vn" id="vFoundN">0</span></button>
+      <button class="vbtn" id="vFind" role="tab" aria-selected="false">🔍 Find</button>
+    </div>
+    <div class="filtoggle" id="findTools">
       <button class="btn" id="filterBtn" title="Find something to watch — the selection engine">≡ Find</button>
-      <button class="btn" id="foundBtn" title="Show only the films Cascade found for you">🔔 Found only</button>
       <div style="flex:1"></div>
       <select id="sort">
         <option value="imdb">IMDb ▾</option>
@@ -627,8 +662,11 @@
     </div>
     <div id="cascDetail"></div>
   </div>
-  <div class="count" id="count"></div>
-  <div id="groups"></div>
+  <div id="foundView"></div>
+  <div id="findView">
+    <div class="count" id="count"></div>
+    <div id="groups"></div>
+  </div>
 </div>
 
 <!-- CASCADE BUILDER modal — pane 1: template picker, pane 2: editor -->
@@ -754,16 +792,6 @@
     <button class="dangerbtn" id="logClear">Clear log</button>
     <button class="applybtn" id="logCopy">Copy as JSON</button>
   </div>
-</div>
-
-<!-- FOUND FOR YOU — the union of what every Cascade found and what you added by hand, minus what you took off -->
-<div class="modal" id="mylist">
-  <div class="modalhead"><h3>🔔 Found for you</h3><button class="donebtn" id="mylistDone">Done</button></div>
-  <div class="pnote">Cascade found these and put them here — you didn't have to. Each film says who chose it
-    (<b style="color:#d8c9ff">purple</b> = Cascade found it, <b style="color:#ffd79a">orange</b> = you added it),
-    and the window and price are today's real data. Add or remove any of them; your answer sticks.</div>
-  <div id="foundValue"></div>
-  <div id="mylistBody"></div>
 </div>
 
 <!-- PROVENANCE sheet — why this film is (or isn't) on your Found list, and the one control that changes it -->
@@ -986,6 +1014,7 @@ function recomputeFound(){
     if(!e.removed && !tagged && (auto||mine)) found.add(+id);
   });
   saveNotify();
+  trackFirstFound();   // the day each film was found is stamped here, the moment it lands (CAS-70 freshness)
 }
 // What the megaphone's colour is claiming, in one word.
 const foundSource = id => {
@@ -1238,7 +1267,33 @@ $("uxSwitch").onclick=()=>{ ux.on=!ux.on; saveUx(); updateUxSwitch(); render(); 
 updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
 
 // ---- controls ----
-$("foundBtn").onclick=()=>{filt.foundOnly=!filt.foundOnly;$("foundBtn").classList.toggle("active");render();};
+// ---- The two doors (CAS-70) ----------------------------------------------------
+// "found" is the front door: what Cascade went and found for you, presented. "find" is the selection engine you
+// drive yourself. The choice is remembered, so the app opens where you left it — but a new user always lands on
+// Found, because that is the product.
+let view = "found";
+try{ const v=localStorage.getItem("cascade_view"); if(v==="find"||v==="found") view=v; }catch(e){}
+window.setView=v=>{
+  if(v===view) return;
+  view=v;
+  try{ localStorage.setItem("cascade_view", v); }catch(e){}
+  logEvent("view_switched",{key:v});
+  render();
+  scrollTo({top:0, behavior:"smooth"});
+};
+function syncView(){
+  const isFound = view==="found";
+  $("vFound").classList.toggle("on", isFound);
+  $("vFind").classList.toggle("on", !isFound);
+  $("vFound").setAttribute("aria-selected", String(isFound));
+  $("vFind").setAttribute("aria-selected", String(!isFound));
+  $("foundView").style.display = isFound ? "" : "none";
+  $("findView").style.display  = isFound ? "none" : "";
+  $("findTools").style.display = isFound ? "none" : "";   // the sort + Find controls belong to the engine
+  $("search").placeholder = isFound ? "🔍  Search what Cascade found…" : "🔍  Search titles…";
+}
+$("vFound").onclick=()=>setView("found");
+$("vFind").onclick=()=>setView("find");
 $("sort").onchange=e=>{filt.sort=e.target.value;render();};
 let searchLogged=false;
 $("search").oninput=e=>{filt.search=e.target.value.trim().toLowerCase();$("searchClear").classList.toggle("show", e.target.value.length>0);
@@ -1269,7 +1324,6 @@ function syncFilterUI(){
   $("grossMin").value=filt.gross;
   $("budgetBand").value=filt.budget; $("tentpoleSel").value=filt.tentpole;
   $("search").value=filt.search; $("searchClear").classList.toggle("show", !!filt.search);
-  $("foundBtn").classList.toggle("active", filt.foundOnly);
   $("sort").value=filt.sort;
 }
 $("resetBtn").onclick=()=>{ setActive(null); clearFilters(); syncFilterUI(); render(); };
@@ -1523,7 +1577,9 @@ function notifyBtnHTML(id, cls=""){
   return `<button class="actbtn ${cls} ${on}" onclick="openProvenance(${id})" aria-haspopup="dialog"
     title="${escA(title)}" aria-label="${escA(title)}">${ICON.alert}</button>`;
 }
-function cardHTML(m){
+// `lead` is the Found view's reason line (CAS-70) — the agent saying why this film is in front of you. The
+// browse list passes nothing and gets exactly the card it always had.
+function cardHTML(m, lead="", markNew=false){
   const id=m.tmdb_id;
   let offers=dedupOffers(m.offers);
   if(prefsActive()) offers=offers.filter(myService);
@@ -1538,15 +1594,20 @@ function cardHTML(m){
   const wtwBtn = offers.length
     ? `<button class="actbtn wtwbtn" onclick="this.closest('.card').querySelector('.wtw').classList.toggle('open');this.classList.toggle('open')" title="Where to watch (${offers.length})">${ICON.chev}</button>`
     : `<button class="actbtn wtwbtn off" disabled title="No home offers yet">${ICON.chev}</button>`;
+  // The chip is a DISCRIMINATOR, not a decoration: it's painted only when some of the films on screen are new
+  // and some aren't. On a first run every film is new, and marking all of them would be noise dressed up as
+  // news — the agent header says "all of them this week" in words instead.
+  const isNew = markNew ? `<span class="newchip">🆕 New this week</span>` : "";
   return `<div class="card ${isW?'watched':''} ${expandedSet.has(id)?'expanded':''}" id="card-${id}">
     <div class="ctop">
       <div class="poster" style="${poster}" onclick="toggleExpand(${id})"></div>
       <div class="chead">
-        <div class="title" onclick="toggleExpand(${id})">${m.title}${cert}</div>
+        <div class="title" onclick="toggleExpand(${id})">${m.title}${cert}${isNew}</div>
         <div class="meta">${m.cinema_date?fmtDate(m.cinema_date):""}${(m.genres||[]).length?(m.cinema_date?" · ":"")+(m.genres||[]).join(", "):""}${cult}</div>
         ${syn}
       </div>
     </div>
+    ${lead}
     ${scaleBadge(m)}
     ${ratingsHTML(m)}
     ${cascadeHTML(m)}
@@ -1699,57 +1760,243 @@ function valueLine(c){
        ${v.priced===v.covered ? (v.covered===1?"it":"them") : `the ${v.priced} of them we hold a rent price for`}.`
     : `${body}.`;
 }
-function renderFoundValue(){
-  const el=$("foundValue"); if(!el) return;
-  if(!cascades.length || !found.size){ el.innerHTML=""; return; }
-  el.innerHTML=`<div class="dgcard" style="margin-top:10px">
+function foundValueHTML(){
+  if(!cascades.length || !found.size) return "";
+  return `<div class="dgcard" style="margin-top:16px">
     <div class="dgname">📣 What I've been doing for you</div>
     ${cascades.map(c=>`<div class="dgrow">${c.icon} <b>${esc(c.name)}</b> ${valueLine(c)}</div>`).join("")}
     <div class="dgnone" style="margin-top:8px">Every figure here is read from today's real offer prices. We don't
       hold subscription prices, so we never guess at a monthly saving.</div>
   </div>`;
 }
-function renderMyList(){
-  renderFoundValue();
-  // The badge counts the Found list itself — the number your Cascades are working for you, not the number of
-  // things you've had to do. That IS the product's claim, so it's the number that belongs on the header.
-  const b=$("listBadge");
-  if(found.size){ b.style.display="grid"; b.textContent=found.size; } else b.style.display="none";
-  const el=$("mylistBody"); if(!el) return;
-  // g.set() is evaluated ONCE per group, not once per film — removedIds() rebuilds a Set from the whole notify
-  // map, and calling it inside the filter would rebuild it for every title in the catalogue.
-  const groups=TAG_GROUPS.map(g=>{ const ids=g.set(); return {g, films:MOVIES.filter(m=>ids.has(m.tmdb_id))}; })
-    .filter(x=>x.films.length);
-  if(!groups.length){
-    // With auto-membership there is only one way to have an empty Found list: no Cascades. So say the one thing
-    // that fixes it, rather than asking them to go and tag films by hand — which is the job we just took over.
-    el.innerHTML=`<div class="mlempty">
-      <div style="font-size:30px;margin-bottom:10px">🔔</div>
-      <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px">Nothing yet — but Cascade's watching…</div>
-      ${cascades.length
-        ? `Your ${cascades.length} Cascade${cascades.length===1?"":"s"} ${cascades.length===1?"hasn't":"haven't"}
-           found anything in today's catalogue. Widen ${cascades.length===1?"it":"one of them"} and whatever
-           ${cascades.length===1?"it finds":"they find"} lands here on its own — you won't have to come and look.`
-        : `Set a Cascade to work and it goes out and finds the films for you — everything it picks up lands here,
-           with its window, its price, and the name of the Cascade that found it. You never tag a thing.`}
-      <div style="margin-top:12px;font-size:11.5px;color:var(--faint)">
-        You can still add a film by hand — the <b>megaphone</b> on any card. Yours show <b style="color:#ffd79a">orange</b>,
-        the ones Cascade found show <b style="color:#d8c9ff">purple</b>. Nothing here needs an account.</div>
-      <div class="ebtns" style="margin-top:14px">
-        <button class="ebtn ghost" onclick="closeModal(document.getElementById('mylist'))">Back to the films</button>
-      </div></div>`;
-    return;
+// ================= The Found view — the hero (CAS-70) =======================================================
+// The front door. Not a filtered list you have to work: a SELECTION, presented — the agent says what it found
+// up top, marks what's new since it last reported, gives a reason on every card, and orders the lot by what it
+// has learned about you. Every word of it is read off real data; there is no LLM anywhere in here.
+
+// ---- Freshness ----------------------------------------------------------------
+// "New this week" needs a first-found date per film, so we record one the moment a film enters the Found list.
+// It is NOT the film's release date and it is NOT a guess: it's the day Cascade actually picked it up for you.
+// An entry is dropped when the film leaves the list, so a film that is later found again is honestly new again.
+const NEW_DAYS = 7;                                     // what "this week" means. One dial, in one place.
+const REAL_TODAY = new Date().toISOString().slice(0,10);   // when YOU are looking, not the catalogue's build date
+const FIRST_KEY = "cascade_first_found";
+function loadFirstFound(){
+  try{ const o=JSON.parse(localStorage.getItem(FIRST_KEY)||"{}");
+    return (o && typeof o==="object" && !Array.isArray(o)) ? o : {}; }catch(e){ return {}; }
+}
+const firstFound = loadFirstFound();
+let firstSaved=null;
+function trackFirstFound(){
+  Object.keys(firstFound).forEach(id=>{ if(!found.has(+id)) delete firstFound[id]; });
+  found.forEach(id=>{ if(!firstFound[id]) firstFound[id]=REAL_TODAY; });
+  const s=JSON.stringify(firstFound);
+  if(s===firstSaved) return;                            // runs on every render — only real changes write
+  firstSaved=s;
+  try{ localStorage.setItem(FIRST_KEY, s); }catch(e){}
+}
+const daysSince = iso => Math.round((Date.parse(REAL_TODAY) - Date.parse(iso)) / 864e5);
+const isNewFound = id => { const d=firstFound[id]; return !!d && daysSince(d) < NEW_DAYS; };
+
+// ---- It learns you (CAS-70) ----------------------------------------------------
+// Behavioural weighting — algorithmic, no LLM, and every input is something you actually DID. A film you pin
+// by hand is the strongest statement of taste you can make; one you take off the list, or wave away, is the
+// strongest statement against. Those weights land on the film's genres, and the Found view orders by them, so
+// keeping and removing visibly changes what Cascade puts in front of you next.
+const TASTE_W = {pinned:2, watched:1, removed:-2, blocked:-2};
+function learnedTaste(){
+  const w={};
+  const add=(m,n)=>(m.genres||[]).forEach(g=>{ w[g]=(w[g]||0)+n; });
+  MOVIES.forEach(m=>{
+    const e=notify[m.tmdb_id];
+    if(e && e.source==="manual" && !e.removed) add(m, TASTE_W.pinned);
+    if(e && e.removed)                         add(m, TASTE_W.removed);
+    if(watched.has(m.tmdb_id))                 add(m, TASTE_W.watched);
+    if(blocked.has(m.tmdb_id))                 add(m, TASTE_W.blocked);
+  });
+  return w;
+}
+const tasteScore = (m,w) => (m.genres||[]).reduce((s,g)=>s+(w[g]||0), 0);
+const topTaste = (w,dir) => Object.entries(w).filter(([,v])=>dir>0 ? v>0 : v<0)
+  .sort((a,b)=>dir>0 ? b[1]-a[1] : a[1]-b[1]).slice(0,2).map(([g])=>g.toLowerCase());
+function learnedNote(w){
+  const up=topTaste(w,1), down=topTaste(w,-1);
+  if(!up.length && !down.length)
+    return `Keep the ones you like and take off the ones you don't — I read that, and the kind of film you keep
+            comes up the list next time.`;
+  const bits=[];
+  if(up.length)   bits.push(`I'm leading with <b>${up.join(" and ")}</b> — that's the kind you keep`);
+  if(down.length) bits.push(`${up.length?"and ":"I'm "}pushing <b>${down.join(" and ")}</b> down — you've waved
+    ${down.length===1?"that one":"those"} off`);
+  return bits.join(", ")+".";
+}
+
+// ---- The reason on every card --------------------------------------------------
+// "On Netflix now, which you pay for · a 92%-rated crime — 🎯 My taste found it: crime is what it watches for."
+// Templated from fields we actually hold. A clause we can't fill is left out rather than padded, and the
+// matched-criterion clause names a criterion the Cascade REALLY carries and the film REALLY clears.
+function matchReason(m,c){
+  const g=(m.genres||[]).find(x=>(c.genre||[]).includes(x));
+  if(g) return `${g.toLowerCase()} is what it watches for`;
+  if(c.awards && m.award) return `it's an award ${m.award==="won"?"winner":"nominee"} — exactly its brief`;
+  if(c.imdb && (m.imdb_rating||0)>=c.imdb)
+    return `it clears the ${RATING_STOPS[stopFor(c.imdb)].label.toLowerCase()} bar you set it`;
+  if(c.tentpole && c.tentpole!=="any" && tentpoleIs(m,c.tentpole))
+    return `it's a ${TENTPOLE_STOPS.find(t=>t.key===c.tentpole).label.toLowerCase()}, which is its brief`;
+  if(anyScope(c) && servicesPicked() && matchesServices(m)) return `it's on a service you pay for`;
+  // A Cascade can carry no taste criteria at all (Bargain hunter watches the price, not the film) — so the
+  // honest reason is the one thing it IS watching for: the windows. Never leave the clause blank and let the
+  // card imply a match we can't name.
+  const wins=(c.status||[]).map(w=>ALERT_SHORT[WINDOW_ROW[w]]).filter(Boolean);
+  if(wins.length) return `it watches everything on its way to ${[...new Set(wins)].join(" or ")}`;
+  return `it watches the whole catalogue for you`;
+}
+function whyFound(m){
+  const id=m.tmdb_id, mine=foundSource(id)==="manual";
+  const w=primaryStatus(m);
+  const offers=dedupOffers(m.offers||[]);
+  const subs=offers.filter(o=>o.type==="sub"||o.type==="free");
+  const rents=offers.filter(o=>o.type==="rent" && o.price!=null).sort((a,b)=>a.price-b.price);
+  // 1. where it is, right now — the fact the whole product turns on
+  let where;
+  if(w==="included_streaming" && subs.length){
+    const own=subs.filter(o=>prefs.sub.has(o.service));
+    const svc=svcName((own[0]||subs[0]).service);
+    where = own.length ? `On ${esc(svc)} now, which you pay for` : `Streaming now on ${esc(svc)}`;
+  } else if(w==="rental" && rents.length){
+    where = `$${rents[0].price.toFixed(2)} to rent on ${esc(svcName(rents[0].service))}`;
+  } else if(w==="pvod"){
+    where = `Premium only so far — I'm watching for it to drop`;
+  } else if(w==="upcoming"){
+    where = m.cinema_date ? `Out ${fmtDate(m.cinema_date)} — I'm watching it in` : `Not out yet — I'm watching it in`;
+  } else {
+    where = `In cinemas now`;
   }
-  el.innerHTML=groups.map(({g,films})=>`<div class="mlgroup">
+  // 2. what kind of film it is — from whichever score we actually hold, never both, never invented
+  const genre=(m.genres||[])[0];
+  const g = genre ? esc(genre.toLowerCase())+" film" : "film";
+  const kind = m.rt_critic!=null   ? `a ${m.rt_critic}%-rated ${g}`
+             : m.imdb_rating!=null ? `a ${g} at IMDb ${m.imdb_rating.toFixed(1)}`
+             : `a ${g} — nobody's rated it yet`;
+  // 3. who put it in front of you, and why
+  const from=cascadesFor(id);
+  let who;
+  if(mine){
+    who = `<b>You added this</b>` + (from.length
+      ? ` — ${from[0].icon} ${esc(from[0].name)} watches it too.`
+      : ` — nothing else is watching it, so I'll tell you about every move it makes.`);
+  } else if(from.length){
+    const r=matchReason(m, from[0]);
+    who = `<b>Cascade found this</b> — ${from[0].icon} ${esc(from[0].name)}${r?`: ${r}`:""}`
+        + (from.length>1 ? ` (+${from.length-1} more of yours).` : ".");
+  } else {
+    who = `<b>Cascade found this.</b>`;
+  }
+  const bits=[where, kind].filter(Boolean).join(" · ");
+  return `<div class="whyline ${mine?"mine":""}">${bits}<br>${who}</div>`;
+}
+
+// ---- The view ------------------------------------------------------------------
+function foundFilms(){
+  const w=learnedTaste();
+  return MOVIES.filter(m=>found.has(m.tmdb_id))
+    .filter(m=>!filt.search || m.title.toLowerCase().includes(filt.search))
+    .sort((a,b)=> tasteScore(b,w)-tasteScore(a,w)
+               || (b.rt_critic||0)-(a.rt_critic||0)
+               || (b.imdb_rating||0)-(a.imdb_rating||0));
+}
+function agentHeadHTML(films){
+  const auto=films.filter(m=>foundSource(m.tmdb_id)==="auto");
+  const mine=films.filter(m=>foundSource(m.tmdb_id)==="manual");
+  const fresh=auto.filter(m=>isNewFound(m.tmdb_id)).length;
+  // Honest to the last clause: it claims only what IT found (yours are counted separately), and "new this week"
+  // is a count of first-found dates, not a vibe. On the first run everything is new, and it says exactly that
+  // rather than dressing the whole list up as news.
+  const n=auto.length;
+  const line = !n
+    ? (mine.length ? `Nothing found yet — but I'm watching. The ${mine.length} below ${mine.length===1?"is":"are"} yours.`
+                   : `Nothing yet — but I'm watching.`)
+    : fresh===n ? `I've found <b>${n} film${n===1?"":"s"}</b> for you — all of ${n===1?"it":"them"} this week.`
+    : fresh     ? `I've found <b>${n} films</b> for you — <b>${fresh} new this week</b>.`
+                : `I've found <b>${n} film${n===1?"":"s"}</b> for you. Nothing new this week — I'll keep watching.`;
+  const yours = mine.length && n ? ` You've added <b>${mine.length}</b> yourself.` : "";
+  return `<div class="agenthead">
+    <div class="ah">📣 ${line}${yours}</div>
+    <div class="ap">${learnedNote(learnedTaste())}</div>
+  </div>`;
+}
+function foundEmptyHTML(){
+  return `<div class="mlempty">
+    <div style="font-size:30px;margin-bottom:10px">🔔</div>
+    <div style="font-size:15px;font-weight:800;color:var(--ink);margin-bottom:7px">Nothing yet — but Cascade's watching…</div>
+    ${cascades.length
+      ? `Your ${cascades.length} Cascade${cascades.length===1?"":"s"} ${cascades.length===1?"hasn't":"haven't"}
+         found anything in today's catalogue. Widen ${cascades.length===1?"it":"one of them"} and whatever
+         ${cascades.length===1?"it finds":"they find"} lands here on its own — you won't have to come and look.`
+      : `Set a Cascade to work and it goes out and finds the films for you — everything it picks up lands here,
+         with its window, its price, and the name of the Cascade that found it. You never tag a thing.`}
+    <div style="margin-top:12px;font-size:11.5px;color:var(--faint)">
+      You can add a film by hand too — the <b>megaphone</b> on any card under 🔍 Find. Yours show
+      <b style="color:#ffd79a">orange</b>, the ones Cascade found show <b style="color:#d8c9ff">purple</b>.
+      Nothing here needs an account.</div>
+    <div class="ebtns" style="margin-top:14px">
+      <button class="ebtn ghost" onclick="setView('find')">Have a look around yourself →</button>
+    </div></div>`;
+}
+function renderFound(){
+  const el=$("foundView"); if(!el) return;
+  $("vFoundN").textContent=found.size;
+  const films=foundFilms();
+  // The three things you've SAID about films (took off / watched / not interested) still live here — they're
+  // the undo for every one-tap decision — but they sit below the selection, as receipts, not as the headline.
+  const said=TAG_GROUPS.filter(g=>g.key!=="found")
+    .map(g=>{ const ids=g.set(); return {g, films:MOVIES.filter(m=>ids.has(m.tmdb_id))}; })
+    .filter(x=>x.films.length);
+  const saidHTML=said.map(({g,films})=>`<div class="mlgroup" style="padding:0 12px">
       <div class="mlhead" style="color:${g.colour}">${g.icon} ${g.title}<span class="n">${films.length}</span></div>
       <div class="pnote" style="margin:-4px 0 8px">${g.blurb}</div>
       ${films.map(m=>mlRowHTML(m,g.key)).join("")}</div>`).join("");
+  if(!found.size){
+    el.innerHTML=foundEmptyHTML()+saidHTML;
+    return;
+  }
+  if(!films.length){                                   // the Found list isn't empty — the search box is hiding it
+    el.innerHTML=agentHeadHTML(MOVIES.filter(m=>found.has(m.tmdb_id)))
+      +`<div class="empty"><div class="emoji">🔍</div>
+         <div class="eh">Nothing I've found matches “${esc(filt.search)}”.</div>
+         <div class="ep">Clear the search and the whole selection comes back.</div></div>`+saidHTML;
+    return;
+  }
+  // "New" means new FROM THE AGENT. A film you pinned yourself this morning is not news to you, and counting it
+  // here would also put the group's number at odds with the header's (which only ever claims what Cascade found).
+  const isFresh = m => foundSource(m.tmdb_id)==="auto" && isNewFound(m.tmdb_id);
+  const fresh=films.filter(isFresh);
+  const rest =films.filter(m=>!isFresh(m));
+  const split=fresh.length>0 && rest.length>0;         // "new" only means something when some of them aren't
+  const cards=(list,markNew)=>`<div class="list">${list.map(m=>cardHTML(m, whyFound(m), markNew)).join("")}</div>`;
+  const learned=Object.values(learnedTaste()).some(v=>v!==0);
+  const order = learned
+    ? `Ordered by what I've learned about you — not by what a database sorted first.`
+    : `Ordered by how well they score for now. Keep the ones you like and take off the ones you don't, and I'll
+       order by <i>you</i> instead.`;
+  let html=agentHeadHTML(films);
+  // The "new this week" group only exists when it tells you something. On the first run EVERY film is new, and
+  // a group holding all of them would say nothing — the header says it plainly instead.
+  if(split){
+    html+=`<div class="fglabel" style="color:var(--green)">🆕 New this week<span class="n">${fresh.length}</span></div>
+      <div class="fgnote">Found since I last reported — ${fresh.length===1?"this is":"these are"} the ${fresh.length===1?"one":"ones"} you haven't seen.</div>
+      ${cards(fresh,true)}
+      <div class="fglabel" style="color:var(--purple)">🔔 Everything else I've found<span class="n">${rest.length}</span></div>
+      <div class="fgnote">${order}</div>
+      ${cards(rest,false)}`;
+  } else {
+    html+=`<div class="fglabel" style="color:var(--purple)">🔔 Found for you<span class="n">${films.length}</span></div>
+      <div class="fgnote">${order}</div>
+      ${cards(films,false)}`;
+  }
+  el.innerHTML=html+`<div style="padding:0 12px">${foundValueHTML()}</div>`+saidHTML;
+  markFoundSeen();   // you are looking at it — so the next visit's "since you last looked" counts from here
 }
-$("listBtn").onclick=()=>{ logEvent("found_opened",{found:found.size, manual:[...found].filter(id=>foundSource(id)==="manual").length});
-  renderMyList(); openModal($("mylist"));
-  markFoundSeen();   // you have now LOOKED — so the next visit's "since you last looked" counts from here
-};
-$("mylistDone").onclick=()=>closeModal($("mylist"));
 
 // ---- the provenance sheet (CAS-67) ---------------------------------------------
 // Who chose this film, which Cascade is watching it, what that Cascade will actually tell you about — and the
@@ -3319,7 +3566,8 @@ function render(){
   $("filterBtn").textContent = "≡ Find" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
   renderCascadeBar(shown.length);
-  renderMyList();   // membership changes from a card, from the Found list itself, or from a Cascade — one repaint covers all
+  syncView();
+  renderFound();    // membership changes from a card, from the Found view itself, or from a Cascade — one repaint covers all
   updatePrefSwitch(); updatePrefBtn(); updateUxSwitch(); refreshSetupMeters(); renderServiceAdvice();
   // Smart defaults: label the apply control with its payoff, not a bare "Done".
   $("filtersDone").textContent = ux.on
@@ -3336,9 +3584,11 @@ function render(){
     // Cards first, stubs after: the stub is a receipt for a decision, not a result — it shouldn't push a
     // film you DO want further down the group.
     const cards=items.filter(m=>!taggedOut(m)), stubs=items.filter(taggedOut);
+    // NB: m=>cardHTML(m), never .map(cardHTML) — map's second argument is the index, and cardHTML's second
+    // parameter is the Found view's reason line. Passing it bare would paint "0", "1", "2" into the cards.
     html+=`<div class="group"><div class="grouphead"><span class="gdot ${g}"></span>${STATUS_LABEL[g]}
       <span class="gcount">${cards.length}</span></div>
-      <div class="list">${cards.map(cardHTML).join("")}${stubs.map(stubHTML).join("")}</div></div>`;
+      <div class="list">${cards.map(m=>cardHTML(m)).join("")}${stubs.map(m=>stubHTML(m)).join("")}</div></div>`;
   });
   wrap.innerHTML=html;
 }
@@ -3686,10 +3936,12 @@ function markFoundSeen(){ try{ localStorage.setItem(SEEN_KEY, JSON.stringify([..
 // Boot: a Cascade left open on the last visit reopens with its filters applied.
 const booted=activeCascade();
 if(booted){ applyCascade(booted); }
-render();
+// Read the snapshot BEFORE the first paint: rendering the Found view marks everything in it as seen (you are,
+// after all, looking at it), so asking afterwards what was new would always answer "nothing".
 const seenFound = loadSeenFound();
+render();
 const freshFound = seenFound ? [...found].filter(id=>!seenFound.has(id)) : [];
-markFoundSeen();
+if(!seenFound) markFoundSeen();   // first run: seed it, and say nothing — there is no "last time" to compare to
 // A shared link takes precedence over first-run onboarding — they arrived to look at a specific radar.
 const openedShared = openSharedFromURL();
 // First run only — the "seen" flag is set by finishing OR skipping, so returning visitors go straight to the app.
