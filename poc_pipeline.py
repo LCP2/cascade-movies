@@ -34,6 +34,13 @@ LOOKBACK_DAYS = 1095             # include films with an AU theatrical release i
 MAX_TITLES    = 60               # cap tracked titles; Watchmode-id caching (below) keeps this within the free tier
 OPENING_WEEK_DAYS = 7            # a cinema release this recent counts as "opening week"
 
+# --- and FORWARDS from cinema: films announced for AU cinemas but not out yet ---
+# These fill the stepper's "Upcoming" slot and feed the Blockbuster-radar Cascade.
+# They cost ZERO Watchmode calls: a film that hasn't opened has no AU home offers to
+# poll, so the free-tier budget stays entirely with the released catalogue above.
+UPCOMING_LOOKAHEAD_DAYS = 120    # how far ahead to look for announced AU theatrical dates (~4 months)
+MAX_UPCOMING            = 12     # cap; TMDB detail calls only
+
 # --- window heuristics (this is YOUR business logic, not something an API gives you) ---
 PVOD_MIN_PRICE   = 19.99          # a buy/rent at or above this, with no subscription yet, = premium early window
 RENTAL_MAX_PRICE = 9.99           # a rent at or below this = standard rental window
@@ -66,22 +73,56 @@ def get_json(url: str) -> dict:
 # ---------------------------------------------------------------------------
 # 1. INGEST — which films are/were recently in AU cinemas
 # ---------------------------------------------------------------------------
-def ingest_tmdb() -> list[dict]:
-    """Work BACKWARDS from cinema: every film that had an AU theatrical release
-    in the last LOOKBACK_DAYS, most-popular first — so the catalogue spans the
-    whole cascade (still in cinemas -> PVOD -> rental -> included streaming),
-    not just this week's new releases. Capped to MAX_TITLES for the Watchmode
-    free-tier daily budget.
-    Returns skeleton records: tmdb_id, imdb_id, title, year, genres, cinema_date, gross."""
-    base = "https://api.themoviedb.org/3"
-    today = datetime.date.today()
-    start = (today - datetime.timedelta(days=LOOKBACK_DAYS)).isoformat()
-    end   = today.isoformat()
-    movies, seen, page = [], set(), 1
+TMDB_BASE = "https://api.themoviedb.org/3"
 
-    while len(movies) < MAX_TITLES and page <= 10:
+def _tmdb_record(detail: dict) -> dict:
+    """Map one TMDB detail payload to our skeleton record."""
+    cinema_date, age_rating = None, None
+    for entry in detail.get("release_dates", {}).get("results", []):
+        if entry["iso_3166_1"] == REGION:
+            for rd in entry["release_dates"]:
+                if rd["type"] in (2, 3):
+                    cinema_date = rd["release_date"][:10]
+                cert = (rd.get("certification") or "").strip()
+                if cert and not age_rating:      # AU classification (G/PG/M/MA15+/R18+)
+                    age_rating = cert
+    lang = detail.get("original_language")
+    countries = [c["iso_3166_1"] for c in detail.get("production_countries", [])]
+    vids = (detail.get("videos") or {}).get("results", [])
+    trailers = [v["key"] for v in vids
+                if v.get("site") == "YouTube" and v.get("type") in ("Trailer", "Teaser") and v.get("key")][:4]
+    credits = detail.get("credits") or {}
+    directors = [c["name"] for c in credits.get("crew", []) if c.get("job") == "Director"]
+    cast = [c["name"] for c in sorted(credits.get("cast", []),
+                                      key=lambda c: c.get("order", 999))][:4]
+    return {
+        "tmdb_id": detail["id"],
+        "imdb_id": detail.get("imdb_id"),
+        "title": detail["title"],
+        "year": (detail.get("release_date") or "----")[:4],
+        "genres": [g["name"] for g in detail.get("genres", [])],
+        "cinema_date": cinema_date,
+        "age_rating": age_rating,
+        "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
+        "budget": detail.get("budget") or None,             # TMDB budget (0 when unknown)
+        "synopsis": (detail.get("overview") or "").strip(),
+        "language": lang,
+        "culture": _culture(lang, countries),
+        "poster": detail.get("poster_path"),
+        "trailers": trailers,
+        "director": ", ".join(directors[:2]) or None,
+        "cast": cast,
+    }
+
+
+def _discover_au_theatrical(start: str, end: str, cap: int, seen: set) -> list[dict]:
+    """AU theatrical (type 3) or limited (2) releases dated in [start, end],
+    most-popular first, up to `cap`. `seen` carries tmdb_ids already taken by an
+    earlier pass so a title can't land in two groups."""
+    movies, page = [], 1
+    while len(movies) < cap and page <= 10:
         disc = get_json(
-            f"{base}/discover/movie?api_key={TMDB_KEY}&region={REGION}"
+            f"{TMDB_BASE}/discover/movie?api_key={TMDB_KEY}&region={REGION}"
             f"&with_release_type=2|3"                         # AU theatrical (3) or limited (2)
             f"&release_date.gte={start}&release_date.lte={end}"
             f"&sort_by=popularity.desc&page={page}"
@@ -94,48 +135,35 @@ def ingest_tmdb() -> list[dict]:
                 continue
             seen.add(m["id"])
             detail = get_json(
-                f"{base}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates,videos,credits"
+                f"{TMDB_BASE}/movie/{m['id']}?api_key={TMDB_KEY}&append_to_response=release_dates,videos,credits"
             )
-            cinema_date, age_rating = None, None
-            for entry in detail.get("release_dates", {}).get("results", []):
-                if entry["iso_3166_1"] == REGION:
-                    for rd in entry["release_dates"]:
-                        if rd["type"] in (2, 3):
-                            cinema_date = rd["release_date"][:10]
-                        cert = (rd.get("certification") or "").strip()
-                        if cert and not age_rating:      # AU classification (G/PG/M/MA15+/R18+)
-                            age_rating = cert
-            lang = detail.get("original_language")
-            countries = [c["iso_3166_1"] for c in detail.get("production_countries", [])]
-            vids = (detail.get("videos") or {}).get("results", [])
-            trailers = [v["key"] for v in vids
-                        if v.get("site") == "YouTube" and v.get("type") in ("Trailer", "Teaser") and v.get("key")][:4]
-            credits = detail.get("credits") or {}
-            directors = [c["name"] for c in credits.get("crew", []) if c.get("job") == "Director"]
-            cast = [c["name"] for c in sorted(credits.get("cast", []),
-                                              key=lambda c: c.get("order", 999))][:4]
-            movies.append({
-                "tmdb_id": detail["id"],
-                "imdb_id": detail.get("imdb_id"),
-                "title": detail["title"],
-                "year": (detail.get("release_date") or "----")[:4],
-                "genres": [g["name"] for g in detail.get("genres", [])],
-                "cinema_date": cinema_date,
-                "age_rating": age_rating,
-                "worldwide_gross": detail.get("revenue") or None,   # single global number, often incomplete
-                "budget": detail.get("budget") or None,             # TMDB budget (0 when unknown)
-                "synopsis": (detail.get("overview") or "").strip(),
-                "language": lang,
-                "culture": _culture(lang, countries),
-                "poster": detail.get("poster_path"),
-                "trailers": trailers,
-                "director": ", ".join(directors[:2]) or None,
-                "cast": cast,
-            })
-            if len(movies) >= MAX_TITLES:
+            movies.append(_tmdb_record(detail))
+            if len(movies) >= cap:
                 break
         page += 1
     return movies
+
+
+def ingest_tmdb(seen: set) -> list[dict]:
+    """Work BACKWARDS from cinema: every film that had an AU theatrical release
+    in the last LOOKBACK_DAYS, most-popular first — so the catalogue spans the
+    whole cascade (still in cinemas -> PVOD -> rental -> included streaming),
+    not just this week's new releases. Capped to MAX_TITLES for the Watchmode
+    free-tier daily budget."""
+    today = datetime.date.today()
+    start = (today - datetime.timedelta(days=LOOKBACK_DAYS)).isoformat()
+    return _discover_au_theatrical(start, today.isoformat(), MAX_TITLES, seen)
+
+
+def ingest_tmdb_upcoming(seen: set) -> list[dict]:
+    """Work FORWARDS from cinema: films with an announced AU theatrical date in the
+    next UPCOMING_LOOKAHEAD_DAYS. These have not opened, so they carry no offers and
+    derive to the "upcoming" window — the real state for the stepper's cinema slot,
+    and the pool the Blockbuster-radar Cascade sorts by budget."""
+    today = datetime.date.today()
+    start = (today + datetime.timedelta(days=1)).isoformat()          # strictly future
+    end   = (today + datetime.timedelta(days=UPCOMING_LOOKAHEAD_DAYS)).isoformat()
+    return _discover_au_theatrical(start, end, MAX_UPCOMING, seen)
 
 
 # ---------------------------------------------------------------------------
@@ -337,12 +365,25 @@ def run(simulate_day: bool = False):
     if LIVE:
         print(f"[live] ingesting AU cinema releases from TMDB ...")
         wm_cache = json.load(open(WM_CACHE_FILE)) if os.path.exists(WM_CACHE_FILE) else {}
-        records = ingest_tmdb()
+        seen: set = set()
+        records = ingest_tmdb(seen)
         for m in records:
             enrich_omdb(m)
             m["offers"] = poll_watchmode(m, wm_cache)
             m["status"] = derive_status(m, m["offers"], today)
             time.sleep(0.25)  # be polite to free tiers
+
+        # Films announced for AU cinemas but not open yet. They have no home offers to
+        # poll, so they never touch Watchmode — the free tier stays with the catalogue above.
+        upcoming = ingest_tmdb_upcoming(seen)
+        print(f"[live] + {len(upcoming)} upcoming AU theatrical release(s) (no Watchmode calls)")
+        for m in upcoming:
+            enrich_omdb(m)                       # ratings/awards if the title already has them
+            m["offers"] = []
+            m["status"] = derive_status(m, [], today)
+            time.sleep(0.25)
+        records += upcoming
+
         os.makedirs(STATE_DIR, exist_ok=True)
         json.dump(wm_cache, open(WM_CACHE_FILE, "w"), indent=2)
     else:
@@ -381,7 +422,9 @@ def run(simulate_day: bool = False):
     json.dump(events, open(os.path.join(STATE_DIR, "last_run_events.json"), "w"), indent=2)
     build_html(records)                       # regenerate the double-clickable app
 
-    print(f"\n{len(records)} titles written to movies.json  ({'LIVE' if LIVE else 'sample'} data)")
+    n_up = sum(1 for m in records if "upcoming" in m.get("status", []))
+    print(f"\n{len(records)} titles written to movies.json  ({'LIVE' if LIVE else 'sample'} data)"
+          + (f" — {n_up} of them upcoming (not yet in cinemas)" if n_up else ""))
     print(f"index.html rebuilt — open it in any browser.")
     print(f"{len(events)} status-change alert(s) this run:")
     for e in events:

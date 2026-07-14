@@ -49,6 +49,26 @@ export WATCHMODE_API_KEY=...   # api.watchmode.com/requestApiKey      (free, 2.5
 python3 poc_pipeline.py
 ```
 
+## Catalogue scope — backwards AND forwards from cinema
+The pipeline makes two TMDB `discover` passes, both filtered to **AU theatrical**
+(`with_release_type=2|3`, `region=AU`):
+
+| Pass | Window | Cap | Cost |
+| --- | --- | --- | --- |
+| **Released** (`ingest_tmdb`) | `release_date` in the last `LOOKBACK_DAYS` (~3 yrs) | `MAX_TITLES` (60) | TMDB + OMDb + **Watchmode** per title |
+| **Upcoming** (`ingest_tmdb_upcoming`) | `release_date` from tomorrow to `+UPCOMING_LOOKAHEAD_DAYS` (~4 mths) | `MAX_UPCOMING` (12) | TMDB + OMDb only — **no Watchmode** |
+
+The upcoming pass costs **zero Watchmode calls**: a film that hasn't opened has no AU
+home offers to poll, so the free-tier budget stays entirely with the released catalogue.
+Those titles carry no offers and therefore derive to the **`upcoming`** window, which is
+what fills the cinema slot of the app's cascade stepper ("Upcoming → Premium → Standard →
+Streaming") and feeds the **Blockbuster radar** Cascade. Sort by **Budget (tentpoles)** to
+put the big-budget releases first — upcoming films have no box office yet, so budget is the
+only honest proxy for scale.
+
+Tune the scope with `LOOKBACK_DAYS` / `MAX_TITLES` / `UPCOMING_LOOKAHEAD_DAYS` /
+`MAX_UPCOMING` at the top of `poc_pipeline.py`.
+
 ## What's real vs. simplified in this POC
 - **Real:** the data-source choices, the join keys (TMDB↔IMDb↔Watchmode), the
   window-derivation logic, and the diff-and-alert engine — all production-shaped.
