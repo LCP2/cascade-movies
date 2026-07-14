@@ -7,9 +7,18 @@
 <style>
   :root{
     --bg:#0e1116; --panel:#171b22; --panel2:#1e232c; --line:#2a303b;
-    --ink:#e8ecf2; --dim:#9aa4b2; --faint:#6b7280;
+    /* --faint was #6b7280: measured 3.26:1 on the panels, which fails WCAG AA (4.5:1) for the small text
+       the new controls put it on — spine sub-lines, alert bells, unselected lozenge steps. Now 5.2:1. */
+    --ink:#e8ecf2; --dim:#9aa4b2; --faint:#8b95a5;
     --open:#ff6b6b; --amber:#f0a336; --purple:#a486f0; --blue:#5aa9f0; --green:#48c78e; --grey:#6b7280;
     --imdb:#f5c518; --rt:#fa6c3c; --meta:#66cc33; --accent:#7c5cff;
+    /* White on --accent measures 4.35:1 — under AA for anything below 18px, which is every filled control
+       we have. --accentdeep is the same purple with the luminance taken down until white clears the bar
+       (5.5:1). Borders, glows and tints keep the brand --accent; only surfaces CARRYING white text swap. */
+    --accentdeep:#6b48f2;
+    /* --accent as TEXT on the dark panels measures 4.35:1 (the "+ New Cascade" card) and 3.63:1 (the
+       include-unrated hatch) — both under AA. Same hue, lifted until it clears: 7.3:1. */
+    --accenttext:#b3a4ff;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
@@ -50,8 +59,9 @@
   .modalhead{position:sticky;top:0;background:var(--bg);display:flex;justify-content:space-between;align-items:center;
     padding:14px 0 12px;border-bottom:1px solid var(--line);margin-bottom:6px;z-index:2}
   .modalhead h3{margin:0;font-size:17px;font-weight:800}
-  .donebtn{background:var(--accent);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-weight:700;font-size:14px;cursor:pointer}
+  .donebtn{background:var(--accentdeep);color:#fff;border:none;border-radius:9px;padding:9px 18px;font-weight:700;font-size:14px;cursor:pointer}
   .pnote{font-size:12px;color:var(--dim);line-height:1.5;margin:2px 0 6px}
+  .switch:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   .switch{display:flex;align-items:center;justify-content:space-between;background:var(--panel2);border:1px solid var(--line);
     border-radius:10px;padding:11px 13px;margin:2px 0 6px;cursor:pointer;font-size:13.5px;font-weight:600}
   .switch .knob{width:42px;height:24px;border-radius:14px;background:#39414f;position:relative;transition:.15s;flex-shrink:0}
@@ -60,6 +70,12 @@
   .switch.on .knob::after{left:21px}
   .flabel{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700;margin:16px 0 8px}
   .flabel:first-child{margin-top:0}
+  /* One visible focus ring for every interactive thing the new UI added. A control you can Tab to but
+     can't SEE that you've Tabbed to is not keyboard-operable in any way that matters. */
+  .chip:focus-visible,.pill:focus-visible,.hatch:focus-visible,.ebtn:focus-visible,.cschip:focus-visible,
+  .mlbtn:focus-visible,.ca-btn:focus-visible,.tpl:focus-visible,.actbtn:focus-visible,
+  .iconbtn:focus-visible,.donebtn:focus-visible,.applybtn:focus-visible,.dangerbtn:focus-visible{
+    outline:2px solid var(--accent);outline-offset:2px}
   .chips{display:flex;flex-wrap:wrap;gap:7px}
   .chip{font-size:12px;padding:6px 11px;border-radius:20px;border:1px solid var(--line);
     background:var(--panel2);color:var(--dim);cursor:pointer;user-select:none;font-weight:600}
@@ -210,7 +226,7 @@
   .sim{margin:14px 16px;padding:12px;background:linear-gradient(135deg,rgba(124,92,255,.18),rgba(72,199,142,.12));
     border:1px solid var(--accent);border-radius:12px}
   .sim p{margin:0 0 10px;font-size:12.5px;color:var(--dim);line-height:1.5}
-  .sim button{width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer}
+  .sim button{width:100%;background:var(--accentdeep);color:#fff;border:none;border-radius:10px;padding:11px;font-size:14px;font-weight:700;cursor:pointer}
   .alerts{overflow-y:auto;padding:4px 16px 20px}
   .alert{background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:12px;margin-bottom:10px}
   .alert .t{font-size:14px;font-weight:700}
@@ -222,7 +238,7 @@
   .logfirst{display:flex;flex-wrap:wrap;align-items:center;gap:5px}
   .logstep{background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:5px 8px;
     font-size:11px;color:var(--dim)}
-  .logstep b{color:var(--accent)}
+  .logstep b{color:var(--accenttext)}
   .logarrow{color:var(--faint);font-size:11px}
   .logrows{border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .logrow{display:flex;gap:8px;padding:6px 9px;font-size:11px;border-bottom:1px solid var(--line);align-items:baseline}
@@ -307,7 +323,7 @@
   .dc-acts{display:none;gap:6px;margin-top:auto;padding-top:9px}
   .dcard.is-centre.is-active .dc-acts,.dcard.new.is-centre .dc-acts{display:flex}
   .dcard.new .dc-in{border-style:dashed;border-color:#4c4270}
-  .dcard.new .dc-icon,.dcard.new .dc-name{color:var(--accent)}
+  .dcard.new .dc-icon,.dcard.new .dc-name{color:var(--accenttext)}
   .casccta{font-size:12px;color:var(--faint);line-height:1.5;margin:0 12px}
   .ca-btn{background:var(--panel2);border:1px solid var(--line);color:var(--ink);border-radius:8px;
     padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap}
@@ -365,7 +381,7 @@
   .pill{background:var(--panel);border:1px solid var(--line);color:var(--faint);border-radius:20px;
     padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap}
   .pill.on{background:rgba(240,163,54,.16);border-color:var(--amber);color:#ffce8f}
-  .hatch{margin-top:9px;background:none;border:1px dashed #4c4270;color:var(--accent);border-radius:9px;
+  .hatch{margin-top:9px;background:none;border:1px dashed #4c4270;color:var(--accenttext);border-radius:9px;
     padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;width:100%;text-align:left}
   .hatch.on{background:rgba(124,92,255,.14);border-style:solid;color:#cfc2ff}
   /* Rating — circle stops drawn UNDER a real range input (native drag, keyboard and a11y for free).
@@ -399,7 +415,7 @@
     padding:8px 2px;font-size:11.5px;font-weight:700;cursor:pointer;white-space:nowrap}
   .loz button:last-child{border-right:none}
   .loz button.fill{background:rgba(124,92,255,.22);color:#cfc2ff}
-  .loz button.edge{background:var(--accent);color:#fff}
+  .loz button.edge{background:var(--accentdeep);color:#fff}
   .loz button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
   @media (prefers-reduced-motion:reduce){ .aopts{transition:none} }
   /* template picker */
@@ -420,7 +436,7 @@
     border-radius:10px;padding:11px 12px;font-size:16px;font-weight:600}
   .cascfoot{position:sticky;bottom:0;background:var(--bg);border-top:1px solid var(--line);
     padding:12px 0 10px;margin-top:18px;display:flex;gap:8px;align-items:center}
-  .applybtn{flex:1;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;
+  .applybtn{flex:1;background:var(--accentdeep);color:#fff;border:none;border-radius:11px;padding:13px;
     font-size:14.5px;font-weight:800;cursor:pointer}
   .applybtn:disabled{background:var(--panel2);color:var(--faint);cursor:not-allowed}
   .dangerbtn{background:var(--panel2);border:1px solid #5c3540;color:#ffb9a6;border-radius:11px;
@@ -459,7 +475,7 @@
   .onbcascade .s1{color:#ffce8f} .onbcascade .s2{color:#d3c2ff}
   .onbcascade .s3{color:#bcdcff} .onbcascade .s4{color:#a7eccb}
   .onbfoot{display:flex;gap:8px;align-items:center;margin-top:16px}
-  .onbnext{flex:1;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;
+  .onbnext{flex:1;background:var(--accentdeep);color:#fff;border:none;border-radius:11px;padding:13px;
     font-size:14.5px;font-weight:800;cursor:pointer}
   .onbnext.ghost{flex:0 0 auto;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:13px 14px}
   .onbskip{display:block;width:100%;margin-top:10px;background:none;border:none;color:var(--dim);
@@ -539,7 +555,10 @@
   <div class="cascbar" id="cascbar">
     <div class="casclbl" id="cascLbl">My Cascades</div>
     <div class="deck">
-      <div class="deckstrip" id="cascStrip" role="listbox" aria-label="My Cascades" aria-orientation="horizontal"></div>
+      <!-- Not a listbox: an option is not allowed to contain buttons, and the centre card carries
+           Edit / Share / Close. A group of groups keeps those buttons reachable to a screen reader. -->
+      <div class="deckstrip" id="cascStrip" role="group" aria-label="My Cascades — use the arrow keys to move between them"
+           aria-keyshortcuts="ArrowLeft ArrowRight Home End"></div>
     </div>
     <div id="cascDetail"></div>
   </div>
@@ -943,6 +962,24 @@ addChips("prefSubChips", SUB_SERVICES, prefs.sub, "svc", svcName);
 addChips("prefStoreChips", STORE_SERVICES, prefs.store, "svc", svcName);
 
 // ---- modals ----
+// Every .switch in the app is a div with role="switch" — which a mouse can use and a keyboard cannot.
+// One delegated pass makes them all reachable (Tab) and operable (Enter/Space), including the ones the
+// editor builds after this runs.
+function armSwitches(root){
+  (root||document).querySelectorAll(".switch, .iconbtn").forEach(s=>{
+    if(s.dataset.kb) return;
+    s.dataset.kb="1";
+    if(!s.hasAttribute("tabindex")) s.tabIndex=0;
+    if(!s.hasAttribute("role")) s.setAttribute("role", s.classList.contains("switch") ? "switch" : "button");
+    s.addEventListener("keydown", e=>{
+      if(e.key!=="Enter" && e.key!==" ") return;
+      e.preventDefault(); s.click();
+    });
+  });
+}
+armSwitches();
+new MutationObserver(()=>armSwitches()).observe(document.body, {childList:true, subtree:true});
+
 function openModal(el){ el.classList.add("open"); document.body.style.overflow="hidden"; }
 function closeModal(el){ el.classList.remove("open"); document.body.style.overflow=""; }
 $("filterBtn").onclick=()=>{ logEvent("filters_opened",{active:activeCount()}); openModal($("filters")); };
@@ -1644,7 +1681,8 @@ function deckFocus(i,moveDom){
   deckCards().forEach((el,j)=>{
     el.tabIndex=j===deckIdx?0:-1;                     // roving tabindex — one stop for the whole deck
     el.classList.toggle("is-centre",j===deckIdx);
-    el.setAttribute("aria-selected",String(j===deckIdx));
+    // aria-current, not aria-selected: these are groups, not listbox options (see buildSpine's note).
+    if(j===deckIdx) el.setAttribute("aria-current","true"); else el.removeAttribute("aria-current");
   });
   if(moveDom) deckCards()[deckIdx]?.focus({preventScroll:true});
 }
@@ -1660,7 +1698,7 @@ function deckGo(i,moveDom){
 }
 function deckBuild(){
   deckStrip.innerHTML=cascades.map(c=>`
-    <div class="dcard" role="option" aria-selected="false" tabindex="-1" data-id="${c.id}"><div class="dc-in">
+    <div class="dcard" role="group" aria-label="${esc(c.name)}" tabindex="-1" data-id="${c.id}"><div class="dc-in">
       <div class="dc-icon">${c.icon}</div>
       <div class="dc-name">${esc(c.name)}</div>
       <div class="dc-sub"></div>
@@ -1671,7 +1709,7 @@ function deckBuild(){
         <button class="ca-btn x" data-act="close" aria-label="Close this Cascade" title="Close this Cascade">×</button>
       </div>
     </div></div>`).join("")
-  + `<div class="dcard new" role="option" aria-selected="false" tabindex="-1"><div class="dc-in">
+  + `<div class="dcard new" role="group" aria-label="New Cascade" tabindex="-1"><div class="dc-in">
       <div class="dc-icon">＋</div>
       <div class="dc-name">New Cascade</div>
       <div class="dc-sub">Save a search once — Cascade keeps watching it for you.</div>
