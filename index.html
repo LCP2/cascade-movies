@@ -137,6 +137,7 @@
   .rb.muted b{color:var(--faint)}
   .rb b{font-size:11px}
   .rb.imdb b{color:var(--imdb)} .rb.rt b{color:var(--rt)} .rb.meta b{color:var(--meta)} .rb.budget b{color:#c9a2ff} .rb.gross b{color:#9fe6c4}
+  .rb.tent{border-color:rgba(240,163,54,.55);background:rgba(240,163,54,.12);color:#ffce8f} .rb.tent b{color:#ffce8f}
   .award-slot{display:flex;align-items:center;height:22px}
   .award{font-size:15px;line-height:1;cursor:pointer;padding-left:1px}
   /* cascade stepper — 4 slots: Cinema[Upcoming/Opening/Cinema] · Premium · Standard · Streaming */
@@ -322,7 +323,7 @@
         <option value="imdb">IMDb ▾</option>
         <option value="rt">RT critic</option>
         <option value="gross">Box office</option>
-        <option value="budget">Budget (tentpoles)</option>
+        <option value="popularity">Most anticipated</option>
         <option value="cinema">Newest cinema</option>
         <option value="title">Title A–Z</option>
       </select>
@@ -451,6 +452,7 @@ const MOVIES = [{"tmdb_id": 1339713, "imdb_id": "tt37287335", "title": "Obsessio
 const TODAY  = "2026-07-14";
 
 const PVOD_MIN = 19.99, RENTAL_MAX = 9.99, OPENING_WEEK_DAYS = 7;
+const TENTPOLE_MIN = 100e6;   // a "$$$" badge has to mean something — studio-tentpole scale, in USD
 // Journey order — Upcoming leads (a film reaches cinemas before any home window).
 // primaryStatus() takes the LAST window a film holds, so "upcoming" sitting first is safe:
 // an upcoming film holds only that one, and a released film never holds it.
@@ -532,7 +534,16 @@ const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), 
 const $=id=>document.getElementById(id);
 
 // ---- My Cascades: saved living searches (prototype state — localStorage, per device) ----
-function loadCascades(){ try{ const a=JSON.parse(localStorage.getItem("cascade_cascades")||"[]"); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+function loadCascades(){
+  try{
+    const a=JSON.parse(localStorage.getItem("cascade_cascades")||"[]");
+    if(!Array.isArray(a)) return [];
+    // The budget sort is gone (it buried tentpoles TMDB has no budget for). Carry old Blockbuster
+    // Cascades over to the popularity sort rather than silently dropping them back to IMDb.
+    a.forEach(c=>{ if(c.sort==="budget") c.sort="popularity"; });
+    return a;
+  }catch(e){ return []; }
+}
 function saveCascades(){ try{ localStorage.setItem("cascade_cascades", JSON.stringify(cascades)); }catch(e){} }
 const cascades = loadCascades();
 let activeId = null;
@@ -705,16 +716,22 @@ function passes(m){
   if((m.worldwide_gross||0) < filt.gross) return false;
   return true;
 }
+const byPopularity=(a,b)=>(b.popularity||0)-(a.popularity||0);
 function sortMovies(a,b){
   switch(filt.sort){
     case "rt": return (b.rt_critic||0)-(a.rt_critic||0);
     case "gross": return (b.worldwide_gross||0)-(a.worldwide_gross||0);
-    case "budget": return (b.budget||0)-(a.budget||0);   // tentpoles first — the Upcoming group has no gross yet
+    case "popularity": return byPopularity(a,b);
     case "cinema": return (b.cinema_date||"").localeCompare(a.cinema_date||"");
     case "title": return a.title.localeCompare(b.title);
     default: return (b.imdb_rating||0)-(a.imdb_rating||0);
   }
 }
+// An un-released film has no rating, no box office and usually no budget — ranking it by a metric it doesn't
+// have just sorts noise (which is how genuine tentpoles ended up at the bottom of the budget sort). So the
+// Upcoming group always ranks by anticipation, except under the two sorts that DO mean something pre-release.
+const PRE_RELEASE_SORTS=new Set(["title","cinema"]);
+const sortFor = g => (g==="upcoming" && !PRE_RELEASE_SORTS.has(filt.sort)) ? byPopularity : sortMovies;
 const CSTAGE_LABEL = {pvod:"Premium", rental:"Standard", included_streaming:"Streaming"};
 const EST_OFFSET = {pvod:90, rental:120, included_streaming:180};   // days after cinema (rough AU windows)
 // The first cascade slot is the CINEMA slot, tri-state: Upcoming -> Opening -> Cinema.
@@ -741,7 +758,11 @@ function ratingsHTML(m){
   const imdb  =cell("imdb","IMDb",  m.imdb_rating!=null?m.imdb_rating.toFixed(1):"", m.imdb_rating!=null);
   const rt    =cell("rt","🍅",       m.rt_critic!=null?m.rt_critic+"%":"",           m.rt_critic!=null);
   const meta  =cell("meta","Meta",  m.metacritic!=null?m.metacritic:"",             m.metacritic!=null);
-  const budget=cell("budget","Budget", m.budget>0?money(m.budget):"",               m.budget>0);
+  // Budget is a badge, not a ranker. "$$$" only where the figure really is tentpole-scale — and the
+  // figure sits right next to it, so the claim is always checkable. Unknown budget stays an honest "-".
+  const tent  = m.budget>=TENTPOLE_MIN;
+  const budget=cell("budget"+(tent?" tent":""), tent?"$$$":"Budget",
+                    m.budget>0?money(m.budget):"", m.budget>0);
   const gross =cell("gross","Gross",   m.worldwide_gross>0?money(m.worldwide_gross):"", m.worldwide_gross>0);
   return `<div class="ratings">
     <div class="rrow">${imdb}${rt}${meta}${budget}${gross}<div class="award-slot">${awardIcon(m)}</div></div>
@@ -908,8 +929,8 @@ const CASCADE_TEMPLATES = [
    crit:{status:[], genre:[], age:[], imdb:0, rt:0, awards:true, myServices:false}},
   {key:"genre_fan", icon:"🎃", name:"Genre superfan", blurb:"A standing radar for one genre — horror to start",
    crit:{status:[], genre:["Horror"], age:[], imdb:0, rt:0, awards:false, myServices:false}},
-  {key:"blockbuster", icon:"💥", name:"Blockbuster radar", blurb:"Tentpoles heading for cinemas, biggest budget first",
-   crit:{status:["upcoming"], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false, sort:"budget"}},
+  {key:"blockbuster", icon:"💥", name:"Blockbuster radar", blurb:"The films heading for cinemas, most anticipated first",
+   crit:{status:["upcoming"], genre:[], age:[], imdb:0, rt:0, awards:false, myServices:false, sort:"popularity"}},
   {key:"custom", icon:"⚙️", name:"Custom", blurb:"Start from a sensible baseline and tune it",
    crit:{status:[], genre:[], age:[], imdb:6.5, rt:0, awards:false, myServices:false}},
 ];
@@ -1263,7 +1284,7 @@ function render(){
   if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
   let html="";
   CASCADE.forEach(g=>{
-    const items=rows.filter(m=>primaryStatus(m)===g).sort(sortMovies);
+    const items=rows.filter(m=>primaryStatus(m)===g).sort(sortFor(g));
     if(!items.length) return;
     html+=`<div class="group"><div class="grouphead"><span class="gdot ${g}"></span>${STATUS_LABEL[g]}
       <span class="gcount">${items.length}</span></div><div class="list">${items.map(cardHTML).join("")}</div></div>`;
