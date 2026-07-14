@@ -99,6 +99,28 @@ Two deliberate choices:
 Both thresholds are **percentiles recomputed at build** over the current catalogue, so they
 can't drift into meaning nothing.
 
+### Landmark — and why it does *not* use popularity
+
+> **Landmark** = a **released** title that **won or was nominated** for a top award, holds a
+> **critics' score of 90%+**, *and* sits in the **top quarter of released titles by IMDb vote
+> count**. It is an **overlay, not a rung above Blockbuster** — a film can be both, and picking
+> either finds it.
+
+The obvious build — "a Blockbuster that's also acclaimed" — returns **zero films**, and the
+reason is the point:
+
+**TMDB `popularity` is current buzz, and it decays.** *Oppenheimer* (28), *Dune: Part Two* (30)
+and *The Godfather Part II* (31) sit far below the blockbuster bar of 106 — not because they're
+small, but because they're **no longer new**. Popularity is the wrong instrument for enduring
+stature.
+
+**IMDb vote count is the right one.** It's cumulative reach that never decays, and unlike budget
+or box office it isn't distorted by inflation — *Godfather II*'s $13M budget in 1974 tells you
+nothing today; its **1.49M votes** tell you everything. Current Landmarks: Godfather II,
+Oppenheimer, Dune: Part Two, Sinners, The Wild Robot, Coraline, Inside Out 2. It correctly
+*excludes* *Avatar: Fire and Ash* (huge buzz, RT 66 — a blockbuster, not a landmark) and
+*Jurassic World Rebirth* (award-nominated, RT 50).
+
 Titles with **no budget figure** behave exactly like titles with no IMDb rating: included at
 "Any", dropped as soon as a band is chosen, with a one-tap escape hatch that names how many
 are being left out. We never impute a number we don't have.

@@ -1082,7 +1082,7 @@ function passes(m){
   if(filt.awards && !m.award) return false;
   if(!ratingOK(m, filt.imdb, filt.includeUnrated)) return false;
   if(!budgetOK(m, filt.budget, filt.includeUnbudgeted)) return false;
-  if(filt.tentpole!=="any" && tentpoleOf(m)!==filt.tentpole) return false;
+  if(filt.tentpole!=="any" && !tentpoleIs(m,filt.tentpole)) return false;
   if((m.rt_critic||0) < filt.rt) return false;
   if((m.worldwide_gross||0) < filt.gross) return false;
   return true;
@@ -1458,12 +1458,33 @@ function tentpoleOf(m){
   const tent = pop>=bar.high || (pop>=bar.mid && (m.budget||0)>=BUDGET_BOOST);
   return tent ? kind : null;
 }
+
+// ---- Landmark: acclaim + award + longevity ------------------------------------
+// The obvious build — "a Blockbuster that's also acclaimed" — returns ZERO films, and the reason is worth
+// keeping: TMDB popularity is CURRENT BUZZ, and it decays. Oppenheimer (28), Dune: Part Two (30) and The
+// Godfather Part II (31) sit far below the blockbuster bar (106) — not because they're small, but because
+// they're no longer new. Popularity is the wrong instrument for enduring stature.
+//
+// IMDb vote COUNT is the right one: it's cumulative reach that never decays, and unlike budget or box
+// office it isn't distorted by inflation (Godfather II's $13M budget in 1974 says nothing today; its 1.49M
+// votes say everything). So a Landmark is a released film that won or was nominated for a top award, sits
+// in the critics' top tier, AND has been seen and rated by enough people to prove it lasted.
+const VOTES = MOVIES.filter(m=>!isUpcoming(m)).map(m=>m.imdb_votes||0).filter(v=>v>0).sort((a,b)=>a-b);
+const VOTES_BAR = VOTES.length ? VOTES[Math.min(VOTES.length-1, Math.round(0.75*(VOTES.length-1)))] : Infinity;
+const LANDMARK_RT = 90;
+const isLandmark = m => !isUpcoming(m) && !!m.award
+  && (m.rt_critic||0) >= LANDMARK_RT && (m.imdb_votes||0) >= VOTES_BAR;
+
+// Landmark is an OVERLAY, not a rung above Blockbuster: a film can be both, and picking either finds it.
+// (Making it a ladder would have hidden Oppenheimer from "Blockbuster" — and it isn't one anyway.)
 const TENTPOLE_STOPS = [
   {key:"any",         label:"Any"},
   {key:"anticipated", label:"Anticipated"},
   {key:"blockbuster", label:"Blockbuster"},
+  {key:"landmark",    label:"Landmark"},
 ];
-const tentpoleCount = k => MOVIES.filter(m=>tentpoleOf(m)===k).length;
+const tentpoleIs = (m,k) => k==="landmark" ? isLandmark(m) : tentpoleOf(m)===k;
+const tentpoleCount = k => MOVIES.filter(m=>tentpoleIs(m,k)).length;
 
 const AGE_LEVELS = [...ALL_AGES].sort((a,b)=>{
   const ia=AGE_ORDER.indexOf(a), ib=AGE_ORDER.indexOf(b);
@@ -1577,7 +1598,7 @@ function matchesCriteria(m,c,ignoreBlocked){
   if(c.awards && !m.award) return false;
   if(!ratingOK(m, c.imdb||0, c.includeUnrated)) return false;
   if(!budgetOK(m, c.budget||0, c.includeUnbudgeted)) return false;
-  if(c.tentpole && c.tentpole!=="any" && tentpoleOf(m)!==c.tentpole) return false;
+  if(c.tentpole && c.tentpole!=="any" && !tentpoleIs(m,c.tentpole)) return false;
   if((m.rt_critic||0) < (c.rt||0)) return false;
   return true;
 }
@@ -2249,9 +2270,17 @@ function syncScale(){
   });
   // The rule, in the open — no black-box "tentpole" badge. Popularity leads because it's the one scale
   // field every title has; the bar is drawn against that title's own cohort.
+  const n=tentpoleCount(t);
   if(t==="any"){ $("cTentDesc").innerHTML=`<b>Any.</b> No size filter.`; }
+  else if(t==="landmark"){
+    $("cTentDesc").innerHTML=`<b>Landmark — ${n} title${n===1?"":"s"}.</b> Won or nominated for a top award,
+      a critics' score of ${LANDMARK_RT}%+, <i>and</i> rated by enough people to prove it lasted
+      (${(VOTES_BAR/1000).toFixed(0)}k+ IMDb votes — the top quarter of released titles).
+      Vote count, not popularity: popularity is this week's buzz and it fades, which is why Oppenheimer and
+      The Godfather Part II don't register on it. A landmark can also be a blockbuster — most aren't.`;
+  }
   else {
-    const bar=POP_BARS[t], n=tentpoleCount(t);
+    const bar=POP_BARS[t];
     $("cTentDesc").innerHTML=`<b>${TENTPOLE_STOPS.find(x=>x.key===t).label} — ${n} title${n===1?"":"s"}.</b>
       ${t==="anticipated"?"Not out yet":"Already released"}, and in the top 25% of the ${bar.n}
       ${bar.of} titles for TMDB popularity (${bar.high.toFixed(0)}+) — or the top 50% (${bar.mid.toFixed(0)}+)
