@@ -297,6 +297,19 @@
     border:1px solid var(--accent);border-radius:12px;padding:11px 12px}
   .ctabtn{margin-top:9px;background:rgba(72,199,142,.2);border:1px solid var(--green);color:#a7eccb;
     border-radius:9px;padding:9px 12px;font-size:12.5px;font-weight:800;cursor:pointer}
+  /* ---- service selector (insight) ---- */
+  .adv{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin-bottom:8px}
+  .adv.top{background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(72,199,142,.08));border-color:var(--accent)}
+  .advhead{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .advsvc{font-size:14px;font-weight:800}
+  .advhave{font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;white-space:nowrap;
+    background:rgba(72,199,142,.16);color:#a7eccb;border:1px solid rgba(72,199,142,.5)}
+  .advwhy{font-size:12.5px;color:#c4ccd6;line-height:1.5;margin-top:5px}
+  .advwhy b{color:var(--ink)}
+  .advbar{height:6px;border-radius:4px;background:#2a303b;margin-top:8px;overflow:hidden}
+  .advbar span{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,var(--accent),var(--green))}
+  .advrent{font-size:11.5px;font-weight:700;color:#a7eccb;margin-top:7px}
+  .advfoot{font-size:11px;color:var(--faint);line-height:1.55;margin-top:2px}
 </style>
 </head>
 <body>
@@ -425,6 +438,8 @@
   <div class="chips" id="prefSubChips"></div>
   <div class="flabel">Rent / Buy — stores I use</div>
   <div class="chips" id="prefStoreChips"></div>
+  <div class="flabel">Which service covers your list?</div>
+  <div id="svcAdvice"></div>
   <div class="flabel">Experiment — value framing</div>
   <div class="switch" id="uxSwitch"><span>Show savings &amp; alert framing</span><span class="knob"></span></div>
   <div class="pnote">Adds a savings line to cards where a genuinely cheaper path exists, a live result count on
@@ -1141,6 +1156,70 @@ $("cDelete").onclick=()=>{
   closeModal($("builder")); render(); toast(`🗑️ Deleted “${c.name}”`);
 };
 
+// ================= Service selector (insight) =================
+// "Which service covers the most of my list?" — a plain count over the REAL offer data.
+// Honesty guardrail: the catalogue carries no subscription prices, so we never quote a monthly saving or
+// a "you'd save $X/mo" figure we can't back up. What we CAN say truthfully is what renting those same
+// films would cost instead — every dollar of that is a price sitting in the offer data (contrast effect,
+// honestly sourced). Films still in cinemas are excluded from the denominator: no service can cover them.
+function serviceAdvice(){
+  const want = MOVIES.filter(m=>tracked.has(m.tmdb_id));
+  const home = want.filter(m=>(m.offers||[]).length);
+  const byService = new Map();
+  home.forEach(m=>{
+    const offers = dedupOffers(m.offers);
+    const rents  = offers.filter(o=>o.type==="rent" && o.price!=null).map(o=>o.price);
+    const cheapestRent = rents.length ? Math.min(...rents) : null;
+    new Set(offers.filter(o=>o.type==="sub"||o.type==="free").map(o=>o.service)).forEach(svc=>{
+      if(!byService.has(svc)) byService.set(svc,{svc, films:[], rentTotal:0, priced:0});
+      const e=byService.get(svc);
+      e.films.push(m.tmdb_id);
+      if(cheapestRent!=null){ e.rentTotal+=cheapestRent; e.priced++; }
+    });
+  });
+  const ranked=[...byService.values()].sort((a,b)=> b.films.length-a.films.length || a.svc.localeCompare(b.svc));
+  const covered=new Set(ranked.flatMap(e=>e.films));
+  return {total:want.length, home:home.length, inCinema:want.length-home.length,
+          ranked, uncovered:home.length-covered.size};
+}
+function renderServiceAdvice(){
+  const el=$("svcAdvice"); if(!el) return;
+  const a=serviceAdvice();
+  if(!a.total){
+    el.innerHTML=`<div class="pnote">Track a few films with ☆ and we'll work out which service covers the most of
+      them — and what renting them instead would cost you.</div>`;
+    return;
+  }
+  const notes=[];
+  if(a.inCinema) notes.push(`${a.inCinema} of your ${a.total} tracked film${a.total===1?"":"s"}
+    ${a.inCinema===1?"is":"are"} still in cinemas, so no service can cover ${a.inCinema===1?"it":"them"} yet.`);
+  if(a.uncovered) notes.push(`${a.uncovered} ${a.uncovered===1?"is":"are"} rent-or-buy only so far —
+    not included on any service.`);
+  if(!a.ranked.length){
+    el.innerHTML=`<div class="pnote">None of your tracked films are included on a service yet.
+      ${notes.join(" ")}</div>`;
+    return;
+  }
+  notes.push(`Coverage is counted from the real AU offer data. We don't hold subscription prices, so we won't
+    guess at a monthly saving — the rent figure is simply what those films would cost you instead.`);
+  const rows=a.ranked.slice(0,5).map((e,i)=>{
+    const n=e.films.length, pct=Math.round(n/a.home*100);
+    const rent = e.priced
+      ? `<div class="advrent">Renting ${e.priced===n?(n===1?"it":"those"):`the ${e.priced} of them we have a price for`}
+           instead: <b>$${e.rentTotal.toFixed(2)}</b></div>`
+      : "";
+    return `<div class="adv ${i===0?"top":""}">
+      <div class="advhead">
+        <span class="advsvc">${i===0?"🥇 ":""}${esc(svcName(e.svc))}</span>
+        ${prefs.sub.has(e.svc)?'<span class="advhave">✓ you have it</span>':""}
+      </div>
+      <div class="advwhy">Covers <b>${n} of the ${a.home}</b> tracked film${a.home===1?"":"s"} that have reached home.</div>
+      <div class="advbar"><span style="width:${pct}%"></span></div>
+      ${rent}</div>`;
+  }).join("");
+  el.innerHTML=rows+`<div class="advfoot">${notes.join(" ")}</div>`;
+}
+
 // ================= Setup meter + first-run onboarding =================
 // Goal-gradient: the meter never starts at zero. Honesty guardrail: it only counts things that are
 // ACTUALLY true — the region really is AU, the local session really does exist — never a fake stamp.
@@ -1286,7 +1365,7 @@ function render(){
   $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
   renderCascadeBar(rows.length);
-  updatePrefSwitch(); updatePrefBtn(); updateUxSwitch(); refreshSetupMeters();
+  updatePrefSwitch(); updatePrefBtn(); updateUxSwitch(); refreshSetupMeters(); renderServiceAdvice();
   // Smart defaults: label the apply control with its payoff, not a bare "Done".
   $("filtersDone").textContent = ux.on
     ? (rows.length ? `Show ${rows.length} film${rows.length===1?"":"s"}` : "No films match")
