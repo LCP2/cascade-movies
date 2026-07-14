@@ -251,6 +251,49 @@
   .saveline b{color:#d9ffec}
   .alert .frame{font-size:11.5px;font-weight:600;line-height:1.45;margin-top:8px;padding:7px 9px;border-radius:8px;
     background:rgba(240,163,54,.1);border:1px solid rgba(240,163,54,.35);color:#ffce8f}
+  /* ---- setup meter (goal-gradient — counts only real, already-true state) ---- */
+  .setup{margin-bottom:14px}
+  .setuptop{display:flex;justify-content:space-between;align-items:baseline;font-size:11.5px;font-weight:700;color:var(--dim)}
+  .setuppct{color:#a7eccb;font-size:13px}
+  .setupbar{height:7px;border-radius:5px;background:var(--panel2);border:1px solid var(--line);margin-top:6px;overflow:hidden}
+  .setupfill{height:100%;border-radius:5px;background:linear-gradient(90deg,var(--accent),var(--green));transition:width .45s ease}
+  .setuplist{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .setupitem{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:20px;
+    border:1px solid var(--line);background:var(--panel2);color:var(--faint);white-space:nowrap}
+  .setupitem.done{border-color:var(--green);background:rgba(72,199,142,.14);color:#a7eccb}
+  /* ---- first-run onboarding (bottom sheet) ---- */
+  .onb{position:fixed;inset:0;z-index:70;background:rgba(6,8,12,.82);backdrop-filter:blur(3px);
+    display:none;align-items:flex-end;justify-content:center}
+  .onb.open{display:flex}
+  .onbcard{width:100%;max-width:480px;max-height:94vh;overflow-y:auto;background:var(--panel);
+    border:1px solid var(--line);border-radius:20px 20px 0 0;padding:18px 16px 22px}
+  .onbstep{font-size:11px;text-transform:uppercase;letter-spacing:.6px;color:var(--faint);font-weight:700}
+  .onbh{font-size:20px;font-weight:800;letter-spacing:-.3px;line-height:1.25;margin:6px 0 7px}
+  .onbp{font-size:13px;color:#c4ccd6;line-height:1.55;margin:0 0 12px}
+  .onbcascade{display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:11px;font-weight:700;
+    background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:10px 11px;margin-bottom:12px}
+  .onbcascade i{font-style:normal;color:var(--faint)}
+  .onbcascade b{font-weight:800}
+  .onbcascade .s1{color:#ffce8f} .onbcascade .s2{color:#d3c2ff}
+  .onbcascade .s3{color:#bcdcff} .onbcascade .s4{color:#a7eccb}
+  .onbfoot{display:flex;gap:8px;align-items:center;margin-top:16px}
+  .onbnext{flex:1;background:var(--accent);color:#fff;border:none;border-radius:11px;padding:13px;
+    font-size:14.5px;font-weight:800;cursor:pointer}
+  .onbnext.ghost{flex:0 0 auto;background:var(--panel2);border:1px solid var(--line);color:var(--ink);padding:13px 14px}
+  .onbskip{display:block;width:100%;margin-top:10px;background:none;border:none;color:var(--dim);
+    font-size:12.5px;font-weight:600;cursor:pointer;text-decoration:underline;padding:6px 0}
+  .intent{display:grid;gap:8px}
+  .intentbtn{display:flex;gap:11px;align-items:center;text-align:left;color:var(--ink);cursor:pointer;
+    background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:11px 12px;transition:.15s}
+  .intentbtn:hover,.intentbtn.on{border-color:var(--accent);background:rgba(124,92,255,.14)}
+  .intentbtn .ii{font-size:21px;line-height:1;flex-shrink:0}
+  .intentbtn .iname{display:block;font-size:13.5px;font-weight:800}
+  .intentbtn .iblurb{display:block;font-size:11px;color:var(--dim);line-height:1.4;margin-top:2px}
+  .intentbtn .icount{display:block;font-size:11px;font-weight:800;color:#a7eccb;margin-top:4px}
+  .starter{margin-top:12px;background:linear-gradient(135deg,rgba(124,92,255,.16),rgba(72,199,142,.08));
+    border:1px solid var(--accent);border-radius:12px;padding:11px 12px}
+  .ctabtn{margin-top:9px;background:rgba(72,199,142,.2);border:1px solid var(--green);color:#a7eccb;
+    border-radius:9px;padding:9px 12px;font-size:12.5px;font-weight:800;cursor:pointer}
 </style>
 </head>
 <body>
@@ -365,6 +408,7 @@
 <!-- PREFERENCES modal -->
 <div class="modal" id="prefs">
   <div class="modalhead"><h3>My streaming services</h3><button class="donebtn" id="prefsDone">Done</button></div>
+  <div class="setup" id="prefSetup"></div>
   <div class="switch" id="prefSwitch"><span>Filter results to my services</span><span class="knob"></span></div>
   <div class="pnote">Pick the services you actually have. When the switch is on, the main list only shows films you
     can watch on them, and each card's “Where to watch” shows just your services.</div>
@@ -393,6 +437,14 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<!-- FIRST-RUN ONBOARDING — 3 skippable cards; body is rendered per step -->
+<div class="onb" id="onb">
+  <div class="onbcard">
+    <div class="setup" id="onbSetup"></div>
+    <div id="onbBody"></div>
+  </div>
+</div>
 
 <script>
 const MOVIES = __MOVIES_JSON__;
@@ -463,9 +515,12 @@ const tracked = loadSet("cascade_tracked");
 const watched = loadSet("cascade_watched");
 const blocked = loadSet("cascade_blocked");
 const expandedSet = new Set();   // which cards are expanded (session only)
+// `touched` = the user has worked the my-services switch by hand, so we stop auto-defaulting it for them.
 function loadPrefs(){ try{ const p=JSON.parse(localStorage.getItem("cascade_prefs")||"{}");
-  return {on:!!p.on, sub:new Set(p.sub||[]), store:new Set(p.store||[])}; }catch(e){ return {on:false,sub:new Set(),store:new Set()}; } }
-function savePrefs(){ try{ localStorage.setItem("cascade_prefs", JSON.stringify({on:prefs.on,sub:[...prefs.sub],store:[...prefs.store]})); }catch(e){} }
+  return {on:!!p.on, touched:!!p.touched, sub:new Set(p.sub||[]), store:new Set(p.store||[])}; }
+  catch(e){ return {on:false,touched:false,sub:new Set(),store:new Set()}; } }
+function savePrefs(){ try{ localStorage.setItem("cascade_prefs",
+  JSON.stringify({on:prefs.on,touched:prefs.touched,sub:[...prefs.sub],store:[...prefs.store]})); }catch(e){} }
 const prefs = loadPrefs();
 // UX-psychology framings sit behind one flag so the plain version is the A/B control. Default on.
 const ux = {on:true};
@@ -508,15 +563,27 @@ function matchesServices(m){
 
 // ---- filter chips ----
 function addChips(el, values, set, cls, label){
+  const box=$(el); box.innerHTML="";   // onboarding rebuilds its service chips each time that card is shown
   values.forEach(v=>{
     const c=document.createElement("div"); c.className="chip "+cls; if(set.has(v)) c.classList.add("on");
     c.dataset.val=v;
     c.textContent=label?label(v):v;
     c.onclick=()=>{c.classList.toggle("on"); set.has(v)?set.delete(v):set.add(v); onChipToggle(cls); render();};
-    $(el).appendChild(c);
+    box.appendChild(c);
   });
 }
-function onChipToggle(cls){ if(cls==="svc"){ savePrefs(); updatePrefBtn(); } }
+// The same service Sets back two chip panels (⚙️ prefs and the onboarding card) — repaint both.
+function syncServiceChips(){
+  [["prefSubChips",prefs.sub],["onbSubChips",prefs.sub],["prefStoreChips",prefs.store],["onbStoreChips",prefs.store]]
+    .forEach(([el,set])=>{ const box=$(el); if(box) [...box.children].forEach(c=>c.classList.toggle("on", set.has(c.dataset.val))); });
+}
+function onChipToggle(cls){
+  if(cls!=="svc") return;
+  // Smart default: picking services IS the request to see only what you can watch — so turn the scope on
+  // for them the first time (most people never flip a default). If they've used the switch by hand, respect that.
+  if(!prefs.touched && !prefs.on && servicesPicked()) prefs.on=true;
+  savePrefs(); syncServiceChips(); refreshOnboarding();
+}
 CASCADE.forEach(s=>{
   const c=document.createElement("div"); c.className="chip st-"+s; c.textContent=STATUS_LABEL[s]; c.dataset.val=s;
   c.onclick=()=>{c.classList.toggle("on"); filt.status.has(s)?filt.status.delete(s):filt.status.add(s); render();};
@@ -552,13 +619,22 @@ function updatePrefSwitch(){
   $("prefSwitch").classList.toggle("on", prefs.on);
   // An open Cascade sets its own service scope, so the switch above may not be what's actually filtering.
   const c=activeCascade();
-  $("prefCascadeNote").innerHTML = (c && c.myServices !== prefs.on)
-    ? `<div class="warnnote">While the Cascade “${esc(c.name)}” is open it sets this scope itself —
+  const notes=[];
+  if(c && c.myServices !== prefs.on)
+    notes.push(`<div class="warnnote">While the Cascade “${esc(c.name)}” is open it sets this scope itself —
          it is ${c.myServices?"only showing films on your services":"showing films from every service"}.
-         Close it (×) to go back to the switch above.</div>` : "";
+         Close it (×) to go back to the switch above.</div>`);
+  // The switch on with nothing picked filters nothing — say so rather than looking quietly broken.
+  if(servicesScoped() && !servicesPicked())
+    notes.push(`<div class="warnnote">This scope is on, but you haven't picked any services yet — so nothing is
+         being narrowed. Pick the ones you actually have below and the list follows.</div>`);
+  $("prefCascadeNote").innerHTML = notes.join("");
 }
 function updatePrefBtn(){ $("prefBtn").classList.toggle("on", prefsActive()); }
-$("prefSwitch").onclick=()=>{ prefs.on=!prefs.on; savePrefs(); updatePrefSwitch(); updatePrefBtn(); render(); };
+$("prefSwitch").onclick=()=>{ prefs.on=!prefs.on; prefs.touched=true; savePrefs(); updatePrefSwitch(); updatePrefBtn(); render(); };
+// One CTA for every "scoped to my services, but none picked" dead end.
+window.openServices=()=>{ closeModal($("builder")); openModal($("prefs")); };
+const pickServicesCTA = (fn="openServices()") => `<button class="ctabtn" onclick="${fn}">📺 Pick your services</button>`;
 function updateUxSwitch(){ $("uxSwitch").classList.toggle("on", ux.on); }
 $("uxSwitch").onclick=()=>{ ux.on=!ux.on; saveUx(); updateUxSwitch(); render(); renderAlerts(); };
 updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
@@ -913,6 +989,10 @@ function renderCascadeBar(shown){
         <button class="ca-btn" onclick="editCascade()">Edit</button>
         <button class="ca-btn x" onclick="closeCascade()" title="Close this Cascade">×</button>
       </div></div>`;
+    // Scoped to my services with none picked: the scope is silently inert. Say it, and give the way out.
+    if(c.myServices && !servicesPicked())
+      html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services — but you haven't picked any
+        yet, so it's showing everything.<br>${pickServicesCTA()}</div>`;
   }
   $("cascbar").innerHTML=html;
 }
@@ -941,10 +1021,20 @@ function newCascade(){
   openModal($("builder"));
 }
 window.newCascade=newCascade;
-function startFromTemplate(t){
-  draft={id:null, template:t.key, icon:t.icon, name:t.name,
-         ...JSON.parse(JSON.stringify(t.crit)), alerts:{...ALERT_DEFAULTS, ...(t.alerts||{})}};
-  openEditor("New Cascade");
+const draftFromTemplate = t => ({id:null, template:t.key, icon:t.icon, name:t.name,
+  ...JSON.parse(JSON.stringify(t.crit)), alerts:{...ALERT_DEFAULTS, ...(t.alerts||{})}});
+function startFromTemplate(t){ draft=draftFromTemplate(t); openEditor("New Cascade"); }
+// Save the current draft as a Cascade and open it. Shared by the builder's apply and onboarding's starter.
+function commitDraft(){
+  const name=(draft.name||"").trim() || CASCADE_TEMPLATES.find(t=>t.key===draft.template)?.name || "My Cascade";
+  const isNew=!draft.id;
+  const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
+  Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
+    age:draft.age, imdb:draft.imdb, rt:draft.rt, awards:draft.awards, myServices:draft.myServices,
+    sort:draft.sort||"imdb", alerts:draft.alerts});
+  if(isNew) cascades.push(c);
+  saveCascades(); setActive(c.id); applyCascade(c);
+  return {c, isNew};
 }
 window.editCascade=()=>{
   const c=activeCascade(); if(!c) return;
@@ -992,7 +1082,7 @@ function refreshDraft(){
   $("cApply").disabled = n===0;
   $("cMineWarn").innerHTML = (draft.myServices && !servicesPicked())
     ? `<div class="warnnote">You haven't picked any services yet, so this scope does nothing.
-         Pick them under ⚙️ and this Cascade will narrow to what you can actually watch.</div>` : "";
+         Pick them and this Cascade narrows to what you can actually watch.<br>${pickServicesCTA()}</div>` : "";
 }
 $("cName").oninput=e=>{ draft.name=e.target.value; };
 $("cImdb").oninput=e=>{ draft.imdb=+e.target.value; $("cImdbVal").textContent=draft.imdb?draft.imdb.toFixed(1)+"+":"Any"; refreshDraft(); };
@@ -1005,14 +1095,8 @@ $("cRt").oninput=e=>{ draft.rt=+e.target.value; $("cRtVal").textContent=draft.rt
 });
 $("builderClose").onclick=()=>closeModal($("builder"));
 $("cApply").onclick=()=>{
-  const name=(draft.name||"").trim() || CASCADE_TEMPLATES.find(t=>t.key===draft.template)?.name || "My Cascade";
-  const isNew=!draft.id;
-  const c=isNew ? {id:"c"+Date.now().toString(36)+Math.random().toString(36).slice(2,6)} : cascades.find(x=>x.id===draft.id);
-  Object.assign(c, {name, icon:draft.icon, template:draft.template, status:draft.status, genre:draft.genre,
-    age:draft.age, imdb:draft.imdb, rt:draft.rt, awards:draft.awards, myServices:draft.myServices,
-    sort:draft.sort||"imdb", alerts:draft.alerts});
-  if(isNew) cascades.push(c);
-  saveCascades(); setActive(c.id); applyCascade(c); closeModal($("builder")); render();
+  const {c, isNew}=commitDraft();
+  closeModal($("builder")); render();
   toast(isNew ? `${c.icon} Created “${c.name}” — ${countCriteria(c)} films · ${alertSummary(c)}`
               : `✅ Updated “${c.name}” — ${countCriteria(c)} films`);
 };
@@ -1024,13 +1108,152 @@ $("cDelete").onclick=()=>{
   closeModal($("builder")); render(); toast(`🗑️ Deleted “${c.name}”`);
 };
 
+// ================= Setup meter + first-run onboarding =================
+// Goal-gradient: the meter never starts at zero. Honesty guardrail: it only counts things that are
+// ACTUALLY true — the region really is AU, the local session really does exist — never a fake stamp.
+function setupItems(){
+  return [
+    {label:"📍 Region: Australia", done:true},
+    {label:"💾 Saved on this device", done:true},
+    {label:"📺 My services", done:servicesPicked()},
+    {label:"🎯 First Cascade", done:cascades.length>0},
+    {label:"🔔 First film tracked", done:tracked.size>0},
+  ];
+}
+function setupHTML(){
+  const items=setupItems(), done=items.filter(i=>i.done).length;
+  const pct=Math.round(done/items.length*100);
+  return `<div class="setuptop"><span>Setup · ${done} of ${items.length} done</span><span class="setuppct">${pct}%</span></div>
+    <div class="setupbar"><div class="setupfill" style="width:${pct}%"></div></div>
+    <div class="setuplist">${items.map(i=>`<span class="setupitem ${i.done?"done":""}">${i.done?"✓ ":""}${i.label}</span>`).join("")}</div>`;
+}
+function refreshSetupMeters(){
+  $("prefSetup").innerHTML=setupHTML();
+  if($("onb").classList.contains("open")) $("onbSetup").innerHTML=setupHTML();
+}
+
+// The intent pick — each maps to an existing template, so the starter Cascade is one the app already serves.
+const ONB_INTENTS=["watch_tonight","bargain","my_taste","family"]
+  .map(k=>CASCADE_TEMPLATES.find(t=>t.key===k));
+let onbStep=0, onbIntent=null;
+const onboardingSeen = () => { try{ return localStorage.getItem("cascade_onboarded")==="1"; }catch(e){ return true; } };
+function finishOnboarding(){
+  try{ localStorage.setItem("cascade_onboarded","1"); }catch(e){}
+  $("onb").classList.remove("open"); document.body.style.overflow="";
+}
+function skipOnboarding(){
+  finishOnboarding(); render();
+  toast("No problem — ⚙️ for your services, + New Cascade whenever you want a radar.");
+}
+window.skipOnboarding=skipOnboarding;
+function startOnboarding(){
+  onbStep=0; onbIntent=null;
+  $("onb").classList.add("open"); document.body.style.overflow="hidden";
+  renderOnboarding();
+}
+window.onbGo=n=>{ onbStep=n; renderOnboarding(); };
+window.onbPickIntent=key=>{ onbIntent=CASCADE_TEMPLATES.find(t=>t.key===key); renderOnboarding(); };
+// Only repaints the live numbers — rebuilding the whole card on every chip tap would fight the user's taps.
+function refreshOnboarding(){
+  if(!$("onb").classList.contains("open")) return;
+  $("onbSetup").innerHTML=setupHTML();
+  const btn=$("onbSvcNext"); if(btn) btn.textContent=onbServicesLabel();
+  const note=$("onbSvcNote"); if(note) note.innerHTML=onbServicesNote();
+}
+const onbServicesLabel = () => {
+  const n=prefs.sub.size+prefs.store.size;
+  return n ? `Save my list (${n} selected)` : "Skip for now";
+};
+const onbServicesNote = () => servicesPicked()
+  ? `<div class="onbp" style="color:#a7eccb;margin:10px 0 0">✓ We'll show you what you can watch on these first —
+       you can switch that off any time under ⚙️.</div>`
+  : "";
+
+function renderOnboarding(){
+  $("onbSetup").innerHTML=setupHTML();
+  const skip=`<button class="onbskip" onclick="skipOnboarding()">Skip setup — just let me browse</button>`;
+  const b=$("onbBody");
+
+  if(onbStep===0){
+    b.innerHTML=`<div class="onbstep">Step 1 of 3</div>
+      <div class="onbh">Films don't just appear on streaming.</div>
+      <p class="onbp">They fall down a cascade — and the same film costs wildly different amounts depending on
+        where you catch it. Cascade tracks all ${MOVIES.length} titles through every window and tells you the
+        moment one reaches a way you're actually happy to watch it.</p>
+      <div class="onbcascade">
+        <b class="s1">Cinema</b> <i>→</i> <b class="s2">Premium ~$30</b> <i>→</i>
+        <b class="s3">Rental ~$7</b> <i>→</i> <b class="s4">Included on a service you have</b>
+      </div>
+      <p class="onbp">No account needed. Everything you set up stays on this device.</p>
+      <div class="onbfoot"><button class="onbnext" onclick="onbGo(1)">Continue</button></div>
+      ${skip}`;
+    return;
+  }
+
+  if(onbStep===1){
+    b.innerHTML=`<div class="onbstep">Step 2 of 3</div>
+      <div class="onbh">Which services do you already pay for?</div>
+      <p class="onbp">We'll use these to tell you when a film you want is already included on something you have —
+        instead of you paying twice. Pick as many as you like, or skip and do it later.</p>
+      <div class="flabel">Paid streaming — I subscribe to</div>
+      <div class="chips" id="onbSubChips"></div>
+      <div class="flabel">Rent / Buy — stores I use</div>
+      <div class="chips" id="onbStoreChips"></div>
+      <div id="onbSvcNote">${onbServicesNote()}</div>
+      <div class="onbfoot"><button class="onbnext" id="onbSvcNext" onclick="onbGo(2)">${onbServicesLabel()}</button></div>
+      ${skip}`;
+    addChips("onbSubChips", SUB_SERVICES, prefs.sub, "svc", svcName);
+    addChips("onbStoreChips", STORE_SERVICES, prefs.store, "svc", svcName);
+    return;
+  }
+
+  // Step 3 — intent → a ready-to-run starter Cascade the user accepts, tweaks or skips.
+  const cards=ONB_INTENTS.map(t=>{
+    const n=countCriteria(t.crit);
+    return `<button class="intentbtn ${onbIntent===t?"on":""}" onclick="onbPickIntent('${t.key}')">
+      <span class="ii">${t.icon}</span>
+      <span><span class="iname">${t.name}</span><span class="iblurb">${t.blurb}</span>
+        <span class="icount">${n} film${n===1?"":"s"} match right now</span></span></button>`;
+  }).join("");
+  let starter="";
+  if(onbIntent){
+    const t=onbIntent, n=countCriteria(t.crit);
+    const inert = t.crit.myServices && !servicesPicked();
+    starter=`<div class="starter">
+      <div class="ca-name">${t.icon} ${t.name}</div>
+      <div class="ca-sub">${n} film${n===1?"":"s"} right now · ${alertSummary(t)}${t.crit.myServices?" · my services":""}</div>
+      ${inert?`<div class="ca-sub" style="color:#ffce8f">This one watches your services — you haven't picked any yet,
+        so for now it'll show films from every service.<br>${pickServicesCTA("onbGo(1)")}</div>`:""}
+    </div>
+    <div class="onbfoot">
+      <button class="onbnext" onclick="onbCreateStarter(false)">Start my Cascade</button>
+      <button class="onbnext ghost" onclick="onbCreateStarter(true)">Tweak it</button>
+    </div>`;
+  }
+  b.innerHTML=`<div class="onbstep">Step 3 of 3</div>
+    <div class="onbh">What are you here for?</div>
+    <p class="onbp">Pick one and we'll set up a starter Cascade — a search you save once that keeps watching the
+      catalogue for you. Change or delete it any time.</p>
+    <div class="intent">${cards}</div>
+    ${starter}
+    ${skip}`;
+}
+// accept as-is, or open the builder pre-filled ("tweak") — never auto-saving something they didn't see.
+window.onbCreateStarter=tweak=>{
+  draft=draftFromTemplate(onbIntent);
+  if(tweak){ finishOnboarding(); openEditor("New Cascade"); openModal($("builder")); return; }
+  const {c}=commitDraft();
+  finishOnboarding(); render();
+  toast(`${c.icon} “${c.name}” is running — ${countCriteria(c)} films · ${alertSummary(c)}`);
+};
+
 function render(){
   const rows=MOVIES.filter(passes);
   const n=activeCount();
   $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
   renderCascadeBar(rows.length);
-  updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
+  updatePrefSwitch(); updatePrefBtn(); updateUxSwitch(); refreshSetupMeters();
   // Smart defaults: label the apply control with its payoff, not a bare "Done".
   $("filtersDone").textContent = ux.on
     ? (rows.length ? `Show ${rows.length} film${rows.length===1?"":"s"}` : "No films match")
@@ -1125,6 +1348,8 @@ let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList
 const booted=activeCascade();
 if(booted){ applyCascade(booted); }
 render();
+// First run only — the "seen" flag is set by finishing OR skipping, so returning visitors go straight to the app.
+if(!onboardingSeen()) startOnboarding();
 </script>
 </body>
 </html>
