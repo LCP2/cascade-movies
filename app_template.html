@@ -245,6 +245,12 @@
     padding:13px 14px;font-size:14px;font-weight:700;cursor:pointer}
   .warnnote{font-size:11.5px;color:#ffce8f;background:rgba(240,163,54,.1);border:1px solid rgba(240,163,54,.4);
     border-radius:9px;padding:8px 10px;margin-top:8px;line-height:1.45}
+  /* ---- UX-psychology framings (contrast / loss) — flag-toggleable ---- */
+  .saveline{margin-top:11px;font-size:11.5px;font-weight:700;line-height:1.45;padding:7px 10px;border-radius:9px;
+    background:rgba(72,199,142,.12);border:1px solid rgba(72,199,142,.45);color:#a7eccb}
+  .saveline b{color:#d9ffec}
+  .alert .frame{font-size:11.5px;font-weight:600;line-height:1.45;margin-top:8px;padding:7px 9px;border-radius:8px;
+    background:rgba(240,163,54,.1);border:1px solid rgba(240,163,54,.35);color:#ffce8f}
 </style>
 </head>
 <body>
@@ -367,6 +373,11 @@
   <div class="chips" id="prefSubChips"></div>
   <div class="flabel">Rent / Buy — stores I use</div>
   <div class="chips" id="prefStoreChips"></div>
+  <div class="flabel">Experiment — value framing</div>
+  <div class="switch" id="uxSwitch"><span>Show savings &amp; alert framing</span><span class="knob"></span></div>
+  <div class="pnote">Adds a savings line to cards where a genuinely cheaper path exists, a live result count on
+    the Filters button, and loss-framed alert copy. Switch it off for the plain version — that's the A/B control.
+    Every figure is read from the real offer prices; we never show a saving or a countdown we can't back up.</div>
 </div>
 
 <!-- ALERTS drawer -->
@@ -456,6 +467,10 @@ function loadPrefs(){ try{ const p=JSON.parse(localStorage.getItem("cascade_pref
   return {on:!!p.on, sub:new Set(p.sub||[]), store:new Set(p.store||[])}; }catch(e){ return {on:false,sub:new Set(),store:new Set()}; } }
 function savePrefs(){ try{ localStorage.setItem("cascade_prefs", JSON.stringify({on:prefs.on,sub:[...prefs.sub],store:[...prefs.store]})); }catch(e){} }
 const prefs = loadPrefs();
+// UX-psychology framings sit behind one flag so the plain version is the A/B control. Default on.
+const ux = {on:true};
+try{ const v=localStorage.getItem("cascade_ux"); if(v!==null) ux.on = v==="1"; }catch(e){}
+function saveUx(){ try{ localStorage.setItem("cascade_ux", ux.on?"1":"0"); }catch(e){} }
 const alerts=[];
 const filt={status:new Set(), year:new Set(), age:new Set(), culture:new Set(), lang:new Set(), genre:new Set(),
   imdb:0, rt:0, gross:0, search:"", trackedOnly:false, hideWatched:false, showHidden:false, awards:false, sort:"imdb"};
@@ -544,7 +559,9 @@ function updatePrefSwitch(){
 }
 function updatePrefBtn(){ $("prefBtn").classList.toggle("on", prefsActive()); }
 $("prefSwitch").onclick=()=>{ prefs.on=!prefs.on; savePrefs(); updatePrefSwitch(); updatePrefBtn(); render(); };
-updatePrefSwitch(); updatePrefBtn();
+function updateUxSwitch(){ $("uxSwitch").classList.toggle("on", ux.on); }
+$("uxSwitch").onclick=()=>{ ux.on=!ux.on; saveUx(); updateUxSwitch(); render(); renderAlerts(); };
+updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
 
 // ---- controls ----
 $("trackedBtn").onclick=()=>{filt.trackedOnly=!filt.trackedOnly;$("trackedBtn").classList.toggle("active");render();};
@@ -672,6 +689,63 @@ function cascadeHTML(m){
   // --cx marks the current stage's centre so the connector line stops there (no line through un-reached stages)
   return `<div class="cascade" style="--cx:${cur*25+12.5}%">${nodes}</div>`;
 }
+// ---- Contrast / anchoring: what you'd otherwise pay ----------------------------
+// Honesty guardrail: a saving is only shown when the cheaper path is GENUINELY cheap —
+// included on a service, or a standard rental (<= RENTAL_MAX). A premium rental at
+// $24.99 framed as "save $5 vs buying at $29.99" would dress an overpay up as a win,
+// so premium-only titles get no line at all. Every figure is read from the offers.
+function savingsHTML(m){
+  if(!ux.on) return "";
+  const offers=dedupOffers(m.offers||[]);
+  if(!offers.length) return "";
+  const subs =offers.filter(o=>o.type==="sub"||o.type==="free");
+  const rents=offers.filter(o=>o.type==="rent"&&o.price!=null).sort((a,b)=>a.price-b.price);
+  const buys =offers.filter(o=>o.type==="buy" &&o.price!=null).sort((a,b)=>a.price-b.price);
+  const rent=rents[0], buy=buys[0];
+  if(subs.length){
+    const mine=subs.filter(o=>prefs.sub.has(o.service));
+    const svc=svcName((mine[0]||subs[0]).service);
+    const own=mine.length ? " — which you already pay for" : "";
+    const anchor=rent ? ` · you'd otherwise pay <b>$${rent.price.toFixed(2)}</b> to rent it` : "";
+    return `<div class="saveline">✓ Included on <b>${esc(svc)}</b>${own}${anchor}</div>`;
+  }
+  if(rent && rent.price<=RENTAL_MAX && buy && buy.price>rent.price){
+    const d=buy.price-rent.price;
+    return `<div class="saveline">Rent it for <b>$${rent.price.toFixed(2)}</b> — <b>$${d.toFixed(2)}</b> less than buying at $${buy.price.toFixed(2)}</div>`;
+  }
+  return "";   // premium-only: there is no saving here we could sell honestly
+}
+
+// ---- Loss framing on alerts ----------------------------------------------------
+// Only fires off a price move that ACTUALLY happened (the poll detected the transition,
+// and `before` is the real prior status). Deliberately NOT implemented: "leaves cinemas
+// in ~N days" — the catalogue has no cinema-exit or streaming-removal date, so any such
+// countdown would be a fabricated timer. Premium transitions get no copy: we don't nudge
+// anyone toward the expensive window.
+function lossFrame(m,w,before){
+  const offers=dedupOffers(m.offers||[]);
+  const rents=offers.filter(o=>o.type==="rent"&&o.price!=null).sort((a,b)=>a.price-b.price);
+  const buys =offers.filter(o=>o.type==="buy" &&o.price!=null).sort((a,b)=>a.price-b.price);
+  const rent=rents[0], buy=buys[0];
+  if(w==="included_streaming"){
+    const subs=offers.filter(o=>o.type==="sub"||o.type==="free");
+    if(!subs.length) return "";
+    const mine=subs.filter(o=>prefs.sub.has(o.service));
+    const svc=svcName((mine[0]||subs[0]).service);
+    if(mine.length)
+      return rent ? `It's on ${svc} — which you already pay for. Don't spend $${rent.price.toFixed(2)} renting it.`
+                  : `It's on ${svc} — which you already pay for.`;
+    return rent ? `Included on ${svc} now — you'd otherwise pay $${rent.price.toFixed(2)} to rent it.` : "";
+  }
+  if(w==="rental" && rent && rent.price<=RENTAL_MAX){
+    const saved = buy && buy.price>rent.price ? ` That's $${(buy.price-rent.price).toFixed(2)} you no longer have to spend.` : "";
+    return before.has("pvod")
+      ? `It was premium-only until today — now $${rent.price.toFixed(2)} to rent.${saved}`
+      : `Now $${rent.price.toFixed(2)} to rent.${saved}`;
+  }
+  return "";
+}
+
 function creditsHTML(m){
   const rows=[];
   if(m.director) rows.push(`<div class="credit"><span class="clbl">Director</span>${esc(m.director)}</div>`);
@@ -712,6 +786,7 @@ function cardHTML(m){
     ${ratingsHTML(m)}
     ${cascadeHTML(m)}
     <div class="expand">${creditsHTML(m)}${trailersHTML(m)}</div>
+    ${savingsHTML(m)}
     ${wtw}
     <div class="actions">
       <button class="actbtn ${tracked.has(id)?'on':''}" onclick="toggleTag(${id})" title="Alert me when availability changes">${tracked.has(id)?'🔔':'☆'}</button>
@@ -955,7 +1030,11 @@ function render(){
   $("filterBtn").textContent = "≡ Filters" + (n?` (${n})`:"");
   $("filterBtn").classList.toggle("active", n>0);
   renderCascadeBar(rows.length);
-  updatePrefSwitch(); updatePrefBtn();
+  updatePrefSwitch(); updatePrefBtn(); updateUxSwitch();
+  // Smart defaults: label the apply control with its payoff, not a bare "Done".
+  $("filtersDone").textContent = ux.on
+    ? (rows.length ? `Show ${rows.length} film${rows.length===1?"":"s"}` : "No films match")
+    : "Done";
   $("count").textContent=`${rows.length} of ${MOVIES.length} titles`+(prefsActive()?" · my services":"");
   const wrap=$("groups");
   if(!rows.length){wrap.innerHTML='<div class="empty">No titles match these filters.</div>';return;}
@@ -1012,7 +1091,8 @@ function simulateDay(){
     m.status.filter(s=>!before.has(s)).forEach(w=>{
       if(!alertAllowed(w)){ muted++; return; }
       const svc=dedupOffers(m.offers).filter(o=>windowOf(o)===w).map(o=>o.service);
-      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:[...new Set(svc)].slice(0,3),day:dayCounter});
+      alerts.unshift({title:m.title,window:w,label:STATUS_LABEL[w],services:[...new Set(svc)].slice(0,3),
+                      day:dayCounter, frame:lossFrame(m,w,before)});
       fired++;
     });
   });
@@ -1036,7 +1116,8 @@ function renderAlerts(){
   const col={opening_week:"#ff6b6b",in_cinema:"#f0a336",pvod:"#a486f0",rental:"#5aa9f0",included_streaming:"#48c78e"};
   el.innerHTML=alerts.map(a=>`<div class="alert"><div class="t">${a.title}</div>
     <div class="d">Now in a new window${a.services.length?" on "+a.services.join(", "):""} · day ${a.day}</div>
-    <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">→ ${a.label}</span></div>`).join("");
+    <span class="w" style="background:${col[a.window]}22;border:1px solid ${col[a.window]}88;color:${col[a.window]}">→ ${a.label}</span>
+    ${ux.on&&a.frame?`<div class="frame">${esc(a.frame)}</div>`:""}</div>`).join("");
 }
 let toastT; function toast(msg){const t=$("toast");t.textContent=msg;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),3200);}
 
