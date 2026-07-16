@@ -677,6 +677,21 @@
   .rvbrowse:hover{border-color:var(--violet)}
   .rvkeep:focus-visible,.rvbrowse:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
 
+  /* ---- guest mode status + honest re-invite (CAS-79 / spec 26640386 §4) ---- */
+  .guestcard{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:13px 14px;margin:4px 0 6px}
+  .gc-head{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:9px}
+  .gc-status{display:flex;flex-wrap:wrap;gap:8px;font-size:11.5px;color:var(--dim);margin-bottom:10px}
+  .gc-status span{background:var(--panel2);border:1px solid var(--line);border-radius:20px;padding:4px 10px;font-weight:600}
+  .gc-status b{font-weight:800}
+  .gc-status b.on{color:#a7eccb}
+  .gc-status b.off{color:var(--faint)}
+  .gc-reinvite{font-size:12.5px;line-height:1.5;color:var(--ink);background:linear-gradient(135deg,
+    rgba(124,92,255,.14),rgba(34,211,238,.05));border:1px solid var(--violet);border-radius:11px;
+    padding:10px 12px;margin-bottom:10px}
+  .gc-on{width:100%;background:var(--grad);color:#fff;border:none;border-radius:11px;padding:12px;font-size:14px;
+    font-weight:800;cursor:pointer;text-shadow:0 1px 2px rgba(10,14,26,.55)}
+  .gc-on:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+
   /* ---- agent invite + dynamic learning + done (CAS-78 / spec 26640386 §2) ----
      Prototype MOCK only: toggles and price are visual, no card / billing / push. Reached from the
      reveal's "Keep it running". Three screens rendered into #inviteBody. */
@@ -1341,11 +1356,16 @@ const entryFor = id => notify[id] || (notify[id]={source:"auto", cascadeIds:[], 
 const found = new Set();
 function recomputeFound(){
   const hits=new Map();                             // film id -> the Cascades that chose it, THIS run
-  cascades.forEach(c=>MOVIES.forEach(m=>{
-    if(!watchesFilm(m,c)) return;                   // WATCHES, not shows — see the note above matchesTaste
-    if(!hits.has(m.tmdb_id)) hits.set(m.tmdb_id, []);
-    hits.get(m.tmdb_id).push(c.id);
-  }));
+  cascades.forEach(c=>{
+    if(c.paused) return;                            // guest mode (CAS-79): a paused agent watches nothing, so
+                                                    // it adds no Found membership — and since the poll's watchlist
+                                                    // IS the Found set, it raises no alerts either.
+    MOVIES.forEach(m=>{
+      if(!watchesFilm(m,c)) return;                 // WATCHES, not shows — see the note above matchesTaste
+      if(!hits.has(m.tmdb_id)) hits.set(m.tmdb_id, []);
+      hits.get(m.tmdb_id).push(c.id);
+    });
+  });
   found.clear();
   Object.keys(notify).forEach(id=>{ notify[id].cascadeIds=[]; });   // the auto half is rebuilt, never merged
   hits.forEach((ids,id)=>{ entryFor(id).cascadeIds=ids; });
@@ -2646,6 +2666,7 @@ function normCascade(c){
   c.imdb = c.imdb||0; c.rt = c.rt||0;
   c.ratingStop = (typeof c.ratingStop==="number") ? c.ratingStop : stopFor(c.imdb);
   c.includeUnrated = !!c.includeUnrated;
+  c.paused = !!c.paused;                      // guest mode (CAS-79): saved on-device but not watching/alerting
   c.budget = c.budget||0;                    // index into BUDGET_BANDS; 0 = Any
   c.includeUnbudgeted = !!c.includeUnbudgeted;
   c.tentpole = c.tentpole||"any";
@@ -3177,6 +3198,23 @@ function renderCascadeBar(shown){
         return `<button class="cschip" onclick="quickStart('${t.key}')">${t.icon} ${t.name} <b>${n}</b></button>`;
       }).join("")}</div>
     </div>`;
+  // Guest mode (CAS-79): the agent is saved but paused. Show its honest status, an honest re-invite tied to a
+  // REAL current moment (only if one exists), and the way to turn it on. Never a wall — browsing stays free.
+  const pausedAgent = cascades.find(x=>x.paused);
+  if(guestMode() && pausedAgent){
+    const mo=realMoment(pausedAgent);
+    html+=`<div class="guestcard">
+      <div class="gc-head">🅿️ <b>${esc(pausedAgent.name)}</b> is paused — you're browsing as a guest.</div>
+      <div class="gc-status">
+        <span>🔍 Manual search <b class="on">Free</b></span>
+        <span>🔔 Alerts <b class="off">Off</b></span>
+        <span>🧠 Learning <b class="off">Off</b></span>
+      </div>
+      ${mo?`<div class="gc-reinvite">🔔 <b>${esc(mo.m.title)}</b> ${esc(mo.phrase)} — want ${esc(pausedAgent.name)} to
+        catch the next one for you?</div>`:""}
+      <button class="gc-on" type="button" onclick="enableAgent('${pausedAgent.id}')">Turn my agent on</button>
+    </div>`;
+  }
   // Scoped to my services with none picked: the scope is silently inert. Say it, and give the way out.
   if(c && anyScope(c) && !servicesPicked())
     html+=`<div class="warnnote">“${esc(c.name)}” only wants films on your services${allScoped(c)?"":` in
@@ -4249,8 +4287,33 @@ function closeRevealToApp(){
 }
 // "Keep it running" opens the agent invite (CAS-78).
 window.revealKeep=()=>{ logEvent("reveal_keep",{starter:wiz.starter}); $("reveal").classList.remove("open"); openInvite(); };
-// CAS-79 puts the agent into guest/paused mode here; until then, land on what it found.
-window.revealBrowse=()=>{ logEvent("reveal_browse",{starter:wiz.starter}); closeRevealToApp(); };
+// "Just browse" → guest mode (CAS-79): the agent is saved on-device but PAUSED — no watching, no alerts —
+// while manual search stays free. Value first, wall never: declining never blocks results.
+window.revealBrowse=()=>{
+  logEvent("reveal_browse",{starter:wiz.starter});
+  const c=revealCascade;
+  if(c){ c.paused=true; saveCascades(); }
+  try{ localStorage.setItem("cascade_guest","1"); }catch(e){}
+  $("reveal").classList.remove("open"); document.body.style.overflow="";
+  // Land on manual search (Find), not the now-empty Found — browsing is the free thing they chose.
+  view="find"; try{ localStorage.setItem("cascade_view","find"); }catch(e){}
+  render();
+  if(c) toast(`👍 Browsing as a guest — ${c.icon} ${c.name} is saved but paused. Turn it on any time.`);
+};
+const guestMode = () => { try{ return localStorage.getItem("cascade_guest")==="1"; }catch(e){ return false; } };
+// An honest re-invite: a REAL, current fact about a film this paused agent would watch — never a fabricated
+// timer. "Just opened" is genuinely date-checked (opening week); the rest are present-tense current windows.
+function realMoment(c){
+  const cand=MOVIES.filter(m=>matchesTaste(m,c) && (!c.status.length || c.status.includes(primaryStatus(m))));
+  const pick=w=>cand.find(m=>primaryStatus(m)===w);
+  const open=pick("opening_week"); if(open) return {m:open, phrase:"just opened in cinemas"};
+  const rent=pick("rental");       if(rent) return {m:rent, phrase:"is at a rental price now"};
+  const strm=pick("included_streaming"); if(strm) return {m:strm, phrase:"is streaming now"};
+  const cin=pick("in_cinema");     if(cin) return {m:cin, phrase:"is in cinemas now"};
+  return null;
+}
+// Guest turns the agent on → the invite (CAS-78). inviteFinish un-pauses it.
+window.enableAgent=id=>{ const c=cascades.find(x=>x.id===id); if(c) revealCascade=c; logEvent("guest_enable"); openInvite(); };
 
 // ================= Agent invite → dynamic learning → done (CAS-78 / spec 26640386 §2) =================
 // PROTOTYPE MOCK ONLY. Every control here is visual: no card is taken, nothing is billed, no real
@@ -4336,6 +4399,11 @@ window.inviteGo=n=>{
 function inviteFinish(){
   agentState.invited=true; saveAgentState();
   logEvent("invite_finish",{alerts:agentState.alerts, email:agentState.email, learning:agentState.learning});
+  // Turning the agent on clears any paused/guest state — this is the guest's way back in (CAS-79).
+  let unpaused=false;
+  cascades.forEach(c=>{ if(c.paused){ c.paused=false; unpaused=true; } });
+  if(unpaused) saveCascades();
+  try{ localStorage.removeItem("cascade_guest"); }catch(e){}
   $("invite").classList.remove("open"); $("reveal").classList.remove("open"); document.body.style.overflow="";
   view="found"; try{ localStorage.setItem("cascade_view","found"); }catch(e){}
   render();
