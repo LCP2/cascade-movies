@@ -547,6 +547,32 @@
   .setupitem{font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:20px;
     border:1px solid var(--line);background:var(--panel2);color:var(--faint);white-space:nowrap}
   .setupitem.done{border-color:var(--green);background:rgba(72,199,142,.14);color:#a7eccb}
+  /* ---- first-run splash (CAS-74 / spec 26640386 §2) ----
+     The visual front door to the signup flow: brand mark, tagline, three value props, one CTA.
+     Sits above everything (z-index 80 > onboarding's 70) and hands off to the next step on CTA. */
+  .splash{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:40px 24px;overflow-y:auto;
+    background:radial-gradient(130% 90% at 50% -10%, rgba(124,92,255,.20), rgba(76,125,255,.06) 45%, rgba(10,14,26,0) 70%), var(--bg)}
+  .splash.open{display:flex}
+  .splashinner{width:100%;max-width:400px;margin:auto;animation:splashIn .5s ease both}
+  @keyframes splashIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .splashmark{width:78px;height:78px;margin:0 auto 20px;display:block;
+    filter:drop-shadow(0 8px 26px rgba(124,92,255,.45))}
+  .splashword{font-family:var(--font-display);font-size:30px;font-weight:700;letter-spacing:3px;
+    text-transform:uppercase;color:var(--ink);line-height:1}
+  .splashhero{font-family:var(--font-display);font-size:23px;font-weight:700;line-height:1.3;
+    letter-spacing:-.2px;color:var(--ink);margin:22px 0 8px}
+  .splashsub{font-size:14px;font-weight:600;letter-spacing:.3px;color:var(--dim);margin:0 0 26px}
+  .splashvals{list-style:none;margin:0 0 30px;padding:0;display:grid;gap:12px;text-align:left}
+  .splashvals li{display:flex;align-items:center;gap:12px;font-size:14.5px;font-weight:600;color:var(--ink);
+    background:var(--panel);border:1px solid var(--line);border-radius:13px;padding:13px 15px}
+  .splashvals li span{font-size:20px;line-height:1;flex:none}
+  .splashcta{width:100%;background:var(--grad);color:#fff;border:none;border-radius:13px;padding:15px;
+    font-size:15.5px;font-weight:800;cursor:pointer;text-shadow:0 1px 2px rgba(10,14,26,.55);
+    box-shadow:0 8px 22px rgba(124,92,255,.28)}
+  .splashcta:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+  @media (prefers-reduced-motion:reduce){ .splashinner{animation:none} }
+
   /* ---- first-run onboarding (bottom sheet) ---- */
   .onb{position:fixed;inset:0;z-index:70;background:rgba(6,8,12,.82);backdrop-filter:blur(3px);
     display:none;align-items:flex-end;justify-content:center}
@@ -890,6 +916,35 @@
   </div>
 </div>
 <div class="toast" id="toast"></div>
+
+<!-- FIRST-RUN SPLASH (CAS-74) — visual front door: mark, tagline, value props, one CTA.
+     Shown on first run (and ?reset / ?setup); "Build your first agent" hands off to the next
+     step of the signup flow. Until the starter shortlist (CAS-75) lands, that next step is the
+     existing agent-setup sheet. -->
+<div class="splash" id="splash" role="dialog" aria-modal="true" aria-label="Welcome to Cascade">
+  <div class="splashinner">
+    <svg class="splashmark" viewBox="0 0 100 100" fill="none" role="img" aria-label="Cascade">
+      <defs><linearGradient id="cgL" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#7C5CFF"/><stop offset="0.5" stop-color="#4C7DFF"/><stop offset="1" stop-color="#22D3EE"/>
+      </linearGradient></defs>
+      <g fill="url(#cgL)">
+        <rect x="6" y="42" width="7" height="16" rx="3.5"/><rect x="17" y="34" width="7" height="32" rx="3.5"/>
+        <rect x="28" y="24" width="7" height="52" rx="3.5"/><rect x="39" y="16" width="7" height="68" rx="3.5"/>
+      </g>
+      <path d="M52 20 A32 32 0 1 0 52 80" stroke="url(#cgL)" stroke-width="9" stroke-linecap="round"/>
+      <path d="M60 38 L60 62 L82 50 Z" fill="url(#cgL)"/>
+    </svg>
+    <div class="splashword">Cascade</div>
+    <h1 class="splashhero">Your movie agent never stops watching.</h1>
+    <p class="splashsub">AI finds. You watch.</p>
+    <ul class="splashvals">
+      <li><span>🎯</span> Finds films you'll love</li>
+      <li><span>📡</span> Watches every window</li>
+      <li><span>🔔</span> Tells you the moment</li>
+    </ul>
+    <button class="splashcta" id="splashCta" type="button">Build your first agent</button>
+  </div>
+</div>
 
 <!-- FIRST-RUN ONBOARDING — 3 skippable cards; body is rendered per step -->
 <div class="onb" id="onb">
@@ -3688,6 +3743,22 @@ function skipOnboarding(){
   toast("No problem — build your agent whenever you like (+ New Cascade) and it does the watching for you.");
 }
 window.skipOnboarding=skipOnboarding;
+// ---- First-run splash (CAS-74) — the visual entry to the signup flow ----
+// The splash and the setup sheet share ONE first-run gate (cascade_onboarded, set on finish/skip),
+// so the splash is simply the first face of first-run: reload before finishing and you see it again,
+// and ?reset returns to it. It hands off to the next step on its single CTA.
+function showSplash(){
+  $("splash").classList.add("open"); document.body.style.overflow="hidden";
+  logEvent("splash_shown");
+}
+function splashGo(){
+  $("splash").classList.remove("open");
+  logEvent("splash_cta");
+  // Next step of the flow. CAS-75 will re-point this at the starter shortlist; until then it opens
+  // the existing agent-setup sheet (which re-locks body scroll itself).
+  startOnboarding();
+}
+$("splashCta").onclick=splashGo;
 function startOnboarding(){
   onbStep=0;
   $("onb").classList.add("open"); document.body.style.overflow="hidden";
@@ -4262,7 +4333,7 @@ const openedShared = openSharedFromURL();
 // First run only — the "seen" flag is set by finishing OR skipping, so returning visitors go straight to the app.
 // ?setup replays it on demand: the flag stays set, and the rest of your state is untouched — this is a way to
 // SEE the first run again, not to fake being a new user (that's ?reset, which really does clear the slate).
-if(!openedShared && (forceSetup || !onboardingSeen())) startOnboarding();
+if(!openedShared && (forceSetup || !onboardingSeen())) showSplash();
 // One screen, one message. Priority: the reset notice, then the duplicate clean-up (it changed your Cascades,
 // so it has to be said out loud), then the agent's report on what it found while you weren't looking.
 if(didReset) toast("🧹 Local state cleared — this is a clean first run.");
