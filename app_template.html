@@ -4,9 +4,25 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cascade — it does the watching for you</title>
+<!-- Brand type (CAS-73 / spec 26640386 §1): Poppins for display, Inter for body.
+     preconnect keeps the fetch off the render-blocking path; the system stack in --font-body
+     is the graceful fallback if Google Fonts is unreachable. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0e1116; --panel:#171b22; --panel2:#1e232c; --line:#2a303b;
+    /* ---- Cascade brand system (CAS-73 / spec 26640386 §1) ----
+       Spec token names are mapped onto this app's existing vars where they'd collide:
+       spec --ink(bg) → --bg, spec --surface → --panel, spec --violet → --accent (which
+       already equals the provenance purple #7C5CFF). The brand blue/cyan/amber live under
+       their own names below so the app's SEMANTIC window colours (--blue = rental,
+       --amber = in-cinema) keep the exact hues the availability system was tuned for. */
+    --violet:#7C5CFF; --brand-blue:#4C7DFF; --cyan:#22D3EE; --brand-amber:#F5A623;
+    --grad:linear-gradient(135deg,#7C5CFF 0%,#4C7DFF 52%,#22D3EE 100%);
+    --font-body:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-display:"Poppins",var(--font-body);
+    --bg:#0A0E1A; --panel:#141A2A; --panel2:#1e232c; --line:#2a303b;
     /* --faint was #6b7280: measured 3.26:1 on the panels, which fails WCAG AA (4.5:1) for the small text
        the new controls put it on — spine sub-lines, alert bells, unselected lozenge steps. Now 5.2:1. */
     --ink:#e8ecf2; --dim:#9aa4b2; --faint:#8b95a5;
@@ -22,14 +38,19 @@
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--ink);
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    font-family:var(--font-body);-webkit-font-smoothing:antialiased}
+  /* Poppins carries the display voice: wordmark, hero, section headings. */
+  .brand,h1,h2,h3,.modalhead h3{font-family:var(--font-display)}
   .phone{max-width:480px;margin:0 auto;min-height:100vh;background:var(--bg);
     border-left:1px solid var(--line);border-right:1px solid var(--line);position:relative;padding-bottom:40px}
-  header{position:sticky;top:0;z-index:30;background:rgba(14,17,22,.96);backdrop-filter:blur(8px);
+  header{position:sticky;top:0;z-index:30;background:rgba(10,14,26,.96);backdrop-filter:blur(8px);
     border-bottom:1px solid var(--line);padding:12px 16px 10px}
   .brandrow{display:flex;align-items:center;justify-content:space-between}
-  .brand{font-size:20px;font-weight:800;letter-spacing:-.3px}
-  .brand span{color:var(--accent)}
+  .brandlockup{display:inline-flex;align-items:center;gap:8px;vertical-align:middle}
+  .brandmark{width:26px;height:26px;display:block;flex:none}
+  /* Uppercase CASCADE wordmark in Poppins — the mark carries the signature gradient,
+     the wordmark stays solid --ink so it clears AA at this size. */
+  .brand{font-size:18px;font-weight:700;letter-spacing:1.6px;color:var(--ink);text-transform:uppercase}
   .region{font-size:11px;color:var(--dim);border:1px solid var(--line);border-radius:20px;padding:2px 9px;margin-left:8px}
   .updated{font-size:10.5px;color:var(--faint);margin-top:3px}
   .hdr-actions{display:flex;gap:8px}
@@ -357,8 +378,8 @@
     margin:0 12px 4px}
   .deck{position:relative}
   .deck::before,.deck::after{content:"";position:absolute;top:0;bottom:0;width:22px;z-index:6;pointer-events:none}
-  .deck::before{left:0;background:linear-gradient(90deg,var(--bg),rgba(14,17,22,0))}
-  .deck::after{right:0;background:linear-gradient(270deg,var(--bg),rgba(14,17,22,0))}
+  .deck::before{left:0;background:linear-gradient(90deg,var(--bg),rgba(10,14,26,0))}
+  .deck::after{right:0;background:linear-gradient(270deg,var(--bg),rgba(10,14,26,0))}
   .deckstrip{position:relative;display:flex;gap:var(--dgap);align-items:stretch;overflow-x:auto;overflow-y:hidden;
     scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;perspective:900px;
     padding:12px calc(50% - var(--dcw)/2) 16px;outline:none}
@@ -639,6 +660,18 @@
   /* The browse card says it too — in words, not only in the megaphone's colour (WCAG 1.4.1). */
   .provchip{margin-top:10px;font-size:11px;font-weight:700;color:var(--dim);display:flex;align-items:center;gap:6px;flex-wrap:wrap}
   .provchip .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+  /* ---- Brand: primary CTAs carry the signature gradient (CAS-73 / spec 26640386 §1) ----
+     Each selector re-states its own primary button so it overrides that button's solid
+     --accentdeep fill (same selector, later in the sheet → wins); the deep-purple fill in
+     the original rules stays as the fallback. The gradient runs to cyan, where white bold
+     text alone would dip under AA, so a dark ink text-shadow keeps the label readable
+     across the light end. .applybtn:disabled (higher specificity, defined earlier) still
+     wins, so disabled buttons stay grey. Final visual/AA sign-off is Lee's. */
+  .donebtn, .sim button, .applybtn, .onbnext, .loz button.edge{
+    background:var(--grad);
+    text-shadow:0 1px 2px rgba(10,14,26,.55);
+  }
 </style>
 </head>
 <body>
@@ -646,7 +679,22 @@
   <header>
     <div class="brandrow">
       <div>
-        <span style="font-size:20px">🎬</span> <span class="brand">Cas<span>cade</span></span>
+        <span class="brandlockup">
+          <!-- Cascade logo mark (inline SVG, verbatim from spec 26640386 §1): rising bars +
+               agent arc + play triangle, all filled with the signature gradient. -->
+          <svg class="brandmark" viewBox="0 0 100 100" fill="none" role="img" aria-label="Cascade">
+            <defs><linearGradient id="cg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#7C5CFF"/><stop offset="0.5" stop-color="#4C7DFF"/><stop offset="1" stop-color="#22D3EE"/>
+            </linearGradient></defs>
+            <g fill="url(#cg)">
+              <rect x="6" y="42" width="7" height="16" rx="3.5"/><rect x="17" y="34" width="7" height="32" rx="3.5"/>
+              <rect x="28" y="24" width="7" height="52" rx="3.5"/><rect x="39" y="16" width="7" height="68" rx="3.5"/>
+            </g>
+            <path d="M52 20 A32 32 0 1 0 52 80" stroke="url(#cg)" stroke-width="9" stroke-linecap="round"/>
+            <path d="M60 38 L60 62 L82 50 Z" fill="url(#cg)"/>
+          </svg>
+          <span class="brand">Cascade</span>
+        </span>
         <span class="region">📍 AU</span>
         <div class="updated" id="updated"></div>
       </div>
