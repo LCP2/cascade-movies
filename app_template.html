@@ -573,6 +573,35 @@
   .splashcta:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
   @media (prefers-reduced-motion:reduce){ .splashinner{animation:none} }
 
+  /* ---- starter shortlist (CAS-75 / spec 26640386 §2) ----
+     "Give your agent its first job": three tappable starter cards with live match counts,
+     one badged Recommended. Sits between the splash and the setup flow. */
+  .shortlist{position:fixed;inset:0;z-index:80;display:none;flex-direction:column;padding:34px 24px 40px;
+    overflow-y:auto;background:radial-gradient(130% 90% at 50% -10%, rgba(76,125,255,.18),
+    rgba(34,211,238,.05) 45%, rgba(10,14,26,0) 70%), var(--bg)}
+  .shortlist.open{display:flex}
+  .slinner{width:100%;max-width:420px;margin:auto;animation:splashIn .45s ease both}
+  .slback{background:none;border:none;color:var(--dim);font-size:13px;font-weight:600;cursor:pointer;
+    padding:6px 2px;margin-bottom:6px;display:inline-flex;align-items:center;gap:6px}
+  .slback:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:6px}
+  .slh{font-family:var(--font-display);font-size:24px;font-weight:700;letter-spacing:-.2px;color:var(--ink);margin:4px 0 6px}
+  .slp{font-size:13.5px;color:var(--dim);line-height:1.5;margin:0 0 20px}
+  .scards{display:grid;gap:12px}
+  .scard{display:flex;align-items:center;gap:14px;text-align:left;cursor:pointer;width:100%;
+    background:var(--panel);border:1px solid var(--line);border-radius:15px;padding:16px;color:var(--ink);transition:.15s}
+  .scard:hover{border-color:var(--violet);background:rgba(124,92,255,.08)}
+  .scard:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+  .sc-ic{font-size:28px;line-height:1;flex:none}
+  .sc-main{flex:1;display:flex;flex-direction:column;gap:3px;min-width:0}
+  .sc-name{font-size:15.5px;font-weight:800;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .sc-rec{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:#fff;
+    background:var(--accentdeep);border-radius:20px;padding:2px 8px}
+  .sc-blurb{font-size:12.5px;color:var(--dim);line-height:1.4}
+  .sc-n{font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--accenttext);
+    flex:none;min-width:34px;text-align:right}
+  .sc-n small{display:block;font-family:var(--font-body);font-size:9.5px;font-weight:700;letter-spacing:.4px;
+    text-transform:uppercase;color:var(--faint);margin-top:-2px}
+
   /* ---- first-run onboarding (bottom sheet) ---- */
   .onb{position:fixed;inset:0;z-index:70;background:rgba(6,8,12,.82);backdrop-filter:blur(3px);
     display:none;align-items:flex-end;justify-content:center}
@@ -943,6 +972,19 @@
       <li><span>🔔</span> Tells you the moment</li>
     </ul>
     <button class="splashcta" id="splashCta" type="button">Build your first agent</button>
+  </div>
+</div>
+
+<!-- STARTER SHORTLIST (CAS-75) — "give your agent its first job": three starter cards with live
+     counts. Shown after the splash; a card launches the setup flow pre-set for that starter.
+     CAS-76 replaces that setup sheet with the full starter-aware wizard. -->
+<div class="shortlist" id="shortlist" role="dialog" aria-modal="true" aria-label="Give your agent its first job">
+  <div class="slinner">
+    <button class="slback" id="shortlistBack" type="button">← Back</button>
+    <h2 class="slh">Give your agent its first job</h2>
+    <p class="slp">Pick where it should start watching. It goes out and finds these for you, day after day —
+      you can change every part of it next.</p>
+    <div class="scards" id="shortlistCards"></div>
   </div>
 </div>
 
@@ -3754,11 +3796,52 @@ function showSplash(){
 function splashGo(){
   $("splash").classList.remove("open");
   logEvent("splash_cta");
-  // Next step of the flow. CAS-75 will re-point this at the starter shortlist; until then it opens
-  // the existing agent-setup sheet (which re-locks body scroll itself).
-  startOnboarding();
+  showShortlist();
 }
 $("splashCta").onclick=splashGo;
+
+// ---- Starter shortlist (CAS-75) — three starter cards with live counts ----
+// The three starters are the on-ramps the wizard (CAS-76) is built around. Each carries the criteria that
+// define "what's here now" for its lane, so the card count is the REAL number of films it catches today
+// (countCriteria) — never a mock (honesty guardrail). The full 12-template library still lives in the
+// Cascade Builder for later; this is just the first job.
+const STARTERS = [
+  {key:"cinema",    icon:"🎬", name:"In cinema",          blurb:"Big-screen films, out now or opening soon",
+   crit:{status:["opening_week","in_cinema"], genre:[], lang:[], imdb:0}},
+  {key:"rentals",   icon:"🍿", name:"Top rentals",         blurb:"Great films that just dropped to rent",
+   crit:{status:["rental"], genre:[], lang:[], imdb:0}},
+  {key:"streaming", icon:"📺", name:"Must-watch streaming", blurb:"Streaming now on the big services", recommended:true,
+   crit:{status:["included_streaming"], genre:[], lang:[], imdb:0}},
+];
+STARTERS.forEach(s=>normCascade(s.crit));
+const starterCount = s => countCriteria(s.crit);
+let pendingStarter = null;   // the starter the person chose — CAS-76's wizard will read this
+function renderShortlist(){
+  $("shortlistCards").innerHTML = STARTERS.map(s=>{
+    const n=starterCount(s);
+    return `<button class="scard" type="button" onclick="pickStarter('${s.key}')">
+        <span class="sc-ic">${s.icon}</span>
+        <span class="sc-main">
+          <span class="sc-name">${s.name}${s.recommended?` <b class="sc-rec">Recommended</b>`:""}</span>
+          <span class="sc-blurb">${s.blurb}</span>
+        </span>
+        <span class="sc-n">${n}<small>films</small></span>
+      </button>`;
+  }).join("");
+}
+function showShortlist(){
+  renderShortlist();
+  $("shortlist").classList.add("open"); document.body.style.overflow="hidden";
+  logEvent("shortlist_shown");
+}
+$("shortlistBack").onclick=()=>{ $("shortlist").classList.remove("open"); showSplash(); };
+window.pickStarter=key=>{
+  const s=STARTERS.find(x=>x.key===key); if(!s) return;
+  pendingStarter=key; logEvent("starter_picked",{key});
+  $("shortlist").classList.remove("open");
+  // CAS-76 replaces this with the starter-aware wizard; until then, the existing setup sheet stands in.
+  startOnboarding();
+};
 function startOnboarding(){
   onbStep=0;
   $("onb").classList.add("open"); document.body.style.overflow="hidden";
