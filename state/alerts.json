@@ -72,5 +72,15 @@
       "HBO Max"
     ],
     "detected": "2026-07-21"
+  },
+  {
+    "tmdb_id": 454639,
+    "title": "Masters of the Universe",
+    "new_window": "included_streaming",
+    "label": "Included Streaming",
+    "services": [
+      "Prime Video"
+    ],
+    "detected": "2026-07-26"
   }
 ]
