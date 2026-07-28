@@ -82,5 +82,65 @@
       "Prime Video"
     ],
     "detected": "2026-07-26"
+  },
+  {
+    "tmdb_id": 1275779,
+    "title": "Disclosure Day",
+    "new_window": "pvod",
+    "label": "Premium Buy/Rent (~$30)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-07-28"
+  },
+  {
+    "tmdb_id": 1081003,
+    "title": "Supergirl",
+    "new_window": "pvod",
+    "label": "Premium Buy/Rent (~$30)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-07-28"
+  },
+  {
+    "tmdb_id": 1226863,
+    "title": "The Super Mario Galaxy Movie",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-07-28"
+  },
+  {
+    "tmdb_id": 1122573,
+    "title": "In the Grey",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "Amazon",
+      "Amazon",
+      "AppleTV"
+    ],
+    "detected": "2026-07-28"
+  },
+  {
+    "tmdb_id": 1430077,
+    "title": "Hokum",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "Amazon",
+      "Amazon",
+      "AppleTV"
+    ],
+    "detected": "2026-07-28"
   }
 ]
