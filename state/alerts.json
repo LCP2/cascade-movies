@@ -158,5 +158,13 @@
     "label": "In Cinema",
     "services": [],
     "detected": "2026-08-12"
+  },
+  {
+    "tmdb_id": 1101383,
+    "title": "The End of Oak Street",
+    "new_window": "in_cinema",
+    "label": "In Cinema",
+    "services": [],
+    "detected": "2026-08-13"
   }
 ]
