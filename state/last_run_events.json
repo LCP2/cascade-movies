@@ -1,1 +1,18 @@
-[]
+[
+  {
+    "tmdb_id": 1288445,
+    "title": "Mutiny",
+    "new_window": "in_cinema",
+    "label": "In Cinema",
+    "services": [],
+    "detected": "2026-08-20"
+  },
+  {
+    "tmdb_id": 1291595,
+    "title": "Insidious: Out of the Further",
+    "new_window": "in_cinema",
+    "label": "In Cinema",
+    "services": [],
+    "detected": "2026-08-20"
+  }
+]
