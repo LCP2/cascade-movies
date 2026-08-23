@@ -315,5 +315,37 @@
       "MAX (Via Amazon Prime)"
     ],
     "detected": "2026-08-22"
+  },
+  {
+    "tmdb_id": 1311031,
+    "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+    "new_window": "included_streaming",
+    "label": "Included Streaming",
+    "services": [
+      "Crunchyroll Premium",
+      "Crunchyroll Premium (Via Prime) Amazon Channel"
+    ],
+    "detected": "2026-08-23"
+  },
+  {
+    "tmdb_id": 1311031,
+    "title": "Demon Slayer: Kimetsu no Yaiba Infinity Castle",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "Amazon",
+      "Amazon"
+    ],
+    "detected": "2026-08-23"
+  },
+  {
+    "tmdb_id": 1297842,
+    "title": "GOAT",
+    "new_window": "included_streaming",
+    "label": "Included Streaming",
+    "services": [
+      "Prime Video"
+    ],
+    "detected": "2026-08-23"
   }
 ]
