@@ -347,5 +347,41 @@
       "Prime Video"
     ],
     "detected": "2026-08-23"
+  },
+  {
+    "tmdb_id": 1284465,
+    "title": "The Death of Robin Hood",
+    "new_window": "pvod",
+    "label": "Premium Buy/Rent (~$30)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-08-25"
+  },
+  {
+    "tmdb_id": 1212763,
+    "title": "Evil Dead Burn",
+    "new_window": "pvod",
+    "label": "Premium Buy/Rent (~$30)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-08-25"
+  },
+  {
+    "tmdb_id": 1273221,
+    "title": "Scary Movie",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-08-25"
   }
 ]
