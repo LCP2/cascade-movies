@@ -1,1 +1,24 @@
-[]
+[
+  {
+    "tmdb_id": 1284465,
+    "title": "The Death of Robin Hood",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-09-02"
+  },
+  {
+    "tmdb_id": 1228710,
+    "title": "The Mandalorian and Grogu",
+    "new_window": "included_streaming",
+    "label": "Included Streaming",
+    "services": [
+      "Disney+"
+    ],
+    "detected": "2026-09-02"
+  }
+]
