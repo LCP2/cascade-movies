@@ -1,22 +1,14 @@
 [
   {
-    "tmdb_id": 1101412,
-    "title": "Fall 2: Deadpoint",
-    "new_window": "in_cinema",
-    "label": "In Cinema",
-    "services": [],
-    "detected": "2026-09-03"
-  },
-  {
-    "tmdb_id": 1122573,
-    "title": "In the Grey",
+    "tmdb_id": 1284465,
+    "title": "The Death of Robin Hood",
     "new_window": "pvod",
     "label": "Premium Buy/Rent (~$30)",
     "services": [
-      "Amazon",
+      "AppleTV",
       "AppleTV",
       "AppleTV"
     ],
-    "detected": "2026-09-03"
+    "detected": "2026-09-04"
   }
 ]

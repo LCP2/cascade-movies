@@ -495,5 +495,17 @@
       "AppleTV"
     ],
     "detected": "2026-09-03"
+  },
+  {
+    "tmdb_id": 1284465,
+    "title": "The Death of Robin Hood",
+    "new_window": "pvod",
+    "label": "Premium Buy/Rent (~$30)",
+    "services": [
+      "AppleTV",
+      "AppleTV",
+      "AppleTV"
+    ],
+    "detected": "2026-09-04"
   }
 ]
