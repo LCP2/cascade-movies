@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "tmdb_id": 1108427,
+    "title": "Moana",
+    "new_window": "pvod",
+    "label": "Premium Buy/Rent (~$30)",
+    "services": [
+      "Amazon",
+      "Amazon",
+      "Amazon"
+    ],
+    "detected": "2026-09-07"
+  }
+]
