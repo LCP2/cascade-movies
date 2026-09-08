@@ -1,14 +1,12 @@
 [
   {
-    "tmdb_id": 1108427,
-    "title": "Moana",
-    "new_window": "pvod",
-    "label": "Premium Buy/Rent (~$30)",
+    "tmdb_id": 1081003,
+    "title": "Supergirl",
+    "new_window": "included_streaming",
+    "label": "Included Streaming",
     "services": [
-      "Amazon",
-      "Amazon",
-      "Amazon"
+      "HBO Max"
     ],
-    "detected": "2026-09-07"
+    "detected": "2026-09-08"
   }
 ]

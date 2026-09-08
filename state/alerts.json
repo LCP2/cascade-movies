@@ -519,5 +519,15 @@
       "Amazon"
     ],
     "detected": "2026-09-07"
+  },
+  {
+    "tmdb_id": 1081003,
+    "title": "Supergirl",
+    "new_window": "included_streaming",
+    "label": "Included Streaming",
+    "services": [
+      "HBO Max"
+    ],
+    "detected": "2026-09-08"
   }
 ]
