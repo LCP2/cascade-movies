@@ -1,5 +1,5 @@
 {
-  "generated": "2026-09-11",
+  "generated": "2026-09-12",
   "region": "AU",
   "currency": "AUD",
   "live": true,
@@ -18,7 +18,7 @@
       "age_rating": "M",
       "worldwide_gross": 2412640193,
       "budget": 225000000,
-      "popularity": 767.4727,
+      "popularity": 761.0246,
       "synopsis": "Fighting crime full-time as Spider-Man in a world that doesn't remember him\u2014and the pressure of seeing his old friends move on without him\u2014sparks a change in Peter Parker he may not have the power to control. But that transformation might also be the only thing that can stop a shocking new threat to the city and those he loves - a powerful villain no one can even see.",
       "language": "en",
       "culture": "Western",
@@ -65,7 +65,7 @@
       "age_rating": "M",
       "worldwide_gross": 1631536965,
       "budget": 250000000,
-      "popularity": 395.2788,
+      "popularity": 386.7119,
       "synopsis": "Odysseus, the legendary King of Ithaca, embarks on a long and perilous journey home following the Trojan War. Throughout his voyage, he is forced to confront the whims of gods, mythological monsters, and trials that stretch both his cunning and his humanity to the breaking point.",
       "language": "en",
       "culture": "Western",
@@ -111,7 +111,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 20824283,
       "budget": 40000000,
-      "popularity": 351.6955,
+      "popularity": 343.6508,
       "synopsis": "After witnessing his billionaire boss' murder and being framed for the crime, Cole Reed boards a cargo ship on a one-man crusade to avenge his boss' death only to discover an international conspiracy.",
       "language": "en",
       "culture": "Western",
@@ -158,7 +158,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 311.1441,
+      "popularity": 331.2021,
       "synopsis": "Professor Se-jeong is thrust into a bloody nightmare when a rapidly mutating virus is released during a biotech conference causing authorities to seal the facility. Trapped inside with no escape, Se-jeong along with a small group of survivors must fight to stay alive while the infected undergo horrific transformations.",
       "language": "ko",
       "culture": "Korean",
@@ -205,7 +205,7 @@
       "age_rating": "PG",
       "worldwide_gross": 308159595,
       "budget": 250000000,
-      "popularity": 288.9386,
+      "popularity": 297.8453,
       "synopsis": "Teenage Moana answers the Ocean's call and, for the first time, voyages beyond the reef of her island of Motunui with infamous demigod Maui on an unforgettable journey to restore prosperity to her people.",
       "language": "en",
       "culture": "Western",
@@ -322,9 +322,9 @@
       ],
       "cinema_date": "2026-05-14",
       "age_rating": "MA 15+",
-      "worldwide_gross": 512624636,
+      "worldwide_gross": 512738088,
       "budget": 750000,
-      "popularity": 165.0922,
+      "popularity": 158.47,
       "synopsis": "After breaking the mysterious \"One Wish Willow\" to win his crush's heart, a hopeless romantic finds himself getting exactly what he asked for but soon discovers that some desires come at a dark, sinister price.",
       "language": "en",
       "culture": "Western",
@@ -458,7 +458,7 @@
       "age_rating": "G",
       "worldwide_gross": 1136476240,
       "budget": 250000000,
-      "popularity": 150.6459,
+      "popularity": 149.0524,
       "synopsis": "When Bonnie receives a Lilypad tablet as a gift and becomes obsessed, Buzz, Woody, Jessie and the rest of the gang's jobs become exponentially harder when they have to go head to head with the all-new threat to playtime.",
       "language": "en",
       "culture": "Western",
@@ -580,7 +580,7 @@
       "age_rating": "PG",
       "worldwide_gross": 505515960,
       "budget": 85000000,
-      "popularity": 129.7159,
+      "popularity": 124.8064,
       "synopsis": "This is the rambunctious, ridiculous and totally true story of how the Minions conquered Hollywood, became movie stars, lost everything, unleashed monsters onto the world and then banded together to try and save the planet from the mayhem they had just created.",
       "language": "en",
       "culture": "Western",
@@ -687,7 +687,7 @@
       "age_rating": "M",
       "worldwide_gross": 241186430,
       "budget": 115000000,
-      "popularity": 95.5515,
+      "popularity": 92.3494,
       "synopsis": "A cybersecurity expert becomes a whistleblower after uncovering secrets about aliens, putting him on the run from a corporation. Meanwhile, a meteorologist experiencing strange phenomena joins forces with him to prove there's life beyond our understanding.",
       "language": "en",
       "culture": "Western",
@@ -806,7 +806,7 @@
       "age_rating": "M",
       "worldwide_gross": 684234722,
       "budget": 200000000,
-      "popularity": 91.7307,
+      "popularity": 91.9486,
       "synopsis": "Science teacher Ryland Grace wakes up on a spaceship light years from home with no recollection of who he is or how he got there. As his memory returns, he begins to uncover his mission: solve the riddle of the mysterious substance causing the sun to die out. He must call on his scientific knowledge and unorthodox ideas to save everything on Earth from extinction.",
       "language": "en",
       "culture": "Western",
@@ -945,7 +945,7 @@
       "age_rating": "M",
       "worldwide_gross": 394122453,
       "budget": 10000000,
-      "popularity": 84.0884,
+      "popularity": 83.2717,
       "synopsis": "A strange doorway appears in the basement of a furniture showroom.",
       "language": "en",
       "culture": "Western",
@@ -1054,6 +1054,99 @@
       }
     },
     {
+      "tmdb_id": 1101383,
+      "imdb_id": "tt27165187",
+      "title": "The End of Oak Street",
+      "year": "2026",
+      "genres": [
+        "Science Fiction",
+        "Mystery",
+        "Thriller"
+      ],
+      "cinema_date": "2026-08-13",
+      "age_rating": "M",
+      "worldwide_gross": 115180511,
+      "budget": 80000000,
+      "popularity": 81.2687,
+      "synopsis": "After a mysterious cosmic event rips Oak Street from suburbia and transports their neighborhood to someplace unknown, the Platt family soon discovers that their very survival depends on them sticking together as they navigate their now unrecognizable surroundings.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/fYXqpgPmHMphSF2W30GbTeJVIa5.jpg",
+      "trailers": [
+        "gBjcR8FdFc4",
+        "hdNFWikdF-w",
+        "Qm9g37jsZ0Q",
+        "L1qEMLnBMAE"
+      ],
+      "director": "David Robert Mitchell",
+      "cast": [
+        "Anne Hathaway",
+        "Ewan McGregor",
+        "Maisy Stella",
+        "Christian Convery"
+      ],
+      "imdb_rating": 6.6,
+      "imdb_votes": 18446,
+      "rt_critic": 86,
+      "metacritic": 69,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14",
+        "in_cinema": "2026-08-13"
+      }
+    },
+    {
+      "tmdb_id": 1433367,
+      "imdb_id": "tt37853455",
+      "title": "One Night Only",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Comedy"
+      ],
+      "cinema_date": "2026-08-13",
+      "age_rating": "M",
+      "worldwide_gross": 15728345,
+      "budget": 25000000,
+      "popularity": 79.9062,
+      "synopsis": "Two love-starved strangers crash into each other on the one night of the year when single people are allowed to have sex.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/46q8z1TbbVcF8uhRHsvt5s0h2SH.jpg",
+      "trailers": [
+        "JqHhe74RQ9Y",
+        "1KusrltecS8",
+        "GBM1hs2EbI8",
+        "hT7t9bVrUC8"
+      ],
+      "director": "Will Gluck",
+      "cast": [
+        "Monica Barbaro",
+        "Callum Turner",
+        "Maya Hawke",
+        "King Princess"
+      ],
+      "imdb_rating": 6.3,
+      "imdb_votes": 6744,
+      "rt_critic": 43,
+      "metacritic": 42,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-29",
+        "in_cinema": "2026-09-09"
+      }
+    },
+    {
       "tmdb_id": 1228710,
       "imdb_id": "tt30825738",
       "title": "The Mandalorian and Grogu",
@@ -1067,11 +1160,11 @@
       "age_rating": "M",
       "worldwide_gross": 345166617,
       "budget": 165000000,
-      "popularity": 83.6473,
+      "popularity": 78.2155,
       "synopsis": "The evil Empire has fallen, and Imperial warlords remain scattered throughout the galaxy. As the fledgling New Republic works to protect everything the Rebellion fought for, they have enlisted the help of legendary Mandalorian bounty hunter Din Djarin and his young apprentice Grogu.",
       "language": "en",
       "culture": "Western",
-      "poster": "/fsSMj6TJ6qtMnpg6UIw8TzUeEyE.jpg",
+      "poster": "/uwMKWjcNID0D9jjplsjkQS2OrB4.jpg",
       "trailers": [
         "azv8TS-wUho",
         "GqlOAgbtmwY",
@@ -1151,93 +1244,175 @@
       }
     },
     {
-      "tmdb_id": 1213243,
-      "imdb_id": "tt27530512",
-      "title": "Toxic: A Fairy Tale for Grown-ups",
+      "tmdb_id": 1302904,
+      "imdb_id": "tt32588798",
+      "title": "Practical Magic 2",
       "year": "2026",
       "genres": [
-        "Action",
-        "Crime",
-        "Drama"
+        "Romance",
+        "Fantasy",
+        "Comedy"
       ],
-      "cinema_date": "2026-08-26",
-      "age_rating": "MA 15+",
-      "worldwide_gross": 27150000,
-      "budget": 60000000,
-      "popularity": 79.4144,
-      "synopsis": "A powerful drug cartel pulls the strings behind a facade of sun-soaked beaches as a gritty, violent underworld power struggle emerges during the crumbling of Portuguese colonial rule.",
-      "language": "kn",
-      "culture": "Indian",
-      "poster": "/oiIPU4lvnI0Ag2K9cyAi44eCaoE.jpg",
+      "cinema_date": "2026-09-10",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": 75000000,
+      "popularity": 76.8252,
+      "synopsis": "The Owens sisters must confront the dark curse that threatens to unravel their family once and for all.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/ogwQOLbCfncjvBhFb5l0OmQH8KC.jpg",
       "trailers": [
-        "EfluEyQ5QIA",
-        "JQ7pytcXahw",
-        "aF08WVSvCok"
+        "7k5oMk0Rcz4",
+        "pLEZ1QgzT5M",
+        "_5W-mPM49K0",
+        "GxGm8GNnTg8"
       ],
-      "director": "Geetu Mohandas",
+      "director": "Susanne Bier",
       "cast": [
-        "Yash",
-        "Kiara Advani",
-        "Nayanthara",
-        "Huma Qureshi"
+        "Sandra Bullock",
+        "Nicole Kidman",
+        "Joey King",
+        "Maisie Williams"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
       "award": null,
-      "award_text": "",
+      "award_text": "1 nomination total",
       "offers": [],
       "status": [
         "in_cinema"
       ],
       "window_dates": {
-        "upcoming": "2026-07-26",
-        "in_cinema": "2026-08-28"
+        "upcoming": "2026-08-28",
+        "in_cinema": "2026-09-10"
       }
     },
     {
-      "tmdb_id": 1433367,
-      "imdb_id": "tt37853455",
-      "title": "One Night Only",
+      "tmdb_id": 1081003,
+      "imdb_id": "tt8814476",
+      "title": "Supergirl",
       "year": "2026",
       "genres": [
-        "Romance",
-        "Comedy"
+        "Action",
+        "Adventure",
+        "Science Fiction"
       ],
-      "cinema_date": "2026-08-13",
+      "cinema_date": "2026-06-25",
       "age_rating": "M",
-      "worldwide_gross": 15728345,
-      "budget": 25000000,
-      "popularity": 78.2581,
-      "synopsis": "Two love-starved strangers crash into each other on the one night of the year when single people are allowed to have sex.",
+      "worldwide_gross": 126366532,
+      "budget": 175000000,
+      "popularity": 74.636,
+      "synopsis": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
       "language": "en",
       "culture": "Western",
-      "poster": "/46q8z1TbbVcF8uhRHsvt5s0h2SH.jpg",
+      "poster": "/uhzRnTW4DM13UQBvZP3eVNzQTuz.jpg",
       "trailers": [
-        "JqHhe74RQ9Y",
-        "1KusrltecS8",
-        "GBM1hs2EbI8",
-        "hT7t9bVrUC8"
+        "rbLyjarG_bU",
+        "PCZHdNilKf0",
+        "pgQtK7gu8oY",
+        "oBjvsGAU6KY"
       ],
-      "director": "Will Gluck",
+      "director": "Craig Gillespie",
       "cast": [
-        "Monica Barbaro",
-        "Callum Turner",
-        "Maya Hawke",
-        "King Princess"
+        "Milly Alcock",
+        "Eve Ridley",
+        "Matthias Schoenaerts",
+        "Jason Momoa"
       ],
-      "imdb_rating": 6.3,
-      "imdb_votes": 6744,
-      "rt_critic": 43,
-      "metacritic": 42,
+      "imdb_rating": 5.8,
+      "imdb_votes": 89480,
+      "rt_critic": 53,
+      "metacritic": 50,
       "award": null,
-      "award_text": "",
-      "offers": [],
+      "award_text": "1 win & 3 nominations total",
+      "offers": [
+        {
+          "service": "HBO Max",
+          "type": "sub",
+          "price": null,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 29.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 29.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 29.99,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 29.99,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 29.99,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 29.99,
+          "format": "4K"
+        }
+      ],
       "status": [
-        "in_cinema"
+        "included_streaming"
       ],
       "window_dates": {
-        "upcoming": "2026-07-29",
-        "in_cinema": "2026-09-09"
+        "in_cinema": "2026-07-12",
+        "pvod": "2026-07-28",
+        "included_streaming": "2026-09-08"
       }
     },
     {
@@ -1252,7 +1427,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 231886052,
       "budget": 30000000,
-      "popularity": 78.0035,
+      "popularity": 73.4977,
       "synopsis": "Twenty-six years after outrunning a suspiciously familiar masked killer, the Core Four are back in the killer's crosshairs and no horror movie IP is safe.",
       "language": "en",
       "culture": "Western",
@@ -1383,7 +1558,7 @@
       "age_rating": "M",
       "worldwide_gross": 3443026,
       "budget": 3000000,
-      "popularity": 74.7171,
+      "popularity": 69.7068,
       "synopsis": "On a perilous climb across Thailand's Mount Kwan, two climbers become trapped thousands of feet above the ground, where vertigo-inducing heights, sheer exposure, and impossible odds turn every moment into a fight for survival.",
       "language": "en",
       "culture": "Western",
@@ -1394,7 +1569,7 @@
         "pu2qcpIn520",
         "subzjlylMgc"
       ],
-      "director": "Michael Spierig, Peter Spierig",
+      "director": "Peter Spierig, Michael Spierig",
       "cast": [
         "Harriet Slater",
         "Arsema Thomas",
@@ -1417,168 +1592,38 @@
       }
     },
     {
-      "tmdb_id": 1081003,
-      "imdb_id": "tt8814476",
-      "title": "Supergirl",
+      "tmdb_id": 1213243,
+      "imdb_id": "tt27530512",
+      "title": "Toxic: A Fairy Tale for Grown-ups",
       "year": "2026",
       "genres": [
         "Action",
-        "Adventure",
-        "Science Fiction"
+        "Crime",
+        "Drama"
       ],
-      "cinema_date": "2026-06-25",
-      "age_rating": "M",
-      "worldwide_gross": 126366532,
-      "budget": 175000000,
-      "popularity": 72.9827,
-      "synopsis": "When an unexpected and ruthless adversary strikes too close to home, Kara Zor-El, aka Supergirl, reluctantly joins forces with an unlikely companion on an epic, interstellar journey of vengeance and justice.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/uhzRnTW4DM13UQBvZP3eVNzQTuz.jpg",
+      "cinema_date": "2026-08-26",
+      "age_rating": "MA 15+",
+      "worldwide_gross": 27150000,
+      "budget": 60000000,
+      "popularity": 68.8795,
+      "synopsis": "A powerful drug cartel pulls the strings behind a facade of sun-soaked beaches as a gritty, violent underworld power struggle emerges during the crumbling of Portuguese colonial rule.",
+      "language": "kn",
+      "culture": "Indian",
+      "poster": "/oiIPU4lvnI0Ag2K9cyAi44eCaoE.jpg",
       "trailers": [
-        "rbLyjarG_bU",
-        "PCZHdNilKf0",
-        "pgQtK7gu8oY",
-        "oBjvsGAU6KY"
+        "EfluEyQ5QIA",
+        "JQ7pytcXahw",
+        "aF08WVSvCok"
       ],
-      "director": "Craig Gillespie",
+      "director": "Geetu Mohandas",
       "cast": [
-        "Milly Alcock",
-        "Eve Ridley",
-        "Matthias Schoenaerts",
-        "Jason Momoa"
+        "Yash",
+        "Kiara Advani",
+        "Nayanthara",
+        "Huma Qureshi"
       ],
-      "imdb_rating": 5.8,
-      "imdb_votes": 89480,
-      "rt_critic": 53,
-      "metacritic": 50,
-      "award": null,
-      "award_text": "1 win & 3 nominations total",
-      "offers": [
-        {
-          "service": "HBO Max",
-          "type": "sub",
-          "price": null,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 29.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 29.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 29.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 29.99,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 29.99,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 29.99,
-          "format": "4K"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "in_cinema": "2026-07-12",
-        "pvod": "2026-07-28",
-        "included_streaming": "2026-09-08"
-      }
-    },
-    {
-      "tmdb_id": 1101383,
-      "imdb_id": "tt27165187",
-      "title": "The End of Oak Street",
-      "year": "2026",
-      "genres": [
-        "Science Fiction",
-        "Mystery",
-        "Thriller"
-      ],
-      "cinema_date": "2026-08-13",
-      "age_rating": "M",
-      "worldwide_gross": 115180511,
-      "budget": 80000000,
-      "popularity": 72.2249,
-      "synopsis": "After a mysterious cosmic event rips Oak Street from suburbia and transports their neighborhood to someplace unknown, the Platt family soon discovers that their very survival depends on them sticking together as they navigate their now unrecognizable surroundings.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/fYXqpgPmHMphSF2W30GbTeJVIa5.jpg",
-      "trailers": [
-        "gBjcR8FdFc4",
-        "hdNFWikdF-w",
-        "Qm9g37jsZ0Q",
-        "L1qEMLnBMAE"
-      ],
-      "director": "David Robert Mitchell",
-      "cast": [
-        "Anne Hathaway",
-        "Ewan McGregor",
-        "Maisy Stella",
-        "Christian Convery"
-      ],
-      "imdb_rating": 6.6,
-      "imdb_votes": 18446,
-      "rt_critic": 86,
-      "metacritic": 69,
+      "imdb_rating": null,
+      "imdb_votes": null,
       "award": null,
       "award_text": "",
       "offers": [],
@@ -1586,8 +1631,8 @@
         "in_cinema"
       ],
       "window_dates": {
-        "upcoming": "2026-07-14",
-        "in_cinema": "2026-08-13"
+        "upcoming": "2026-07-26",
+        "in_cinema": "2026-08-28"
       }
     },
     {
@@ -1604,7 +1649,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 3200000,
       "budget": 25000000,
-      "popularity": 70.5504,
+      "popularity": 67.7778,
       "synopsis": "Grappling with his past after a life of crime and murder, Robin Hood finds himself gravely injured after a battle he thought would be his last. In the hands of a mysterious woman, he is offered a chance at salvation.",
       "language": "en",
       "culture": "Western",
@@ -1711,6 +1756,53 @@
       }
     },
     {
+      "tmdb_id": 1058424,
+      "imdb_id": "tt27369017",
+      "title": "Hope",
+      "year": "2026",
+      "genres": [
+        "Science Fiction",
+        "Mystery",
+        "Action"
+      ],
+      "cinema_date": "2026-09-10",
+      "age_rating": "MA 15+",
+      "worldwide_gross": 33800000,
+      "budget": 40000000,
+      "popularity": 67.5172,
+      "synopsis": "In the remote South Korean village of Hope Harbor, police chief Bum-seok and officer Sung-ae are called to investigate a mysterious creature wreaking havoc on the community. But all is not as it seems, and perceptions can be misleading. What begins as ignorance plants the seed of disaster, escalating through human conflict into a tragedy of cosmic proportions.",
+      "language": "ko",
+      "culture": "Korean",
+      "poster": "/h39KOfADZB5I7JzNh9ih9GbZdoK.jpg",
+      "trailers": [
+        "Ls-wVxqGge4",
+        "OFaJzL83y0Q",
+        "R5jcEBVBEbQ",
+        "ODnHr2Emnf0"
+      ],
+      "director": "Na Hong-jin",
+      "cast": [
+        "Hwang Jung-min",
+        "Zo In-sung",
+        "Hoyeon",
+        "Alicia Vikander"
+      ],
+      "imdb_rating": 6.9,
+      "imdb_votes": 1504,
+      "rt_critic": 72,
+      "metacritic": 68,
+      "award": null,
+      "award_text": "2 nominations total",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14",
+        "in_cinema": "2026-09-10"
+      }
+    },
+    {
       "tmdb_id": 1419406,
       "imdb_id": "tt34610311",
       "title": "The Shadow's Edge",
@@ -1725,7 +1817,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 174400000,
       "budget": null,
-      "popularity": 64.9584,
+      "popularity": 66.0309,
       "synopsis": "Macau Police brings the tracking expert police officer out of retirement to help catch a dangerous group of professional thieves.",
       "language": "zh",
       "culture": "Chinese",
@@ -1770,7 +1862,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 733030221,
       "budget": 20000000,
-      "popularity": 64.02,
+      "popularity": 65.2953,
       "synopsis": "The Demon Slayer Corps are drawn into the Infinity Castle, where Tanjiro, Nezuko, and the Hashira face terrifying Upper Rank demons in a desperate fight as the final battle against Muzan Kibutsuji begins.",
       "language": "ja",
       "culture": "Japanese",
@@ -1855,6 +1947,55 @@
       }
     },
     {
+      "tmdb_id": 1185806,
+      "imdb_id": "tt29356163",
+      "title": "PAW Patrol: The Dino Movie",
+      "year": "2026",
+      "genres": [
+        "Animation",
+        "Adventure",
+        "Family",
+        "Fantasy",
+        "Comedy"
+      ],
+      "cinema_date": "2026-09-10",
+      "age_rating": "G",
+      "worldwide_gross": 138326933,
+      "budget": 40000000,
+      "popularity": 64.104,
+      "synopsis": "The Paw Patrol lands on a mysterious dinosaur island after a storm, where they meet Rex, a stranded pup. When Humdinger's reckless mining triggers a volcano, the team faces their biggest rescue mission yet to save the island.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/qnin56Syy5rbG7KCaxWY7SPuy6p.jpg",
+      "trailers": [
+        "ZUxbGF-MRQE",
+        "GN9ynEUmZuk",
+        "vq0sMP5DJXE",
+        "A_4wyR43rvg"
+      ],
+      "director": "Cal Brunker",
+      "cast": [
+        "Carter Young",
+        "Mckenna Grace",
+        "Terry Crews",
+        "Meredith MacNeill"
+      ],
+      "imdb_rating": 6.2,
+      "imdb_votes": 1038,
+      "rt_critic": 81,
+      "metacritic": 47,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14",
+        "in_cinema": "2026-09-10"
+      }
+    },
+    {
       "tmdb_id": 1084242,
       "imdb_id": "tt26443597",
       "title": "Zootopia 2",
@@ -1870,7 +2011,7 @@
       "age_rating": "PG",
       "worldwide_gross": 1868208796,
       "budget": 150000000,
-      "popularity": 63.7993,
+      "popularity": 62.6823,
       "synopsis": "After cracking the biggest case in Zootopia's history, rookie cops Judy Hopps and Nick Wilde find themselves on the twisting trail of a great mystery when Gary De'Snake arrives and turns the animal metropolis upside down. To crack the case, Judy and Nick must go undercover to unexpected new parts of town, where their growing partnership is tested like never before.",
       "language": "en",
       "culture": "Western",
@@ -1952,51 +2093,6 @@
       }
     },
     {
-      "tmdb_id": 1302904,
-      "imdb_id": "tt32588798",
-      "title": "Practical Magic 2",
-      "year": "2026",
-      "genres": [
-        "Romance",
-        "Fantasy",
-        "Comedy"
-      ],
-      "cinema_date": "2026-09-10",
-      "age_rating": "M",
-      "worldwide_gross": null,
-      "budget": 75000000,
-      "popularity": 62.4901,
-      "synopsis": "The Owens sisters must confront the dark curse that threatens to unravel their family once and for all.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/ogwQOLbCfncjvBhFb5l0OmQH8KC.jpg",
-      "trailers": [
-        "pLEZ1QgzT5M",
-        "_5W-mPM49K0",
-        "GxGm8GNnTg8",
-        "xRurGLtCy0I"
-      ],
-      "director": "Susanne Bier",
-      "cast": [
-        "Sandra Bullock",
-        "Nicole Kidman",
-        "Joey King",
-        "Maisie Williams"
-      ],
-      "imdb_rating": null,
-      "imdb_votes": null,
-      "award": null,
-      "award_text": "1 nomination total",
-      "offers": [],
-      "status": [
-        "in_cinema"
-      ],
-      "window_dates": {
-        "upcoming": "2026-08-28",
-        "in_cinema": "2026-09-10"
-      }
-    },
-    {
       "tmdb_id": 83533,
       "imdb_id": "tt1757678",
       "title": "Avatar: Fire and Ash",
@@ -2010,7 +2106,7 @@
       "age_rating": "M",
       "worldwide_gross": 1485999890,
       "budget": 350000000,
-      "popularity": 61.9805,
+      "popularity": 61.6147,
       "synopsis": "In the wake of the devastating war against the RDA and the loss of their eldest son, Jake Sully and Neytiri face a new threat on Pandora: the Ash People, a violent and power-hungry Na'vi tribe led by the ruthless Varang. Jake's family must fight for their survival and the future of Pandora in a conflict that pushes them to their emotional and physical limits.",
       "language": "en",
       "culture": "Western",
@@ -2086,53 +2182,6 @@
       }
     },
     {
-      "tmdb_id": 1058424,
-      "imdb_id": "tt27369017",
-      "title": "Hope",
-      "year": "2026",
-      "genres": [
-        "Science Fiction",
-        "Mystery",
-        "Action"
-      ],
-      "cinema_date": "2026-09-10",
-      "age_rating": "MA 15+",
-      "worldwide_gross": 33800000,
-      "budget": 40000000,
-      "popularity": 59.9202,
-      "synopsis": "In the remote South Korean village of Hope Harbor, police chief Bum-seok and officer Sung-ae are called to investigate a mysterious creature wreaking havoc on the community. But all is not as it seems, and perceptions can be misleading. What begins as ignorance plants the seed of disaster, escalating through human conflict into a tragedy of cosmic proportions.",
-      "language": "ko",
-      "culture": "Korean",
-      "poster": "/bcK5naYzzfY0JBCgrPrsrbV6NO1.jpg",
-      "trailers": [
-        "Ls-wVxqGge4",
-        "OFaJzL83y0Q",
-        "R5jcEBVBEbQ",
-        "ODnHr2Emnf0"
-      ],
-      "director": "Na Hong-jin",
-      "cast": [
-        "Hwang Jung-min",
-        "Zo In-sung",
-        "Hoyeon",
-        "Alicia Vikander"
-      ],
-      "imdb_rating": 6.9,
-      "imdb_votes": 1504,
-      "rt_critic": 72,
-      "metacritic": 68,
-      "award": null,
-      "award_text": "2 nominations total",
-      "offers": [],
-      "status": [
-        "in_cinema"
-      ],
-      "window_dates": {
-        "upcoming": "2026-07-14",
-        "in_cinema": "2026-09-10"
-      }
-    },
-    {
       "tmdb_id": 1226863,
       "imdb_id": "tt28650488",
       "title": "The Super Mario Galaxy Movie",
@@ -2148,7 +2197,7 @@
       "age_rating": "PG",
       "worldwide_gross": 1012203331,
       "budget": 110000000,
-      "popularity": 59.6115,
+      "popularity": 59.8295,
       "synopsis": "Having thwarted Bowser's previous plot to marry Princess Peach, Mario and Luigi now face a fresh threat in Bowser Jr., who is determined to liberate his father from captivity and restore the family legacy. Alongside companions new and old, the brothers travel across the stars to stop the young heir's crusade.",
       "language": "en",
       "culture": "Western",
@@ -2159,7 +2208,7 @@
         "2JuEmP6uHqs",
         "35kFpZ3Y10Q"
       ],
-      "director": "Aaron Horvath, Michael Jelenic",
+      "director": "Michael Jelenic, Aaron Horvath",
       "cast": [
         "Chris Pratt",
         "Charlie Day",
@@ -2167,7 +2216,7 @@
         "Jack Black"
       ],
       "imdb_rating": 6.3,
-      "imdb_votes": 69667,
+      "imdb_votes": 74116,
       "rt_critic": 42,
       "metacritic": 37,
       "award": null,
@@ -2256,6 +2305,95 @@
       }
     },
     {
+      "tmdb_id": 822119,
+      "imdb_id": "tt14513804",
+      "title": "Captain America: Brave New World",
+      "year": "2025",
+      "genres": [
+        "Action",
+        "Thriller",
+        "Science Fiction"
+      ],
+      "cinema_date": "2025-02-13",
+      "age_rating": "M",
+      "worldwide_gross": 415101577,
+      "budget": 180000000,
+      "popularity": 58.8018,
+      "synopsis": "After meeting with newly elected U.S. President Thaddeus Ross, Sam finds himself in the middle of an international incident. He must discover the reason behind a nefarious global plot before the true mastermind has the entire world seeing red.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/pzIddUEMWhWzfvLI3TwxUG2wGoi.jpg",
+      "trailers": [
+        "SOwJjV6Y_l0",
+        "3tp1CHLpRWw",
+        "cVMTRzcaX0g",
+        "Am5wfOvi0gw"
+      ],
+      "director": "Julius Onah",
+      "cast": [
+        "Anthony Mackie",
+        "Harrison Ford",
+        "Danny Ramirez",
+        "Shira Haas"
+      ],
+      "imdb_rating": 5.6,
+      "imdb_votes": 192394,
+      "rt_critic": 46,
+      "metacritic": 42,
+      "award": null,
+      "award_text": "2 wins & 17 nominations total",
+      "offers": [
+        {
+          "service": "Disney+",
+          "type": "sub",
+          "price": null,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.99,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
+          "service": "Fetch TV",
+          "type": "buy",
+          "price": 17.98,
+          "format": "SD"
+        }
+      ],
+      "status": [
+        "included_streaming"
+      ],
+      "window_dates": {
+        "included_streaming": "2026-07-23"
+      }
+    },
+    {
       "tmdb_id": 1594914,
       "imdb_id": "tt19035928",
       "title": "Lucky Strike",
@@ -2268,7 +2406,7 @@
       "age_rating": "M",
       "worldwide_gross": 803112,
       "budget": 10000000,
-      "popularity": 59.0131,
+      "popularity": 57.8565,
       "synopsis": "A wounded American soldier fights to survive behind enemy lines during WWII's Battle of the Bulge against the Germans, relying on his instinct, spy craft and a hand-radio to evade capture and find his way back to his unit.",
       "language": "en",
       "culture": "Western",
@@ -2347,191 +2485,6 @@
       }
     },
     {
-      "tmdb_id": 454639,
-      "imdb_id": "tt0427340",
-      "title": "Masters of the Universe",
-      "year": "2026",
-      "genres": [
-        "Action",
-        "Fantasy",
-        "Science Fiction"
-      ],
-      "cinema_date": "2026-06-04",
-      "age_rating": "M",
-      "worldwide_gross": 113763426,
-      "budget": 200000000,
-      "popularity": 55.1236,
-      "synopsis": "After being separated for 15 years, the Sword of Power leads Prince Adam back to Eternia, where he discovers his home shattered under the fiendish rule of Skeletor. To save his family and his world, Adam must join forces with his closest allies, Teela and Duncan/Man-At-Arms, and embrace his true destiny as He-Man \u2014 the most powerful man in the universe.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/oRuyGUHdoaQxWP3SDfafGkStxTC.jpg",
-      "trailers": [
-        "lBnfz93v27Q",
-        "9iji8NfYM6M",
-        "z81e-EiwGJw",
-        "05BQdYOTvDQ"
-      ],
-      "director": "Travis Knight",
-      "cast": [
-        "Nicholas Galitzine",
-        "Camila Mendes",
-        "Idris Elba",
-        "Jared Leto"
-      ],
-      "imdb_rating": 6.4,
-      "imdb_votes": 118965,
-      "metacritic": 52,
-      "award": null,
-      "award_text": "6 nominations total",
-      "offers": [
-        {
-          "service": "Prime Video",
-          "type": "sub",
-          "price": null,
-          "format": "4K"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "in_cinema": "2026-07-12",
-        "included_streaming": "2026-07-26"
-      }
-    },
-    {
-      "tmdb_id": 1185806,
-      "imdb_id": "tt29356163",
-      "title": "PAW Patrol: The Dino Movie",
-      "year": "2026",
-      "genres": [
-        "Animation",
-        "Adventure",
-        "Family",
-        "Fantasy",
-        "Comedy"
-      ],
-      "cinema_date": "2026-09-10",
-      "age_rating": "G",
-      "worldwide_gross": 138326933,
-      "budget": 40000000,
-      "popularity": 54.333,
-      "synopsis": "The Paw Patrol lands on a mysterious dinosaur island after a storm, where they meet Rex, a stranded pup. When Humdinger's reckless mining triggers a volcano, the team faces their biggest rescue mission yet to save the island.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/qnin56Syy5rbG7KCaxWY7SPuy6p.jpg",
-      "trailers": [
-        "ZUxbGF-MRQE",
-        "GN9ynEUmZuk",
-        "vq0sMP5DJXE",
-        "A_4wyR43rvg"
-      ],
-      "director": "Cal Brunker",
-      "cast": [
-        "Carter Young",
-        "Mckenna Grace",
-        "Terry Crews",
-        "Meredith MacNeill"
-      ],
-      "imdb_rating": 6.2,
-      "imdb_votes": 1038,
-      "rt_critic": 81,
-      "metacritic": 47,
-      "award": null,
-      "award_text": "",
-      "offers": [],
-      "status": [
-        "in_cinema"
-      ],
-      "window_dates": {
-        "upcoming": "2026-07-14",
-        "in_cinema": "2026-09-10"
-      }
-    },
-    {
-      "tmdb_id": 533535,
-      "imdb_id": "tt6263850",
-      "title": "Deadpool & Wolverine",
-      "year": "2024",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Science Fiction"
-      ],
-      "cinema_date": "2024-07-25",
-      "age_rating": "MA 15+",
-      "worldwide_gross": 1338073645,
-      "budget": 200000000,
-      "popularity": 52.0467,
-      "synopsis": "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
-      "trailers": [
-        "dyq7hMlF9iY",
-        "rl2fAfnNftw",
-        "LYaJVfiwv0w",
-        "k2q1haFRQaA"
-      ],
-      "director": "Shawn Levy",
-      "cast": [
-        "Ryan Reynolds",
-        "Hugh Jackman",
-        "Emma Corrin",
-        "Matthew Macfadyen"
-      ],
-      "imdb_rating": 7.5,
-      "imdb_votes": 565006,
-      "rt_critic": 77,
-      "metacritic": 56,
-      "award": null,
-      "award_text": "31 wins & 71 nominations total",
-      "offers": [
-        {
-          "service": "Disney+",
-          "type": "sub",
-          "price": null,
-          "format": "4K"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "SD"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "included_streaming": "2026-07-12"
-      }
-    },
-    {
       "tmdb_id": 936075,
       "imdb_id": "tt11378946",
       "title": "Michael",
@@ -2544,7 +2497,7 @@
       "age_rating": "PG",
       "worldwide_gross": 1032616139,
       "budget": 250000000,
-      "popularity": 51.5738,
+      "popularity": 55.0827,
       "synopsis": "The story of Michael Jackson, one of the most influential artists the world has ever known, and his life beyond the music. His journey from the discovery of his extraordinary talent as the lead of the Jackson Five, to the visionary artist whose creative ambition fueled a relentless pursuit to become the biggest entertainer in the world, highlighting both his life off-stage and some of the most iconic performances from his early solo career.",
       "language": "en",
       "culture": "Western",
@@ -2646,40 +2599,175 @@
       }
     },
     {
-      "tmdb_id": 1384216,
-      "imdb_id": "tt21285562",
-      "title": "The Dog Stars",
+      "tmdb_id": 454639,
+      "imdb_id": "tt0427340",
+      "title": "Masters of the Universe",
       "year": "2026",
       "genres": [
-        "Science Fiction",
-        "Thriller"
+        "Action",
+        "Fantasy",
+        "Science Fiction"
+      ],
+      "cinema_date": "2026-06-04",
+      "age_rating": "M",
+      "worldwide_gross": 113763426,
+      "budget": 200000000,
+      "popularity": 54.5577,
+      "synopsis": "After being separated for 15 years, the Sword of Power leads Prince Adam back to Eternia, where he discovers his home shattered under the fiendish rule of Skeletor. To save his family and his world, Adam must join forces with his closest allies, Teela and Duncan/Man-At-Arms, and embrace his true destiny as He-Man \u2014 the most powerful man in the universe.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/oRuyGUHdoaQxWP3SDfafGkStxTC.jpg",
+      "trailers": [
+        "lBnfz93v27Q",
+        "9iji8NfYM6M",
+        "z81e-EiwGJw",
+        "05BQdYOTvDQ"
+      ],
+      "director": "Travis Knight",
+      "cast": [
+        "Nicholas Galitzine",
+        "Camila Mendes",
+        "Idris Elba",
+        "Jared Leto"
+      ],
+      "imdb_rating": 6.4,
+      "imdb_votes": 118965,
+      "metacritic": 52,
+      "award": null,
+      "award_text": "6 nominations total",
+      "offers": [
+        {
+          "service": "Prime Video",
+          "type": "sub",
+          "price": null,
+          "format": "4K"
+        }
+      ],
+      "status": [
+        "included_streaming"
+      ],
+      "window_dates": {
+        "in_cinema": "2026-07-12",
+        "included_streaming": "2026-07-26"
+      }
+    },
+    {
+      "tmdb_id": 533535,
+      "imdb_id": "tt6263850",
+      "title": "Deadpool & Wolverine",
+      "year": "2024",
+      "genres": [
+        "Action",
+        "Comedy",
+        "Science Fiction"
+      ],
+      "cinema_date": "2024-07-25",
+      "age_rating": "MA 15+",
+      "worldwide_gross": 1338073645,
+      "budget": 200000000,
+      "popularity": 51.9848,
+      "synopsis": "A listless Wade Wilson toils away in civilian life with his days as the morally flexible mercenary, Deadpool, behind him. But when his homeworld faces an existential threat, Wade must reluctantly suit-up again with an even more reluctant Wolverine.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/8cdWjvZQUExUUTzyp4t6EDMubfO.jpg",
+      "trailers": [
+        "dyq7hMlF9iY",
+        "rl2fAfnNftw",
+        "LYaJVfiwv0w",
+        "k2q1haFRQaA"
+      ],
+      "director": "Shawn Levy",
+      "cast": [
+        "Ryan Reynolds",
+        "Hugh Jackman",
+        "Emma Corrin",
+        "Matthew Macfadyen"
+      ],
+      "imdb_rating": 7.5,
+      "imdb_votes": 565006,
+      "rt_critic": 77,
+      "metacritic": 56,
+      "award": null,
+      "award_text": "31 wins & 71 nominations total",
+      "offers": [
+        {
+          "service": "Disney+",
+          "type": "sub",
+          "price": null,
+          "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 24.99,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 24.99,
+          "format": "SD"
+        }
+      ],
+      "status": [
+        "included_streaming"
+      ],
+      "window_dates": {
+        "included_streaming": "2026-07-12"
+      }
+    },
+    {
+      "tmdb_id": 1288059,
+      "imdb_id": "tt32332915",
+      "title": "I Want Your Sex",
+      "year": "2026",
+      "genres": [
+        "Comedy"
       ],
       "cinema_date": "2026-08-27",
       "age_rating": "MA 15+",
-      "worldwide_gross": 33037035,
-      "budget": 110000000,
-      "popularity": 51.0135,
-      "synopsis": "After the world's population has been ravaged by a pandemic, a man lives a lonesome existence in a Colorado airplane hangar with his dog and a dour gunman he has befriended. When a mysterious transmission comes through on the radio while he\u2019s flying his old Cessna, it sparks a hunt for the provenance of the sound.",
+      "worldwide_gross": 2000000,
+      "budget": 10000000,
+      "popularity": 51.4371,
+      "synopsis": "When a naive young man becomes the sexual muse for a renowned and provocative artist, his dream job quickly turns dangerous as he is drawn into an obsessive world of power, betrayal, and murder.",
       "language": "en",
       "culture": "Western",
-      "poster": "/A7i16oDi03qrKep5pBfuTWNUTb.jpg",
+      "poster": "/pR7SIX3AwqdoD96OI44oLG98e7g.jpg",
       "trailers": [
-        "AdQE5Yxt6tg",
-        "fJqRs26wlk4",
-        "JtREVrJxCcc",
-        "SHXuKACgKQA"
+        "w1IuouiR8CE",
+        "4mU_Em55z2A",
+        "hs2NY9ONaZw",
+        "MbVviJB11rI"
       ],
-      "director": "Ridley Scott",
+      "director": "Gregg Araki",
       "cast": [
-        "Jacob Elordi",
-        "Margaret Qualley",
-        "Josh Brolin",
-        "Guy Pearce"
+        "Olivia Wilde",
+        "Cooper Hoffman",
+        "Mason Gooding",
+        "Chase Sui Wonders"
       ],
-      "imdb_rating": 6.5,
-      "imdb_votes": 13521,
-      "rt_critic": 40,
-      "metacritic": 49,
+      "imdb_rating": 6.0,
+      "imdb_votes": 4928,
+      "rt_critic": 92,
+      "metacritic": 67,
       "award": null,
       "award_text": "",
       "offers": [],
@@ -2687,8 +2775,8 @@
         "in_cinema"
       ],
       "window_dates": {
-        "upcoming": "2026-07-16",
-        "in_cinema": "2026-08-28"
+        "upcoming": "2026-07-30",
+        "in_cinema": "2026-09-02"
       }
     },
     {
@@ -2703,7 +2791,7 @@
       "age_rating": "R 18+",
       "worldwide_gross": 71491178,
       "budget": 20000000,
-      "popularity": 50.8349,
+      "popularity": 51.2972,
       "synopsis": "After her husband's abrupt death, Alice seeks solace with his remaining family \u2014 descendants of a leading researcher on demonic possession. As her in-laws transform one by one into creatures that feed on fear, she comes to discover that the vows she took in life survive even in death.",
       "language": "en",
       "culture": "Western",
@@ -2821,6 +2909,167 @@
       }
     },
     {
+      "tmdb_id": 1290821,
+      "imdb_id": "tt32357218",
+      "title": "Shelter",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Crime",
+        "Thriller"
+      ],
+      "cinema_date": "2026-02-05",
+      "age_rating": "M",
+      "worldwide_gross": 53933639,
+      "budget": 50000000,
+      "popularity": 50.4145,
+      "synopsis": "A man living in self-imposed exile on a remote island rescues a young girl from a violent storm, setting off a chain of events that forces him out of seclusion to protect her from enemies tied to his past.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/cv7DeQQ7TOozPoTCBdNJIvWKhU1.jpg",
+      "trailers": [
+        "kdcxogb4leQ",
+        "kCY4Y3Y8UpA",
+        "Bvrbi8fZb7g",
+        "3KcD7A9Pzgc"
+      ],
+      "director": "Ric Roman Waugh",
+      "cast": [
+        "Jason Statham",
+        "Bodhi Rae Breathnach",
+        "Naomi Ackie",
+        "Daniel Mays"
+      ],
+      "imdb_rating": 6.1,
+      "imdb_votes": 25305,
+      "rt_critic": 64,
+      "metacritic": 50,
+      "award": null,
+      "award_text": "",
+      "offers": [
+        {
+          "service": "Prime Video",
+          "type": "sub",
+          "price": null,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 6.99,
+          "format": "HD"
+        },
+        {
+          "service": "Fetch TV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.99,
+          "format": "HD"
+        },
+        {
+          "service": "Fetch TV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "4K"
+        }
+      ],
+      "status": [
+        "included_streaming",
+        "rental"
+      ],
+      "window_dates": {
+        "included_streaming": "2026-07-12",
+        "rental": "2026-07-12"
+      }
+    },
+    {
+      "tmdb_id": 1384216,
+      "imdb_id": "tt21285562",
+      "title": "The Dog Stars",
+      "year": "2026",
+      "genres": [
+        "Science Fiction",
+        "Thriller"
+      ],
+      "cinema_date": "2026-08-27",
+      "age_rating": "MA 15+",
+      "worldwide_gross": 33037035,
+      "budget": 110000000,
+      "popularity": 49.1562,
+      "synopsis": "After the world's population has been ravaged by a pandemic, a man lives a lonesome existence in a Colorado airplane hangar with his dog and a dour gunman he has befriended. When a mysterious transmission comes through on the radio while he\u2019s flying his old Cessna, it sparks a hunt for the provenance of the sound.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/A7i16oDi03qrKep5pBfuTWNUTb.jpg",
+      "trailers": [
+        "AdQE5Yxt6tg",
+        "fJqRs26wlk4",
+        "JtREVrJxCcc",
+        "SHXuKACgKQA"
+      ],
+      "director": "Ridley Scott",
+      "cast": [
+        "Jacob Elordi",
+        "Margaret Qualley",
+        "Josh Brolin",
+        "Guy Pearce"
+      ],
+      "imdb_rating": 6.5,
+      "imdb_votes": 13521,
+      "rt_critic": 40,
+      "metacritic": 49,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-16",
+        "in_cinema": "2026-08-28"
+      }
+    },
+    {
       "tmdb_id": 1314481,
       "imdb_id": "tt33612209",
       "title": "The Devil Wears Prada 2",
@@ -2833,7 +3082,7 @@
       "age_rating": "M",
       "worldwide_gross": 691379651,
       "budget": 100000000,
-      "popularity": 48.683,
+      "popularity": 48.652,
       "synopsis": "Andy Sachs returns to Runway as Miranda Priestly navigates a new media landscape and Runway's position within. The duo reconnect with former assistant Emily Charlton, now the head of a luxury brand that possesses funding which could ensure Runway's survival.",
       "language": "en",
       "culture": "Western",
@@ -2940,256 +3189,6 @@
       }
     },
     {
-      "tmdb_id": 822119,
-      "imdb_id": "tt14513804",
-      "title": "Captain America: Brave New World",
-      "year": "2025",
-      "genres": [
-        "Action",
-        "Thriller",
-        "Science Fiction"
-      ],
-      "cinema_date": "2025-02-13",
-      "age_rating": "M",
-      "worldwide_gross": 415101577,
-      "budget": 180000000,
-      "popularity": 47.2254,
-      "synopsis": "After meeting with newly elected U.S. President Thaddeus Ross, Sam finds himself in the middle of an international incident. He must discover the reason behind a nefarious global plot before the true mastermind has the entire world seeing red.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/pzIddUEMWhWzfvLI3TwxUG2wGoi.jpg",
-      "trailers": [
-        "SOwJjV6Y_l0",
-        "3tp1CHLpRWw",
-        "cVMTRzcaX0g",
-        "Am5wfOvi0gw"
-      ],
-      "director": "Julius Onah",
-      "cast": [
-        "Anthony Mackie",
-        "Harrison Ford",
-        "Danny Ramirez",
-        "Shira Haas"
-      ],
-      "imdb_rating": 5.6,
-      "imdb_votes": 192394,
-      "rt_critic": 46,
-      "metacritic": 42,
-      "award": null,
-      "award_text": "2 wins & 17 nominations total",
-      "offers": [
-        {
-          "service": "Disney+",
-          "type": "sub",
-          "price": null,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.99,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
-          "service": "Fetch TV",
-          "type": "buy",
-          "price": 17.98,
-          "format": "SD"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "included_streaming": "2026-07-23"
-      }
-    },
-    {
-      "tmdb_id": 1290821,
-      "imdb_id": "tt32357218",
-      "title": "Shelter",
-      "year": "2026",
-      "genres": [
-        "Action",
-        "Crime",
-        "Thriller"
-      ],
-      "cinema_date": "2026-02-05",
-      "age_rating": "M",
-      "worldwide_gross": 53933639,
-      "budget": 50000000,
-      "popularity": 46.7457,
-      "synopsis": "A man living in self-imposed exile on a remote island rescues a young girl from a violent storm, setting off a chain of events that forces him out of seclusion to protect her from enemies tied to his past.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/cv7DeQQ7TOozPoTCBdNJIvWKhU1.jpg",
-      "trailers": [
-        "kdcxogb4leQ",
-        "kCY4Y3Y8UpA",
-        "Bvrbi8fZb7g",
-        "3KcD7A9Pzgc"
-      ],
-      "director": "Ric Roman Waugh",
-      "cast": [
-        "Jason Statham",
-        "Bodhi Rae Breathnach",
-        "Naomi Ackie",
-        "Daniel Mays"
-      ],
-      "imdb_rating": 6.1,
-      "imdb_votes": 25305,
-      "rt_critic": 64,
-      "metacritic": 50,
-      "award": null,
-      "award_text": "",
-      "offers": [
-        {
-          "service": "Prime Video",
-          "type": "sub",
-          "price": null,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 6.99,
-          "format": "HD"
-        },
-        {
-          "service": "Fetch TV",
-          "type": "rent",
-          "price": 6.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 6.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 6.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 6.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.99,
-          "format": "HD"
-        },
-        {
-          "service": "Fetch TV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "4K"
-        }
-      ],
-      "status": [
-        "included_streaming",
-        "rental"
-      ],
-      "window_dates": {
-        "included_streaming": "2026-07-12",
-        "rental": "2026-07-12"
-      }
-    },
-    {
-      "tmdb_id": 1291595,
-      "imdb_id": "tt32393988",
-      "title": "Insidious: Out of the Further",
-      "year": "2026",
-      "genres": [
-        "Horror",
-        "Thriller"
-      ],
-      "cinema_date": "2026-08-20",
-      "age_rating": "M",
-      "worldwide_gross": 140694722,
-      "budget": 18000000,
-      "popularity": 45.8537,
-      "synopsis": "Gemma, a young mother raising her daughter in the house she grew up in, discovers she can travel into The Further, where she possesses an ability to bring what lives there back to the real world.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
-      "trailers": [
-        "DtIG4BPnfDs",
-        "x17kM6xmSpU",
-        "JR3qaSl5gVs",
-        "Wy7ouyxM-mo"
-      ],
-      "director": "Jacob Chase",
-      "cast": [
-        "Amelia Eve",
-        "Island Austin",
-        "Lin Shaye",
-        "Sam Spruell"
-      ],
-      "imdb_rating": 6.2,
-      "imdb_votes": 13228,
-      "rt_critic": 58,
-      "metacritic": 47,
-      "award": null,
-      "award_text": "",
-      "offers": [],
-      "status": [
-        "in_cinema"
-      ],
-      "window_dates": {
-        "upcoming": "2026-08-12",
-        "in_cinema": "2026-08-20"
-      }
-    },
-    {
       "tmdb_id": 1184918,
       "imdb_id": "tt29623480",
       "title": "The Wild Robot",
@@ -3204,7 +3203,7 @@
       "age_rating": "PG",
       "worldwide_gross": 331982078,
       "budget": 78000000,
-      "popularity": 44.9771,
+      "popularity": 46.6479,
       "synopsis": "After a shipwreck, an intelligent robot called Roz is stranded on an uninhabited island. To survive the harsh environment, Roz bonds with the island's animals and cares for an orphaned baby goose.",
       "language": "en",
       "culture": "Western",
@@ -3327,7 +3326,7 @@
       "age_rating": "PG",
       "worldwide_gross": 389685783,
       "budget": 150000000,
-      "popularity": 44.877,
+      "popularity": 45.7866,
       "synopsis": "Scientists have discovered how to 'hop' human consciousness into lifelike robotic animals, allowing people to communicate with animals as animals. Animal lover Mabel seizes an opportunity to use the technology, uncovering mysteries within the animal world beyond anything she could have imagined.",
       "language": "en",
       "culture": "Western",
@@ -3409,6 +3408,98 @@
       }
     },
     {
+      "tmdb_id": 1377237,
+      "imdb_id": "tt31349844",
+      "title": "Runner",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Comedy",
+        "Thriller"
+      ],
+      "cinema_date": "2026-09-10",
+      "age_rating": "M",
+      "worldwide_gross": null,
+      "budget": null,
+      "popularity": 45.1755,
+      "synopsis": "A former soldier and his unlikely partner become the targets of a ruthless cartel while racing to complete a critical medical delivery and save the life of a little girl.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/yBKMAIj7clP42UkFejhGDBBoTpb.jpg",
+      "trailers": [
+        "Mzovog2buxQ",
+        "JS6R1k96blU",
+        "2skVB3s5u5s",
+        "9NX2F52kFwU"
+      ],
+      "director": "Scott Waugh",
+      "cast": [
+        "Alan Ritchson",
+        "Owen Wilson",
+        "Rodrigo Santoro",
+        "Leila George"
+      ],
+      "imdb_rating": 6.6,
+      "imdb_votes": 493,
+      "metacritic": 55,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-19",
+        "in_cinema": "2026-09-10"
+      }
+    },
+    {
+      "tmdb_id": 1291595,
+      "imdb_id": "tt32393988",
+      "title": "Insidious: Out of the Further",
+      "year": "2026",
+      "genres": [
+        "Horror",
+        "Thriller"
+      ],
+      "cinema_date": "2026-08-20",
+      "age_rating": "M",
+      "worldwide_gross": 142078553,
+      "budget": 18000000,
+      "popularity": 44.1513,
+      "synopsis": "Gemma, a young mother raising her daughter in the house she grew up in, discovers she can travel into The Further, where she possesses an ability to bring what lives there back to the real world.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/4tTrW9dXCByS5wt2pXVWb58zNjz.jpg",
+      "trailers": [
+        "DtIG4BPnfDs",
+        "x17kM6xmSpU",
+        "JR3qaSl5gVs",
+        "Wy7ouyxM-mo"
+      ],
+      "director": "Jacob Chase",
+      "cast": [
+        "Amelia Eve",
+        "Island Austin",
+        "Lin Shaye",
+        "Sam Spruell"
+      ],
+      "imdb_rating": 6.2,
+      "imdb_votes": 13228,
+      "rt_critic": 58,
+      "metacritic": 47,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-08-12",
+        "in_cinema": "2026-08-20"
+      }
+    },
+    {
       "tmdb_id": 872585,
       "imdb_id": "tt15398776",
       "title": "Oppenheimer",
@@ -3421,7 +3512,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 952000000,
       "budget": 100000000,
-      "popularity": 44.0581,
+      "popularity": 41.9564,
       "synopsis": "The story of J. Robert Oppenheimer's role in the development of the atomic bomb during World War II.",
       "language": "en",
       "culture": "Western",
@@ -3539,7 +3630,7 @@
       "age_rating": "M",
       "worldwide_gross": 714844358,
       "budget": 190000000,
-      "popularity": 40.8596,
+      "popularity": 40.0519,
       "synopsis": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
       "language": "en",
       "culture": "Western",
@@ -3589,6 +3680,12 @@
           "format": "HD"
         },
         {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 4.99,
+          "format": "4K"
+        },
+        {
           "service": "AppleTV",
           "type": "rent",
           "price": 4.99,
@@ -3617,6 +3714,12 @@
           "type": "buy",
           "price": 14.99,
           "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 14.99,
+          "format": "4K"
         },
         {
           "service": "AppleTV",
@@ -3660,7 +3763,7 @@
       "age_rating": "M",
       "worldwide_gross": 869146189,
       "budget": 180000000,
-      "popularity": 40.0838,
+      "popularity": 39.1122,
       "synopsis": "Five years after the events of Jurassic World Dominion, covert operations expert Zora Bennett is contracted to lead a skilled team on a top-secret mission to secure genetic material from the world's three most massive dinosaurs. When Zora's operation intersects with a civilian family whose boating expedition was capsized, they all find themselves stranded on an island where they come face-to-face with a sinister, shocking discovery that's been hidden from the world for decades.",
       "language": "en",
       "culture": "Western",
@@ -3774,6 +3877,114 @@
       }
     },
     {
+      "tmdb_id": 1122573,
+      "imdb_id": "tt27681354",
+      "title": "In the Grey",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Thriller"
+      ],
+      "cinema_date": "2026-05-14",
+      "age_rating": "MA 15+",
+      "worldwide_gross": 27117528,
+      "budget": 70000000,
+      "popularity": 38.2145,
+      "synopsis": "A covert team of elite operatives are living in the shadows. When a ruthless despot steals a billion-dollar fortune, they're sent to take it back\u2014an impossible heist that erupts into a deadly game of strategy, deception and survival.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/dQgIcW6Th08kMRf2HBoYWoFE6OD.jpg",
+      "trailers": [
+        "TEyz-nm8Wlk",
+        "ok-n6RpUIg8",
+        "Ic119f0au0s",
+        "OgZr3dgNHWk"
+      ],
+      "director": "Guy Ritchie",
+      "cast": [
+        "Henry Cavill",
+        "Jake Gyllenhaal",
+        "Eiza Gonz\u00e1lez",
+        "Carlos Bardem"
+      ],
+      "imdb_rating": 6.6,
+      "imdb_votes": 6178,
+      "rt_critic": 52,
+      "metacritic": 53,
+      "award": null,
+      "award_text": "",
+      "offers": [
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 6.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "4K"
+        },
+        {
+          "service": "Fetch TV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
+          "service": "Fetch TV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        }
+      ],
+      "status": [
+        "pvod",
+        "rental"
+      ],
+      "window_dates": {
+        "pvod": "2026-07-12",
+        "rental": "2026-07-28"
+      }
+    },
+    {
       "tmdb_id": 931285,
       "imdb_id": "tt17490712",
       "title": "Mortal Kombat II",
@@ -3787,7 +3998,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 129470110,
       "budget": 80000000,
-      "popularity": 38.4787,
+      "popularity": 37.5543,
       "synopsis": "The fan favorite champions\u2014now joined by Johnny Cage himself\u2014are pitted against one another in the ultimate, no-holds barred, gory battle to defeat the dark rule of Shao Kahn that threatens the very existence of the Earthrealm and its defenders.",
       "language": "en",
       "culture": "Western",
@@ -3920,111 +4131,91 @@
       }
     },
     {
-      "tmdb_id": 1122573,
-      "imdb_id": "tt27681354",
-      "title": "In the Grey",
-      "year": "2026",
+      "tmdb_id": 617126,
+      "imdb_id": "tt10676052",
+      "title": "The Fantastic 4: First Steps",
+      "year": "2025",
       "genres": [
-        "Action",
-        "Thriller"
+        "Science Fiction",
+        "Adventure",
+        "Action"
       ],
-      "cinema_date": "2026-05-14",
-      "age_rating": "MA 15+",
-      "worldwide_gross": 27117528,
-      "budget": 70000000,
-      "popularity": 37.1299,
-      "synopsis": "A covert team of elite operatives are living in the shadows. When a ruthless despot steals a billion-dollar fortune, they're sent to take it back\u2014an impossible heist that erupts into a deadly game of strategy, deception and survival.",
+      "cinema_date": "2025-07-24",
+      "age_rating": "PG",
+      "worldwide_gross": 521858728,
+      "budget": 200000000,
+      "popularity": 37.264,
+      "synopsis": "Against the vibrant backdrop of a 1960s-inspired, retro-futuristic world, Marvel's First Family is forced to balance their roles as heroes with the strength of their family bond, while defending Earth from a ravenous space god called Galactus and his enigmatic Herald, Silver Surfer.",
       "language": "en",
       "culture": "Western",
-      "poster": "/dQgIcW6Th08kMRf2HBoYWoFE6OD.jpg",
+      "poster": "/nf5qaSEvyYSNeFH0YhSs5EsBLX9.jpg",
       "trailers": [
-        "TEyz-nm8Wlk",
-        "ok-n6RpUIg8",
-        "Ic119f0au0s",
-        "OgZr3dgNHWk"
+        "cPRk4KyB2AI",
+        "oTf3tnuzXgI",
+        "dP5rJ2VXXhA",
+        "MJ76sLrNVkI"
       ],
-      "director": "Guy Ritchie",
+      "director": "Matt Shakman",
       "cast": [
-        "Henry Cavill",
-        "Jake Gyllenhaal",
-        "Eiza Gonz\u00e1lez",
-        "Carlos Bardem"
+        "Pedro Pascal",
+        "Vanessa Kirby",
+        "Ebon Moss-Bachrach",
+        "Joseph Quinn"
       ],
-      "imdb_rating": 6.6,
-      "imdb_votes": 6178,
-      "rt_critic": 52,
-      "metacritic": 53,
+      "imdb_rating": 6.8,
+      "imdb_votes": 258601,
+      "metacritic": 65,
       "award": null,
-      "award_text": "",
+      "award_text": "4 wins & 48 nominations total",
       "offers": [
         {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 6.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 6.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 6.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 6.99,
+          "service": "Disney+",
+          "type": "sub",
+          "price": null,
           "format": "4K"
         },
         {
-          "service": "Fetch TV",
-          "type": "rent",
-          "price": 6.99,
+          "service": "Amazon",
+          "type": "buy",
+          "price": 24.99,
           "format": "SD"
         },
         {
           "service": "Amazon",
           "type": "buy",
-          "price": 19.99,
+          "price": 24.99,
           "format": "HD"
         },
         {
-          "service": "AppleTV",
+          "service": "Amazon",
           "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
+          "price": 24.99,
           "format": "4K"
         },
         {
-          "service": "Fetch TV",
+          "service": "AppleTV",
           "type": "buy",
-          "price": 19.98,
+          "price": 24.99,
           "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "4K"
         }
       ],
       "status": [
-        "pvod",
-        "rental"
+        "included_streaming"
       ],
       "window_dates": {
-        "pvod": "2026-07-12",
-        "rental": "2026-07-28"
+        "included_streaming": "2026-07-21"
       }
     },
     {
@@ -4041,7 +4232,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": null,
       "budget": 73000000,
-      "popularity": 36.5306,
+      "popularity": 37.1404,
       "synopsis": "On one last grueling mission during Army Ranger training, a combat engineer must lead his unit in a fight against a giant otherworldly killing machine.",
       "language": "en",
       "culture": "Western",
@@ -4078,63 +4269,41 @@
       }
     },
     {
-      "tmdb_id": 1612018,
-      "imdb_id": "tt39316472",
-      "title": "Jackass: Best and Last",
+      "tmdb_id": 1564614,
+      "imdb_id": "tt39143902",
+      "title": "Leviticus",
       "year": "2026",
       "genres": [
-        "Action",
-        "Comedy",
-        "Documentary"
+        "Horror",
+        "Romance"
       ],
-      "cinema_date": "2026-07-02",
+      "cinema_date": "2026-06-18",
       "age_rating": "MA 15+",
-      "worldwide_gross": 27795255,
-      "budget": 10000000,
-      "popularity": 36.37,
-      "synopsis": "The fifth and final installment to Jackass franchise where the crew go on one last insane crusade.",
+      "worldwide_gross": 8493480,
+      "budget": 3500000,
+      "popularity": 35.7697,
+      "synopsis": "Two teenage boys must escape a violent entity that takes the form of the person they desire most:  each other.",
       "language": "en",
       "culture": "Western",
-      "poster": "/tfgccePxnswMqhmtxafliLlcCVR.jpg",
+      "poster": "/gnAsZvBygplNpp8PtjoTEYv3VPB.jpg",
       "trailers": [
-        "YasXQ27FkQI",
-        "kPBedQ6-aGo",
-        "BmcMmU9pmnY",
-        "Lvqy_GSS4Gw"
+        "WXuK0vlFxII"
       ],
-      "director": "Jeff Tremaine",
+      "director": "Adrian Chiarella",
       "cast": [
-        "Johnny Knoxville",
-        "Steve-O",
-        "Chris Pontius",
-        "Jason 'Wee Man' Acu\u00f1a"
+        "Joe Bird",
+        "Stacy Clausen",
+        "Mia Wasikowska",
+        "Nicholas Hope"
       ],
-      "imdb_rating": 6.7,
-      "imdb_votes": 4253,
-      "rt_critic": 87,
-      "metacritic": 63,
+      "imdb_rating": 6.4,
+      "imdb_votes": 16673,
+      "rt_critic": 93,
+      "metacritic": 83,
       "award": null,
-      "award_text": "",
+      "award_text": "2 wins & 5 nominations total",
       "offers": [
         {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
           "service": "Amazon",
           "type": "rent",
           "price": 19.98,
@@ -4147,15 +4316,9 @@
           "format": "HD"
         },
         {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
           "service": "AppleTV",
           "type": "buy",
-          "price": 24.99,
+          "price": 22.99,
           "format": "SD"
         },
         {
@@ -4165,15 +4328,9 @@
           "format": "HD"
         },
         {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "4K"
-        },
-        {
           "service": "Amazon",
           "type": "buy",
-          "price": 24.99,
+          "price": 22.99,
           "format": "SD"
         },
         {
@@ -4181,65 +4338,14 @@
           "type": "buy",
           "price": 24.99,
           "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "4K"
         }
       ],
       "status": [
         "pvod"
       ],
       "window_dates": {
-        "in_cinema": "2026-08-12",
+        "in_cinema": "2026-07-29",
         "pvod": "2026-08-22"
-      }
-    },
-    {
-      "tmdb_id": 1377237,
-      "imdb_id": "tt31349844",
-      "title": "Runner",
-      "year": "2026",
-      "genres": [
-        "Action",
-        "Comedy",
-        "Thriller"
-      ],
-      "cinema_date": "2026-09-10",
-      "age_rating": "M",
-      "worldwide_gross": null,
-      "budget": null,
-      "popularity": 36.0347,
-      "synopsis": "A former soldier and his unlikely partner become the targets of a ruthless cartel while racing to complete a critical medical delivery and save the life of a little girl.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/yBKMAIj7clP42UkFejhGDBBoTpb.jpg",
-      "trailers": [
-        "2skVB3s5u5s",
-        "9NX2F52kFwU",
-        "_uL9atyhRGQ",
-        "aCaBKGuh-eQ"
-      ],
-      "director": "Scott Waugh",
-      "cast": [
-        "Alan Ritchson",
-        "Owen Wilson",
-        "Rodrigo Santoro",
-        "Leila George"
-      ],
-      "imdb_rating": null,
-      "imdb_votes": null,
-      "award": null,
-      "award_text": "",
-      "offers": [],
-      "status": [
-        "in_cinema"
-      ],
-      "window_dates": {
-        "upcoming": "2026-07-19",
-        "in_cinema": "2026-09-10"
       }
     },
     {
@@ -4255,7 +4361,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 399644671,
       "budget": 35000000,
-      "popularity": 35.5991,
+      "popularity": 35.7147,
       "synopsis": "Trying to escape her past, Millie Calloway accepts a job as a live-in housemaid for the wealthy Nina and Andrew Winchester. But what begins as a dream job quickly unravels into something far more dangerous\u2014a sexy, seductive game of secrets, scandal, and power.",
       "language": "en",
       "culture": "Western",
@@ -4388,41 +4494,63 @@
       }
     },
     {
-      "tmdb_id": 1564614,
-      "imdb_id": "tt39143902",
-      "title": "Leviticus",
+      "tmdb_id": 1612018,
+      "imdb_id": "tt39316472",
+      "title": "Jackass: Best and Last",
       "year": "2026",
       "genres": [
-        "Horror",
-        "Romance"
+        "Action",
+        "Comedy",
+        "Documentary"
       ],
-      "cinema_date": "2026-06-18",
+      "cinema_date": "2026-07-02",
       "age_rating": "MA 15+",
-      "worldwide_gross": 8493480,
-      "budget": 3500000,
-      "popularity": 35.2674,
-      "synopsis": "Two teenage boys must escape a violent entity that takes the form of the person they desire most:  each other.",
+      "worldwide_gross": 27795255,
+      "budget": 10000000,
+      "popularity": 35.5655,
+      "synopsis": "The fifth and final installment to Jackass franchise where the crew go on one last insane crusade.",
       "language": "en",
       "culture": "Western",
-      "poster": "/gnAsZvBygplNpp8PtjoTEYv3VPB.jpg",
+      "poster": "/tfgccePxnswMqhmtxafliLlcCVR.jpg",
       "trailers": [
-        "WXuK0vlFxII"
+        "YasXQ27FkQI",
+        "kPBedQ6-aGo",
+        "BmcMmU9pmnY",
+        "Lvqy_GSS4Gw"
       ],
-      "director": "Adrian Chiarella",
+      "director": "Jeff Tremaine",
       "cast": [
-        "Joe Bird",
-        "Stacy Clausen",
-        "Mia Wasikowska",
-        "Nicholas Hope"
+        "Johnny Knoxville",
+        "Steve-O",
+        "Chris Pontius",
+        "Jason 'Wee Man' Acu\u00f1a"
       ],
-      "imdb_rating": 6.4,
-      "imdb_votes": 15898,
-      "rt_critic": 93,
-      "metacritic": 83,
+      "imdb_rating": 6.7,
+      "imdb_votes": 4253,
+      "rt_critic": 87,
+      "metacritic": 63,
       "award": null,
-      "award_text": "2 wins & 5 nominations total",
+      "award_text": "",
       "offers": [
         {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
           "service": "Amazon",
           "type": "rent",
           "price": 19.98,
@@ -4435,9 +4563,15 @@
           "format": "HD"
         },
         {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
           "service": "AppleTV",
           "type": "buy",
-          "price": 22.99,
+          "price": 24.99,
           "format": "SD"
         },
         {
@@ -4447,9 +4581,15 @@
           "format": "HD"
         },
         {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 24.99,
+          "format": "4K"
+        },
+        {
           "service": "Amazon",
           "type": "buy",
-          "price": 22.99,
+          "price": 24.99,
           "format": "SD"
         },
         {
@@ -4457,111 +4597,20 @@
           "type": "buy",
           "price": 24.99,
           "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 24.99,
+          "format": "4K"
         }
       ],
       "status": [
         "pvod"
       ],
       "window_dates": {
-        "in_cinema": "2026-07-29",
+        "in_cinema": "2026-08-12",
         "pvod": "2026-08-22"
-      }
-    },
-    {
-      "tmdb_id": 14836,
-      "imdb_id": "tt0327597",
-      "title": "Coraline",
-      "year": "2009",
-      "genres": [
-        "Animation",
-        "Family",
-        "Fantasy"
-      ],
-      "cinema_date": "2024-08-15",
-      "age_rating": "PG",
-      "worldwide_gross": 185860104,
-      "budget": 60000000,
-      "popularity": 34.7981,
-      "synopsis": "Wandering her rambling old house in her boring new town, 11-year-old Coraline discovers a hidden door to a strangely idealized version of her life. In order to stay in the fantasy, she must make a frighteningly real sacrifice.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/4jeFXQYytChdZYE9JYO7Un87IlW.jpg",
-      "trailers": [
-        "5B92Phq9Z2A",
-        "GYYRTL1MMGo",
-        "BgKXN16_VBY",
-        "T6iQnnHNF50"
-      ],
-      "director": "Henry Selick",
-      "cast": [
-        "Dakota Fanning",
-        "Teri Hatcher",
-        "Jennifer Saunders",
-        "Dawn French"
-      ],
-      "imdb_rating": 7.8,
-      "imdb_votes": 297596,
-      "rt_critic": 91,
-      "metacritic": 80,
-      "award": "nominated",
-      "award_text": "Nominated for 1 Oscar. 8 wins & 46 nominations total",
-      "offers": [
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 4.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 4.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 4.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 4.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 22.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 22.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 22.99,
-          "format": "HD"
-        }
-      ],
-      "status": [
-        "pvod",
-        "rental"
-      ],
-      "window_dates": {
-        "pvod": "2026-07-12",
-        "rental": "2026-07-12"
       }
     },
     {
@@ -4577,7 +4626,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": 90552113,
       "budget": 22000000,
-      "popularity": 34.3727,
+      "popularity": 35.2019,
       "synopsis": "The young daughter of a journalist disappears into the desert without a trace\u2014eight years later, the broken family is shocked when she is returned to them, as what should be a joyful reunion turns into a living nightmare.",
       "language": "en",
       "culture": "Western",
@@ -4709,228 +4758,6 @@
       }
     },
     {
-      "tmdb_id": 617126,
-      "imdb_id": "tt10676052",
-      "title": "The Fantastic 4: First Steps",
-      "year": "2025",
-      "genres": [
-        "Science Fiction",
-        "Adventure",
-        "Action"
-      ],
-      "cinema_date": "2025-07-24",
-      "age_rating": "PG",
-      "worldwide_gross": 521858728,
-      "budget": 200000000,
-      "popularity": 34.2336,
-      "synopsis": "Against the vibrant backdrop of a 1960s-inspired, retro-futuristic world, Marvel's First Family is forced to balance their roles as heroes with the strength of their family bond, while defending Earth from a ravenous space god called Galactus and his enigmatic Herald, Silver Surfer.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/nf5qaSEvyYSNeFH0YhSs5EsBLX9.jpg",
-      "trailers": [
-        "cPRk4KyB2AI",
-        "oTf3tnuzXgI",
-        "dP5rJ2VXXhA",
-        "MJ76sLrNVkI"
-      ],
-      "director": "Matt Shakman",
-      "cast": [
-        "Pedro Pascal",
-        "Vanessa Kirby",
-        "Ebon Moss-Bachrach",
-        "Joseph Quinn"
-      ],
-      "imdb_rating": 6.8,
-      "imdb_votes": 258601,
-      "metacritic": 65,
-      "award": null,
-      "award_text": "4 wins & 48 nominations total",
-      "offers": [
-        {
-          "service": "Disney+",
-          "type": "sub",
-          "price": null,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "4K"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 24.99,
-          "format": "4K"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "included_streaming": "2026-07-21"
-      }
-    },
-    {
-      "tmdb_id": 87513,
-      "imdb_id": "tt2012616",
-      "title": "Motor City",
-      "year": "2026",
-      "genres": [
-        "Action",
-        "Thriller",
-        "Crime"
-      ],
-      "cinema_date": "2026-07-23",
-      "age_rating": "MA 15+",
-      "worldwide_gross": null,
-      "budget": 30000000,
-      "popularity": 34.1395,
-      "synopsis": "In 1970s Detroit, John Miller falls for a local gangster's girl and lands in prison for a crime he didn't commit. With his life ruined, Miller plots revenge against the man who took his girl away.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/dx2dblJL3GAKcXXXPjC2FSaMTWW.jpg",
-      "trailers": [
-        "t6RklhKu9os",
-        "JHMPxTWI4sQ"
-      ],
-      "director": "Potsy Ponciroli",
-      "cast": [
-        "Alan Ritchson",
-        "Ben Foster",
-        "Shailene Woodley",
-        "Lionel Boyce"
-      ],
-      "imdb_rating": 6.1,
-      "imdb_votes": 2641,
-      "rt_critic": 63,
-      "metacritic": 63,
-      "award": null,
-      "award_text": "3 nominations total",
-      "offers": [],
-      "status": [
-        "in_cinema"
-      ],
-      "window_dates": {
-        "upcoming": "2026-07-19",
-        "in_cinema": "2026-08-26"
-      }
-    },
-    {
-      "tmdb_id": 986056,
-      "imdb_id": "tt20969586",
-      "title": "Thunderbolts*",
-      "year": "2025",
-      "genres": [
-        "Action",
-        "Science Fiction",
-        "Adventure"
-      ],
-      "cinema_date": "2025-05-01",
-      "age_rating": "PG",
-      "worldwide_gross": 382436917,
-      "budget": 180000000,
-      "popularity": 29.889,
-      "synopsis": "After finding themselves ensnared in a death trap, seven disillusioned castoffs must embark on a dangerous mission that will force them to confront the darkest corners of their pasts.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/hqcexYHbiTBfDIdDWxrxPtVndBX.jpg",
-      "trailers": [
-        "tyMhqYy9F7g",
-        "mbCDMwmiGng",
-        "7rs_HhSA7XY",
-        "D8VAEsqh9ZQ"
-      ],
-      "director": "Jake Schreier",
-      "cast": [
-        "Florence Pugh",
-        "Sebastian Stan",
-        "Julia Louis-Dreyfus",
-        "Lewis Pullman"
-      ],
-      "imdb_rating": 7.1,
-      "imdb_votes": 274694,
-      "rt_critic": 88,
-      "metacritic": 68,
-      "award": null,
-      "award_text": "4 wins & 28 nominations total",
-      "offers": [
-        {
-          "service": "Disney+",
-          "type": "sub",
-          "price": null,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "4K"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "included_streaming": "2026-07-27"
-      }
-    },
-    {
       "tmdb_id": 1061474,
       "imdb_id": "tt5950044",
       "title": "Superman",
@@ -4944,7 +4771,7 @@
       "age_rating": "M",
       "worldwide_gross": 618723803,
       "budget": 225000000,
-      "popularity": 33.1053,
+      "popularity": 33.9757,
       "synopsis": "Superman, a journalist in Metropolis, embarks on a journey to reconcile his Kryptonian heritage with his human upbringing as Clark Kent.",
       "language": "en",
       "culture": "Western",
@@ -5076,202 +4903,6 @@
       }
     },
     {
-      "tmdb_id": 8587,
-      "imdb_id": "tt0110357",
-      "title": "The Lion King",
-      "year": "1994",
-      "genres": [
-        "Animation",
-        "Family",
-        "Drama"
-      ],
-      "cinema_date": "2024-08-29",
-      "age_rating": "G",
-      "worldwide_gross": 763455561,
-      "budget": 45000000,
-      "popularity": 33.0222,
-      "synopsis": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
-      "trailers": [
-        "UgjEj5mXLlk",
-        "adqdIxiB74s",
-        "5lQCsWolER8",
-        "hozRF31GK3g"
-      ],
-      "director": "Roger Allers, Rob Minkoff",
-      "cast": [
-        "Matthew Broderick",
-        "Moira Kelly",
-        "Jeremy Irons",
-        "Nathan Lane"
-      ],
-      "imdb_rating": 8.5,
-      "imdb_votes": 1248136,
-      "rt_critic": 92,
-      "metacritic": 88,
-      "award": "won",
-      "award_text": "Won 2 Oscars. 43 wins & 35 nominations total",
-      "offers": [
-        {
-          "service": "Disney+",
-          "type": "sub",
-          "price": null,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 19.98,
-          "format": "4K"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 19.98,
-          "format": "4K"
-        }
-      ],
-      "status": [
-        "included_streaming"
-      ],
-      "window_dates": {
-        "included_streaming": "2026-07-14"
-      }
-    },
-    {
-      "tmdb_id": 912649,
-      "imdb_id": "tt16366836",
-      "title": "Venom: The Last Dance",
-      "year": "2024",
-      "genres": [
-        "Science Fiction",
-        "Action",
-        "Adventure"
-      ],
-      "cinema_date": "2024-10-24",
-      "age_rating": "M",
-      "worldwide_gross": 478937618,
-      "budget": 120000000,
-      "popularity": 32.9361,
-      "synopsis": "Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/vGXptEdgZIhPg3cGlc7e8sNPC2e.jpg",
-      "trailers": [
-        "Op8P4xzbmhg",
-        "bI5vwW_1JjQ",
-        "sZgZL6Yn2fw",
-        "O3wFg9z8WWI"
-      ],
-      "director": "Kelly Marcel",
-      "cast": [
-        "Tom Hardy",
-        "Chiwetel Ejiofor",
-        "Juno Temple",
-        "Rhys Ifans"
-      ],
-      "imdb_rating": 6.0,
-      "imdb_votes": 149838,
-      "rt_critic": 40,
-      "metacritic": 41,
-      "award": null,
-      "award_text": "2 wins & 8 nominations total",
-      "offers": [
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 4.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 4.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 4.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 4.99,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "rent",
-          "price": 4.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 14.99,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 14.99,
-          "format": "HD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "buy",
-          "price": 14.99,
-          "format": "4K"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 14.99,
-          "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 14.99,
-          "format": "HD"
-        }
-      ],
-      "status": [
-        "rental"
-      ],
-      "window_dates": {
-        "rental": "2026-08-22"
-      }
-    },
-    {
       "tmdb_id": 1297842,
       "imdb_id": "tt27613895",
       "title": "GOAT",
@@ -5285,7 +4916,7 @@
       "age_rating": "PG",
       "worldwide_gross": 193566330,
       "budget": 90000000,
-      "popularity": 32.4033,
+      "popularity": 33.8565,
       "synopsis": "A small goat with big dreams gets a once-in-a-lifetime shot to join the pros and play roarball, a high-intensity, co-ed, full-contact sport dominated by the fastest, fiercest animals in the world.",
       "language": "en",
       "culture": "Western",
@@ -5399,6 +5030,344 @@
       }
     },
     {
+      "tmdb_id": 14836,
+      "imdb_id": "tt0327597",
+      "title": "Coraline",
+      "year": "2009",
+      "genres": [
+        "Animation",
+        "Family",
+        "Fantasy"
+      ],
+      "cinema_date": "2024-08-15",
+      "age_rating": "PG",
+      "worldwide_gross": 185860104,
+      "budget": 60000000,
+      "popularity": 33.5167,
+      "synopsis": "Wandering her rambling old house in her boring new town, 11-year-old Coraline discovers a hidden door to a strangely idealized version of her life. In order to stay in the fantasy, she must make a frighteningly real sacrifice.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/4jeFXQYytChdZYE9JYO7Un87IlW.jpg",
+      "trailers": [
+        "5B92Phq9Z2A",
+        "GYYRTL1MMGo",
+        "BgKXN16_VBY",
+        "T6iQnnHNF50"
+      ],
+      "director": "Henry Selick",
+      "cast": [
+        "Dakota Fanning",
+        "Teri Hatcher",
+        "Jennifer Saunders",
+        "Dawn French"
+      ],
+      "imdb_rating": 7.8,
+      "imdb_votes": 297596,
+      "rt_critic": 91,
+      "metacritic": 80,
+      "award": "nominated",
+      "award_text": "Nominated for 1 Oscar. 8 wins & 46 nominations total",
+      "offers": [
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 4.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 4.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 4.99,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 4.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 22.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 22.99,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 22.99,
+          "format": "HD"
+        }
+      ],
+      "status": [
+        "pvod",
+        "rental"
+      ],
+      "window_dates": {
+        "pvod": "2026-07-12",
+        "rental": "2026-07-12"
+      }
+    },
+    {
+      "tmdb_id": 912649,
+      "imdb_id": "tt16366836",
+      "title": "Venom: The Last Dance",
+      "year": "2024",
+      "genres": [
+        "Science Fiction",
+        "Action",
+        "Adventure"
+      ],
+      "cinema_date": "2024-10-24",
+      "age_rating": "M",
+      "worldwide_gross": 478937618,
+      "budget": 120000000,
+      "popularity": 33.4221,
+      "synopsis": "Eddie and Venom are on the run. Hunted by both of their worlds and with the net closing in, the duo are forced into a devastating decision that will bring the curtains down on Venom and Eddie's last dance.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/vGXptEdgZIhPg3cGlc7e8sNPC2e.jpg",
+      "trailers": [
+        "Op8P4xzbmhg",
+        "bI5vwW_1JjQ",
+        "sZgZL6Yn2fw",
+        "O3wFg9z8WWI"
+      ],
+      "director": "Kelly Marcel",
+      "cast": [
+        "Tom Hardy",
+        "Chiwetel Ejiofor",
+        "Juno Temple",
+        "Rhys Ifans"
+      ],
+      "imdb_rating": 6.0,
+      "imdb_votes": 149838,
+      "rt_critic": 40,
+      "metacritic": 41,
+      "award": null,
+      "award_text": "2 wins & 8 nominations total",
+      "offers": [
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 4.99,
+          "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 4.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 4.99,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 4.99,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "rent",
+          "price": 4.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 14.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 14.99,
+          "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 14.99,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 14.99,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 14.99,
+          "format": "SD"
+        }
+      ],
+      "status": [
+        "rental"
+      ],
+      "window_dates": {
+        "rental": "2026-08-22"
+      }
+    },
+    {
+      "tmdb_id": 87513,
+      "imdb_id": "tt2012616",
+      "title": "Motor City",
+      "year": "2026",
+      "genres": [
+        "Action",
+        "Thriller",
+        "Crime"
+      ],
+      "cinema_date": "2026-07-23",
+      "age_rating": "MA 15+",
+      "worldwide_gross": null,
+      "budget": 30000000,
+      "popularity": 33.2879,
+      "synopsis": "In 1970s Detroit, John Miller falls for a local gangster's girl and lands in prison for a crime he didn't commit. With his life ruined, Miller plots revenge against the man who took his girl away.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/dx2dblJL3GAKcXXXPjC2FSaMTWW.jpg",
+      "trailers": [
+        "t6RklhKu9os",
+        "JHMPxTWI4sQ"
+      ],
+      "director": "Potsy Ponciroli",
+      "cast": [
+        "Alan Ritchson",
+        "Ben Foster",
+        "Shailene Woodley",
+        "Lionel Boyce"
+      ],
+      "imdb_rating": 6.1,
+      "imdb_votes": 2641,
+      "rt_critic": 63,
+      "metacritic": 63,
+      "award": null,
+      "award_text": "3 nominations total",
+      "offers": [],
+      "status": [
+        "in_cinema"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-19",
+        "in_cinema": "2026-08-26"
+      }
+    },
+    {
+      "tmdb_id": 8587,
+      "imdb_id": "tt0110357",
+      "title": "The Lion King",
+      "year": "1994",
+      "genres": [
+        "Animation",
+        "Family",
+        "Drama"
+      ],
+      "cinema_date": "2024-08-29",
+      "age_rating": "G",
+      "worldwide_gross": 763455561,
+      "budget": 45000000,
+      "popularity": 33.07,
+      "synopsis": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+      "trailers": [
+        "UgjEj5mXLlk",
+        "adqdIxiB74s",
+        "5lQCsWolER8",
+        "hozRF31GK3g"
+      ],
+      "director": "Roger Allers, Rob Minkoff",
+      "cast": [
+        "Matthew Broderick",
+        "Moira Kelly",
+        "Jeremy Irons",
+        "Nathan Lane"
+      ],
+      "imdb_rating": 8.5,
+      "imdb_votes": 1248136,
+      "rt_critic": 92,
+      "metacritic": 88,
+      "award": "won",
+      "award_text": "Won 2 Oscars. 43 wins & 35 nominations total",
+      "offers": [
+        {
+          "service": "Disney+",
+          "type": "sub",
+          "price": null,
+          "format": "4K"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.98,
+          "format": "4K"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "buy",
+          "price": 19.98,
+          "format": "4K"
+        }
+      ],
+      "status": [
+        "included_streaming"
+      ],
+      "window_dates": {
+        "included_streaming": "2026-07-14"
+      }
+    },
+    {
       "tmdb_id": 1171145,
       "imdb_id": "tt32430579",
       "title": "Crime 101",
@@ -5411,7 +5380,7 @@
       "age_rating": "M",
       "worldwide_gross": 72900246,
       "budget": 90000000,
-      "popularity": 32.1882,
+      "popularity": 32.1157,
       "synopsis": "When an elusive thief whose high-stakes heists unfold along the iconic 101 freeway in Los Angeles eyes the score of a lifetime, with hopes of this being his final job, his path collides with a disillusioned insurance broker who is facing her own crossroads. Determined to crack the case, a relentless detective closes in on the operation, raising the stakes even higher.",
       "language": "en",
       "culture": "Western",
@@ -5537,111 +5506,136 @@
       }
     },
     {
-      "tmdb_id": 950028,
-      "imdb_id": "tt14173636",
-      "title": "The Invite",
+      "tmdb_id": 1325734,
+      "imdb_id": "tt33071426",
+      "title": "The Drama",
       "year": "2026",
       "genres": [
+        "Romance",
         "Comedy",
-        "Drama",
-        "Romance"
+        "Drama"
       ],
-      "cinema_date": "2026-07-09",
+      "cinema_date": "2026-04-02",
       "age_rating": "MA 15+",
-      "worldwide_gross": 55505476,
-      "budget": 12000000,
-      "popularity": 32.0016,
-      "synopsis": "Joe and Angela's marriage is on thin ice. When they invite their enigmatic upstairs neighbors for a dinner party, the night spirals into unexpected places. Have they reignited the spark or lit the match that burns it all down?",
+      "worldwide_gross": 132467533,
+      "budget": 28000000,
+      "popularity": 31.803,
+      "synopsis": "A happily engaged couple is put to the test when an unexpected turn sends their wedding week off the rails.",
       "language": "en",
       "culture": "Western",
-      "poster": "/b7Dr8Chzse8VagexAporUu2RtLx.jpg",
+      "poster": "/rnIOUhzwJDfgQakx8EjoNyItKgs.jpg",
       "trailers": [
-        "TXVH-23lkr0",
-        "DsSKuMZsNvc",
-        "jpBHmbNM_5c",
-        "JPjVHwpixyY"
+        "-ppw3BbSelI",
+        "1gVr7eosXmo",
+        "8aceVuVSJMY",
+        "0ZDzsH3XGFA"
       ],
-      "director": "Olivia Wilde",
+      "director": "Kristoffer Borgli",
       "cast": [
-        "Seth Rogen",
-        "Olivia Wilde",
-        "Pen\u00e9lope Cruz",
-        "Edward Norton"
+        "Zendaya",
+        "Robert Pattinson",
+        "Alana Haim",
+        "Mamoudou Athie"
       ],
-      "imdb_rating": 7.8,
-      "imdb_votes": 27141,
-      "rt_critic": 96,
-      "metacritic": 82,
+      "imdb_rating": 7.2,
+      "imdb_votes": 81611,
+      "rt_critic": 76,
+      "metacritic": 59,
       "award": null,
-      "award_text": "2 wins & 6 nominations total",
+      "award_text": "7 nominations total",
       "offers": [
         {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
-          "format": "SD"
-        },
-        {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
+          "service": "HBO Max",
+          "type": "sub",
+          "price": null,
           "format": "HD"
         },
         {
-          "service": "AppleTV",
-          "type": "rent",
-          "price": 19.98,
+          "service": "MAX (Via Amazon Prime)",
+          "type": "sub",
+          "price": null,
           "format": "4K"
         },
         {
           "service": "Amazon",
           "type": "rent",
-          "price": 19.98,
+          "price": 6.99,
           "format": "SD"
         },
         {
           "service": "Amazon",
           "type": "rent",
+          "price": 6.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "SD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "HD"
+        },
+        {
+          "service": "AppleTV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "4K"
+        },
+        {
+          "service": "Fetch TV",
+          "type": "rent",
+          "price": 6.99,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
+          "price": 19.98,
+          "format": "SD"
+        },
+        {
+          "service": "Amazon",
+          "type": "buy",
           "price": 19.98,
           "format": "HD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
-          "price": 24.99,
+          "price": 19.98,
           "format": "SD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
-          "price": 24.99,
+          "price": 19.98,
           "format": "HD"
         },
         {
           "service": "AppleTV",
           "type": "buy",
-          "price": 24.99,
+          "price": 19.98,
           "format": "4K"
         },
         {
-          "service": "Amazon",
+          "service": "Fetch TV",
           "type": "buy",
-          "price": 24.99,
+          "price": 19.98,
           "format": "SD"
-        },
-        {
-          "service": "Amazon",
-          "type": "buy",
-          "price": 24.99,
-          "format": "HD"
         }
       ],
       "status": [
-        "pvod"
+        "included_streaming",
+        "rental"
       ],
       "window_dates": {
-        "in_cinema": "2026-07-12",
-        "pvod": "2026-08-22"
+        "rental": "2026-07-12",
+        "included_streaming": "2026-08-22"
       }
     },
     {
@@ -5658,7 +5652,7 @@
       "age_rating": "PG",
       "worldwide_gross": 44274089,
       "budget": 72000000,
-      "popularity": 617.6922,
+      "popularity": 586.1606,
       "synopsis": "After Acme products fail him one too many times in his dogged pursuit of the Roadrunner, Wile E. Coyote decides to hire a billboard lawyer to sue the Acme Corporation.",
       "language": "en",
       "culture": "Western",
@@ -5703,7 +5697,7 @@
       "age_rating": null,
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 201.2661,
+      "popularity": 236.0432,
       "synopsis": "A falsely accused war hero with nothing to lose leads police on an epic televised cross-country car chase, helped by members of his former Special Forces Army battalion and closely monitored by a fascinated public rooting for his safe getaway.",
       "language": "en",
       "culture": "Western",
@@ -5731,50 +5725,6 @@
       }
     },
     {
-      "tmdb_id": 1423191,
-      "imdb_id": "tt35538033",
-      "title": "Resident Evil",
-      "year": "2026",
-      "genres": [
-        "Horror",
-        "Thriller",
-        "Adventure"
-      ],
-      "cinema_date": "2026-09-17",
-      "age_rating": "MA 15+",
-      "worldwide_gross": null,
-      "budget": 80000000,
-      "popularity": 43.1851,
-      "synopsis": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
-      "language": "en",
-      "culture": "Western",
-      "poster": "/qku2uWSoJ9amQV5MWo1Eek29iji.jpg",
-      "trailers": [
-        "PhUiuA5X4fM",
-        "Q_wggwcvFgM",
-        "Mbj1Atbkx8Y",
-        "pFvKvcLzswo"
-      ],
-      "director": "Zach Cregger",
-      "cast": [
-        "Austin Abrams",
-        "Zach Cherry",
-        "Kali Reis",
-        "Paul Walter Hauser"
-      ],
-      "imdb_rating": null,
-      "imdb_votes": null,
-      "award": null,
-      "award_text": "",
-      "offers": [],
-      "status": [
-        "upcoming"
-      ],
-      "window_dates": {
-        "upcoming": "2026-07-14"
-      }
-    },
-    {
       "tmdb_id": 1003596,
       "imdb_id": "tt21357150",
       "title": "Avengers: Doomsday",
@@ -5788,7 +5738,7 @@
       "age_rating": null,
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 42.043,
+      "popularity": 41.7883,
       "synopsis": "Beloved heroes from three distinct universes are set on a deadly collision course and face an existential threat unlike anything they've ever encountered.",
       "language": "en",
       "culture": "Western",
@@ -5819,6 +5769,50 @@
       }
     },
     {
+      "tmdb_id": 1423191,
+      "imdb_id": "tt35538033",
+      "title": "Resident Evil",
+      "year": "2026",
+      "genres": [
+        "Horror",
+        "Thriller",
+        "Adventure"
+      ],
+      "cinema_date": "2026-09-17",
+      "age_rating": "MA 15+",
+      "worldwide_gross": null,
+      "budget": 80000000,
+      "popularity": 41.5839,
+      "synopsis": "Medical courier Bryan unwittingly finds himself fighting for survival as one fateful, horrifying night collapses around him in chaos.",
+      "language": "en",
+      "culture": "Western",
+      "poster": "/qku2uWSoJ9amQV5MWo1Eek29iji.jpg",
+      "trailers": [
+        "9Gnh6q5xwwc",
+        "PhUiuA5X4fM",
+        "Q_wggwcvFgM",
+        "Mbj1Atbkx8Y"
+      ],
+      "director": "Zach Cregger",
+      "cast": [
+        "Austin Abrams",
+        "Zach Cherry",
+        "Kali Reis",
+        "Paul Walter Hauser"
+      ],
+      "imdb_rating": null,
+      "imdb_votes": null,
+      "award": null,
+      "award_text": "",
+      "offers": [],
+      "status": [
+        "upcoming"
+      ],
+      "window_dates": {
+        "upcoming": "2026-07-14"
+      }
+    },
+    {
       "tmdb_id": 1483525,
       "imdb_id": "tt37803364",
       "title": "Possible Love",
@@ -5830,7 +5824,7 @@
       "age_rating": null,
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 27.0695,
+      "popularity": 26.254,
       "synopsis": "A laid-off worker and his wife cross paths with a documentary filmmaker and her spouse and confront their hidden desires.",
       "language": "ko",
       "culture": "Korean",
@@ -5872,9 +5866,9 @@
       ],
       "cinema_date": "2026-10-29",
       "age_rating": "M",
-      "worldwide_gross": 18338606,
+      "worldwide_gross": 20245995,
       "budget": 30000000,
-      "popularity": 22.374,
+      "popularity": 24.0523,
       "synopsis": "In the tense 72 hours before D-Day, and the fate of the free world hanging in the balance, General Dwight D. Eisenhower and Captain James Stagg face an impossible choice\u2014launch the largest and most dangerous seaborne invasion in history or risk losing the war altogether.",
       "language": "en",
       "culture": "Western",
@@ -5922,7 +5916,7 @@
       "age_rating": "PG",
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 20.538,
+      "popularity": 20.2929,
       "synopsis": "While celebrating their last night together, high school graduates and best friends Jo and Raissa stumble upon a mysterious portal that transports them to the fantastical island of Nakali. When they discover that the memories of their entire friendship are the price for returning home, Jo and Raissa will race to find a way to leave the island before they forget each other forever.",
       "language": "en",
       "culture": "Western",
@@ -5953,46 +5947,46 @@
       }
     },
     {
-      "tmdb_id": 1170608,
-      "imdb_id": "tt31378509",
-      "title": "Dune: Part Three",
+      "tmdb_id": 977942,
+      "imdb_id": "tt36983905",
+      "title": "The Uprising",
       "year": "2026",
       "genres": [
-        "Science Fiction",
-        "Adventure"
+        "Drama",
+        "Action",
+        "History"
       ],
-      "cinema_date": "2026-12-16",
-      "age_rating": "M",
-      "worldwide_gross": null,
+      "cinema_date": "2026-12-03",
+      "age_rating": "MA 15+",
+      "worldwide_gross": 1380000,
       "budget": null,
-      "popularity": 17.0299,
-      "synopsis": "Emperor Paul Atreides faces the fallout from his ascent to power as political plots and a galaxy-wide holy war endanger the future only he can see.",
+      "popularity": 19.4238,
+      "synopsis": "As war and plague devastate 14th-century England, a humble peasant ignites a rebellion, uniting an army of commoners to defy the King\u2019s might in a desperate fight for justice and survival.",
       "language": "en",
       "culture": "Western",
-      "poster": "/d43fvHQsIMa4kpyhKXw0haEJIvI.jpg",
+      "poster": "/7TUl15TOsIvndKlgMWTtLgtEzZP.jpg",
       "trailers": [
-        "PaxCyyEp59M",
-        "-hWl_vx6mpo",
-        "bqwKY5DZay4",
-        "YA1P0zOIvCg"
+        "lyhCxZN4Ro8",
+        "ZVkrhHebz1Q"
       ],
-      "director": "Denis Villeneuve",
+      "director": "Paul Greengrass",
       "cast": [
-        "Timoth\u00e9e Chalamet",
-        "Zendaya",
-        "Jason Momoa",
-        "Florence Pugh"
+        "Andrew Garfield",
+        "Jamie Bell",
+        "Stephen Dillane",
+        "Tom Hollander"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
+      "metacritic": 53,
       "award": null,
-      "award_text": "1 win & 3 nominations total",
+      "award_text": "",
       "offers": [],
       "status": [
         "upcoming"
       ],
       "window_dates": {
-        "upcoming": "2026-08-19"
+        "upcoming": "2026-09-11"
       }
     },
     {
@@ -6007,7 +6001,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": null,
       "budget": 130000000,
-      "popularity": 16.7504,
+      "popularity": 18.514,
       "synopsis": "The most powerful man in the world embarks on a frantic mission to prove he is humanity's savior before the disaster he's unleashed destroys everything.",
       "language": "en",
       "culture": "Western",
@@ -6038,46 +6032,46 @@
       }
     },
     {
-      "tmdb_id": 977942,
-      "imdb_id": "tt36983905",
-      "title": "The Uprising",
+      "tmdb_id": 1170608,
+      "imdb_id": "tt31378509",
+      "title": "Dune: Part Three",
       "year": "2026",
       "genres": [
-        "Drama",
-        "Action",
-        "History"
+        "Science Fiction",
+        "Adventure"
       ],
-      "cinema_date": "2026-12-03",
-      "age_rating": "MA 15+",
+      "cinema_date": "2026-12-16",
+      "age_rating": "M",
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 16.6129,
-      "synopsis": "As war and plague devastate 14th-century England, a humble peasant ignites a rebellion, uniting an army of commoners to defy the King\u2019s might in a desperate fight for justice and survival.",
+      "popularity": 17.3445,
+      "synopsis": "Emperor Paul Atreides faces the fallout from his ascent to power as political plots and a galaxy-wide holy war endanger the future only he can see.",
       "language": "en",
       "culture": "Western",
-      "poster": "/7TUl15TOsIvndKlgMWTtLgtEzZP.jpg",
+      "poster": "/d43fvHQsIMa4kpyhKXw0haEJIvI.jpg",
       "trailers": [
-        "lyhCxZN4Ro8",
-        "ZVkrhHebz1Q"
+        "PaxCyyEp59M",
+        "-hWl_vx6mpo",
+        "bqwKY5DZay4",
+        "YA1P0zOIvCg"
       ],
-      "director": "Paul Greengrass",
+      "director": "Denis Villeneuve",
       "cast": [
-        "Andrew Garfield",
-        "Jamie Bell",
-        "Stephen Dillane",
-        "Tom Hollander"
+        "Timoth\u00e9e Chalamet",
+        "Zendaya",
+        "Jason Momoa",
+        "Florence Pugh"
       ],
       "imdb_rating": null,
       "imdb_votes": null,
-      "metacritic": 53,
       "award": null,
-      "award_text": "",
+      "award_text": "1 win & 3 nominations total",
       "offers": [],
       "status": [
         "upcoming"
       ],
       "window_dates": {
-        "upcoming": "2026-09-11"
+        "upcoming": "2026-08-19"
       }
     },
     {
@@ -6093,7 +6087,7 @@
       "age_rating": "M",
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 16.6058,
+      "popularity": 17.0908,
       "synopsis": "After a harrowing plane crash, Special Forces officer James Belmont and his combat dog, Odin, find themselves stranded deep in the Alaskan wilderness. Together, they are forced into a brutal fight for survival against the elements.",
       "language": "en",
       "culture": "Western",
@@ -6137,7 +6131,7 @@
       "age_rating": "MA 15+",
       "worldwide_gross": null,
       "budget": null,
-      "popularity": 14.7529,
+      "popularity": 14.8716,
       "synopsis": "In 2006, To Catch a Predator host Chris Hansen sets out to make television history.",
       "language": "en",
       "culture": "Western",
