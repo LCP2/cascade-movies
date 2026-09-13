@@ -573,5 +573,16 @@
     "label": "In Cinema",
     "services": [],
     "detected": "2026-09-10"
+  },
+  {
+    "tmdb_id": 1564614,
+    "title": "Leviticus",
+    "new_window": "rental",
+    "label": "Standard Rental (~$7)",
+    "services": [
+      "Amazon",
+      "Amazon"
+    ],
+    "detected": "2026-09-13"
   }
 ]
